@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import FormGroup from 'components/FormGroup'
 import InputField from 'components/InputField'
 
+
 class SignInForm extends PureComponent {
   render() {
     const { handleSubmit } = this.props

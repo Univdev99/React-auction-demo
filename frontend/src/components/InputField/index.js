@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 
+
 class InputField extends PureComponent {
   render() {
     const {

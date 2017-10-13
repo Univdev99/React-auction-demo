@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Field } from 'redux-form/immutable'
 
+
 class FormGroup extends PureComponent {
   render() {
     const { name, label, component, type } = this.props
