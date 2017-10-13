@@ -6,13 +6,8 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import SignInForm from 'components/SignInForm'
-
-import {
-  signIn,
-} from 'store/modules/auth'
-import {
-  authSelector
-} from 'store/selectors'
+import { signIn } from 'store/modules/auth'
+import { authSelector } from 'store/selectors'
 
 
 class SignIn extends PureComponent {
@@ -22,17 +17,19 @@ class SignIn extends PureComponent {
 
   render() {
     const { auth } = this.props
-    const signInError = auth.get('error')
+    const signInError = auth.get('signInError')
 
     return (
       <div className="container mt-5">
         <div className="row justify-content-center">
           <div className="col-12 col-md-8 col-lg-6">
+
             {signInError && <div className="mb-2 text-danger">
               Login failed, please enter correct username and password
             </div>}
 
             <SignInForm onSubmit={this.handleSubmit} />
+
           </div>
         </div>
       </div>
@@ -46,7 +43,7 @@ SignIn.propTypes = {
 }
 
 const selector = createStructuredSelector({
-  auth: authSelector
+  auth: authSelector,
 })
 
 const actions = {

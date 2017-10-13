@@ -1,23 +1,51 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
+import { compose } from 'redux'
+import { connect } from 'react-redux'
+import { createStructuredSelector } from 'reselect'
+import PropTypes from 'prop-types'
+import ImmutablePropTypes from 'react-immutable-proptypes'
 
-import logo from './logo.svg'
-import './style.css'
+import Spinner from 'components/Spinner'
+import AppLayout1 from 'pages/AppLayout1'
+
+import { getCurrentUser } from 'store/modules/auth'
+import { authSelector } from 'store/selectors'
 
 
-class Home extends Component {
+class Home extends PureComponent {
+  componentWillMount() {
+    this.props.getCurrentUser()
+  }
+
   render() {
-    return (
-      <div className="Home">
-        <header className="Home-header">
-          <img src={logo} className="Home-logo" alt="logo" />
-          <h1 className="Home-title">Welcome to React</h1>
-        </header>
-        <p className="Home-intro">
+    const { auth } = this.props
+    const userLoaded = auth.get('userLoaded')
+
+    if (userLoaded) {
+      return (
+        <AppLayout1>
           This is home content
-        </p>
-      </div>
-    )
+        </AppLayout1>
+      )
+    } else {
+      return <Spinner />
+    }
   }
 }
 
-export default Home
+Home.propTypes = {
+  auth: ImmutablePropTypes.map.isRequired,
+  getCurrentUser: PropTypes.func.isRequired,
+}
+
+const selector = createStructuredSelector({
+  auth: authSelector,
+})
+
+const actions = {
+  getCurrentUser,
+}
+
+export default compose(
+  connect(selector, actions)
+)(Home)

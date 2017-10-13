@@ -24,7 +24,9 @@ class SignInForm extends PureComponent {
           label="Password:"
           component={InputField}
         />
-        <button type="submit" className="btn btn-primary">Submit</button>
+        <center>
+          <button type="submit" className="btn btn-primary">Submit</button>
+        </center>
       </form>
     )
   }

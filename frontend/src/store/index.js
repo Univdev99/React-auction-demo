@@ -9,6 +9,7 @@ import Immutable from 'immutable'
 import routerReducer from 'store/modules/route'
 import auth from 'store/modules/auth'
 import sagas from 'store/sagas'
+import authMiddleware from 'store/middlewares/auth'
 
 
 // Create a history of your choosing (we're using a browser history in this case)
@@ -22,7 +23,8 @@ const sagaMiddleware = createSagaMiddleware()
 
 const middlewares = [
   middleware,
-  sagaMiddleware
+  sagaMiddleware,
+  authMiddleware,
 ]
 
 // Add the reducer to your store on the `router` key

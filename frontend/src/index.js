@@ -5,7 +5,7 @@ import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.css'
 
 import { store, history } from 'store'
-import Routes from 'router'
+import Routes from 'routes'
 
 import 'utils/localstorage-polyfill'
 import { loadData } from 'utils/storage'

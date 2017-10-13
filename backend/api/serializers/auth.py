@@ -12,3 +12,8 @@ class SignUpSerializer(serializers.Serializer):
         if data['password'] != data['password_confirm']:
             raise serializers.ValidationError('Password confirmation does not match')
         return data
+
+
+class CurrentUserSerializer(serializers.Serializer):
+    username = serializers.CharField(required=True)
+    email = serializers.CharField(required=True)
