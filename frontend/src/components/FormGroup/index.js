@@ -4,6 +4,14 @@ import { Field } from 'redux-form/immutable'
 
 
 class FormGroup extends PureComponent {
+
+  static propTypes = {
+    name: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    type: PropTypes.string,
+    component: PropTypes.func.isRequired,
+  }
+
   render() {
     const { name, label, component, type } = this.props
 
@@ -14,13 +22,6 @@ class FormGroup extends PureComponent {
       </div>
     )
   }
-}
-
-FormGroup.propTypes = {
-  name: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  type: PropTypes.string,
-  component: PropTypes.func.isRequired,
 }
 
 export default FormGroup

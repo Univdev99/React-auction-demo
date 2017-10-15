@@ -1,26 +1,9 @@
 import React, { PureComponent } from 'react'
-import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
-class AppHeader extends PureComponent {
-
-  static propTypes = {
-    username: PropTypes.string.isRequired,
-    onSignOut: PropTypes.func,
-  }
-
-  handleSignOut = (e) => {
-    e.preventDefault()
-
-    const { onSignOut } = this.props
-    if (onSignOut) {
-      onSignOut()
-    }
-  }
+class AppHeaderGuest extends PureComponent {
 
   render() {
-    const { username } = this.props
-
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <span className="navbar-brand">Charibin</span>
@@ -33,13 +16,16 @@ class AppHeader extends PureComponent {
               <Link className="nav-link" to="/">Home</Link>
             </li>
           </ul>
-          <a className="navbar-text" href="/" onClick={this.handleSignOut}>
-            Welcome, {username}!
-          </a>
+          <Link className="navbar-text pr-3" to="/signin">
+            Sign In
+          </Link>
+          <Link className="navbar-text" to="/signup">
+            Sign Up
+          </Link>
         </div>
       </nav>
     )
   }
 }
 
-export default AppHeader
+export default AppHeaderGuest

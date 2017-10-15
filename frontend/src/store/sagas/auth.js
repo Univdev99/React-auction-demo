@@ -3,6 +3,7 @@ import { takeLatest } from 'redux-saga/effects'
 import apiCall from 'store/api/call'
 import {
   AUTH_SIGNIN,
+  AUTH_SIGNUP,
   AUTH_CURRENT_USER,
 } from 'store/constants'
 
@@ -10,6 +11,12 @@ const doSignIn = apiCall({
   type: AUTH_SIGNIN,
   method: 'post',
   path: 'signin/',
+})
+
+const doSignUp = apiCall({
+  type: AUTH_SIGNUP,
+  method: 'post',
+  path: 'signup/',
 })
 
 const getCurrentUser = apiCall({
@@ -20,5 +27,6 @@ const getCurrentUser = apiCall({
 
 export default function* rootSaga () {
   yield takeLatest(AUTH_SIGNIN, doSignIn)
+  yield takeLatest(AUTH_SIGNUP, doSignUp)
   yield takeLatest(AUTH_CURRENT_USER, getCurrentUser)
 }

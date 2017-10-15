@@ -7,7 +7,7 @@ import FormGroup from 'components/FormGroup'
 import InputField from 'components/InputField'
 
 
-class SignInForm extends PureComponent {
+class SignUpForm extends PureComponent {
 
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
@@ -20,7 +20,13 @@ class SignInForm extends PureComponent {
         <FormGroup
           name="username"
           type="text"
-          label="Username or Email:"
+          label="Username:"
+          component={InputField}
+        />
+        <FormGroup
+          name="email"
+          type="email"
+          label="Email:"
           component={InputField}
         />
         <FormGroup
@@ -29,8 +35,14 @@ class SignInForm extends PureComponent {
           label="Password:"
           component={InputField}
         />
+        <FormGroup
+          name="password_confirm"
+          type="password"
+          label="Password Confirmation:"
+          component={InputField}
+        />
         <center>
-          <button type="submit" className="btn btn-primary">Sign In</button>
+          <button type="submit" className="btn btn-primary">Sign Up</button>
         </center>
       </form>
     )
@@ -39,6 +51,6 @@ class SignInForm extends PureComponent {
 
 export default compose(
   reduxForm({
-    form: 'signInForm',
+    form: 'signUpForm',
   })
-)(SignInForm)
+)(SignUpForm)

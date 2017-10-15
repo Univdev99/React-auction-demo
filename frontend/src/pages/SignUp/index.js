@@ -4,28 +4,27 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import { Link } from 'react-router-dom'
 
 import AppLayout1 from 'pages/AppLayout1'
-import SignInForm from 'components/SignInForm'
-import { signIn } from 'store/modules/auth'
+import SignUpForm from 'components/SignUpForm'
+import { signUp } from 'store/modules/auth'
 import { authSelector } from 'store/selectors'
 
 
-class SignIn extends PureComponent {
+class SignUp extends PureComponent {
 
   static propTypes = {
     auth: ImmutablePropTypes.map.isRequired,
-    signIn: PropTypes.func.isRequired,
+    signUp: PropTypes.func.isRequired,
   }
 
   handleSubmit = (data) => {
-    this.props.signIn({ data })
+    this.props.signUp({ data })
   }
 
   render() {
     const { auth } = this.props
-    const signInError = auth.get('signInError')
+    const signUpError = auth.get('signUpError')
 
     return (
       <AppLayout1>
@@ -33,15 +32,11 @@ class SignIn extends PureComponent {
           <div className="row justify-content-center">
             <div className="col-12 col-md-8 col-lg-6">
 
-              {signInError && <div className="mb-2 text-danger">
-                Login failed, please enter correct username and password
+              {signUpError && <div className="mb-2 text-danger">
+                Failed to sign up
               </div>}
 
-              <SignInForm onSubmit={this.handleSubmit} />
-
-              <center className="mt-2">
-                <Link to={{ pathname: 'signup' }}>Sign Up With Email</Link>
-              </center>
+              <SignUpForm onSubmit={this.handleSubmit} />
 
             </div>
           </div>
@@ -56,9 +51,9 @@ const selector = createStructuredSelector({
 })
 
 const actions = {
-  signIn,
+  signUp,
 }
 
 export default compose(
   connect(selector, actions)
-)(SignIn)
+)(SignUp)

@@ -5,6 +5,7 @@ import { requestSuccess, requestFail } from 'store/api/request'
 import {
   AUTH_SIGNIN,
   AUTH_SIGNOUT,
+  AUTH_SIGNUP,
   AUTH_CURRENT_USER,
 } from 'store/constants'
 
@@ -21,6 +22,7 @@ function getInitialState() {
     signedIn: !!token,
     signInError: false,
     userLoaded: false,
+    signUpError: false,
   }
 }
 const initialState = Immutable.Map(getInitialState())
@@ -30,6 +32,7 @@ const initialState = Immutable.Map(getInitialState())
 export const signIn = createAction(AUTH_SIGNIN)
 export const signOut = createAction(AUTH_SIGNOUT)
 export const getCurrentUser = createAction(AUTH_CURRENT_USER)
+export const signUp = createAction(AUTH_SIGNUP)
 
 /* Reducer */
 
@@ -62,5 +65,11 @@ export default handleActions({
     map.set('signInError', false)
     map.set('userLoaded', false)
     saveData({ token: '' })
+  }),
+  [requestSuccess(AUTH_SIGNUP)]: (state, { payload }) => state.withMutations(map => {
+    map.set('signUpError', false)
+  }),
+  [requestFail(AUTH_SIGNUP)]: (state, { payload }) => state.withMutations(map => {
+    map.set('signUpError', true)
   }),
 }, initialState)

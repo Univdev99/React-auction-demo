@@ -3,6 +3,16 @@ import PropTypes from 'prop-types'
 
 
 class InputField extends PureComponent {
+
+  static propTypes = {
+    input: PropTypes.object.isRequired,
+    type: PropTypes.string,
+  }
+
+  static defaultProps = {
+    type: 'text',
+  }
+
   render() {
     const {
       input: { name, onChange, value },
@@ -16,15 +26,6 @@ class InputField extends PureComponent {
       </div>
     )
   }
-}
-
-InputField.propTypes = {
-  input: PropTypes.object.isRequired,
-  type: PropTypes.string,
-}
-
-InputField.defaultProps = {
-  type: 'text',
 }
 
 export default InputField

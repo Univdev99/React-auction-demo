@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'corsheaders',
     # Project apps
+    'account',
     'api',
 )
 
@@ -108,6 +109,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Django authentication done with emails too
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'account.extra.EmailBackend',
+)
 
 
 # Django REST Framework

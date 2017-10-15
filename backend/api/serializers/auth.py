@@ -14,6 +14,10 @@ class SignUpSerializer(serializers.Serializer):
         return data
 
 
+class SignUpVerificationSerializer(serializers.Serializer):
+    token = serializers.CharField(required=True, min_length=32, max_length=32)
+
+
 class CurrentUserSerializer(serializers.Serializer):
     username = serializers.CharField(required=True)
     email = serializers.CharField(required=True)
