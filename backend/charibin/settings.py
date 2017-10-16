@@ -110,12 +110,18 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Django authentication done with emails too
+
+# Django authentication done with email & password too
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'account.extra.EmailBackend',
 )
+
+
+# Email
+
+NO_REPLY_EMAIL_ADDRESS = 'no-reply@charibin.com'
 
 
 # Django REST Framework

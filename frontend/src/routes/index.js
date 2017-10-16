@@ -5,6 +5,7 @@ import { ConnectedRouter } from 'react-router-redux'
 import Home from 'pages/Home'
 import SignIn from 'pages/SignIn'
 import SignUp from 'pages/SignUp'
+import SignUpVerification from 'pages/SignUpVerification'
 
 import {
   userIsNotAuthenticated, 
@@ -16,6 +17,7 @@ const Routes = ({ history }) => (
     <div>
       <Route exact path="/signin" component={userIsNotAuthenticated(SignIn)} />
       <Route exact path="/signup" component={userIsNotAuthenticated(SignUp)} />
+      <Route exact path="/verify-account/:token" component={SignUpVerification} />
       <Route exact path="/" component={Home} />
     </div>
   </ConnectedRouter>

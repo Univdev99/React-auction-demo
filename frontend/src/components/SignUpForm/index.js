@@ -11,10 +11,11 @@ class SignUpForm extends PureComponent {
 
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
   }
 
   render() {
-    const { handleSubmit } = this.props
+    const { handleSubmit, disabled } = this.props
     return (
       <form onSubmit={handleSubmit}>
         <FormGroup
@@ -42,7 +43,7 @@ class SignUpForm extends PureComponent {
           component={InputField}
         />
         <center>
-          <button type="submit" className="btn btn-primary">Sign Up</button>
+          <button type="submit" className="btn btn-primary" disabled={disabled}>Sign Up</button>
         </center>
       </form>
     )

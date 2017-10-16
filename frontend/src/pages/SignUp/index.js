@@ -25,6 +25,7 @@ class SignUp extends PureComponent {
   render() {
     const { auth } = this.props
     const signUpError = auth.get('signUpError')
+    const signingUp = auth.get('signingUp')
 
     return (
       <AppLayout1>
@@ -36,7 +37,7 @@ class SignUp extends PureComponent {
                 Failed to sign up
               </div>}
 
-              <SignUpForm onSubmit={this.handleSubmit} />
+              <SignUpForm onSubmit={this.handleSubmit} disabled={signingUp} />
 
             </div>
           </div>

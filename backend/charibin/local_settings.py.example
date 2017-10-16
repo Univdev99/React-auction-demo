@@ -5,3 +5,15 @@ DATABASES['default'] = {
     'PASSWORD': 'password',
     'HOST': '127.0.0.1',
 }
+
+
+# Email backend
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
+# Django CORS Headers
+
+CORS_ORIGIN_WHITELIST = (
+    'localhost:3000'
+)
