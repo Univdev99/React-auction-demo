@@ -5,11 +5,11 @@ import { createStructuredSelector } from 'reselect'
 // import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
-import AppLayout1 from 'pages/AppLayout1'
+import AdminLayout from 'pages/AdminLayout'
 import { authSelector } from 'store/selectors'
 
 
-class Home extends PureComponent {
+class AdminIndex extends PureComponent {
 
   static propTypes = {
     auth: ImmutablePropTypes.map.isRequired,
@@ -17,9 +17,9 @@ class Home extends PureComponent {
 
   render() {
     return (
-      <AppLayout1>
-        This is home content
-      </AppLayout1>
+      <AdminLayout>
+        Admin index page
+      </AdminLayout>
     )
   }
 }
@@ -30,4 +30,4 @@ const selector = createStructuredSelector({
 
 export default compose(
   connect(selector)
-)(Home)
+)(AdminIndex)

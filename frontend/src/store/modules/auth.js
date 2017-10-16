@@ -30,6 +30,7 @@ function getInitialState() {
     username: '',
     email: '',
     userLoaded: false,
+    isStaff: false,
     // sign in
     signingIn: false,
     signedIn: !!token,
@@ -75,20 +76,23 @@ export default handleActions({
   }),
   // Get current user actions
   [requestSuccess(AUTH_CURRENT_USER)]: (state, { payload }) => state.withMutations(map => {
-    const { username, email } = payload
+    const { username, email, is_staff } = payload
     map.set('username', username)
     map.set('email', email)
+    map.set('isStaff', !!is_staff)
     map.set('userLoaded', true)
   }),
   [requestFail(AUTH_CURRENT_USER)]: (state, { payload }) => state.withMutations(map => {
     map.set('username', '')
     map.set('email', '')
+    map.set('isStaff', false)
     map.set('userLoaded', false)
   }),
   // Sign out actions
   [AUTH_SIGNOUT]: (state) => state.withMutations(map => {
     map.set('username', '')
     map.set('email', '')
+    map.set('isStaff', false)
     map.set('signedIn', false)
     map.set('signInError', false)
     map.set('userLoaded', false)

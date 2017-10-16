@@ -30,3 +30,4 @@ class SignUpVerificationSerializer(serializers.Serializer):
 class CurrentUserSerializer(serializers.Serializer):
     username = serializers.CharField(required=True)
     email = serializers.CharField(required=True)
+    is_staff = serializers.BooleanField()

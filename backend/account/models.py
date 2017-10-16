@@ -11,3 +11,6 @@ class UserVerification(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
+
+    def __unicode__(self):
+        return u'User Verification for {}'.format(user.email)

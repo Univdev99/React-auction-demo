@@ -2,10 +2,12 @@ import React, { PureComponent } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
+import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import AppHeader from 'components/AppHeader'
 import AppHeaderGuest from 'components/AppHeaderGuest'
+import { getCurrentUser } from 'store/modules/auth'
 import { signOut } from 'store/modules/auth'
 import { authSelector } from 'store/selectors'
 
@@ -14,18 +16,24 @@ class AppLayout1 extends PureComponent {
 
   static propTypes = {
     auth: ImmutablePropTypes.map.isRequired,
+    getCurrentUser: PropTypes.func.isRequired,
   }
 
   handleSignOut = () => {
     this.props.signOut()
   }
 
+  componentWillMount() {
+    this.props.getCurrentUser()
+  }
+
   render() {
     const { auth, children } = this.props
     const username = auth.get('username')
+    const isStaff = auth.get('isStaff')
 
     const header = auth.get('signedIn') ?
-      <AppHeader username={username} onSignOut={this.handleSignOut} /> :
+      <AppHeader username={username} onSignOut={this.handleSignOut} isStaff={isStaff} /> :
       <AppHeaderGuest />
 
     return (
@@ -44,6 +52,7 @@ const selector = createStructuredSelector({
 })
 
 const actions = {
+  getCurrentUser,
   signOut,
 }
 

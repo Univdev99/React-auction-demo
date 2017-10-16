@@ -7,6 +7,7 @@ class AppHeader extends PureComponent {
   static propTypes = {
     username: PropTypes.string.isRequired,
     onSignOut: PropTypes.func,
+    isStaff: PropTypes.bool,
   }
 
   handleSignOut = (e) => {
@@ -19,7 +20,7 @@ class AppHeader extends PureComponent {
   }
 
   render() {
-    const { username } = this.props
+    const { username, isStaff } = this.props
 
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -36,6 +37,7 @@ class AppHeader extends PureComponent {
           <a className="navbar-text" href="/" onClick={this.handleSignOut}>
             Welcome, {username}!
           </a>
+          {isStaff && <Link className="navbar-text pl-3" to="/admin">Admin</Link>}
         </div>
       </nav>
     )
