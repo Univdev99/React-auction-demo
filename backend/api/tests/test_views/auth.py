@@ -1,4 +1,5 @@
 import json
+from unittest.mock import patch
 
 from django.test import TestCase
 from django.contrib.auth import get_user_model
@@ -39,3 +40,20 @@ class SignUpTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         user.refresh_from_db()
         self.assertEqual(user.is_active, True)
+
+    @patch('api.views.auth.GraphAPI.get_object', return_value={
+        'id': 1234567890,
+        'first_name': 'TestFirst',
+        'last_name': 'TestLast',
+        'email': 'test@test.com'
+    })
+    def test_signup_with_facebook(self, mock):
+        data = self.get_data()
+        data.pop('email')
+        data['access_token'] = 'any_string_for_mock_acces_token'
+        response = self.client.post(reverse('api:signup-with-facebook'), data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        user = get_user_model().objects.get(username=data['username'])
+        self.assertEqual(user.email, 'test@test.com')
+        self.assertEqual(user.first_name, 'TestFirst')
+        self.assertEqual(user.last_name, 'TestLast')

@@ -7,16 +7,12 @@ import FormField from 'components/FormField'
 import InputField from 'components/InputField'
 
 
-class SignUpForm extends PureComponent {
+class SignUpWithFacebookForm extends PureComponent {
 
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
   }
-
-  validateEmail = (value) => value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value) ?
-    'Invalid email address' :
-    undefined
 
   validatePassword = (value) => value && value.length < 6 ?
     'Must be at least 6 characters' :
@@ -38,13 +34,6 @@ class SignUpForm extends PureComponent {
           type="text"
           label="Username:"
           component={InputField}
-        />
-        <FormField
-          name="email"
-          type="email"
-          label="Email:"
-          component={InputField}
-          validate={this.validateEmail}
         />
         <FormField
           name="password"
@@ -70,6 +59,6 @@ class SignUpForm extends PureComponent {
 
 export default compose(
   reduxForm({
-    form: 'signUpForm',
+    form: 'signUpWithFacebookForm',
   })
-)(SignUpForm)
+)(SignUpWithFacebookForm)

@@ -4,26 +4,29 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
+import { Link } from 'react-router-dom'
 
 import AppLayout1 from 'pages/AppLayout1'
-import SignUpForm from 'components/SignUpForm'
-import { signUp } from 'store/modules/auth'
+import SignUpWithFacebookForm from 'components/SignUpWithFacebookForm'
+import { signUpWithFacebook } from 'store/modules/auth'
 import { authSelector } from 'store/selectors'
 
 
-class SignUp extends PureComponent {
+class SignUpWithFacebook extends PureComponent {
 
   static propTypes = {
     auth: ImmutablePropTypes.map.isRequired,
-    signUp: PropTypes.func.isRequired,
+    signUpWithFacebook: PropTypes.func.isRequired,
+    match: PropTypes.object.isRequired,
   }
 
   state = {
     signedUp: false
   }
 
-  handleSubmit = (data) => {
-    this.props.signUp({
+  handleSubmit = (formData) => {
+    const data = formData.set('access_token', this.props.match.params.access_token)
+    this.props.signUpWithFacebook({
       data,
       success: () => {
         this.setState({
@@ -35,8 +38,8 @@ class SignUp extends PureComponent {
 
   render() {
     const { auth } = this.props
-    const signUpError = auth.get('signUpError')
-    const signingUp = auth.get('signingUp')
+    const signUpError = auth.get('signUpWithFacebookError')
+    const signingUp = auth.get('signingUpWithFacebook')
     const { signedUp } = this.state
 
     return (
@@ -47,17 +50,18 @@ class SignUp extends PureComponent {
               {
                 signedUp ?
                 <center>
-                  You've successfully signed up a new account. Please check your email for account verification.
+                  You've successfully signed up with your Facebook account.<br />
+                  <Link to="/signin">Please click here to sign in</Link>
                 </center>
                 :
                 <div>
-                  <h3 className="mb-4 text-center">Sign Up</h3>
+                  <h3 className="mb-4 text-center">Sign Up With Facebook</h3>
 
                   {signUpError && <div className="mb-2 text-danger">
-                    Failed to sign up
+                    Failed to sign up with Facebook
                   </div>}
 
-                  <SignUpForm onSubmit={this.handleSubmit} disabled={signingUp} />
+                  <SignUpWithFacebookForm onSubmit={this.handleSubmit} disabled={signingUp} />
                 </div>
               }
             </div>
@@ -73,9 +77,9 @@ const selector = createStructuredSelector({
 })
 
 const actions = {
-  signUp,
+  signUpWithFacebook,
 }
 
 export default compose(
   connect(selector, actions)
-)(SignUp)
+)(SignUpWithFacebook)

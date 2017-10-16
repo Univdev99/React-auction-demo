@@ -3,3 +3,4 @@ djangorestframework==3.7.0
 djangorestframework-jwt==1.11.0
 django-cors-headers==2.1.0
 psycopg2==2.7.3.1
+-e git+https://github.com/mobolic/facebook-sdk.git@410f5c5892acea0c7a45a5382abccb6b7c702d6d#egg=facebook_sdk

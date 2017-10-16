@@ -3,25 +3,23 @@ import PropTypes from 'prop-types'
 import { Field } from 'redux-form/immutable'
 
 
-class FormGroup extends PureComponent {
+class FormField extends PureComponent {
 
   static propTypes = {
     name: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     type: PropTypes.string,
     component: PropTypes.func.isRequired,
+    validate: PropTypes.func,
   }
 
   render() {
-    const { name, label, component, type } = this.props
+    const { name, label, component, type, validate } = this.props
 
     return (
-      <div className="form-group">
-        <label htmlFor={name}>{label}</label>
-        <Field name={name} component={component} type={type} />
-      </div>
+      <Field name={name} component={component} type={type} validate={validate} props={{ label }} />
     )
   }
 }
 
-export default FormGroup
+export default FormField

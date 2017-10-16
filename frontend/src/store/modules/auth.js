@@ -6,6 +6,7 @@ import {
   AUTH_SIGNIN,
   AUTH_SIGNOUT,
   AUTH_SIGNUP,
+  AUTH_SIGNUP_WITH_FACEBOOK,
   AUTH_VERIFY_SIGNUP,
   AUTH_VERIFY_SIGNUP_RESET,
   AUTH_CURRENT_USER,
@@ -36,12 +37,14 @@ function getInitialState() {
     // sign up
     signingUp: false,
     signUpError: false,
-    // sign up verification
-    signUpVerificationStatus: SIGNUP_VERIFICATION_IN_PROGRESS,
+    // sign up with facebook
+    signingUpWithFacebook: false,
+    signUpWithFacebookError: false,
     /*
      * sign up verification status:
      *   0: in progress, 1: successful, -1: failed,
      */
+    signUpVerificationStatus: SIGNUP_VERIFICATION_IN_PROGRESS,
   }
 }
 const initialState = Immutable.Map(getInitialState())
@@ -52,6 +55,7 @@ export const signIn = createAction(AUTH_SIGNIN)
 export const signOut = createAction(AUTH_SIGNOUT)
 export const getCurrentUser = createAction(AUTH_CURRENT_USER)
 export const signUp = createAction(AUTH_SIGNUP)
+export const signUpWithFacebook = createAction(AUTH_SIGNUP_WITH_FACEBOOK)
 export const verifySignUp = createAction(AUTH_VERIFY_SIGNUP)
 export const resetSignUpVerification = createAction(AUTH_VERIFY_SIGNUP_RESET)
 
@@ -102,6 +106,19 @@ export default handleActions({
   [requestFail(AUTH_SIGNUP)]: (state, { payload }) => state.withMutations(map => {
     map.set('signingUp', false)
     map.set('signUpError', true)
+  }),
+  // Sign up with facebook actions
+  [AUTH_SIGNUP_WITH_FACEBOOK]: (state, { payload }) => state.withMutations(map => {
+    map.set('signingUpWithFacebook', true)
+    map.set('signUpWithFacebookError', false)
+  }),
+  [requestSuccess(AUTH_SIGNUP_WITH_FACEBOOK)]: (state, { payload }) => state.withMutations(map => {
+    map.set('signingUpWithFacebook', false)
+    map.set('signUpWithFacebookError', false)
+  }),
+  [requestFail(AUTH_SIGNUP_WITH_FACEBOOK)]: (state, { payload }) => state.withMutations(map => {
+    map.set('signingUpWithFacebook', false)
+    map.set('signUpWithFacebookError', true)
   }),
   // Sign up verification actions
   [AUTH_VERIFY_SIGNUP]: (state, { payload }) => state.withMutations(map => {

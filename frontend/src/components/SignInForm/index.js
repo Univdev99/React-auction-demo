@@ -3,7 +3,7 @@ import { compose } from 'redux'
 import { reduxForm } from 'redux-form/immutable'
 import PropTypes from 'prop-types'
 
-import FormGroup from 'components/FormGroup'
+import FormField from 'components/FormField'
 import InputField from 'components/InputField'
 
 
@@ -17,13 +17,13 @@ class SignInForm extends PureComponent {
     const { handleSubmit } = this.props
     return (
       <form onSubmit={handleSubmit}>
-        <FormGroup
+        <FormField
           name="username"
           type="text"
           label="Username or Email:"
           component={InputField}
         />
-        <FormGroup
+        <FormField
           name="password"
           type="password"
           label="Password:"

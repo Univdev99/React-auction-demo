@@ -4,6 +4,7 @@ from django.core import mail
 from django.db import transaction
 from django.utils.crypto import get_random_string
 
+from facebook import GraphAPI, GraphAPIError
 from rest_framework import views
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
@@ -11,6 +12,7 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from api.serializers.auth import SignUpSerializer
 from api.serializers.auth import SignUpVerificationSerializer
+from api.serializers.auth import SignUpWithFacebookSerializer
 from api.serializers.auth import CurrentUserSerializer
 
 from account.models import UserVerification
@@ -75,6 +77,34 @@ class SignUpVerificationView(views.APIView):
         return Response({
             'success': True
         })
+
+
+class SignUpWithFacebookView(views.APIView):
+    authentication_classes = ()
+    permission_classes = ()
+
+    def post(self, *args, **kwargs):
+        serializer = SignUpWithFacebookSerializer(data=self.request.data)
+        serializer.is_valid(raise_exception=True)
+
+        access_token = serializer.validated_data['access_token']
+        try:
+            graph = GraphAPI(access_token=access_token, version=settings.FACEBOOK_APP_VERSION)
+            data = graph.get_object(id='me', fields='email,first_name,last_name')
+        except GraphAPIError:
+            raise ParseError(detail='Invalid Facebook access token')
+
+        user = get_user_model().objects.create_user(
+            serializer.validated_data['username'],
+            data['email'],
+            serializer.validated_data['password'],
+            first_name=data['first_name'],
+            last_name=data['last_name'],
+            is_active=True,
+        )
+        return Response({
+            'success': True
+        }, status=201)
 
 
 class CurrentUserView(views.APIView):

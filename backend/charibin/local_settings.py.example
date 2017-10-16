@@ -10,10 +10,20 @@ DATABASES['default'] = {
 # Email backend
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST =
+EMAIL_PORT =
+EMAIL_HOST_USER =
+EMAIL_HOST_PASSWORD =
+EMAIL_USE_SSL = True
 
 
 # Django CORS Headers
 
 CORS_ORIGIN_WHITELIST = (
-    'localhost:3000'
+    'front-end-site-domain.com'
 )
+
+
+# Facebook API Configuration
+
+FACEBOOK_APP_VERSION = '2.10'
