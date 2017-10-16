@@ -21,8 +21,25 @@ class AdminLayout extends PureComponent {
     history: PropTypes.object.isRequired,
   }
 
+  state = {
+    menuOpened: false,
+  }
+
   handleSignOut = () => {
     this.props.signOut()
+  }
+
+  handleOpenMenu = (e) => {
+    e.preventDefault()
+    this.setState({
+      menuOpened: !this.state.menuOpened
+    })
+  }
+
+  handleCloseMenu = () => {
+    this.setState({
+      menuOpened: false
+    })
   }
 
   componentWillMount() {
@@ -51,13 +68,28 @@ class AdminLayout extends PureComponent {
       return <Spinner />
     }
 
+    const { menuOpened } = this.state
+
+    const menuClasses = ['admin-menu']
+    const menuBgClasses = ['menu-bg']
+    if (menuOpened) {
+      menuClasses.push('open')
+      menuBgClasses.push('open')
+    }
+
     return (
       <div className="admin-layout">
-        <div className="admin-menu">
+        <a className="menu-toggle" href="/" onClick={this.handleOpenMenu}>
+          <i className="fa fa-bars"></i>
+        </a>
+
+        <div className={menuClasses.join(' ')}>
           <div className="container-fluid py-2">
             Admin menu
           </div>
         </div>
+        <div className={menuBgClasses.join(' ')} onClick={this.handleCloseMenu} />
+
         <div className="admin-content">
           <div className="container-fluid py-2">
             {children}
