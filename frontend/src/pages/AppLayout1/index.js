@@ -29,8 +29,8 @@ class AppLayout1 extends PureComponent {
 
   render() {
     const { auth, children } = this.props
-    const username = auth.get('username')
-    const isStaff = auth.get('isStaff')
+    const username = auth.getIn(['currentUser', 'username'], '')
+    const isStaff = auth.getIn(['currentUser', 'is_staff'], false)
 
     const header = auth.get('signedIn') ?
       <AppHeader username={username} onSignOut={this.handleSignOut} isStaff={isStaff} /> :

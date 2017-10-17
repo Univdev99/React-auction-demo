@@ -9,6 +9,7 @@ class InputField extends PureComponent {
     meta: PropTypes.object.isRequired,
     type: PropTypes.string,
     label: PropTypes.string,
+    helpText: PropTypes.string,
   }
 
   static defaultProps = {
@@ -21,6 +22,7 @@ class InputField extends PureComponent {
       meta,
       type,
       label,
+      helpText,
     } = this.props
     const { name, onChange, value } = input
 
@@ -30,6 +32,9 @@ class InputField extends PureComponent {
         <input className="form-control" type={type} name={name} onChange={onChange} value={value} />
         {meta.error && <small className="form-text text-danger">
           {meta.error}
+        </small>}
+        {helpText && !meta.error && <small className="form-text text-muted">
+          {helpText}
         </small>}
       </div>
     )

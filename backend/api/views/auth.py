@@ -8,6 +8,7 @@ from facebook import GraphAPI, GraphAPIError
 from rest_framework import views
 from rest_framework.exceptions import ParseError
 from rest_framework.response import Response
+from rest_framework import status
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from api.serializers.auth import SignUpSerializer
@@ -48,7 +49,7 @@ class SignUpView(views.APIView):
             ).send()
         return Response({
             'token': user_verification.token,
-        }, status=201)
+        }, status=status.HTTP_201_CREATED)
 
 
 class SignUpVerificationView(views.APIView):
@@ -104,10 +105,25 @@ class SignUpWithFacebookView(views.APIView):
         )
         return Response({
             'success': True
-        }, status=201)
+        }, status=status.HTTP_201_CREATED)
 
 
 class CurrentUserView(views.APIView):
     def get(self, *args, **kwargs):
+        serializer = CurrentUserSerializer(self.request.user)
+        return Response(serializer.data)
+
+    def put(self, *args, **kwargs):
+        serializer = CurrentUserSerializer(data=self.request.data)
+        serializer.is_valid(raise_exception=True)
+
+        user = self.request.user
+        user.username = serializer.validated_data['username']
+        user.first_name = serializer.validated_data['first_name']
+        user.last_name = serializer.validated_data['last_name']
+        if 'password' in serializer.validated_data:
+            user.set_password(serializer.validated_data['password'])
+        user.save()
+
         serializer = CurrentUserSerializer(self.request.user)
         return Response(serializer.data)

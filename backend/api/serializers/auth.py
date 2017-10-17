@@ -9,25 +9,37 @@ class PasswordVerificationMixin(object):
         return data
 
 
+class OptionalPasswordVerificationMixin(object):
+    def validate(self, data):
+        data = super(OptionalPasswordVerificationMixin, self).validate(data)
+        if 'password' in data and 'password_confirm' in data and data['password'] != data['password_confirm']:
+            raise serializers.ValidationError('Password confirmation does not match')
+        return data
+
+
 class SignUpSerializer(PasswordVerificationMixin, serializers.Serializer):
-    username = serializers.CharField(required=True)
-    email = serializers.CharField(required=True)
-    password = serializers.CharField(min_length=6, required=True)
-    password_confirm = serializers.CharField(min_length=6, required=True)
+    username = serializers.CharField()
+    email = serializers.CharField()
+    password = serializers.CharField(min_length=6, write_only=True)
+    password_confirm = serializers.CharField(min_length=6, write_only=True)
 
 
 class SignUpWithFacebookSerializer(PasswordVerificationMixin, serializers.Serializer):
-    username = serializers.CharField(required=True)
-    password = serializers.CharField(min_length=6, required=True)
-    password_confirm = serializers.CharField(min_length=6, required=True)
-    access_token = serializers.CharField(required=True)
+    username = serializers.CharField()
+    password = serializers.CharField(min_length=6, write_only=True)
+    password_confirm = serializers.CharField(min_length=6, write_only=True)
+    access_token = serializers.CharField()
 
 
 class SignUpVerificationSerializer(serializers.Serializer):
-    token = serializers.CharField(required=True, min_length=32, max_length=32)
+    token = serializers.CharField(min_length=32, max_length=32)
 
 
-class CurrentUserSerializer(serializers.Serializer):
-    username = serializers.CharField(required=True)
-    email = serializers.CharField(required=True)
-    is_staff = serializers.BooleanField()
+class CurrentUserSerializer(OptionalPasswordVerificationMixin, serializers.Serializer):
+    email = serializers.CharField(read_only=True)
+    is_staff = serializers.BooleanField(read_only=True)
+    username = serializers.CharField()
+    first_name = serializers.CharField(required=False)
+    last_name = serializers.CharField(required=False)
+    password = serializers.CharField(min_length=6, required=False, write_only=True)
+    password_confirm = serializers.CharField(min_length=6, required=False, write_only=True)

@@ -7,6 +7,7 @@ import {
   AUTH_SIGNUP_WITH_FACEBOOK,
   AUTH_VERIFY_SIGNUP,
   AUTH_CURRENT_USER,
+  AUTH_CURRENT_USER_UPDATE,
 } from 'store/constants'
 
 const doSignIn = apiCall({
@@ -39,10 +40,17 @@ const getCurrentUser = apiCall({
   path: 'current-user/',
 })
 
+const updateCurrentUser = apiCall({
+  type: AUTH_CURRENT_USER_UPDATE,
+  method: 'put',
+  path: 'current-user/',
+})
+
 export default function* rootSaga () {
   yield takeLatest(AUTH_SIGNIN, doSignIn)
   yield takeLatest(AUTH_SIGNUP, doSignUp)
   yield takeLatest(AUTH_SIGNUP_WITH_FACEBOOK, doSignUpWithFacebook)
   yield takeLatest(AUTH_VERIFY_SIGNUP, doVerifySignUp)
   yield takeLatest(AUTH_CURRENT_USER, getCurrentUser)
+  yield takeLatest(AUTH_CURRENT_USER_UPDATE, updateCurrentUser)
 }

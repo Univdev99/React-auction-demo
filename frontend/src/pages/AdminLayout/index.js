@@ -46,22 +46,9 @@ class AdminLayout extends PureComponent {
     this.props.getCurrentUser()
   }
 
-  componentWillReceiveProps(nextProps) {
-    const currentUserLoaded = this.props.auth.get('userLoaded')
-    const nextUserLoaded = nextProps.auth.get('userLoaded')
-    if (!currentUserLoaded && nextUserLoaded) {
-      const isStaff = nextProps.auth.get('isStaff')
-      if (!isStaff) {
-        this.props.history.push({
-          pathname: '/'
-        })
-      }
-    }
-  }
-
   render() {
     const { auth, children } = this.props
-    // const username = auth.get('username')
+    // const username = auth.getIn(['currentUser', 'username'], '')
     const userLoaded = auth.get('userLoaded')
 
     if (!userLoaded) {
