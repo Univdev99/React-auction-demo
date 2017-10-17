@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 from rest_framework_jwt.views import obtain_jwt_token
 
 from api.views.auth import SignUpView
@@ -13,4 +13,6 @@ urlpatterns = [
     url(r'^verify-signup/$', SignUpVerificationView.as_view(), name='verify-signup'),
     url(r'^signup-with-facebook/$', SignUpWithFacebookView.as_view(), name='signup-with-facebook'),
     url(r'^current-user/$', CurrentUserView.as_view(), name='current-user'),
+
+    url(r'^admin/', include('api.views.admin.urls', namespace='admin')),
 ]

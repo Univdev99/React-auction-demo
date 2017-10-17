@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     # Project apps
     'account',
     'api',
+    'entity',
 )
 
 MIDDLEWARE_CLASSES = (
