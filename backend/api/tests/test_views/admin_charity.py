@@ -20,7 +20,9 @@ class CharityDetailViewTests(AdminTestCase):
             reverse('api:admin:charity-detail', kwargs=dict(pk=self.charity.pk))
         )
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(self.charity.logo.deleted_at, None)
+
+        self.charity.logo.refresh_from_db()
+        self.assertNotEqual(self.charity.logo.deleted_at, None)
 
 
 class CharityLogoUploadViewTests(AdminTestCase):
