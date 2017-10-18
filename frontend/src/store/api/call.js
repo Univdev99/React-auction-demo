@@ -16,12 +16,17 @@ export default ({
   payloadOnSuccess,
   payloadOnFail
 }) => function* (action) {
+
+  const payload = action.payload || {}
   const {
     data,
     params,
+    headers: customHeaders,
     success: successCallback,
-    fail: failCallback
-  } = (action.payload || {})
+    fail: failCallback,
+    onUploadProgress,
+    onDownloadProgress
+  } = payload
 
   try {
     yield put({
@@ -35,10 +40,13 @@ export default ({
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         ...headers,
+        ...(customHeaders ? customHeaders : {}),
       },
-      data: data,
+      data,
       params,
       baseURL: BASE_API_URL,
+      onUploadProgress,
+      onDownloadProgress,
     })
 
     successCallback && successCallback(res)

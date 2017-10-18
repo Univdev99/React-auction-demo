@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
 from entity.constants import DONOR_TYPE_CHOICES
-from entity.constants import MEDIUM_TYPE_CHOICES
+from storage.models import Medium
 
 
 class Tag(models.Model):
@@ -22,14 +22,6 @@ class Tagging(models.Model):
     content_object = GenericForeignKey()
 
 
-class Medium(models.Model):
-    url = models.URLField(max_length=300)
-    type = models.CharField(choices=MEDIUM_TYPE_CHOICES, max_length=50)
-
-    def __unicode__(self):
-        return u'Medium {} ({})'.format(self.pk, self.type)
-
-
 class Charity(models.Model):
     title = models.CharField(unique=True, max_length=200)
     description = models.TextField()
@@ -37,8 +29,8 @@ class Charity(models.Model):
     logo = models.OneToOneField(Medium, null=True)
     tags = GenericRelation(Tagging)
 
-    def __str__(self):
-        return str(self.__unicode__())
+    class Meta:
+        verbose_name_plural = 'Charities'
 
     def __unicode__(self):
         return u'Charity <{}>'.format(self.title)

@@ -9,3 +9,5 @@ export const AUTH_CURRENT_USER_UPDATE = 'charibin/auth/current-user/update'
 
 export const ADMIN_GET_CHARITY_LIST = 'charibin/admin/get-charity-list'
 export const ADMIN_GET_CHARITY_DETAIL = 'charibin/admin/get-charity-detail'
+export const ADMIN_UPDATE_CHARITY_DETAIL = 'charibin/admin/update-charity-detail'
+export const ADMIN_UPLOAD_CHARITY_LOGO = 'charibin/admin/upload-charity-logo'

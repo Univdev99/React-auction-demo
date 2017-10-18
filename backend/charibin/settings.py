@@ -14,6 +14,8 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 import datetime
 
+from corsheaders.defaults import default_headers
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -46,6 +48,7 @@ INSTALLED_APPS = (
     'account',
     'api',
     'entity',
+    'storage',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -151,6 +154,13 @@ REST_FRAMEWORK = {
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(hours=12),
 }
+
+
+# Django CORS Headers
+
+CORS_ALLOW_HEADERS = default_headers + (
+    'Content-Disposition',
+)
 
 
 # Local settings

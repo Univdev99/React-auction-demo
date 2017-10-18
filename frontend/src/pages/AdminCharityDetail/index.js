@@ -6,9 +6,14 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import Spinner from 'components/Spinner'
+import Uploader from 'components/Uploader'
 import CharityForm from 'components/CharityForm'
 import AdminLayout from 'pages/AdminLayout'
-import { getCharityDetail } from 'store/modules/admin/charities'
+import {
+  getCharityDetail,
+  updateCharityDetail,
+  uploadCharityLogo,
+} from 'store/modules/admin/charities'
 import { adminCharitiesSelector } from 'store/selectors'
 
 
@@ -17,11 +22,16 @@ class AdminCharityDetail extends PureComponent {
   static propTypes = {
     adminCharities: ImmutablePropTypes.map.isRequired,
     getCharityDetail: PropTypes.func.isRequired,
+    updateCharityDetail: PropTypes.func.isRequired,
+    uploadCharityLogo: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
   }
 
   handleSubmit = (data) => {
-    console.log(data)///
+    this.props.updateCharityDetail({
+      id: this.props.match.params.id,
+      data
+    })
   }
 
   componentWillMount() {
@@ -33,10 +43,12 @@ class AdminCharityDetail extends PureComponent {
   render() {
     const { adminCharities } = this.props
     const charityDetail = adminCharities.get('charityDetail')
-    const loadingCharityDetail = adminCharities.get('loadingCharityDetail')
-    const loadingCharityDetailError = adminCharities.get('loadingCharityDetailError')
+    const loadingDetail = adminCharities.get('loadingDetail')
+    const loadingDetailError = adminCharities.get('loadingDetailError')
+    const updatingDetail = adminCharities.get('updatingDetail')
+    const updatingDetailError = adminCharities.get('updatingDetailError')
 
-    if (loadingCharityDetail) {
+    if (loadingDetail) {
       return (
         <AdminLayout>
           <Spinner />
@@ -44,7 +56,7 @@ class AdminCharityDetail extends PureComponent {
       )
     }
 
-    if (loadingCharityDetailError) {
+    if (loadingDetailError) {
       return (
         <AdminLayout>
           <h2>Charity not found</h2>
@@ -56,8 +68,24 @@ class AdminCharityDetail extends PureComponent {
       <AdminLayout>
         <div>
           <h3 className="mb-5">Edit Charity</h3>
+
+          <div className="mb-4">
+            <label>Upload logo here:</label>
+            <Uploader
+              uploadAction={this.props.uploadCharityLogo}
+              uploadActionParams={{ id: this.props.match.params.id }}
+            />
+          </div>
+
+          {updatingDetailError && <div className="mb-2 text-danger">
+            Failed to update charity
+          </div>}
           
-          <CharityForm initialValues={charityDetail} onSubmit={this.handleSubmit} />
+          <CharityForm
+            initialValues={charityDetail.delete('pk')}
+            onSubmit={this.handleSubmit}
+            disabled={updatingDetail}
+          />
         </div>
       </AdminLayout>
     )
@@ -70,6 +98,8 @@ const selector = createStructuredSelector({
 
 const actions = {
   getCharityDetail,
+  updateCharityDetail,
+  uploadCharityLogo,
 }
 
 export default compose(
