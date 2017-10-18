@@ -27,6 +27,11 @@ class AdminCharityDetail extends PureComponent {
     match: PropTypes.object.isRequired,
   }
 
+  state = {
+    loadingStatus: 0,
+    updatingStatus: 0,
+  }
+
   handleSubmit = (data) => {
     this.props.updateCharityDetail({
       id: this.props.match.params.id,
@@ -43,12 +48,9 @@ class AdminCharityDetail extends PureComponent {
   render() {
     const { adminCharities } = this.props
     const charityDetail = adminCharities.get('charityDetail')
-    const loadingDetail = adminCharities.get('loadingDetail')
-    const loadingDetailError = adminCharities.get('loadingDetailError')
-    const updatingDetail = adminCharities.get('updatingDetail')
-    const updatingDetailError = adminCharities.get('updatingDetailError')
+    const { loadingStatus, updatingStatus } = this.state
 
-    if (loadingDetail) {
+    if (loadingStatus === 1) {
       return (
         <AdminLayout>
           <Spinner />
@@ -56,7 +58,7 @@ class AdminCharityDetail extends PureComponent {
       )
     }
 
-    if (loadingDetailError) {
+    if (loadingStatus === -1) {
       return (
         <AdminLayout>
           <h2>Charity not found</h2>
@@ -77,14 +79,14 @@ class AdminCharityDetail extends PureComponent {
             />
           </div>
 
-          {updatingDetailError && <div className="mb-2 text-danger">
+          {updatingStatus === -1 && <div className="mb-2 text-danger">
             Failed to update charity
           </div>}
           
           <CharityForm
             initialValues={charityDetail.delete('pk')}
             onSubmit={this.handleSubmit}
-            disabled={updatingDetail}
+            disabled={updatingStatus === 1}
           />
         </div>
       </AdminLayout>

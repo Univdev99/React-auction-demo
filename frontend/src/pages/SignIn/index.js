@@ -3,31 +3,36 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
-import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 
 import AppLayout1 from 'pages/AppLayout1'
 import SignInForm from 'components/SignInForm'
 import { signIn } from 'store/modules/auth'
-import { authSelector } from 'store/selectors'
 
 
 class SignIn extends PureComponent {
 
   static propTypes = {
-    auth: ImmutablePropTypes.map.isRequired,
     signIn: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
   }
 
+  state = {
+    signInError: false,
+  }
+
   handleSubmit = (data) => {
-    this.props.signIn({ data })
+    this.props.signIn({
+      data,
+      fail: () => this.setState({
+        signInError: true
+      })
+    })
   }
 
   render() {
-    const { auth } = this.props
-    const signInError = auth.get('signInError')
+    const { signInError } = this.state
 
     return (
       <AppLayout1>
@@ -56,7 +61,6 @@ class SignIn extends PureComponent {
 }
 
 const selector = createStructuredSelector({
-  auth: authSelector,
 })
 
 const actions = {

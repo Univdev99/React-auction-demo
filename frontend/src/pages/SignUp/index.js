@@ -5,35 +5,37 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
-import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import AppLayout1 from 'pages/AppLayout1'
 import SignUpForm from 'components/SignUpForm'
 import { FACEBOOK_APP_ID, FACEBOOK_API_VERSION } from 'config'
 import { signUp } from 'store/modules/auth'
-import { authSelector } from 'store/selectors'
 
 
 class SignUp extends PureComponent {
 
   static propTypes = {
-    auth: ImmutablePropTypes.map.isRequired,
     signUp: PropTypes.func.isRequired,
   }
 
   state = {
     fbReady: false,
-    signedUp: false,
+    signUpStatus: 0,
   }
 
   handleSubmit = (data) => {
+    this.setState({
+      signUpStatus: 1
+    })
+
     this.props.signUp({
       data,
-      success: () => {
-        this.setState({
-          signedUp: true
-        })
-      }
+      success: () => this.setState({
+        signUpStatus: 10
+      }),
+      fail: () => this.setState({
+        signUpStatus: -1
+      }),
     })
   }
 
@@ -79,10 +81,7 @@ class SignUp extends PureComponent {
   }
 
   render() {
-    const { auth } = this.props
-    const signUpError = auth.get('signUpError')
-    const signingUp = auth.get('signingUp')
-    const { fbReady, signedUp } = this.state
+    const { fbReady, signUpStatus } = this.state
 
     return (
       <AppLayout1>
@@ -90,7 +89,7 @@ class SignUp extends PureComponent {
           <div className="row justify-content-center">
             <div className="col-12 col-md-8 col-lg-6">
               {
-                signedUp ?
+                signUpStatus === 10 ?
                 <center>
                   You've successfully signed up a new account. Please check your email for account verification.
                 </center>
@@ -98,11 +97,11 @@ class SignUp extends PureComponent {
                 <div>
                   <h3 className="mb-4 text-center">Sign Up</h3>
 
-                  {signUpError && <div className="mb-2 text-danger">
+                  {signUpStatus === -1 && <div className="mb-2 text-danger">
                     Failed to sign up
                   </div>}
 
-                  <SignUpForm onSubmit={this.handleSubmit} disabled={signingUp} />
+                  <SignUpForm onSubmit={this.handleSubmit} disabled={signUpStatus === 1} />
 
                   <center className="mt-2">
                     <a className={fbReady ? '' : 'text-muted'} href="/" onClick={this.signUpWithFacebook}>Sign Up With Facebook</a>
@@ -119,7 +118,6 @@ class SignUp extends PureComponent {
 }
 
 const selector = createStructuredSelector({
-  auth: authSelector,
 })
 
 const actions = {
