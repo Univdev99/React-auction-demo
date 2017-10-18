@@ -1,3 +1,5 @@
+/*global FB:true*/
+
 import React, { PureComponent } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
@@ -7,6 +9,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import AppLayout1 from 'pages/AppLayout1'
 import SignUpForm from 'components/SignUpForm'
+import { FACEBOOK_APP_ID, FACEBOOK_API_VERSION } from 'config'
 import { signUp } from 'store/modules/auth'
 import { authSelector } from 'store/selectors'
 
@@ -19,7 +22,8 @@ class SignUp extends PureComponent {
   }
 
   state = {
-    signedUp: false
+    fbReady: false,
+    signedUp: false,
   }
 
   handleSubmit = (data) => {
@@ -33,11 +37,52 @@ class SignUp extends PureComponent {
     })
   }
 
+  signUpWithFacebook = (event) => {
+    event.preventDefault()
+
+    if (!this.state.fbReady) {
+      return
+    }
+
+    FB.login((response) => {
+      if (response.status === 'connected') {
+        this.props.history.push({
+          pathname: `/signup-with-facebook/${response.authResponse.accessToken}`
+        })
+      }
+    }, {
+      scope: 'public_profile,email'
+    })
+  }
+
+  componentDidMount() {
+    window.fbAsyncInit = () => {
+      FB.init({
+        appId : FACEBOOK_APP_ID,
+        cookie : true,
+        xfbml : true,
+        version : FACEBOOK_API_VERSION
+      });
+      
+      this.setState({
+        fbReady: true
+      })
+    };
+
+    (function(d, s, id){
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement(s); js.id = id;
+      js.src = "https://connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+  }
+
   render() {
     const { auth } = this.props
     const signUpError = auth.get('signUpError')
     const signingUp = auth.get('signingUp')
-    const { signedUp } = this.state
+    const { fbReady, signedUp } = this.state
 
     return (
       <AppLayout1>
@@ -58,6 +103,11 @@ class SignUp extends PureComponent {
                   </div>}
 
                   <SignUpForm onSubmit={this.handleSubmit} disabled={signingUp} />
+
+                  <center className="mt-2">
+                    <a className={fbReady ? '' : 'text-muted'} href="/" onClick={this.signUpWithFacebook}>Sign Up With Facebook</a>
+                  </center>
+
                 </div>
               }
             </div>

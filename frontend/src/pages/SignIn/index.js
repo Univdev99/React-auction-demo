@@ -1,5 +1,3 @@
-/*global FB:true*/
-
 import React, { PureComponent } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
@@ -11,7 +9,6 @@ import { Link } from 'react-router-dom'
 
 import AppLayout1 from 'pages/AppLayout1'
 import SignInForm from 'components/SignInForm'
-import { FACEBOOK_APP_ID, FACEBOOK_API_VERSION } from 'config'
 import { signIn } from 'store/modules/auth'
 import { authSelector } from 'store/selectors'
 
@@ -24,61 +21,13 @@ class SignIn extends PureComponent {
     history: PropTypes.object.isRequired,
   }
 
-  state = {
-    fbReady: false,
-  }
-
   handleSubmit = (data) => {
     this.props.signIn({ data })
-  }
-
-  signUpWithFacebook = (event) => {
-    event.preventDefault()
-
-    if (!this.state.fbReady) {
-      return
-    }
-
-    FB.login((response) => {
-      if (response.status === 'connected') {
-        this.props.history.push({
-          pathname: `/signup-with-facebook/${response.authResponse.accessToken}`
-        })
-      } else {
-        alert('Failed!')
-      }
-    }, {
-      scope: 'public_profile,email'
-    })
-  }
-
-  componentDidMount() {
-    window.fbAsyncInit = () => {
-      FB.init({
-        appId : FACEBOOK_APP_ID,
-        cookie : true,
-        xfbml : true,
-        version : FACEBOOK_API_VERSION
-      });
-      
-      this.setState({
-        fbReady: true
-      })
-    };
-
-    (function(d, s, id){
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) {return;}
-      js = d.createElement(s); js.id = id;
-      js.src = "https://connect.facebook.net/en_US/sdk.js";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
   }
 
   render() {
     const { auth } = this.props
     const signInError = auth.get('signInError')
-    const { fbReady } = this.state
 
     return (
       <AppLayout1>
@@ -95,11 +44,7 @@ class SignIn extends PureComponent {
               <SignInForm onSubmit={this.handleSubmit} />
 
               <center className="mt-2">
-                <Link to={{ pathname: 'signup' }}>Sign Up With Email</Link>
-              </center>
-
-              <center className="mt-2">
-                <a className={fbReady ? '' : 'text-muted'} href="/" onClick={this.signUpWithFacebook}>Sign Up With Facebook</a>
+                <Link to={{ pathname: 'signup' }}>Sign Up</Link>
               </center>
 
             </div>

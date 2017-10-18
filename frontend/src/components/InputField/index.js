@@ -25,15 +25,16 @@ class InputField extends PureComponent {
       helpText,
     } = this.props
     const { name, onChange, value } = input
+    const fieldError = meta.invalid
 
     return (
       <div className="form-group">
         {label && <label htmlFor={name}>{label}</label>}
         <input className="form-control" type={type} name={name} onChange={onChange} value={value} />
-        {meta.error && <small className="form-text text-danger">
+        {fieldError && <small className="form-text text-danger">
           {meta.error}
         </small>}
-        {helpText && !meta.error && <small className="form-text text-muted">
+        {helpText && !fieldError && <small className="form-text text-muted">
           {helpText}
         </small>}
       </div>

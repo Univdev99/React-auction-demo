@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import Spinner from 'components/Spinner'
+import CharityForm from 'components/CharityForm'
 import AdminLayout from 'pages/AdminLayout'
 import { getCharityDetail } from 'store/modules/admin/charities'
 import { adminCharitiesSelector } from 'store/selectors'
@@ -17,6 +18,10 @@ class AdminCharityDetail extends PureComponent {
     adminCharities: ImmutablePropTypes.map.isRequired,
     getCharityDetail: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
+  }
+
+  handleSubmit = (data) => {
+    console.log(data)///
   }
 
   componentWillMount() {
@@ -50,8 +55,9 @@ class AdminCharityDetail extends PureComponent {
     return (
       <AdminLayout>
         <div>
-          <h3>{charityDetail.get('title')}</h3>
-          <p>{charityDetail.get('description')}</p>
+          <h3 className="mb-5">Edit Charity</h3>
+          
+          <CharityForm initialValues={charityDetail} onSubmit={this.handleSubmit} />
         </div>
       </AdminLayout>
     )

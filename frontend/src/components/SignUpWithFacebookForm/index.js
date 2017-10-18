@@ -14,17 +14,6 @@ class SignUpWithFacebookForm extends PureComponent {
     disabled: PropTypes.bool,
   }
 
-  validatePassword = (value) => value && value.length < 6 ?
-    'Must be at least 6 characters' :
-    undefined
-
-  validatePasswordConfirm = (value, allValues) => {
-    const password = allValues.get('password')
-    return (value || password) && value !== password ?
-      'Password confirm does not match with entered password' :
-      undefined
-  }
-
   render() {
     const { handleSubmit, disabled } = this.props
     return (
@@ -40,14 +29,12 @@ class SignUpWithFacebookForm extends PureComponent {
           type="password"
           label="Password:"
           component={InputField}
-          validate={this.validatePassword}
         />
         <FormField
           name="password_confirm"
           type="password"
           label="Password Confirmation:"
           component={InputField}
-          validate={this.validatePasswordConfirm}
         />
         <center>
           <button type="submit" className="btn btn-primary" disabled={disabled}>Sign Up</button>
@@ -57,8 +44,31 @@ class SignUpWithFacebookForm extends PureComponent {
   }
 }
 
+const validate = (values) => {
+  const errors = {}
+
+  if (!values.get('username')) {
+    errors.username = 'Username is required'
+  }
+
+  const password = values.get('password')
+  if (!password) {
+    errors.password = 'Password is required'
+  } else if (password.length < 6) {
+    errors.password = 'Must be at least 6 characters'
+  }
+
+  const passwordConfirm = values.get('password_confirm')
+  if (password && password !== passwordConfirm) {
+    errors.password_confirm = 'Password confirm does not match with entered password'
+  }
+
+  return errors
+}
+
 export default compose(
   reduxForm({
     form: 'signUpWithFacebookForm',
+    validate,
   })
 )(SignUpWithFacebookForm)

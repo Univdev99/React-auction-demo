@@ -7,22 +7,11 @@ import FormField from 'components/FormField'
 import InputField from 'components/InputField'
 
 
-class UserProfileForm extends PureComponent {
+class AccountForm extends PureComponent {
 
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
-  }
-
-  validatePassword = (value) => value && value.length < 6 ?
-    'Must be at least 6 characters' :
-    undefined
-
-  validatePasswordConfirm = (value, allValues) => {
-    const password = allValues.get('password')
-    return (value || password) && value !== password ?
-      'Password confirm does not match with entered password' :
-      undefined
   }
 
   render() {
@@ -59,7 +48,6 @@ class UserProfileForm extends PureComponent {
           label="Password:"
           helpText="Leave this field empty to keep current password unchanged"
           component={InputField}
-          validate={this.validatePassword}
         />
         <FormField
           name="password_confirm"
@@ -67,7 +55,6 @@ class UserProfileForm extends PureComponent {
           label="Password Confirmation:"
           helpText="Leave this field empty to keep current password unchanged"
           component={InputField}
-          validate={this.validatePasswordConfirm}
         />
         <center>
           <button type="submit" className="btn btn-primary" disabled={disabled}>Update</button>
@@ -77,8 +64,29 @@ class UserProfileForm extends PureComponent {
   }
 }
 
+const validate = (values) => {
+  const errors = {}
+
+  if (!values.get('username')) {
+    errors.username = 'Username is required'
+  }
+
+  const password = values.get('password')
+  if (password && password.length < 6) {
+    errors.password = 'Must be at least 6 characters'
+  }
+
+  const passwordConfirm = values.get('password_confirm')
+  if (password && password !== passwordConfirm) {
+    errors.password_confirm = 'Password confirm does not match with entered password'
+  }
+
+  return errors
+}
+
 export default compose(
   reduxForm({
-    form: 'userProfileForm',
+    form: 'accountForm',
+    validate,
   })
-)(UserProfileForm)
+)(AccountForm)

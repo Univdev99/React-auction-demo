@@ -7,30 +7,31 @@ import FormField from 'components/FormField'
 import InputField from 'components/InputField'
 
 
-class SignInForm extends PureComponent {
+class CharityForm extends PureComponent {
 
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
   }
 
   render() {
-    const { handleSubmit } = this.props
+    const { handleSubmit, disabled } = this.props
     return (
       <form onSubmit={handleSubmit}>
         <FormField
-          name="username"
+          name="title"
           type="text"
-          label="Username or Email:"
+          label="Title:"
           component={InputField}
         />
         <FormField
-          name="password"
-          type="password"
-          label="Password:"
+          name="description"
+          type="text"
+          label="Description:"
           component={InputField}
         />
         <center>
-          <button type="submit" className="btn btn-primary">Sign In</button>
+          <button type="submit" className="btn btn-primary" disabled={disabled}>Update</button>
         </center>
       </form>
     )
@@ -40,12 +41,12 @@ class SignInForm extends PureComponent {
 const validate = (values) => {
   const errors = {}
 
-  if (!values.get('username')) {
-    errors.username = 'Username or email is required'
+  if (!values.get('title')) {
+    errors.title = 'Title is required'
   }
 
-  if (!values.get('password')) {
-    errors.password = 'Password is required'
+  if (!values.get('description')) {
+    errors.description = 'Description is required'
   }
 
   return errors
@@ -53,7 +54,7 @@ const validate = (values) => {
 
 export default compose(
   reduxForm({
-    form: 'signInForm',
+    form: 'charityForm',
     validate,
   })
-)(SignInForm)
+)(CharityForm)
