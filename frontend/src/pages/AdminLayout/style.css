@@ -13,6 +13,10 @@
   padding-left: 300px;
 }
 
+.admin-layout .logo {
+  max-width: 100px;
+}
+
 .admin-layout .menu-toggle,
 .admin-layout .menu-bg {
   display: none;

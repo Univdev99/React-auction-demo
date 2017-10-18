@@ -6,3 +6,6 @@ export const AUTH_VERIFY_SIGNUP = 'charibin/auth/verify-signup'
 export const AUTH_VERIFY_SIGNUP_RESET = 'charibin/auth/verify-signup-reset'
 export const AUTH_CURRENT_USER = 'charibin/auth/current-user'
 export const AUTH_CURRENT_USER_UPDATE = 'charibin/auth/current-user/update'
+
+export const ADMIN_GET_CHARITY_LIST = 'charibin/admin/get-charity-list'
+export const ADMIN_GET_CHARITY_DETAIL = 'charibin/admin/get-charity-detail'

@@ -5,6 +5,7 @@ import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withRouter } from 'react-router'
+import { Link } from 'react-router-dom'
 
 import Spinner from 'components/Spinner'
 import { getCurrentUser } from 'store/modules/auth'
@@ -72,13 +73,32 @@ class AdminLayout extends PureComponent {
 
         <div className={menuClasses.join(' ')}>
           <div className="container-fluid py-2">
-            Admin menu
+            <center className="py-4 m-2">
+              <img className="logo" src="/logo.svg" alt="Logo" />
+            </center>
+            <ul className="nav flex-column">
+              <li className="nav-item">
+                <Link className="nav-link" to="/admin">Companies</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/admin">Products</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/admin/charities">Charities</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/admin">Auctions</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/admin">Users</Link>
+              </li>
+            </ul>
           </div>
         </div>
         <div className={menuBgClasses.join(' ')} onClick={this.handleCloseMenu} />
 
         <div className="admin-content">
-          <div className="container-fluid py-2">
+          <div className="container-fluid p-5">
             {children}
           </div>
         </div>

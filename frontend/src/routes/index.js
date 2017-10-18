@@ -12,6 +12,8 @@ import AccountSettings from 'pages/AccountSettings'
 
 // Admin pages
 import AdminIndex from 'pages/AdminIndex'
+import AdminCharityList from 'pages/AdminCharityList'
+import AdminCharityDetail from 'pages/AdminCharityDetail'
 
 // Auth wrappers
 import {
@@ -20,6 +22,14 @@ import {
   userIsAdmin,
 } from './auth-wrapper'
 
+
+const AdminRoutes = props => (
+  <div>
+    <Route exact path="/admin" component={AdminIndex} />
+    <Route exact path="/admin/charities" component={AdminCharityList} />
+    <Route exact path="/admin/charities/:id" component={AdminCharityDetail} />
+  </div>
+)
 
 const Routes = ({ history }) => (
   <ConnectedRouter history={history}>
@@ -31,9 +41,7 @@ const Routes = ({ history }) => (
       <Route exact path="/verify-account/:token" component={SignUpVerification} />
       <Route exact path="/account-settings" component={userIsAuthenticated(AccountSettings)} />
 
-      <Route exact path="/admin">
-        <Route exact path="" component={userIsAdmin(AdminIndex)} />
-      </Route>
+      <Route path="/admin" component={userIsAdmin(AdminRoutes)} />
     </div>
   </ConnectedRouter>
 )

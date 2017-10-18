@@ -20,7 +20,9 @@ export const userIsNotAuthenticated = connectedRouterRedirect({
 
 export const userIsAdmin = connectedRouterRedirect({
   redirectPath: '/',
-  authenticatedSelector: state =>
-    state.getIn(['auth', 'signedIn'], false) && state.getIn(['currentUser', 'is_staff'], false),
+  authenticatedSelector: state => (
+    !state.getIn(['auth', 'userLoaded'], false) ||
+    (state.getIn(['auth', 'signedIn'], false) && state.getIn(['auth', 'currentUser', 'is_staff'], false))
+  ),
   wrapperDisplayName: 'UserIsAdmin'
 })
