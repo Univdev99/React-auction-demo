@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 
 import FormField from 'components/FormField'
 import InputField from 'components/InputField'
+import TextareaField from 'components/TextareaField'
 
 
 class CharityForm extends PureComponent {
@@ -28,7 +29,7 @@ class CharityForm extends PureComponent {
           name="description"
           type="text"
           label="Description:"
-          component={InputField}
+          component={TextareaField}
         />
         <center>
           <button type="submit" className="btn btn-primary" disabled={disabled}>Update</button>
