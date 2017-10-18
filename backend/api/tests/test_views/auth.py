@@ -13,8 +13,8 @@ from account.models import UserVerification
 class SignUpTests(TestCase):
     def get_data(self):
         return {
-            'username': 'test1',
-            'email': 'test1@test.com',
+            'username': 'tester1',
+            'email': 'tester1@test.com',
             'password': 'abcde123',
             'password_confirm': 'abcde123',
         }
@@ -58,8 +58,8 @@ class SignUpTests(TestCase):
 class CurrentUserTests(TestCase):
     def get_user_data(self):
         return {
-            'username': 'test',
-            'email': 'test@test.com',
+            'username': 'tester',
+            'email': 'tester@test.com',
             'first_name': 'Test',
             'last_name': 'Tester',
             'password': 'abcde123',
@@ -72,6 +72,7 @@ class CurrentUserTests(TestCase):
         self.user = get_user_model().objects.create(**user_data)
         self.user.set_password(password)
         self.user.save()
+        self.client.logout()
         self.client.login(username=self.user.username, password=password)
 
     def test_get_current_user(self):
@@ -83,8 +84,8 @@ class CurrentUserTests(TestCase):
 
     def test_put_current_user(self):
         new_data = {
-            'username': 'test1',
-            'first_name': 'Test1',
+            'username': 'tester1',
+            'first_name': 'tester1',
             'last_name': 'Tester1',
             'password': 'abcdef123',
             'password_confirm': 'abcdef123',
@@ -100,8 +101,8 @@ class CurrentUserTests(TestCase):
 
     def test_put_current_user_with_password_unchanged(self):
         new_data = {
-            'username': 'test1',
-            'first_name': 'Test1',
+            'username': 'tester1',
+            'first_name': 'tester1',
             'last_name': 'Tester1',
         }
         response = self.client.put(reverse('api:current-user'), new_data)
