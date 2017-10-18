@@ -7,7 +7,10 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Link } from 'react-router-dom'
 
 import AdminLayout from 'pages/AdminLayout'
-import { getCharityList } from 'store/modules/admin/charities'
+import {
+  getCharityList,
+  deleteCharity,
+} from 'store/modules/admin/charities'
 import { adminCharitiesSelector } from 'store/selectors'
 
 
@@ -16,6 +19,25 @@ class AdminCharityList extends PureComponent {
   static propTypes = {
     adminCharities: ImmutablePropTypes.map.isRequired,
     getCharityList: PropTypes.func.isRequired,
+    deleteCharity: PropTypes.func.isRequired,
+  }
+
+  handleDelete = (id, event) => {
+    event.preventDefault()
+
+    if (!window.confirm('Are you sure to delete this charity?')) {
+      return;
+    }
+
+    this.props.deleteCharity({
+      id,
+      success: () => {
+        this.props.getCharityList()
+      },
+      fail: () => {
+        alert('Failed to delete charity')
+      },
+    })
   }
 
   componentWillMount() {
@@ -28,6 +50,11 @@ class AdminCharityList extends PureComponent {
 
     return (
       <AdminLayout>
+        <div className="mb-4 clearfix">
+          <h2 className="pull-left">Charities</h2>
+          <Link className="btn btn-primary pull-right" to="/admin/charities/create">Create</Link>
+        </div>
+
         <table className="table">
           <thead>
             <tr>
@@ -45,7 +72,7 @@ class AdminCharityList extends PureComponent {
                 <td>{charity.get('description')}</td>
                 <td>
                   <Link className="text-secondary pr-3" to={`/admin/charities/${charity.get('pk')}`}>Edit</Link>
-                  <a className="text-danger" href="/">Delete</a>
+                  <a className="text-danger" href="/" onClick={this.handleDelete.bind(this, charity.get('pk'))}>Delete</a>
                 </td>
               </tr>
             ))}
@@ -62,6 +89,7 @@ const selector = createStructuredSelector({
 
 const actions = {
   getCharityList,
+  deleteCharity,
 }
 
 export default compose(

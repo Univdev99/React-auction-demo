@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import { compose } from 'redux'
 import { reduxForm } from 'redux-form/immutable'
 import PropTypes from 'prop-types'
+import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import FormField from 'components/FormField'
 import InputField from 'components/InputField'
@@ -11,12 +12,14 @@ import TextareaField from 'components/TextareaField'
 class CharityForm extends PureComponent {
 
   static propTypes = {
+    initialValues: ImmutablePropTypes.map,
     handleSubmit: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
   }
 
   render() {
-    const { handleSubmit, disabled } = this.props
+    const { initialValues, handleSubmit, disabled } = this.props
+
     return (
       <form onSubmit={handleSubmit}>
         <FormField
@@ -32,7 +35,9 @@ class CharityForm extends PureComponent {
           component={TextareaField}
         />
         <center>
-          <button type="submit" className="btn btn-primary" disabled={disabled}>Update</button>
+          <button type="submit" className="btn btn-primary" disabled={disabled}>
+            {initialValues ? 'Update' : 'Create'}
+          </button>
         </center>
       </form>
     )

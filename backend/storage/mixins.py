@@ -15,7 +15,20 @@ from storage.constants import MEDIUM_TYPE_VIDEO
 from storage.models import Medium
 
 
-class MediumUploadMixin(object):
+class MediumCreateMixin(object):
+    def create_medium(self, url, type, mimetype):
+        medium = Medium(url=url, type=type, mimetype=mimetype)
+        medium.save()
+        return medium
+
+
+class MediumDeleteMixin(object):
+    def delete_medium(self, medium):
+        medium.deleted_at = datetime.utcnow().replace(tzinfo=utc)
+        medium.save()
+
+
+class MediumUploadMixin(MediumCreateMixin, MediumDeleteMixin):
     def upload_photo(self, file_obj, s3_folder, s3_filename):
         file_url, mimetype = self.upload(file_obj, s3_folder, s3_filename)
         medium = self.create_medium(file_url, MEDIUM_TYPE_PHOTO, mimetype)
@@ -67,12 +80,3 @@ class MediumUploadMixin(object):
             s3_file_location
         )
         return file_url, file_obj.content_type
-
-    def create_medium(self, url, type, mimetype):
-        medium = Medium(url=url, type=type, mimetype=mimetype)
-        medium.save()
-        return medium
-
-    def delete_medium(self, medium):
-        medium.deleted_at = datetime.utcnow().replace(tzinfo=utc)
-        medium.save()

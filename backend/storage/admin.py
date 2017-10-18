@@ -14,12 +14,12 @@ class MediumAdmin(admin.ModelAdmin):
         'url',
     )
 
-    read_only_fields = (
+    readonly_fields = (
         'mimetype',
     )
 
     def get_name(self, obj):
-        return u'Medium {}'.format(obj.pk)
+        return u'Medium ID: {}'.format(obj.pk)
     get_name.short_description = 'Medium'
 
 admin.site.register(Medium, MediumAdmin)

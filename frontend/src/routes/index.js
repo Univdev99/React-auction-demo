@@ -13,6 +13,7 @@ import AccountSettings from 'pages/AccountSettings'
 // Admin pages
 import AdminIndex from 'pages/AdminIndex'
 import AdminCharityList from 'pages/AdminCharityList'
+import AdminCharityCreate from 'pages/AdminCharityCreate'
 import AdminCharityDetail from 'pages/AdminCharityDetail'
 
 // Auth wrappers
@@ -27,7 +28,8 @@ const AdminRoutes = props => (
   <div>
     <Route exact path="/admin" component={AdminIndex} />
     <Route exact path="/admin/charities" component={AdminCharityList} />
-    <Route exact path="/admin/charities/:id" component={AdminCharityDetail} />
+    <Route exact path="/admin/charities/create" component={AdminCharityCreate} />
+    <Route exact path="/admin/charities/:id(\d+)" component={AdminCharityDetail} />
   </div>
 )
 

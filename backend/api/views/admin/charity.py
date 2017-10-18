@@ -13,6 +13,7 @@ from api.serializers.admin import UploadLogoSerializer
 from api.permissions import IsAdmin
 from entity.models import Charity
 from storage.mixins import MediumUploadMixin
+from storage.mixins import MediumDeleteMixin
 
 
 class CharityListView(generics.ListCreateAPIView):
@@ -21,11 +22,16 @@ class CharityListView(generics.ListCreateAPIView):
     queryset = Charity.objects.all()
 
 
-class CharityDetailView(generics.RetrieveUpdateDestroyAPIView):
+class CharityDetailView(MediumDeleteMixin, generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
     serializer_class = CharitySerializer
     lookup_url_kwarg = 'pk'
     queryset = Charity.objects.all()
+
+    @transaction.atomic
+    def perform_destroy(self, instance):
+        self.delete_medium(instance.logo)
+        instance.delete()
 
 
 class CharityLogoUploadView(MediumUploadMixin, generics.GenericAPIView):

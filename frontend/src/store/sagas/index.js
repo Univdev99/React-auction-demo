@@ -1,12 +1,12 @@
 import { all } from 'redux-saga/effects'
 
 import auth from './auth'
-import admin from './admin'
+import charities from './admin/charities'
 
 
 export default function* rootSaga() {
   yield all([
     auth(),
-    admin(),
+    charities(),
   ])
 }

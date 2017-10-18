@@ -4,9 +4,11 @@ import { createAction, handleActions } from 'redux-actions'
 import { requestSuccess, requestFail } from 'store/api/request'
 import {
   ADMIN_GET_CHARITY_LIST,
+  ADMIN_CREATE_CHARITY,
   ADMIN_GET_CHARITY_DETAIL,
   ADMIN_UPDATE_CHARITY_DETAIL,
   ADMIN_UPLOAD_CHARITY_LOGO,
+  ADMIN_DELETE_CHARITY,
 } from 'store/constants'
 
 
@@ -17,6 +19,8 @@ const initialState = Immutable.fromJS({
   charityList: [],
   loadingList: false,
   loadingListError: false,
+  creating: false,
+  creatingError: false,
   charityDetail: {},
   loadingDetail: false,
   loadingDetailError: false,
@@ -29,9 +33,11 @@ const initialState = Immutable.fromJS({
 /* Action creators */
 
 export const getCharityList = createAction(ADMIN_GET_CHARITY_LIST)
+export const createCharity = createAction(ADMIN_CREATE_CHARITY)
 export const getCharityDetail = createAction(ADMIN_GET_CHARITY_DETAIL)
 export const updateCharityDetail = createAction(ADMIN_UPDATE_CHARITY_DETAIL)
 export const uploadCharityLogo = createAction(ADMIN_UPLOAD_CHARITY_LOGO)
+export const deleteCharity = createAction(ADMIN_DELETE_CHARITY)
 
 /* Reducer */
 
@@ -54,6 +60,23 @@ export default handleActions({
     map.set('charityList', Immutable.fromJS(payload))
     map.set('loadingList', false)
     map.set('loadingListError', true)
+  }),
+
+  /* Create charity actions */
+
+  [ADMIN_CREATE_CHARITY]: (state, { payload }) => state.withMutations(map => {
+    map.set('creating', true)
+    map.set('creatingError', false)
+  }),
+
+  [requestSuccess(ADMIN_CREATE_CHARITY)]: (state, { payload }) => state.withMutations(map => {
+    map.set('creating', false)
+    map.set('creatingError', false)
+  }),
+
+  [requestFail(ADMIN_CREATE_CHARITY)]: (state, { payload }) => state.withMutations(map => {
+    map.set('creating', false)
+    map.set('creatingError', true)
   }),
 
   /* Get charity detail actions */
