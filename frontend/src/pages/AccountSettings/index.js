@@ -19,9 +19,23 @@ class AccountSettings extends PureComponent {
     updateCurrentUser: PropTypes.func.isRequired,
   }
 
+  state = {
+    updateStatus: 0
+  }
+
   handleSubmit = (data) => {
+    this.setState({
+      updateStatus: 1
+    })
+
     this.props.updateCurrentUser({
       data,
+      success: () => this.setState({
+        updateStatus: 10
+      }),
+      fail: () => this.setState({
+        updateStatus: -1
+      }),
     })
   }
 
@@ -35,8 +49,7 @@ class AccountSettings extends PureComponent {
       </AppLayout1>
     }
 
-    const updatingCurrentUser = auth.get('updatingCurrentUser')
-    const updatingCurrentUserFailed = auth.get('updatingCurrentUserFailed')
+    const { updateStatus } = this.state
     const currentUser = auth.get('currentUser')
 
     return (
@@ -47,13 +60,17 @@ class AccountSettings extends PureComponent {
 
               <h3 className="mb-4 text-center">Account Settings</h3>
 
-              {updatingCurrentUserFailed && <div className="mb-2 text-danger">
+              {updateStatus === -1 && <div className="mb-2 text-danger">
                 Failed to update your account settings
+              </div>}
+
+              {updateStatus === 10 && <div className="mb-2 text-muted">
+                Successfully saved
               </div>}
 
               <AccountForm 
                 initialValues={currentUser}
-                disabled={updatingCurrentUser}
+                disabled={updateStatus === 1}
                 onSubmit={this.handleSubmit}
               />
 
