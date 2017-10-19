@@ -28,20 +28,40 @@ class AdminCharityDetail extends PureComponent {
   }
 
   state = {
-    loadingStatus: 0,
+    loadingStatus: 1,
     updatingStatus: 0,
   }
 
   handleSubmit = (data) => {
+    this.setState({
+      updatingStatus: 1
+    })
+
     this.props.updateCharityDetail({
       id: this.props.match.params.id,
-      data
+      data,
+      success: () => this.setState({
+        updatingStatus: 10
+      }),
+      fail: () => this.setState({
+        updatingStatus: -1
+      }),
     })
   }
 
   componentWillMount() {
+    this.setState({
+      loadingStatus: 1
+    })
+
     this.props.getCharityDetail({
-      id: this.props.match.params.id
+      id: this.props.match.params.id,
+      success: () => this.setState({
+        loadingStatus: 10
+      }),
+      fail: () => this.setState({
+        loadingStatus: -1
+      }),
     })
   }
 
@@ -49,14 +69,6 @@ class AdminCharityDetail extends PureComponent {
     const { adminCharities } = this.props
     const charityDetail = adminCharities.get('charityDetail')
     const { loadingStatus, updatingStatus } = this.state
-
-    if (loadingStatus === 1) {
-      return (
-        <AdminLayout>
-          <Spinner />
-        </AdminLayout>
-      )
-    }
 
     if (loadingStatus === -1) {
       return (
@@ -71,23 +83,28 @@ class AdminCharityDetail extends PureComponent {
         <div>
           <h3 className="mb-5">Edit Charity</h3>
 
-          <div className="mb-4">
-            <label>Upload logo here:</label>
-            <Uploader
-              uploadAction={this.props.uploadCharityLogo}
-              uploadActionParams={{ id: this.props.match.params.id }}
-            />
-          </div>
+          {(loadingStatus === 1 || !charityDetail) && <Spinner />}
 
-          {updatingStatus === -1 && <div className="mb-2 text-danger">
-            Failed to update charity
+          {loadingStatus === 10 && charityDetail && <div>
+            <div className="mb-4">
+              <label>Upload logo here:</label>
+              <Uploader
+                uploadAction={this.props.uploadCharityLogo}
+                uploadActionParams={{ id: this.props.match.params.id }}
+                defaultImageURL={charityDetail.get('logo')}
+              />
+            </div>
+
+            {updatingStatus === -1 && <div className="mb-2 text-danger">
+              Failed to update charity
+            </div>}
+            
+            <CharityForm
+              initialValues={charityDetail.delete('pk')}
+              onSubmit={this.handleSubmit}
+              disabled={updatingStatus === 1}
+            />
           </div>}
-          
-          <CharityForm
-            initialValues={charityDetail.delete('pk')}
-            onSubmit={this.handleSubmit}
-            disabled={updatingStatus === 1}
-          />
         </div>
       </AdminLayout>
     )

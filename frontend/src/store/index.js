@@ -9,6 +9,7 @@ import Immutable from 'immutable'
 import routerReducer from 'store/modules/route'
 import auth from 'store/modules/auth'
 import adminCharities from 'store/modules/admin/charities'
+import adminDonors from 'store/modules/admin/donors'
 import sagas from 'store/sagas'
 import authMiddleware from 'store/middlewares/auth'
 
@@ -36,6 +37,7 @@ export const store = createStore(
     form: formReducer,
     auth,
     adminCharities,
+    adminDonors,
   }),
   Immutable.Map(),
   applyMiddleware(...middlewares)

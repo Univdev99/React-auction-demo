@@ -19,7 +19,7 @@ class CharitySerializer(serializers.ModelSerializer):
 class DonorSerializer(serializers.ModelSerializer):
     logo = serializers.SerializerMethodField()
     video = serializers.SerializerMethodField()
-    charity = CharitySerializer()
+    # charity = CharitySerializer(read_only=True)
 
     class Meta:
         model = Donor

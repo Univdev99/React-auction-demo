@@ -12,13 +12,14 @@ class FormField extends PureComponent {
     type: PropTypes.string,
     component: PropTypes.func.isRequired,
     validate: PropTypes.func,
+    options: PropTypes.any,
   }
 
   render() {
-    const { name, label, helpText, component, type, validate } = this.props
+    const { name, label, helpText, component, type, validate, options } = this.props
 
     return (
-      <Field name={name} component={component} type={type} validate={validate} props={{ label, helpText }} />
+      <Field name={name} component={component} type={type} validate={validate} props={{ label, helpText, options }} />
     )
   }
 }

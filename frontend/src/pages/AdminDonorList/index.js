@@ -9,18 +9,18 @@ import { Link } from 'react-router-dom'
 import Spinner from 'components/Spinner'
 import AdminLayout from 'pages/AdminLayout'
 import {
-  getCharityList,
-  deleteCharity,
-} from 'store/modules/admin/charities'
-import { adminCharitiesSelector } from 'store/selectors'
+  getDonorList,
+  deleteDonor,
+} from 'store/modules/admin/donors'
+import { adminDonorsSelector } from 'store/selectors'
 
 
-class AdminCharityList extends PureComponent {
+class AdminDonorList extends PureComponent {
 
   static propTypes = {
-    adminCharities: ImmutablePropTypes.map.isRequired,
-    getCharityList: PropTypes.func.isRequired,
-    deleteCharity: PropTypes.func.isRequired,
+    adminDonors: ImmutablePropTypes.map.isRequired,
+    getDonorList: PropTypes.func.isRequired,
+    deleteDonor: PropTypes.func.isRequired,
   }
 
   state = {
@@ -30,17 +30,17 @@ class AdminCharityList extends PureComponent {
   handleDelete = (id, event) => {
     event.preventDefault()
 
-    if (!window.confirm('Are you sure to delete this charity?')) {
+    if (!window.confirm('Are you sure to delete this donor?')) {
       return
     }
 
-    this.props.deleteCharity({
+    this.props.deleteDonor({
       id,
       success: () => {
-        this.props.getCharityList()
+        this.props.getDonorList()
       },
       fail: () => {
-        alert('Failed to delete charity')
+        alert('Failed to delete donor')
       },
     })
   }
@@ -50,7 +50,7 @@ class AdminCharityList extends PureComponent {
       loadingStatus: 1
     })
 
-    this.props.getCharityList({
+    this.props.getDonorList({
       success: () => this.setState({
         loadingStatus: 10
       }),
@@ -61,15 +61,15 @@ class AdminCharityList extends PureComponent {
   }
 
   render() {
-    const { adminCharities } = this.props
-    const charityList = adminCharities.get('charityList')
+    const { adminDonors } = this.props
+    const donorList = adminDonors.get('donorList')
     const { loadingStatus } = this.state
 
     return (
       <AdminLayout>
         <div className="mb-4 clearfix">
-          <h2 className="pull-left">Charities</h2>
-          <Link className="btn btn-primary pull-right" to="/admin/charities/create">Create</Link>
+          <h2 className="pull-left">Donors</h2>
+          <Link className="btn btn-primary pull-right" to="/admin/donors/create">Create</Link>
         </div>
 
         {loadingStatus === 1 && <Spinner />}
@@ -88,14 +88,14 @@ class AdminCharityList extends PureComponent {
             </tr>
           </thead>
           <tbody>
-            {charityList.map(charity => (
-              <tr key={charity.get('pk')}>
-                <th scope="row">{charity.get('pk')}</th>
-                <td>{charity.get('title')}</td>
-                <td>{charity.get('description')}</td>
+            {donorList.map(donor => (
+              <tr key={donor.get('pk')}>
+                <th scope="row">{donor.get('pk')}</th>
+                <td>{donor.get('title')}</td>
+                <td>{donor.get('description')}</td>
                 <td>
-                  <Link className="text-secondary pr-3" to={`/admin/charities/${charity.get('pk')}`}>Edit</Link>
-                  <a className="text-danger" href="/" onClick={this.handleDelete.bind(this, charity.get('pk'))}>Delete</a>
+                  <Link className="text-secondary pr-3" to={`/admin/donors/${donor.get('pk')}`}>Edit</Link>
+                  <a className="text-danger" href="/" onClick={this.handleDelete.bind(this, donor.get('pk'))}>Delete</a>
                 </td>
               </tr>
             ))}
@@ -107,14 +107,14 @@ class AdminCharityList extends PureComponent {
 }
 
 const selector = createStructuredSelector({
-  adminCharities: adminCharitiesSelector,
+  adminDonors: adminDonorsSelector,
 })
 
 const actions = {
-  getCharityList,
-  deleteCharity,
+  getDonorList,
+  deleteDonor,
 }
 
 export default compose(
   connect(selector, actions)
-)(AdminCharityList)
+)(AdminDonorList)

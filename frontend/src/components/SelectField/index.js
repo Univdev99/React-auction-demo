@@ -2,27 +2,22 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 
 
-class InputField extends PureComponent {
+class SelectField extends PureComponent {
 
   static propTypes = {
     input: PropTypes.object.isRequired,
     meta: PropTypes.object.isRequired,
-    type: PropTypes.string,
     label: PropTypes.string,
     helpText: PropTypes.string,
-  }
-
-  static defaultProps = {
-    type: 'text',
   }
 
   render() {
     const {
       input,
       meta,
-      type,
       label,
       helpText,
+      options,
     } = this.props
     const { name, onChange, value } = input
     const fieldError = meta.invalid
@@ -36,7 +31,12 @@ class InputField extends PureComponent {
     return (
       <div className="form-group">
         {label && <label htmlFor={name}>{label}</label>}
-        <input className="form-control" type={type} name={name} onChange={onChange} value={value} />
+        <select className="form-control" name={name} onChange={onChange} value={value}>
+          <option value={''}>-- Please select an option --</option>
+          {options.map(option => (
+            <option key={option.key} value={option.key}>{option.value}</option>
+          ))}
+        </select>
         {fieldError && <small className={errorClasses.join(' ')}>
           {meta.error}
         </small>}
@@ -48,4 +48,4 @@ class InputField extends PureComponent {
   }
 }
 
-export default InputField
+export default SelectField

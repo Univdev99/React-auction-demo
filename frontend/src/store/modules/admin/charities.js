@@ -18,7 +18,7 @@ const initialState = Immutable.fromJS({
   /* Charity */
   charityList: [],
   charityListLoaded: false,
-  charityDetail: {},
+  charityDetail: null,
 })
 
 /* Action creators */
@@ -47,6 +47,10 @@ export default handleActions({
   }),
 
   /* Get charity detail actions */
+
+  [ADMIN_GET_CHARITY_DETAIL]: (state, { payload }) => state.withMutations(map => {
+    map.set('charityDetail', null)
+  }),
 
   [requestSuccess(ADMIN_GET_CHARITY_DETAIL)]: (state, { payload }) => state.withMutations(map => {
     map.set('charityDetail', Immutable.fromJS(payload))

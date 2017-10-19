@@ -26,12 +26,18 @@ class TextareaField extends PureComponent {
     } = this.props
     const { name, onChange, value } = input
     const fieldError = meta.invalid
+    const errorClasses = ['form-text']
+    if (meta.pristine) {
+      errorClasses.push('text-muted')
+    } else {
+      errorClasses.push('text-danger')
+    }
 
     return (
       <div className="form-group">
         {label && <label htmlFor={name}>{label}</label>}
         <textarea className="form-control" type={type} name={name} onChange={onChange} value={value} rows={5} />
-        {fieldError && <small className="form-text text-danger">
+        {fieldError && <small className={errorClasses.join(' ')}>
           {meta.error}
         </small>}
         {helpText && !fieldError && <small className="form-text text-muted">

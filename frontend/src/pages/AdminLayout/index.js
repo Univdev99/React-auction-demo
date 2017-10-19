@@ -78,7 +78,7 @@ class AdminLayout extends PureComponent {
             </center>
             <ul className="nav flex-column">
               <li className="nav-item">
-                <Link className="nav-link" to="/admin">Companies</Link>
+                <Link className="nav-link" to="/admin/donors">Donors</Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/admin">Products</Link>
