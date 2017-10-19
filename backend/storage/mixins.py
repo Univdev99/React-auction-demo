@@ -29,17 +29,17 @@ class MediumDeleteMixin(object):
 
 
 class MediumUploadMixin(MediumCreateMixin, MediumDeleteMixin):
-    def upload_photo(self, file_obj, s3_folder, s3_filename):
-        file_url, mimetype = self.upload(file_obj, s3_folder, s3_filename)
+    def upload_image(self, file_obj, s3_folder, s3_filename):
+        file_url, mimetype = self.upload_to_s3(file_obj, s3_folder, s3_filename)
         medium = self.create_medium(file_url, MEDIUM_TYPE_PHOTO, mimetype)
         return medium
 
     def upload_video(self, file_obj, s3_folder, s3_filename):
-        file_url, mimetype = self.upload(file_obj, s3_folder, s3_filename)
+        file_url, mimetype = self.upload_to_s3(file_obj, s3_folder, s3_filename)
         medium = self.create_medium(file_url, MEDIUM_TYPE_VIDEO, mimetype)
         return medium
 
-    def upload(self, file_obj, s3_folder, s3_filename):
+    def upload_to_s3(self, file_obj, s3_folder, s3_filename):
         # Guess extension
         extensions = mimetypes.guess_all_extensions(file_obj.content_type)
         if len(extensions) == 0:

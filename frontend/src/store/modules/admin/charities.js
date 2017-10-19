@@ -1,7 +1,7 @@
 import Immutable from 'immutable'
 import { createAction, handleActions } from 'redux-actions'
 
-import { requestSuccess } from 'store/api/request'
+import { requestSuccess, requestFail } from 'store/api/request'
 import {
   ADMIN_GET_CHARITY_LIST,
   ADMIN_CREATE_CHARITY,
@@ -17,6 +17,7 @@ import {
 const initialState = Immutable.fromJS({
   /* Charity */
   charityList: [],
+  charityListLoaded: false,
   charityDetail: {},
 })
 
@@ -37,6 +38,12 @@ export default handleActions({
 
   [requestSuccess(ADMIN_GET_CHARITY_LIST)]: (state, { payload }) => state.withMutations(map => {
     map.set('charityList', Immutable.fromJS(payload))
+    map.set('charityListLoaded', true)
+  }),
+
+  [requestFail(ADMIN_GET_CHARITY_LIST)]: (state, { payload }) => state.withMutations(map => {
+    map.set('charityList', Immutable.fromJS([]))
+    map.set('charityListLoaded', false)
   }),
 
   /* Get charity detail actions */

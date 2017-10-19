@@ -30,13 +30,13 @@ class CharityLogoUploadViewTests(AdminTestCase):
         super(CharityLogoUploadViewTests, self).setUp()
         self.charity = CharityFactory.create()
 
-    @patch('api.views.admin.charity.UploadLogoSerializer.is_valid', return_value=True)
-    @patch('api.views.admin.charity.UploadLogoSerializer.validated_data')
-    @patch('api.views.admin.charity.MediumUploadMixin.upload_photo')
-    def test_upload_logo(self, mock_upload_photo, mock_validated_data, mock_is_valid):
+    @patch('api.views.admin.charity.UploadImageSerializer.is_valid', return_value=True)
+    @patch('api.views.admin.charity.UploadImageSerializer.validated_data')
+    @patch('api.views.admin.charity.MediumUploadMixin.upload_image')
+    def test_upload_logo(self, mock_upload_image, mock_validated_data, mock_is_valid):
         new_logo = MediumFactory.create()
         old_logo = self.charity.logo
-        mock_upload_photo.return_value = new_logo
+        mock_upload_image.return_value = new_logo
 
         response = self.client.put(
             reverse('api:admin:charity-logo', kwargs=dict(pk=self.charity.pk))

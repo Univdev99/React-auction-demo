@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from api.serializers.admin import CharitySerializer
-from api.serializers.admin import UploadLogoSerializer
+from api.serializers.storage import UploadImageSerializer
 from api.permissions import IsAdmin
 from entity.models import Charity
 from storage.mixins import MediumUploadMixin
@@ -30,8 +30,9 @@ class CharityDetailView(MediumDeleteMixin, generics.RetrieveUpdateDestroyAPIView
 
     @transaction.atomic
     def perform_destroy(self, instance):
-        self.delete_medium(instance.logo)
-        instance.delete()
+        if instance.logo:
+            self.delete_medium(instance.logo)
+        super(CharityDetailView, self).perform_destroy(instance)
 
 
 class CharityLogoUploadView(MediumUploadMixin, generics.GenericAPIView):
@@ -46,10 +47,10 @@ class CharityLogoUploadView(MediumUploadMixin, generics.GenericAPIView):
     def put(self, *args, **kwargs):
         charity = self.get_object()
 
-        serializer = UploadLogoSerializer(data=self.request.data)
+        serializer = UploadImageSerializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
 
-        logo_medium = self.upload_photo(
+        logo_medium = self.upload_image(
             serializer.validated_data['file'],
             'charity/logo',
             '{}_{}'.format(charity.pk, random.randint(10000000, 99999999))
