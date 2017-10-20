@@ -44,7 +44,10 @@ class AdminLayout extends PureComponent {
   }
 
   componentWillMount() {
-    this.props.getCurrentUser()
+    const { auth } = this.props
+    if (!auth.get('userLoaded')) {
+      this.props.getCurrentUser()
+    }
   }
 
   render() {

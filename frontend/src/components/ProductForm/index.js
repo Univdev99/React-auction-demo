@@ -17,10 +17,20 @@ class ProductForm extends PureComponent {
     disabled: PropTypes.bool,
     donorList: ImmutablePropTypes.list.isRequired,
     handleSubmit: PropTypes.func.isRequired,
+    onBack: PropTypes.func,
+  }
+
+  handleClickBack = (e) => {
+    e.preventDefault()
+
+    const { onBack } = this.props
+    if (onBack) {
+      onBack()
+    }
   }
 
   render() {
-    const { initialValues, donorList, disabled, handleSubmit } = this.props
+    const { initialValues, donorList, disabled, handleSubmit, onBack } = this.props
 
     return (
       <form onSubmit={handleSubmit}>
@@ -46,6 +56,9 @@ class ProductForm extends PureComponent {
           }))}
         />
         <center>
+          {onBack && <button className="btn mr-3" onClick={this.handleClickBack}>
+            Back
+          </button>}
           <button type="submit" className="btn btn-primary" disabled={disabled}>
             {initialValues ? 'Update' : 'Create'}
           </button>

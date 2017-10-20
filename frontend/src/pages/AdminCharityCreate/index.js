@@ -42,6 +42,10 @@ class AdminCharityCreate extends PureComponent {
     })
   }
 
+  handleBack = () => this.props.history.push({
+    pathname: '/admin/charities'
+  })
+
   render() {
     const { creatingStatus } = this.state
 
@@ -55,8 +59,9 @@ class AdminCharityCreate extends PureComponent {
           </div>}
           
           <CharityForm
-            onSubmit={this.handleSubmit}
             disabled={creatingStatus === 1}
+            onSubmit={this.handleSubmit}
+            onBack={this.handleBack}
           />
         </div>
       </AdminLayout>

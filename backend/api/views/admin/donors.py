@@ -3,12 +3,14 @@ import random
 
 from django.core.exceptions import ImproperlyConfigured
 from django.db import transaction
+from django.shortcuts import get_object_or_404
 
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from api.serializers.entities import DonorSerializer
+from api.serializers.entities import ProductSerializer
 from api.serializers.storage import UploadImageSerializer
 from api.serializers.storage import UploadVideoSerializer
 from api.permissions import IsAdmin
@@ -94,3 +96,14 @@ class DonorVideoUploadView(DonorMediaUploadView):
 
     def upload(self, file_obj, s3_folder, s3_filename):
         return self.upload_video(file_obj, s3_folder, s3_filename)
+
+
+class DonorProductListView(generics.ListAPIView):
+    permission_classes = (IsAuthenticated, IsAdmin,)
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        donor_pk = self.kwargs['pk']
+        return get_object_or_404(Donor, pk=donor_pk).product_set \
+            .select_related('donor') \
+            .prefetch_related('productmedium_set')

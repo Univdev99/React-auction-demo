@@ -46,6 +46,10 @@ class AdminDonorCreate extends PureComponent {
     })
   }
 
+  handleBack = () => this.props.history.push({
+    pathname: '/admin/donors'
+  })
+
   componentWillMount() {
     const { adminCharities } = this.props
     const charityListLoaded = adminCharities.get('charityListLoaded')
@@ -76,6 +80,7 @@ class AdminDonorCreate extends PureComponent {
               charityList={charityList}
               disabled={creatingStatus === 1}
               onSubmit={this.handleSubmit}
+              onBack={this.handleBack}
             />
           </div>}
         </div>

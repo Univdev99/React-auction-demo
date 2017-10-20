@@ -21,6 +21,7 @@ export const ADMIN_UPDATE_DONOR_DETAIL = 'charibin/admin/update-donor-detail'
 export const ADMIN_UPLOAD_DONOR_LOGO = 'charibin/admin/upload-donor-logo'
 export const ADMIN_UPLOAD_DONOR_VIDEO = 'charibin/admin/upload-donor-video'
 export const ADMIN_DELETE_DONOR = 'charibin/admin/delete-donor'
+export const ADMIN_GET_DONOR_PRODUCT_LIST = 'charibin/admin/get-donor-product-list'
 
 export const ADMIN_GET_PRODUCT_LIST = 'charibin/admin/get-product-list'
 export const ADMIN_CREATE_PRODUCT = 'charibin/admin/create-product'

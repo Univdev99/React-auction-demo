@@ -40,7 +40,7 @@ export default handleActions({
   }),
 
   [requestFail(ADMIN_GET_PRODUCT_LIST)]: (state, { payload }) => state.withMutations(map => {
-    map.set('productList', Immutable.fromJS([]))
+    map.set('productList', Immutable.List())
     map.set('productListLoaded', false)
   }),
 

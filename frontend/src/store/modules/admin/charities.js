@@ -42,7 +42,7 @@ export default handleActions({
   }),
 
   [requestFail(ADMIN_GET_CHARITY_LIST)]: (state, { payload }) => state.withMutations(map => {
-    map.set('charityList', Immutable.fromJS([]))
+    map.set('charityList', Immutable.List())
     map.set('charityListLoaded', false)
   }),
 

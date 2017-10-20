@@ -18,10 +18,20 @@ class DonorForm extends PureComponent {
     disabled: PropTypes.bool,
     charityList: ImmutablePropTypes.list.isRequired,
     handleSubmit: PropTypes.func.isRequired,
+    onBack: PropTypes.func,
+  }
+
+  handleClickBack = (e) => {
+    e.preventDefault()
+
+    const { onBack } = this.props
+    if (onBack) {
+      onBack()
+    }
   }
 
   render() {
-    const { initialValues, charityList, disabled, handleSubmit } = this.props
+    const { initialValues, charityList, disabled, handleSubmit, onBack } = this.props
 
     return (
       <form onSubmit={handleSubmit}>
@@ -53,6 +63,9 @@ class DonorForm extends PureComponent {
           }))}
         />
         <center>
+          {onBack && <button className="btn mr-3" onClick={this.handleClickBack}>
+            Back
+          </button>}
           <button type="submit" className="btn btn-primary" disabled={disabled}>
             {initialValues ? 'Update' : 'Create'}
           </button>

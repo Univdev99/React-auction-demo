@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import Spinner from 'components/Spinner'
-import Uploader from 'components/Uploader'
+/// import Uploader from 'components/Uploader'
 import ProductForm from 'components/ProductForm'
 import AdminLayout from 'pages/AdminLayout'
 import { getDonorList } from 'store/modules/admin/donors'
@@ -49,6 +49,10 @@ class AdminProductDetail extends PureComponent {
       }),
     })
   }
+
+  handleBack = () => this.props.history.push({
+    pathname: '/admin/products'
+  })
 
   componentWillMount() {
     const { adminDonors } = this.props
@@ -114,6 +118,7 @@ class AdminProductDetail extends PureComponent {
               donorList={donorList}
               disabled={updatingStatus === 1}
               onSubmit={this.handleSubmit}
+              onBack={this.handleBack}
             />
           </div>}
         </div>

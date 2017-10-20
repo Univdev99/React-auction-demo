@@ -18,6 +18,7 @@ import AdminCharityDetail from 'pages/AdminCharityDetail'
 import AdminDonorList from 'pages/AdminDonorList'
 import AdminDonorCreate from 'pages/AdminDonorCreate'
 import AdminDonorDetail from 'pages/AdminDonorDetail'
+import AdminDonorProductList from 'pages/AdminDonorProductList'
 import AdminProductList from 'pages/AdminProductList'
 import AdminProductCreate from 'pages/AdminProductCreate'
 import AdminProductDetail from 'pages/AdminProductDetail'
@@ -39,6 +40,7 @@ const AdminRoutes = props => (
     <Route exact path="/admin/donors" component={AdminDonorList} />
     <Route exact path="/admin/donors/create" component={AdminDonorCreate} />
     <Route exact path="/admin/donors/:id(\d+)" component={AdminDonorDetail} />
+    <Route exact path="/admin/donors/:id(\d+)/products" component={AdminDonorProductList} />
     <Route exact path="/admin/products" component={AdminProductList} />
     <Route exact path="/admin/products/create" component={AdminProductCreate} />
     <Route exact path="/admin/products/:id(\d+)" component={AdminProductDetail} />

@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
+import { Link } from 'react-router-dom'
 
 import Spinner from 'components/Spinner'
 import Uploader from 'components/Uploader'
@@ -54,6 +55,10 @@ class AdminDonorDetail extends PureComponent {
     })
   }
 
+  handleBack = () => this.props.history.push({
+    pathname: '/admin/donors'
+  })
+
   componentWillMount() {
     const { adminCharities } = this.props
     const charityListLoaded = adminCharities.get('charityListLoaded')
@@ -95,7 +100,22 @@ class AdminDonorDetail extends PureComponent {
     return (
       <AdminLayout>
         <div>
-          <h3 className="mb-5">Edit Donor</h3>
+          <div className="clearfix">
+            <h3 className="mb-5 pull-left">Edit Donor</h3>
+            {
+              donorDetail ?
+              <Link
+                className="btn btn-primary pull-right"
+                to={`/admin/donors/${donorDetail.get('pk')}/products`}
+              >
+                Products from this donor
+              </Link>
+              :
+              <button className="btn btn-primary pull-right" disabled>
+                Products from this donor
+              </button>
+            }
+          </div>
 
           {(loadingStatus === 1 || !donorDetail || !charityListLoaded) && <Spinner />}
 
@@ -127,6 +147,7 @@ class AdminDonorDetail extends PureComponent {
               charityList={charityList}
               disabled={updatingStatus === 1}
               onSubmit={this.handleSubmit}
+              onBack={this.handleBack}
             />
           </div>}
         </div>

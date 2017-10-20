@@ -10,6 +10,7 @@ import {
   ADMIN_UPLOAD_DONOR_LOGO,
   ADMIN_UPLOAD_DONOR_VIDEO,
   ADMIN_DELETE_DONOR,
+  ADMIN_GET_DONOR_PRODUCT_LIST,
 } from 'store/constants'
 
 
@@ -20,6 +21,8 @@ const initialState = Immutable.fromJS({
   donorList: [],
   donorListLoaded: false,
   donorDetail: null,
+  donorProductList: [],
+  donorProductListLoaded: false,
 })
 
 /* Action creators */
@@ -31,6 +34,7 @@ export const updateDonorDetail = createAction(ADMIN_UPDATE_DONOR_DETAIL)
 export const uploadDonorLogo = createAction(ADMIN_UPLOAD_DONOR_LOGO)
 export const uploadDonorVideo = createAction(ADMIN_UPLOAD_DONOR_VIDEO)
 export const deleteDonor = createAction(ADMIN_DELETE_DONOR)
+export const getDonorProductList = createAction(ADMIN_GET_DONOR_PRODUCT_LIST)
 
 /* Reducer */
 
@@ -44,7 +48,7 @@ export default handleActions({
   }),
 
   [requestFail(ADMIN_GET_DONOR_LIST)]: (state, { payload }) => state.withMutations(map => {
-    map.set('donorList', Immutable.fromJS([]))
+    map.set('donorList', Immutable.List())
     map.set('donorListLoaded', false)
   }),
 
@@ -62,6 +66,16 @@ export default handleActions({
 
   [requestSuccess(ADMIN_UPDATE_DONOR_DETAIL)]: (state, { payload }) => state.withMutations(map => {
     map.set('donorDetail', Immutable.fromJS(payload))
+  }),
+
+  /* Get donor product list actions */
+
+  [ADMIN_GET_DONOR_PRODUCT_LIST]: (state, { payload }) => state.withMutations(map => {
+    map.set('donorProductList', Immutable.List())
+  }),
+
+  [requestSuccess(ADMIN_GET_DONOR_PRODUCT_LIST)]: (state, { payload }) => state.withMutations(map => {
+    map.set('donorProductList', Immutable.fromJS(payload))
   }),
 
 }, initialState)

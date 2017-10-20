@@ -49,6 +49,10 @@ class AdminCharityDetail extends PureComponent {
     })
   }
 
+  handleBack = () => this.props.history.push({
+    pathname: '/admin/charities'
+  })
+
   componentWillMount() {
     this.setState({
       loadingStatus: 1
@@ -101,8 +105,9 @@ class AdminCharityDetail extends PureComponent {
             
             <CharityForm
               initialValues={charityDetail.delete('pk')}
-              onSubmit={this.handleSubmit}
               disabled={updatingStatus === 1}
+              onSubmit={this.handleSubmit}
+              onBack={this.handleBack}
             />
           </div>}
         </div>

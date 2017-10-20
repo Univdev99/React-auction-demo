@@ -13,12 +13,22 @@ class CharityForm extends PureComponent {
 
   static propTypes = {
     initialValues: ImmutablePropTypes.map,
-    handleSubmit: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
+    handleSubmit: PropTypes.func.isRequired,
+    onBack: PropTypes.func,
+  }
+
+  handleClickBack = (e) => {
+    e.preventDefault()
+
+    const { onBack } = this.props
+    if (onBack) {
+      onBack()
+    }
   }
 
   render() {
-    const { initialValues, handleSubmit, disabled } = this.props
+    const { initialValues, disabled, handleSubmit, onBack } = this.props
 
     return (
       <form onSubmit={handleSubmit}>
@@ -35,6 +45,9 @@ class CharityForm extends PureComponent {
           component={TextareaField}
         />
         <center>
+          {onBack && <button className="btn mr-3" onClick={this.handleClickBack}>
+            Back
+          </button>}
           <button type="submit" className="btn btn-primary" disabled={disabled}>
             {initialValues ? 'Update' : 'Create'}
           </button>

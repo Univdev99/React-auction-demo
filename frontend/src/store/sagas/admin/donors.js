@@ -9,6 +9,7 @@ import {
   ADMIN_UPLOAD_DONOR_LOGO,
   ADMIN_UPLOAD_DONOR_VIDEO,
   ADMIN_DELETE_DONOR,
+  ADMIN_GET_DONOR_PRODUCT_LIST,
 } from 'store/constants'
 
 
@@ -54,6 +55,12 @@ const deleteDonor = apiCall({
   path: ({ payload }) => `admin/donors/${payload.id}/`,
 })
 
+const getDonorProductList = apiCall({
+  type: ADMIN_GET_DONOR_PRODUCT_LIST,
+  method: 'get',
+  path: ({ payload }) => `admin/donors/${payload.id}/products`,
+})
+
 export default function* rootSaga () {
   yield takeLatest(ADMIN_GET_DONOR_LIST, getDonorList)
   yield takeLatest(ADMIN_CREATE_DONOR, createDonor)
@@ -62,4 +69,5 @@ export default function* rootSaga () {
   yield takeLatest(ADMIN_UPLOAD_DONOR_LOGO, uploadDonorLogo)
   yield takeLatest(ADMIN_UPLOAD_DONOR_VIDEO, uploadDonorVideo)
   yield takeLatest(ADMIN_DELETE_DONOR, deleteDonor)
+  yield takeLatest(ADMIN_GET_DONOR_PRODUCT_LIST, getDonorProductList)
 }
