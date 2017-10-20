@@ -8,10 +8,10 @@ class UserFactory(factory.DjangoModelFactory):
         model = get_user_model()
 
     username = factory.Sequence(
-        lambda n: u'test{}'.format(n)
+        lambda n: 'test{}'.format(n)
     )
     email = factory.Sequence(
-        lambda n: u'test{}@test.com'.format(n)
+        lambda n: 'test{}@test.com'.format(n)
     )
 
     @classmethod

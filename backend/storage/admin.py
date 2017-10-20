@@ -19,7 +19,7 @@ class MediumAdmin(admin.ModelAdmin):
     )
 
     def get_name(self, obj):
-        return u'Medium ID: {}'.format(obj.pk)
+        return 'Medium ID: {}'.format(obj.pk)
     get_name.short_description = 'Medium'
 
 admin.site.register(Medium, MediumAdmin)

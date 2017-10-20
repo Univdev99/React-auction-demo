@@ -13,10 +13,10 @@ class CharityFactory(factory.DjangoModelFactory):
         model = Charity
 
     title = factory.Sequence(
-        lambda n: u'Charity {}'.format(n)
+        lambda n: 'Charity {}'.format(n)
     )
     description = factory.Sequence(
-        lambda n: u'Description for charity {}'.format(n)
+        lambda n: 'Description for charity {}'.format(n)
     )
     logo = factory.SubFactory(MediumFactory)
 
@@ -29,10 +29,10 @@ class DonorFactory(factory.DjangoModelFactory):
         model = Donor
 
     title = factory.Sequence(
-        lambda n: u'Donor {}'.format(n)
+        lambda n: 'Donor {}'.format(n)
     )
     description = factory.Sequence(
-        lambda n: u'Description for donor {}'.format(n)
+        lambda n: 'Description for donor {}'.format(n)
     )
     type = factory.Sequence(
         lambda n: DONOR_TYPES[(n + 2) % len(DONOR_TYPES)]

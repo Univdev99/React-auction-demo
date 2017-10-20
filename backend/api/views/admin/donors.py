@@ -1,13 +1,14 @@
 from abc import ABCMeta, abstractmethod
 import random
 
+from django.core.exceptions import ImproperlyConfigured
 from django.db import transaction
 
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from api.serializers.admin import DonorSerializer
+from api.serializers.entities import DonorSerializer
 from api.serializers.storage import UploadImageSerializer
 from api.serializers.storage import UploadVideoSerializer
 from api.permissions import IsAdmin
@@ -45,8 +46,8 @@ class DonorMediaUploadView(MediumUploadMixin, generics.GenericAPIView):
     lookup_url_kwarg = 'pk'
     tmp_file_prefix = 'donor_media'
 
-    medium_serializer_class = UploadImageSerializer   # Should be changed to other upload serializer if necessary
-    medium_type = ''   # Should be 'logo' or 'video' in derived classes (model field names for that media)
+    medium_serializer_class = None    # Should be changed to UploadImageSerializer or UploadVideoSerializer
+    medium_type = None   # Should be 'logo' or 'video' in derived classes (model field names for that media)
 
     def get_queryset(self):
         return Donor.objects.all().select_related(self.medium_type)
@@ -55,6 +56,11 @@ class DonorMediaUploadView(MediumUploadMixin, generics.GenericAPIView):
         return self.upload_image(file_obj, s3_folder, s3_filename)
 
     def put(self, *args, **kwargs):
+        if not self.medium_type:
+            raise ImproperlyConfigured('Must define medium_type')
+        if not self.medium_serializer_class:
+            raise ImproperlyConfigured('Must define medium_serializer_class')
+
         donor = self.get_object()
 
         serializer = self.medium_serializer_class(data=self.request.data)

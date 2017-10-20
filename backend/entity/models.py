@@ -10,8 +10,8 @@ from storage.models import Medium
 class Tag(models.Model):
     label = models.CharField(max_length=50)
 
-    def __unicode__(self):
-        return u'Tag <{}>'.format(self.label)
+    def __str__(self):
+        return 'Tag <{}>'.format(self.label)
 
 
 class Tagging(models.Model):
@@ -32,8 +32,8 @@ class Charity(models.Model):
     class Meta:
         verbose_name_plural = 'Charities'
 
-    def __unicode__(self):
-        return u'Charity <{}>'.format(self.title)
+    def __str__(self):
+        return 'Charity <{}>'.format(self.title)
 
 
 class Donor(models.Model):
@@ -46,16 +46,25 @@ class Donor(models.Model):
     charity = models.ForeignKey(Charity)
     tags = GenericRelation(Tagging)
 
-    def __unicode__(self):
-        return u'{} <{}>'.format(self.type, self.title)
+    def __str__(self):
+        return '{} <{}>'.format(self.type, self.title)
 
 
 class Product(models.Model):
     title = models.CharField(unique=True, max_length=200)
     description = models.TextField()
 
+    donor = models.ForeignKey(Donor)
     tags = GenericRelation(Tagging)
-    media = models.ManyToManyField(Medium)
 
-    def __unicode__(self):
-        return u'Product <{}>'.format(self.title)
+    def __str__(self):
+        return 'Product <{}>'.format(self.title)
+
+
+class ProductMedium(models.Model):
+    medium = models.ForeignKey(Medium)
+    product = models.ForeignKey(Product)
+    order = models.PositiveIntegerField()
+
+    def __str__(self):
+        return 'Product Medium {}'.format(self.pk)

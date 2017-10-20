@@ -8,7 +8,7 @@ from rest_framework import views
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from api.serializers.admin import CharitySerializer
+from api.serializers.entities import CharitySerializer
 from api.serializers.storage import UploadImageSerializer
 from api.permissions import IsAdmin
 from entity.models import Charity

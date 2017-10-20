@@ -12,5 +12,5 @@ class Medium(models.Model):
     class Meta:
         verbose_name_plural = 'Media'
 
-    def __unicode__(self):
-        return u'Medium {} ({})'.format(self.pk, self.type)
+    def __str__(self):
+        return 'Medium {} ({})'.format(self.pk, self.type)

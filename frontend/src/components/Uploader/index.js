@@ -72,8 +72,9 @@ class Uploader extends PureComponent {
     if (defaultImageURL) {
       style = {
         ...style,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center top',
+        backgroundSize: 'contain',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         backgroundImage: `url(${defaultImageURL})`,
       }
     }

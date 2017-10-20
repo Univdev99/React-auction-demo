@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from storage.models import Medium
+
 
 VALID_VIDEO_MIMETYPES = (
     'video/webm',
@@ -7,6 +9,12 @@ VALID_VIDEO_MIMETYPES = (
     'video/mp4',
     'video/mpeg',
 )
+
+
+class MediumSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Medium
+        fields = ('url', 'type', 'mimetype')
 
 
 class UploadImageSerializer(serializers.Serializer):

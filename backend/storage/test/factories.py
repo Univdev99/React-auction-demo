@@ -9,7 +9,7 @@ class MediumFactory(factory.DjangoModelFactory):
         model = Medium
 
     url = factory.Sequence(
-        lambda n: u'https://test-bucket.s3.amazon.com/test-media/test-{}'.format(n)
+        lambda n: 'https://test-bucket.s3.amazon.com/test-media/test-{}'.format(n)
     )
     type = MEDIUM_TYPE_PHOTO
     mimetype = 'image/png'
