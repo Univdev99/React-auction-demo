@@ -6,3 +6,6 @@ export const adminCharitiesSelector = state =>
 
 export const adminDonorsSelector = state =>
   state.get('adminDonors')
+
+export const adminProductsSelector = state =>
+  state.get('adminProducts')

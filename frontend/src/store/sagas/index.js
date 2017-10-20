@@ -3,6 +3,7 @@ import { all } from 'redux-saga/effects'
 import auth from './auth'
 import adminCharities from './admin/charities'
 import adminDonors from './admin/donors'
+import adminProducts from './admin/products'
 
 
 export default function* rootSaga() {
@@ -10,5 +11,6 @@ export default function* rootSaga() {
     auth(),
     adminCharities(),
     adminDonors(),
+    adminProducts(),
   ])
 }
