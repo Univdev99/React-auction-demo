@@ -44,5 +44,5 @@ urlpatterns = [
         ProductMediumDeleteView.as_view(),
         name='product-medium-delete'
     ),
-    url(r'^products/(?P<pk>[0-9]+)/media/reorder/$', ProductMediaReorderView.as_view(), name='products-media-reorder'),
+    url(r'^products/(?P<pk>[0-9]+)/media/reorder/$', ProductMediaReorderView.as_view(), name='product-media-reorder'),
 ]

@@ -67,3 +67,52 @@ class ProductMediumDeleteViewTests(AdminTestCase):
 
         self.medium.refresh_from_db()
         self.assertNotEqual(self.medium.deleted_at, None)
+
+
+class ProductMediaReorderViewTests(AdminTestCase):
+    def setUp(self):
+        super(ProductMediaReorderViewTests, self).setUp()
+        self.product = ProductFactory.create()
+        self.productMedia = (
+            ProductMedium.objects.create(product=self.product, medium=MediumFactory.create(), order=1),
+            ProductMedium.objects.create(product=self.product, medium=MediumFactory.create(), order=2),
+            ProductMedium.objects.create(product=self.product, medium=MediumFactory.create(), order=3),
+        )
+
+    def test_media_reorder_performs_correct(self):
+        reordered_pks = [
+            self.productMedia[0].pk,
+            self.productMedia[2].pk,
+            self.productMedia[1].pk,
+        ]
+        response = self.client.post(
+            reverse('api:admin:product-media-reorder', kwargs=dict(
+                pk=self.product.pk
+            )),
+            dict(media_order=reordered_pks)
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        dms = self.product.productmedium_set.order_by('order')
+        self.assertEqual(dms[0].pk, reordered_pks[0])
+        self.assertEqual(dms[1].pk, reordered_pks[1])
+        self.assertEqual(dms[2].pk, reordered_pks[2])
+
+    def test_media_reorder_response(self):
+        reordered_pks = [
+            self.productMedia[0].pk,
+            self.productMedia[2].pk,
+            self.productMedia[1].pk,
+        ]
+        response = self.client.post(
+            reverse('api:admin:product-media-reorder', kwargs=dict(
+                pk=self.product.pk
+            )),
+            dict(media_order=reordered_pks)
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = json.loads(response.content)
+        self.assertEqual(data[0]['pk'], reordered_pks[0])
+        self.assertEqual(data[1]['pk'], reordered_pks[1])
+        self.assertEqual(data[2]['pk'], reordered_pks[2])
