@@ -41,13 +41,23 @@ class Donor(models.Model):
     description = models.TextField()
     type = models.CharField(choices=DONOR_TYPE_CHOICES, max_length=50)
 
-    logo = models.OneToOneField(Medium, related_name='donor_having_as_logo', null=True)
-    video = models.OneToOneField(Medium, related_name='donor_having_as_video', null=True)
     charity = models.ForeignKey(Charity)
     tags = GenericRelation(Tagging)
 
     def __str__(self):
         return '{} <{}>'.format(self.type, self.title)
+
+
+class DonorMedium(models.Model):
+    medium = models.ForeignKey(Medium)
+    donor = models.ForeignKey(Donor)
+    order = models.PositiveIntegerField()
+
+    class Meta:
+        verbose_name_plural = 'Donor Media'
+
+    def __str__(self):
+        return 'Donor Medium {}'.format(self.pk)
 
 
 class Product(models.Model):

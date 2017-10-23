@@ -39,8 +39,6 @@ class DonorFactory(factory.DjangoModelFactory):
         lambda n: DONOR_TYPES[(n + 2) % len(DONOR_TYPES)]
     )
 
-    logo = factory.SubFactory(MediumFactory)
-    video = factory.SubFactory(MediumFactory)
     charity = factory.SubFactory(CharityFactory)
 
 

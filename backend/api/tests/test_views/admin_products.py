@@ -37,8 +37,8 @@ class ProductMediumUploadViewTests(AdminTestCase):
     @patch('api.views.admin.products.ProductMediumUploadView.get_uploaded_file')
     @patch('api.views.admin.products.MediumUploadMixin.upload_image')
     def test_upload_medium(self, mock_upload_image, mock_get_uploaded_file):
-        new_logo = MediumFactory.create()
-        mock_upload_image.return_value = new_logo
+        new_medium = MediumFactory.create()
+        mock_upload_image.return_value = new_medium
 
         file = MagicMock()
         file.content_type = 'image/png'

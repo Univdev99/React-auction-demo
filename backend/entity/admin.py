@@ -4,6 +4,7 @@ from django.utils.safestring import mark_safe
 
 from entity.models import Charity
 from entity.models import Donor
+from entity.models import DonorMedium
 from entity.models import Product
 from entity.models import ProductMedium
 
@@ -110,6 +111,36 @@ class ProductAdmin(admin.ModelAdmin):
     get_media.short_description = "Media"
 
 admin.site.register(Product, ProductAdmin)
+
+
+class DonorMediumAdmin(admin.ModelAdmin):
+    model = DonorMedium
+
+    list_display = (
+        'get_donor_medium',
+        'get_donor',
+        'get_medium',
+    )
+
+    def get_donor_medium(self, obj):
+        return str(obj)
+    get_donor_medium.short_description = 'Donor Medium'
+
+    def get_donor(self, obj):
+        return mark_safe('<a href="{}">{}</a>'.format(
+            reverse('admin:entity_donor_change', args=[obj.donor.pk]),
+            str(obj.donor).replace('<', '&lt;').replace('>', '&gt;')
+        ))
+    get_donor.short_description = "Product"
+
+    def get_medium(self, obj):
+        return mark_safe('<a href="{}">{}</a>'.format(
+            reverse('admin:storage_medium_change', args=[obj.medium.pk]),
+            str(obj.medium)
+        ))
+    get_medium.short_description = "Medium"
+
+admin.site.register(DonorMedium, DonorMediumAdmin)
 
 
 class ProductMediumAdmin(admin.ModelAdmin):

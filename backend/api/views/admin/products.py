@@ -6,7 +6,6 @@ from django.shortcuts import get_object_or_404
 
 from rest_framework import generics
 from rest_framework import status
-from rest_framework import views
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -17,7 +16,6 @@ from api.serializers.storage import UploadMediumSerializer
 from api.permissions import IsAdmin
 from entity.models import Product
 from entity.models import ProductMedium
-from storage.constants import VALID_IMAGE_MIMETYPES
 from storage.constants import VALID_VIDEO_MIMETYPES
 from storage.mixins import MediumUploadMixin
 from storage.mixins import MediumDeleteMixin

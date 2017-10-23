@@ -62,6 +62,10 @@ class AdminProductDetail extends PureComponent {
   handleDeleteProductMedium = (pmId, event) => {
     event.preventDefault()
 
+    if (!window.confirm('Are you sure to delete this medium?')) {
+      return;
+    }
+
     this.props.deleteProductMedium({
       id: this.props.match.params.id,
       pmId,
@@ -126,8 +130,8 @@ class AdminProductDetail extends PureComponent {
               onBack={this.handleBack}
             />
 
-            <div className="mt-4">
-              <label>Product images and videos:</label>
+            <div className="mt-5">
+              <h5 className="mb-4">Product images and videos:</h5>
               <div>
                 {productDetail.get('media').map(medium => (
                   <div key={medium.get('pk')} className="product-medium mr-3 mb-3">
@@ -136,7 +140,7 @@ class AdminProductDetail extends PureComponent {
                     </a>
                     {
                       medium.getIn(['medium', 'type']) === 'video' ?
-                      <video className="img-fluid" src={medium.getIn(['medium', 'url'])} />
+                      <video className="img-fluid" src={medium.getIn(['medium', 'url'])} controls />
                       :
                       <img className="img-fluid" src={medium.getIn(['medium', 'url'])} alt="Product Medium" />
                     }

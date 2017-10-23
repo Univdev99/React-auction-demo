@@ -6,9 +6,9 @@ from api.views.admin.charities import CharityDetailView
 from api.views.admin.charities import CharityLogoUploadView
 from api.views.admin.donors import DonorListView
 from api.views.admin.donors import DonorDetailView
-from api.views.admin.donors import DonorLogoUploadView
-from api.views.admin.donors import DonorVideoUploadView
 from api.views.admin.donors import DonorProductListView
+from api.views.admin.donors import DonorMediumUploadView
+from api.views.admin.donors import DonorMediumDeleteView
 from api.views.admin.products import ProductDetailView
 from api.views.admin.products import ProductMediumUploadView
 from api.views.admin.products import ProductMediumDeleteView
@@ -24,8 +24,12 @@ urlpatterns = [
     # donors api endpoints
     url(r'^donors/$', DonorListView.as_view(), name='donor-list'),
     url(r'^donors/(?P<pk>[0-9]+)/$', DonorDetailView.as_view(), name='donor-detail'),
-    url(r'^donors/(?P<pk>[0-9]+)/logo/$', DonorLogoUploadView.as_view(), name='donor-logo'),
-    url(r'^donors/(?P<pk>[0-9]+)/video/$', DonorVideoUploadView.as_view(), name='donor-video'),
+    url(r'^donors/(?P<pk>[0-9]+)/media/$', DonorMediumUploadView.as_view(), name='donor-medium'),
+    url(
+        r'^donors/(?P<pk>[0-9]+)/media/(?P<dm_pk>[0-9]+)/$',
+        DonorMediumDeleteView.as_view(),
+        name='donor-medium-delete'
+    ),
     url(r'^donors/(?P<pk>[0-9]+)/products/$', DonorProductListView.as_view(), name='donor-product-list'),
 
     # products api endpoints

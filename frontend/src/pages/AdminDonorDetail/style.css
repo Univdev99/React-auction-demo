@@ -1,11 +1,11 @@
-.product-medium {
+.donor-medium {
   width: 200px;
   display: inline-block;
   position: relative;
   vertical-align: top;
 }
 
-.btn-product-medium-delete {
+.btn-donor-medium-delete {
   position: absolute;
   right: 10px;
   top: 10px;

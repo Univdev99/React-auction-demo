@@ -3,6 +3,7 @@ from rest_framework import serializers
 from api.serializers.storage import MediumSerializer
 from entity.models import Charity
 from entity.models import Donor
+from entity.models import DonorMedium
 from entity.models import Product
 from entity.models import ProductMedium
 
@@ -19,20 +20,24 @@ class CharitySerializer(serializers.ModelSerializer):
         return obj.logo.url if obj.logo else None
 
 
+class DonorMediumSerializer(serializers.ModelSerializer):
+    medium = MediumSerializer()
+
+    class Meta:
+        model = DonorMedium
+        fields = ('pk', 'medium')
+
+
 class DonorSerializer(serializers.ModelSerializer):
-    logo = serializers.SerializerMethodField()
-    video = serializers.SerializerMethodField()
+    media = serializers.SerializerMethodField()
 
     class Meta:
         model = Donor
-        fields = ('pk', 'title', 'description', 'type', 'logo', 'video', 'charity')
+        fields = ('pk', 'title', 'description', 'type', 'charity', 'media')
         read_only_fields = ('pk',)
 
-    def get_logo(self, obj):
-        return obj.logo.url if obj.logo else None
-
-    def get_video(self, obj):
-        return obj.video.url if obj.video else None
+    def get_media(self, obj):
+        return DonorMediumSerializer(obj.donormedium_set.all(), many=True).data
 
 
 class ProductMediumSerializer(serializers.ModelSerializer):
