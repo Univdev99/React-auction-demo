@@ -7,10 +7,11 @@ import {
   ADMIN_CREATE_DONOR,
   ADMIN_GET_DONOR_DETAIL,
   ADMIN_UPDATE_DONOR_DETAIL,
-  ADMIN_UPLOAD_DONOR_MEDIUM,
-  ADMIN_DELETE_DONOR_MEDIUM,
   ADMIN_DELETE_DONOR,
   ADMIN_GET_DONOR_PRODUCT_LIST,
+  ADMIN_UPLOAD_DONOR_MEDIUM,
+  ADMIN_DELETE_DONOR_MEDIUM,
+  ADMIN_REORDER_DONOR_MEDIUM,
 } from 'store/constants'
 
 
@@ -23,6 +24,7 @@ const initialState = Immutable.fromJS({
   donorDetail: null,
   donorProductList: [],
   donorProductListLoaded: false,
+  reorderedTemporaryDonorMedia: null,
 })
 
 /* Action creators */
@@ -35,6 +37,7 @@ export const deleteDonor = createAction(ADMIN_DELETE_DONOR)
 export const getDonorProductList = createAction(ADMIN_GET_DONOR_PRODUCT_LIST)
 export const uploadDonorMedium = createAction(ADMIN_UPLOAD_DONOR_MEDIUM)
 export const deleteDonorMedium = createAction(ADMIN_DELETE_DONOR_MEDIUM)
+export const reorderDonorMedia = createAction(ADMIN_REORDER_DONOR_MEDIUM)
 
 /* Reducer */
 
@@ -93,6 +96,22 @@ export default handleActions({
     if (index >= 0) {
       map.setIn(['donorDetail', 'media'], donorMedia.delete(index))
     }
+  }),
+
+  /* Reorder donor medium actions */
+
+  [ADMIN_REORDER_DONOR_MEDIUM]: (state, { payload }) => state.withMutations(map => {
+    const { newMedia } = payload
+    map.set('reorderedTemporaryDonorMedia', newMedia)
+  }),
+
+  [requestSuccess(ADMIN_REORDER_DONOR_MEDIUM)]: (state, { payload }) => state.withMutations(map => {
+    map.setIn(['donorDetail', 'media'], Immutable.fromJS(payload))
+    map.set('reorderedTemporaryDonorMedia', null)
+  }),
+
+  [requestFail(ADMIN_REORDER_DONOR_MEDIUM)]: (state, { payload }) => state.withMutations(map => {
+    map.set('reorderedTemporaryDonorMedia', null)
   }),
 
 }, initialState)

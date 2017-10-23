@@ -25,7 +25,7 @@ class DonorMediumSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DonorMedium
-        fields = ('pk', 'medium')
+        fields = ('pk', 'medium', 'order')
 
 
 class DonorSerializer(serializers.ModelSerializer):
@@ -37,7 +37,13 @@ class DonorSerializer(serializers.ModelSerializer):
         read_only_fields = ('pk',)
 
     def get_media(self, obj):
-        return DonorMediumSerializer(obj.donormedium_set.all(), many=True).data
+        return DonorMediumSerializer(obj.donormedium_set.order_by('order'), many=True).data
+
+
+class MediaReorderSerializer(serializers.Serializer):
+    media_order = serializers.ListField(
+        child=serializers.IntegerField(min_value=1)
+    )
 
 
 class ProductMediumSerializer(serializers.ModelSerializer):

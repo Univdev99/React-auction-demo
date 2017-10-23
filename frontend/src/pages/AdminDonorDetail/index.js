@@ -5,6 +5,7 @@ import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Link } from 'react-router-dom'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
 import Spinner from 'components/Spinner'
 import Uploader from 'components/Uploader'
@@ -16,6 +17,7 @@ import {
   updateDonorDetail,
   uploadDonorMedium,
   deleteDonorMedium,
+  reorderDonorMedia,
 } from 'store/modules/admin/donors'
 import { adminCharitiesSelector, adminDonorsSelector } from 'store/selectors'
 import './style.css'
@@ -31,6 +33,7 @@ class AdminDonorDetail extends PureComponent {
     updateDonorDetail: PropTypes.func.isRequired,
     uploadDonorMedium: PropTypes.func.isRequired,
     deleteDonorMedium: PropTypes.func.isRequired,
+    reorderDonorMedia: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
   }
 
@@ -73,6 +76,41 @@ class AdminDonorDetail extends PureComponent {
     })
   }
 
+  getMedia = () => {
+    const { adminDonors } = this.props
+    const reorderedTemporaryDonorMedia = adminDonors.get('reorderedTemporaryDonorMedia')
+    if (reorderedTemporaryDonorMedia) {
+      return reorderedTemporaryDonorMedia
+    }
+    return adminDonors.getIn(['donorDetail', 'media'])
+  }
+
+  getDeleteLinkStyle = (isDragging) => ({
+    display: isDragging ? 'none' : 'block'
+  })
+
+  getItemStyle = (draggableStyle, isDragging) => ({
+    userSelect: 'none',
+    ...draggableStyle,
+  })
+
+  handleDragEnd = (result) => {
+    const { adminDonors } = this.props
+    const donorDetail = adminDonors.get('donorDetail')
+    const media = donorDetail.get('media')
+    const draggedMedium = media.get(result.source.index)
+    const newMedia = media.delete(result.source.index)
+      .insert(result.destination.index, draggedMedium)
+
+    this.props.reorderDonorMedia({
+      id: this.props.match.params.id,
+      newMedia,
+      data: {
+        media_order: newMedia.map(medium => medium.get('pk')).toJS()
+      }
+    })
+  }
+
   componentWillMount() {
     const { adminCharities } = this.props
     const charityListLoaded = adminCharities.get('charityListLoaded')
@@ -102,6 +140,7 @@ class AdminDonorDetail extends PureComponent {
     const { adminDonors } = this.props
     const donorDetail = adminDonors.get('donorDetail')
     const { loadingStatus, updatingStatus } = this.state
+    const donorMedia = this.getMedia()
 
     if (loadingStatus === -1) {
       return (
@@ -148,21 +187,44 @@ class AdminDonorDetail extends PureComponent {
 
             <div className="mt-5">
               <h5 className="mb-4">Donor images and videos:</h5>
-              <div>
-                {donorDetail.get('media').map(medium => (
-                  <div key={medium.get('pk')} className="donor-medium mr-3 mb-3">
-                    <a href="/" className="btn-donor-medium-delete" onClick={this.handleDeleteDonorMedium.bind(this, medium.get('pk'))}>
-                      <i className="fa fa-times"></i>
-                    </a>
-                    {
-                      medium.getIn(['medium', 'type']) === 'video' ?
-                      <video className="img-fluid" src={medium.getIn(['medium', 'url'])} controls />
-                      :
-                      <img className="img-fluid" src={medium.getIn(['medium', 'url'])} alt="Donor Medium" />
-                    }
-                  </div>
-                ))}
-              </div>
+              <DragDropContext onDragEnd={this.handleDragEnd}>
+                <Droppable droppableId="droppable" direction="horizontal">
+                  {(provided, snapshotGlobal) => (
+                    <div ref={provided.innerRef}>
+                      {donorMedia.map(medium => (
+                        <Draggable key={medium.get('pk')} draggableId={medium.get('pk')}>
+                          {(provided, snapshot) => (
+                            <div className="donor-medium mr-3 mb-3">
+                              <a
+                                href="/"
+                                className="btn-donor-medium-delete"
+                                style={this.getDeleteLinkStyle(snapshotGlobal.isDragging)}
+                                onClick={this.handleDeleteDonorMedium.bind(this, medium.get('pk'))}
+                              >
+                                <i className="fa fa-times"></i>
+                              </a>
+                              <div
+                                ref={provided.innerRef}
+                                style={this.getItemStyle(provided.draggableStyle, snapshot.isDragging)}
+                                {...provided.dragHandleProps}
+                              >
+                                {
+                                  medium.getIn(['medium', 'type']) === 'video' ?
+                                  <video className="img-fluid" src={medium.getIn(['medium', 'url'])} controls />
+                                  :
+                                  <img className="img-fluid" src={medium.getIn(['medium', 'url'])} alt="Donor Medium" />
+                                }
+                              </div>
+                              {provided.placeholder}
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
 
               <div className="mt-4">
                 <label>Upload new image or video:</label>
@@ -190,6 +252,7 @@ const actions = {
   updateDonorDetail,
   uploadDonorMedium,
   deleteDonorMedium,
+  reorderDonorMedia,
 }
 
 export default compose(

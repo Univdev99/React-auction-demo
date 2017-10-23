@@ -11,6 +11,7 @@ from rest_framework.response import Response
 
 from api.serializers.entities import DonorSerializer
 from api.serializers.entities import DonorMediumSerializer
+from api.serializers.entities import MediaReorderSerializer
 from api.serializers.entities import ProductSerializer
 from api.serializers.storage import UploadMediumSerializer
 from api.permissions import IsAdmin
@@ -109,3 +110,25 @@ class DonorMediumDeleteView(MediumDeleteMixin, generics.GenericAPIView):
         self.delete_medium(dm.medium)
         dm.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class DonorMediumReorderView(generics.GenericAPIView):
+    permission_classes = (IsAuthenticated, IsAdmin,)
+    serializer_class = DonorSerializer
+    lookup_url_kwarg = 'pk'
+    queryset = Donor.objects.all()
+
+    @transaction.atomic
+    def post(self, *args, **kwargs):
+        serializer = MediaReorderSerializer(data=self.request.data)
+        serializer.is_valid(raise_exception=True)
+
+        donor = self.get_object()
+        medium_ids = serializer.validated_data['media_order']
+        order = 1
+        for medium_id in medium_ids:
+            donor.donormedium_set.filter(pk=medium_id).update(order=order)
+            order += 1
+
+        serializer = DonorMediumSerializer(donor.donormedium_set.order_by('order'), many=True)
+        return Response(serializer.data)

@@ -22,6 +22,7 @@ export const ADMIN_DELETE_DONOR = 'charibin/admin/delete-donor'
 export const ADMIN_GET_DONOR_PRODUCT_LIST = 'charibin/admin/get-donor-product-list'
 export const ADMIN_UPLOAD_DONOR_MEDIUM = 'charibin/admin/upload-donor-medium'
 export const ADMIN_DELETE_DONOR_MEDIUM = 'charibin/admin/delete-donor-medium'
+export const ADMIN_REORDER_DONOR_MEDIUM = 'charibin/admin/reorder-donor-medium'
 
 export const ADMIN_GET_PRODUCT_LIST = 'charibin/admin/get-product-list'
 export const ADMIN_CREATE_PRODUCT = 'charibin/admin/create-product'

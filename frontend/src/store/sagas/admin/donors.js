@@ -6,10 +6,11 @@ import {
   ADMIN_CREATE_DONOR,
   ADMIN_GET_DONOR_DETAIL,
   ADMIN_UPDATE_DONOR_DETAIL,
-  ADMIN_UPLOAD_DONOR_MEDIUM,
-  ADMIN_DELETE_DONOR_MEDIUM,
   ADMIN_DELETE_DONOR,
   ADMIN_GET_DONOR_PRODUCT_LIST,
+  ADMIN_UPLOAD_DONOR_MEDIUM,
+  ADMIN_DELETE_DONOR_MEDIUM,
+  ADMIN_REORDER_DONOR_MEDIUM,
 } from 'store/constants'
 
 
@@ -61,6 +62,12 @@ const deleteDonorMedium = apiCall({
   path: ({ payload }) => `admin/donors/${payload.id}/media/${payload.dmId}/`,
 })
 
+const reorderDonorMedia = apiCall({
+  type: ADMIN_REORDER_DONOR_MEDIUM,
+  method: 'post',
+  path: ({ payload }) => `admin/donors/${payload.id}/media/reorder/`,
+})
+
 export default function* rootSaga () {
   yield takeLatest(ADMIN_GET_DONOR_LIST, getDonorList)
   yield takeLatest(ADMIN_CREATE_DONOR, createDonor)
@@ -70,4 +77,5 @@ export default function* rootSaga () {
   yield takeLatest(ADMIN_GET_DONOR_PRODUCT_LIST, getDonorProductList)
   yield takeLatest(ADMIN_UPLOAD_DONOR_MEDIUM, uploadDonorMedium)
   yield takeLatest(ADMIN_DELETE_DONOR_MEDIUM, deleteDonorMedium)
+  yield takeLatest(ADMIN_REORDER_DONOR_MEDIUM, reorderDonorMedia)
 }
