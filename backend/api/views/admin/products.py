@@ -1,6 +1,7 @@
 import random
 
 from django.db import transaction
+from django.db.models import Max
 from django.shortcuts import get_object_or_404
 
 from rest_framework import generics
@@ -10,6 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from api.serializers.entities import ProductSerializer
+from api.serializers.entities import ProductMediumSerializer
 from api.serializers.storage import MediumSerializer
 from api.serializers.storage import UploadMediumSerializer
 from api.permissions import IsAdmin
@@ -47,6 +49,7 @@ class ProductMediumUploadView(MediumUploadMixin, generics.GenericAPIView):
     serializer_class = ProductSerializer
     lookup_url_kwarg = 'pk'
     queryset = Product.objects.all()
+    tmp_file_prefix = 'product_media'
 
     def get_uploaded_file(self):
         serializer = UploadMediumSerializer(data=self.request.data)
@@ -69,15 +72,16 @@ class ProductMediumUploadView(MediumUploadMixin, generics.GenericAPIView):
                 '{}_{}'.format(product.pk, random.randint(10000000, 99999999))
             )
 
-        order = 1
+        max_record = product.productmedium_set.aggregate(Max('order'))
+        order = max_record['order__max'] + 1 if max_record['order__max'] else 1
         product_medium = ProductMedium.objects.create(
             medium=medium,
             product=product,
             order=order
         )
 
-        medium_data = MediumSerializer(medium)
-        return Response(medium_data.data)
+        serializer = ProductMediumSerializer(product_medium)
+        return Response(serializer.data)
 
 
 class ProductMediumDeleteView(MediumDeleteMixin, generics.GenericAPIView):

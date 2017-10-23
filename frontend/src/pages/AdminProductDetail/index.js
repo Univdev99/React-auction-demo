@@ -6,15 +6,18 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import Spinner from 'components/Spinner'
-/// import Uploader from 'components/Uploader'
+import Uploader from 'components/Uploader'
 import ProductForm from 'components/ProductForm'
 import AdminLayout from 'pages/AdminLayout'
 import { getDonorList } from 'store/modules/admin/donors'
 import {
   getProductDetail,
   updateProductDetail,
+  uploadProductMedium,
+  deleteProductMedium,
 } from 'store/modules/admin/products'
 import { adminDonorsSelector, adminProductsSelector } from 'store/selectors'
+import './style.css'
 
 
 class AdminProductDetail extends PureComponent {
@@ -25,6 +28,8 @@ class AdminProductDetail extends PureComponent {
     getDonorList: PropTypes.func.isRequired,
     getProductDetail: PropTypes.func.isRequired,
     updateProductDetail: PropTypes.func.isRequired,
+    uploadProductMedium: PropTypes.func.isRequired,
+    deleteProductMedium: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
   }
 
@@ -53,6 +58,15 @@ class AdminProductDetail extends PureComponent {
   handleBack = () => this.props.history.push({
     pathname: '/admin/products'
   })
+
+  handleDeleteProductMedium = (pmId, event) => {
+    event.preventDefault()
+
+    this.props.deleteProductMedium({
+      id: this.props.match.params.id,
+      pmId,
+    })
+  }
 
   componentWillMount() {
     const { adminDonors } = this.props
@@ -100,15 +114,6 @@ class AdminProductDetail extends PureComponent {
           {(loadingStatus === 1 || !productDetail || !donorListLoaded) && <Spinner />}
 
           {loadingStatus === 10 && productDetail && donorListLoaded && <div>
-            {/*<div className="mb-4">
-              <label>Upload logo here:</label>
-              <Uploader
-                uploadAction={this.props.uploadProductLogo}
-                uploadActionParams={{ id: this.props.match.params.id }}
-                defaultImageURL={productDetail.get('logo')}
-              />
-            </div>*/}
-
             {updatingStatus === -1 && <div className="mb-2 text-danger">
               Failed to update product
             </div>}
@@ -120,6 +125,33 @@ class AdminProductDetail extends PureComponent {
               onSubmit={this.handleSubmit}
               onBack={this.handleBack}
             />
+
+            <div className="mt-4">
+              <label>Product images and videos:</label>
+              <div>
+                {productDetail.get('media').map(medium => (
+                  <div key={medium.get('pk')} className="product-medium mr-3 mb-3">
+                    <a href="/" className="btn-product-medium-delete" onClick={this.handleDeleteProductMedium.bind(this, medium.get('pk'))}>
+                      <i className="fa fa-times"></i>
+                    </a>
+                    {
+                      medium.getIn(['medium', 'type']) === 'video' ?
+                      <video className="img-fluid" src={medium.getIn(['medium', 'url'])} />
+                      :
+                      <img className="img-fluid" src={medium.getIn(['medium', 'url'])} alt="Product Medium" />
+                    }
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-4">
+                <label>Upload new image or video:</label>
+                <Uploader
+                  uploadAction={this.props.uploadProductMedium}
+                  uploadActionParams={{ id: this.props.match.params.id }}
+                />
+              </div>
+            </div>
           </div>}
         </div>
       </AdminLayout>
@@ -136,6 +168,8 @@ const actions = {
   getDonorList,
   getProductDetail,
   updateProductDetail,
+  uploadProductMedium,
+  deleteProductMedium,
 }
 
 export default compose(

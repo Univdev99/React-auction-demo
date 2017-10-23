@@ -66,5 +66,8 @@ class ProductMedium(models.Model):
     product = models.ForeignKey(Product)
     order = models.PositiveIntegerField()
 
+    class Meta:
+        verbose_name_plural = 'Product Media'
+
     def __str__(self):
         return 'Product Medium {}'.format(self.pk)

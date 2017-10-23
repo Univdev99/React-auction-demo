@@ -48,7 +48,6 @@ class DonorMediaUploadView(MediumUploadMixin, generics.GenericAPIView):
     lookup_url_kwarg = 'pk'
     tmp_file_prefix = 'donor_media'
 
-    medium_serializer_class = UploadMediumSerializer
     medium_type = None   # Should be 'logo' or 'video' in derived classes (model field names for that media)
 
     def get_queryset(self):
@@ -60,12 +59,10 @@ class DonorMediaUploadView(MediumUploadMixin, generics.GenericAPIView):
     def put(self, *args, **kwargs):
         if not self.medium_type:
             raise ImproperlyConfigured('Must define medium_type')
-        if not self.medium_serializer_class:
-            raise ImproperlyConfigured('Must define medium_serializer_class')
 
         donor = self.get_object()
 
-        serializer = self.medium_serializer_class(data=self.request.data)
+        serializer = UploadMediumSerializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
 
         medium = self.upload(
