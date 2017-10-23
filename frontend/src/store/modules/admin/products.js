@@ -10,6 +10,7 @@ import {
   ADMIN_DELETE_PRODUCT,
   ADMIN_UPLOAD_PRODUCT_MEDIUM,
   ADMIN_DELETE_PRODUCT_MEDIUM,
+  ADMIN_REORDER_PRODUCT_MEDIUM,
 } from 'store/constants'
 
 
@@ -20,6 +21,7 @@ const initialState = Immutable.fromJS({
   productList: [],
   productListLoaded: false,
   productDetail: null,
+  reorderedTemporaryProductMedia: null,
 })
 
 /* Action creators */
@@ -31,6 +33,7 @@ export const updateProductDetail = createAction(ADMIN_UPDATE_PRODUCT_DETAIL)
 export const deleteProduct = createAction(ADMIN_DELETE_PRODUCT)
 export const uploadProductMedium = createAction(ADMIN_UPLOAD_PRODUCT_MEDIUM)
 export const deleteProductMedium = createAction(ADMIN_DELETE_PRODUCT_MEDIUM)
+export const reorderProductMedia = createAction(ADMIN_REORDER_PRODUCT_MEDIUM)
 
 /* Reducer */
 
@@ -79,6 +82,22 @@ export default handleActions({
     if (index >= 0) {
       map.setIn(['productDetail', 'media'], productMedia.delete(index))
     }
+  }),
+
+  /* Reorder product medium actions */
+
+  [ADMIN_REORDER_PRODUCT_MEDIUM]: (state, { payload }) => state.withMutations(map => {
+    const { newMedia } = payload
+    map.set('reorderedTemporaryProductMedia', newMedia)
+  }),
+
+  [requestSuccess(ADMIN_REORDER_PRODUCT_MEDIUM)]: (state, { payload }) => state.withMutations(map => {
+    map.setIn(['productDetail', 'media'], Immutable.fromJS(payload))
+    map.set('reorderedTemporaryProductMedia', null)
+  }),
+
+  [requestFail(ADMIN_REORDER_PRODUCT_MEDIUM)]: (state, { payload }) => state.withMutations(map => {
+    map.set('reorderedTemporaryProductMedia', null)
   }),
 
 }, initialState)

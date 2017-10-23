@@ -31,3 +31,4 @@ export const ADMIN_UPDATE_PRODUCT_DETAIL = 'charibin/admin/update-product-detail
 export const ADMIN_DELETE_PRODUCT = 'charibin/admin/delete-product'
 export const ADMIN_UPLOAD_PRODUCT_MEDIUM = 'charibin/admin/upload-product-medium'
 export const ADMIN_DELETE_PRODUCT_MEDIUM = 'charibin/admin/delete-product-medium'
+export const ADMIN_REORDER_PRODUCT_MEDIUM = 'charibin/admin/reorder-product-medium'

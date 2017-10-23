@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
 import Spinner from 'components/Spinner'
 import Uploader from 'components/Uploader'
@@ -15,6 +16,7 @@ import {
   updateProductDetail,
   uploadProductMedium,
   deleteProductMedium,
+  reorderProductMedia,
 } from 'store/modules/admin/products'
 import { adminDonorsSelector, adminProductsSelector } from 'store/selectors'
 import './style.css'
@@ -30,6 +32,7 @@ class AdminProductDetail extends PureComponent {
     updateProductDetail: PropTypes.func.isRequired,
     uploadProductMedium: PropTypes.func.isRequired,
     deleteProductMedium: PropTypes.func.isRequired,
+    reorderProductMedia: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
   }
 
@@ -72,6 +75,41 @@ class AdminProductDetail extends PureComponent {
     })
   }
 
+  getMedia = () => {
+    const { adminProducts } = this.props
+    const reorderedTemporaryProductMedia = adminProducts.get('reorderedTemporaryProductMedia')
+    if (reorderedTemporaryProductMedia) {
+      return reorderedTemporaryProductMedia
+    }
+    return adminProducts.getIn(['productDetail', 'media'])
+  }
+
+  getDeleteLinkStyle = (isDragging) => ({
+    display: isDragging ? 'none' : 'block'
+  })
+
+  getItemStyle = (draggableStyle, isDragging) => ({
+    userSelect: 'none',
+    ...draggableStyle,
+  })
+
+  handleDragEnd = (result) => {
+    const { adminProducts } = this.props
+    const productDetail = adminProducts.get('productDetail')
+    const media = productDetail.get('media')
+    const draggedMedium = media.get(result.source.index)
+    const newMedia = media.delete(result.source.index)
+      .insert(result.destination.index, draggedMedium)
+
+    this.props.reorderProductMedia({
+      id: this.props.match.params.id,
+      newMedia,
+      data: {
+        media_order: newMedia.map(medium => medium.get('pk')).toJS()
+      }
+    })
+  }
+
   componentWillMount() {
     const { adminDonors } = this.props
     const donorListLoaded = adminDonors.get('donorListLoaded')
@@ -101,6 +139,7 @@ class AdminProductDetail extends PureComponent {
     const { adminProducts } = this.props
     const productDetail = adminProducts.get('productDetail')
     const { loadingStatus, updatingStatus } = this.state
+    const productMedia = this.getMedia()
 
     if (loadingStatus === -1) {
       return (
@@ -132,21 +171,44 @@ class AdminProductDetail extends PureComponent {
 
             <div className="mt-5">
               <h5 className="mb-4">Product images and videos:</h5>
-              <div>
-                {productDetail.get('media').map(medium => (
-                  <div key={medium.get('pk')} className="product-medium mr-3 mb-3">
-                    <a href="/" className="btn-product-medium-delete" onClick={this.handleDeleteProductMedium.bind(this, medium.get('pk'))}>
-                      <i className="fa fa-times"></i>
-                    </a>
-                    {
-                      medium.getIn(['medium', 'type']) === 'video' ?
-                      <video className="img-fluid" src={medium.getIn(['medium', 'url'])} controls />
-                      :
-                      <img className="img-fluid" src={medium.getIn(['medium', 'url'])} alt="Product Medium" />
-                    }
-                  </div>
-                ))}
-              </div>
+              <DragDropContext onDragEnd={this.handleDragEnd}>
+                <Droppable droppableId="droppable" direction="horizontal">
+                  {(provided, snapshotGlobal) => (
+                    <div ref={provided.innerRef}>
+                      {productMedia.map(medium => (
+                        <Draggable key={medium.get('pk')} draggableId={medium.get('pk')}>
+                          {(provided, snapshot) => (
+                            <div className="product-medium mr-3 mb-3">
+                              <a
+                                href="/"
+                                className="btn-product-medium-delete"
+                                style={this.getDeleteLinkStyle(snapshotGlobal.isDragging)}
+                                onClick={this.handleDeleteProductMedium.bind(this, medium.get('pk'))}
+                              >
+                                <i className="fa fa-times"></i>
+                              </a>
+                              <div
+                                ref={provided.innerRef}
+                                style={this.getItemStyle(provided.draggableStyle, snapshot.isDragging)}
+                                {...provided.dragHandleProps}
+                              >
+                                {
+                                  medium.getIn(['medium', 'type']) === 'video' ?
+                                  <video className="img-fluid" src={medium.getIn(['medium', 'url'])} controls />
+                                  :
+                                  <img className="img-fluid" src={medium.getIn(['medium', 'url'])} alt="Product Medium" />
+                                }
+                              </div>
+                              {provided.placeholder}
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
 
               <div className="mt-4">
                 <label>Upload new image or video:</label>
@@ -174,6 +236,7 @@ const actions = {
   updateProductDetail,
   uploadProductMedium,
   deleteProductMedium,
+  reorderProductMedia,
 }
 
 export default compose(

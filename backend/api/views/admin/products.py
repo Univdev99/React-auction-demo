@@ -9,6 +9,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from api.serializers.entities import MediaReorderSerializer
 from api.serializers.entities import ProductSerializer
 from api.serializers.entities import ProductMediumSerializer
 from api.serializers.storage import MediumSerializer
@@ -99,3 +100,25 @@ class ProductMediumDeleteView(MediumDeleteMixin, generics.GenericAPIView):
         self.delete_medium(pm.medium)
         pm.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ProductMediaReorderView(generics.GenericAPIView):
+    permission_classes = (IsAuthenticated, IsAdmin,)
+    serializer_class = ProductSerializer
+    lookup_url_kwarg = 'pk'
+    queryset = Product.objects.all()
+
+    @transaction.atomic
+    def post(self, *args, **kwargs):
+        serializer = MediaReorderSerializer(data=self.request.data)
+        serializer.is_valid(raise_exception=True)
+
+        product = self.get_object()
+        medium_ids = serializer.validated_data['media_order']
+        order = 1
+        for medium_id in medium_ids:
+            product.productmedium_set.filter(pk=medium_id).update(order=order)
+            order += 1
+
+        serializer = ProductMediumSerializer(product.productmedium_set.order_by('order'), many=True)
+        return Response(serializer.data)

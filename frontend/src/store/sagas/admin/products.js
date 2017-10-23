@@ -9,6 +9,7 @@ import {
   ADMIN_DELETE_PRODUCT,
   ADMIN_UPLOAD_PRODUCT_MEDIUM,
   ADMIN_DELETE_PRODUCT_MEDIUM,
+  ADMIN_REORDER_PRODUCT_MEDIUM,
 } from 'store/constants'
 
 
@@ -54,6 +55,12 @@ const deleteProductMedium = apiCall({
   path: ({ payload }) => `admin/products/${payload.id}/media/${payload.pmId}/`,
 })
 
+const reorderProductMedia = apiCall({
+  type: ADMIN_REORDER_PRODUCT_MEDIUM,
+  method: 'post',
+  path: ({ payload }) => `admin/products/${payload.id}/media/reorder/`,
+})
+
 export default function* rootSaga () {
   yield takeLatest(ADMIN_GET_PRODUCT_LIST, getProductList)
   yield takeLatest(ADMIN_CREATE_PRODUCT, createProduct)
@@ -62,4 +69,5 @@ export default function* rootSaga () {
   yield takeLatest(ADMIN_DELETE_PRODUCT, deleteProduct)
   yield takeLatest(ADMIN_UPLOAD_PRODUCT_MEDIUM, uploadProductMedium)
   yield takeLatest(ADMIN_DELETE_PRODUCT_MEDIUM, deleteProductMedium)
+  yield takeLatest(ADMIN_REORDER_PRODUCT_MEDIUM, reorderProductMedia)
 }

@@ -112,7 +112,7 @@ class DonorMediumDeleteView(MediumDeleteMixin, generics.GenericAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class DonorMediumReorderView(generics.GenericAPIView):
+class DonorMediaReorderView(generics.GenericAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
     serializer_class = DonorSerializer
     lookup_url_kwarg = 'pk'
