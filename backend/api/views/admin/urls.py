@@ -9,8 +9,10 @@ from api.views.admin.donors import DonorDetailView
 from api.views.admin.donors import DonorLogoUploadView
 from api.views.admin.donors import DonorVideoUploadView
 from api.views.admin.donors import DonorProductListView
-from api.views.admin.products import ProductListView
 from api.views.admin.products import ProductDetailView
+from api.views.admin.products import ProductMediumUploadView
+from api.views.admin.products import ProductMediumDeleteView
+from api.views.admin.products import ProductListView
 
 
 urlpatterns = [
@@ -29,5 +31,10 @@ urlpatterns = [
     # products api endpoints
     url(r'^products/$', ProductListView.as_view(), name='product-list'),
     url(r'^products/(?P<pk>[0-9]+)/$', ProductDetailView.as_view(), name='product-detail'),
-    # url(r'^products/(?P<pk>[0-9]+)/media/$', CharityLogoUploadView.as_view(), name='product-media'),
+    url(r'^products/(?P<pk>[0-9]+)/media/$', ProductMediumUploadView.as_view(), name='product-medium'),
+    url(
+        r'^products/(?P<pk>[0-9]+)/media/(?P<pm_pk>[0-9]+)/$',
+        ProductMediumDeleteView.as_view(),
+        name='product-medium-delete'
+    ),
 ]

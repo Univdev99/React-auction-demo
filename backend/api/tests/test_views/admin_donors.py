@@ -31,9 +31,9 @@ class DonorLogoUploadViewTests(AdminTestCase):
         super(DonorLogoUploadViewTests, self).setUp()
         self.donor = DonorFactory.create()
 
-    @patch('api.views.admin.donor.UploadImageSerializer.is_valid', return_value=True)
-    @patch('api.views.admin.donor.UploadImageSerializer.validated_data')
-    @patch('api.views.admin.donor.MediumUploadMixin.upload_image')
+    @patch('api.views.admin.donors.UploadMediumSerializer.is_valid', return_value=True)
+    @patch('api.views.admin.donors.UploadMediumSerializer.validated_data')
+    @patch('api.views.admin.donors.MediumUploadMixin.upload_image')
     def test_upload_logo(self, mock_upload_image, mock_validated_data, mock_is_valid):
         new_logo = MediumFactory.create()
         old_logo = self.donor.logo
@@ -50,9 +50,9 @@ class DonorLogoUploadViewTests(AdminTestCase):
         self.donor.refresh_from_db()
         self.assertEqual(self.donor.logo.pk, new_logo.pk)
 
-    @patch('api.views.admin.donor.UploadVideoSerializer.is_valid', return_value=True)
-    @patch('api.views.admin.donor.UploadVideoSerializer.validated_data')
-    @patch('api.views.admin.donor.MediumUploadMixin.upload_video')
+    @patch('api.views.admin.donors.UploadMediumSerializer.is_valid', return_value=True)
+    @patch('api.views.admin.donors.UploadMediumSerializer.validated_data')
+    @patch('api.views.admin.donors.MediumUploadMixin.upload_video')
     def test_upload_video(self, mock_upload_video, mock_validated_data, mock_is_valid):
         new_video = MediumFactory.create(type=MEDIUM_TYPE_VIDEO, mimetype='video/mp4')
         old_video = self.donor.video

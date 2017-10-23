@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from api.serializers.entities import CharitySerializer
-from api.serializers.storage import UploadImageSerializer
+from api.serializers.storage import UploadMediumSerializer
 from api.permissions import IsAdmin
 from entity.models import Charity
 from storage.mixins import MediumUploadMixin
@@ -47,7 +47,7 @@ class CharityLogoUploadView(MediumUploadMixin, generics.GenericAPIView):
     def put(self, *args, **kwargs):
         charity = self.get_object()
 
-        serializer = UploadImageSerializer(data=self.request.data)
+        serializer = UploadMediumSerializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
 
         logo_medium = self.upload_image(

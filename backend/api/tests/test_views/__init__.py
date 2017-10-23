@@ -1,3 +1,4 @@
 from .auth import *
-from .admin_charity import *
-from .admin_donor import *
+from .admin_charities import *
+from .admin_donors import *
+from .admin_products import *

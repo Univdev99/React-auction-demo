@@ -11,8 +11,8 @@ from rest_framework.response import Response
 
 from api.serializers.entities import DonorSerializer
 from api.serializers.entities import ProductSerializer
-from api.serializers.storage import UploadImageSerializer
-from api.serializers.storage import UploadVideoSerializer
+from api.serializers.storage import UploadMediumSerializer
+from api.serializers.storage import UploadMediumSerializer
 from api.permissions import IsAdmin
 from entity.models import Donor
 from storage.mixins import MediumUploadMixin
@@ -48,7 +48,7 @@ class DonorMediaUploadView(MediumUploadMixin, generics.GenericAPIView):
     lookup_url_kwarg = 'pk'
     tmp_file_prefix = 'donor_media'
 
-    medium_serializer_class = None    # Should be changed to UploadImageSerializer or UploadVideoSerializer
+    medium_serializer_class = UploadMediumSerializer
     medium_type = None   # Should be 'logo' or 'video' in derived classes (model field names for that media)
 
     def get_queryset(self):
@@ -86,12 +86,10 @@ class DonorMediaUploadView(MediumUploadMixin, generics.GenericAPIView):
 
 
 class DonorLogoUploadView(DonorMediaUploadView):
-    medium_serializer_class = UploadImageSerializer
     medium_type = 'logo'
 
 
 class DonorVideoUploadView(DonorMediaUploadView):
-    medium_serializer_class = UploadVideoSerializer
     medium_type = 'video'
 
     def upload(self, file_obj, s3_folder, s3_filename):

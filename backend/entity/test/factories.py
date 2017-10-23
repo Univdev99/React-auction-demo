@@ -5,6 +5,7 @@ from entity.constants import DONOR_TYPE_CELEBRITY
 from entity.constants import DONOR_TYPE_OTHER
 from entity.models import Charity
 from entity.models import Donor
+from entity.models import Product
 from storage.test.factories import MediumFactory
 
 
@@ -41,3 +42,17 @@ class DonorFactory(factory.DjangoModelFactory):
     logo = factory.SubFactory(MediumFactory)
     video = factory.SubFactory(MediumFactory)
     charity = factory.SubFactory(CharityFactory)
+
+
+class ProductFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = Product
+
+    title = factory.Sequence(
+        lambda n: 'Product {}'.format(n)
+    )
+    description = factory.Sequence(
+        lambda n: 'Description for donor {}'.format(n)
+    )
+
+    donor = factory.SubFactory(DonorFactory)
