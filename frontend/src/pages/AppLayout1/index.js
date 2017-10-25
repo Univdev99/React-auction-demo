@@ -38,6 +38,7 @@ class AppLayout1 extends PureComponent {
   }
 
   componentDidMount() {
+    console.log(this.layoutElement.clientHeight, this.contentElement.clientHeight)
     let headerFooterHeight = this.layoutElement.clientHeight - this.contentElement.clientHeight
     let minContentHeight = window.innerHeight - headerFooterHeight
     this.setState({
@@ -60,8 +61,14 @@ class AppLayout1 extends PureComponent {
       <div className="app-layout1" ref={element => this.layoutElement = element}>
         {header}
 
-        <div className="content" ref={element => this.contentElement = element} style={{ minHeight: minContentHeight }}>
-          {children}
+        <div
+          className="content"
+          ref={element => this.contentElement = element} style={{ minHeight: minContentHeight }}
+          style={{ display: 'flex', minHeight: minContentHeight }}
+        >
+          <div style={{ flex: '1 1 auto' }}>
+            {children}
+          </div>
         </div>
 
         <SubscribeToNewsletter onSubscribe={this.handleSubscribe} disabled={true} />
