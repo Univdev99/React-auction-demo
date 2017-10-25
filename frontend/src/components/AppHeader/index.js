@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
 import AppHeaderMenu from 'components/AppHeaderMenu'
+import AppLogo from 'components/AppLogo'
 import './style.css'
 
 
@@ -51,7 +52,7 @@ class AppHeader extends PureComponent {
 
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <span className="navbar-brand">Charibin</span>
+        <AppLogo />
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>

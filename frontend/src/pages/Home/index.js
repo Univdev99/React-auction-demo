@@ -5,6 +5,7 @@ import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
+import AppContainerLayout from 'components/AppContainerLayout'
 import CompanyCard from 'components/CompanyCard'
 import HomeBanner from 'components/HomeBanner'
 import AppLayout1 from 'pages/AppLayout1'
@@ -34,7 +35,7 @@ class Home extends PureComponent {
       <AppLayout1>
         <HomeBanner />
 
-        <div className="container my-5">
+        <AppContainerLayout>
           <div className="clearfix mb-4">
             <h3 className="pull-left">Companies</h3>
             <button className="pull-right btn btn-sm btn-outline-secondary">All companies</button>
@@ -51,7 +52,7 @@ class Home extends PureComponent {
               </div>
             ))}
           </div>
-        </div>
+        </AppContainerLayout>
       </AppLayout1>
     )
   }

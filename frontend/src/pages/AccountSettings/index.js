@@ -5,9 +5,10 @@ import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
-import AppLayout1 from 'pages/AppLayout1'
+import AppContainerLayout from 'components/AppContainerLayout'
 import AccountForm from 'components/AccountForm'
 import Spinner from 'components/Spinner'
+import AppLayout1 from 'pages/AppLayout1'
 import { updateCurrentUser } from 'store/modules/auth'
 import { authSelector } from 'store/selectors'
 
@@ -53,7 +54,7 @@ class AccountSettings extends PureComponent {
 
     return (
       <AppLayout1>
-        <div className="container mt-5">
+        <AppContainerLayout>
           <div className="row justify-content-center">
             <div className="col-12 col-md-8 col-lg-6">
 
@@ -75,7 +76,7 @@ class AccountSettings extends PureComponent {
 
             </div>
           </div>
-        </div>
+        </AppContainerLayout>
       </AppLayout1>
     )
   }

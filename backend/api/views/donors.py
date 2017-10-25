@@ -10,7 +10,6 @@ from entity.models import Donor
 
 
 class DonorFrontListView(generics.ListAPIView):
-    permission_classes = (IsAuthenticated, IsAdmin,)
     serializer_class = DonorSerializer
 
     def get_queryset(self):
@@ -18,7 +17,6 @@ class DonorFrontListView(generics.ListAPIView):
 
 
 class DonorListView(generics.ListAPIView):
-    permission_classes = (IsAuthenticated, IsAdmin,)
     serializer_class = DonorSerializer
     lookup_url_kwarg = 'pk'
     pagination_class = EightPerPagePagination

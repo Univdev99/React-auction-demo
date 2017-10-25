@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 
+import AppContainerLayout from 'components/AppContainerLayout'
 import AppLayout1 from 'pages/AppLayout1'
 import SignInForm from 'components/SignInForm'
 import { signIn } from 'store/modules/auth'
@@ -36,7 +37,7 @@ class SignIn extends PureComponent {
 
     return (
       <AppLayout1>
-        <div className="container mt-5">
+        <AppContainerLayout>
           <div className="row justify-content-center">
             <div className="col-12 col-md-8 col-lg-6">
 
@@ -54,7 +55,7 @@ class SignIn extends PureComponent {
 
             </div>
           </div>
-        </div>
+        </AppContainerLayout>
       </AppLayout1>
     )
   }

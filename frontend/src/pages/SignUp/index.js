@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 
+import AppContainerLayout from 'components/AppContainerLayout'
 import AppLayout1 from 'pages/AppLayout1'
 import SignUpForm from 'components/SignUpForm'
 import { FACEBOOK_APP_ID, FACEBOOK_API_VERSION } from 'config'
@@ -86,7 +87,7 @@ class SignUp extends PureComponent {
 
     return (
       <AppLayout1>
-        <div className="container mt-5">
+        <AppContainerLayout>
           <div className="row justify-content-center">
             <div className="col-12 col-md-8 col-lg-6">
               {
@@ -112,7 +113,7 @@ class SignUp extends PureComponent {
               }
             </div>
           </div>
-        </div>
+        </AppContainerLayout>
       </AppLayout1>
     )
   }

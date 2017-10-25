@@ -7,6 +7,8 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import AppHeader from 'components/AppHeader'
 import AppHeaderGuest from 'components/AppHeaderGuest'
+import AppFooter from 'components/AppFooter'
+import SubscribeToNewsletter from 'components/SubscribeToNewsletter'
 import { getCurrentUser } from 'store/modules/auth'
 import { signOut } from 'store/modules/auth'
 import { authSelector } from 'store/selectors'
@@ -21,6 +23,10 @@ class AppLayout1 extends PureComponent {
 
   handleSignOut = () => {
     this.props.signOut()
+  }
+
+  handleSubscribe = (email) => {
+    console.log(email)///
   }
 
   componentWillMount() {
@@ -43,6 +49,8 @@ class AppLayout1 extends PureComponent {
         <div className="content">
           {children}
         </div>
+        <SubscribeToNewsletter onSubscribe={this.handleSubscribe} disabled={true} />
+        <AppFooter />
       </div>
     )
   }
