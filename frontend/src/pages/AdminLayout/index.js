@@ -8,7 +8,6 @@ import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 
 import Spinner from 'components/Spinner'
-import { getCurrentUser } from 'store/modules/auth'
 import { signOut } from 'store/modules/auth'
 import { authSelector } from 'store/selectors'
 import './style.css'
@@ -18,7 +17,6 @@ class AdminLayout extends PureComponent {
 
   static propTypes = {
     auth: ImmutablePropTypes.map.isRequired,
-    getCurrentUser: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
   }
 
@@ -43,19 +41,11 @@ class AdminLayout extends PureComponent {
     })
   }
 
-  componentWillMount() {
-    const { auth } = this.props
-    if (!auth.get('userLoaded')) {
-      this.props.getCurrentUser()
-    }
-  }
-
   render() {
     const { auth, children } = this.props
-    // const username = auth.getIn(['currentUser', 'username'], '')
-    const userLoaded = auth.get('userLoaded')
+    const currentUser = auth.get('currentUser')
 
-    if (!userLoaded) {
+    if (!currentUser) {
       return <Spinner />
     }
 
@@ -115,7 +105,6 @@ const selector = createStructuredSelector({
 })
 
 const actions = {
-  getCurrentUser,
   signOut,
 }
 

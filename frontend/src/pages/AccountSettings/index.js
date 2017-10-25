@@ -41,16 +41,15 @@ class AccountSettings extends PureComponent {
 
   render() {
     const { auth } = this.props
-    const userLoaded = auth.get('userLoaded')
+    const currentUser = auth.get('currentUser')
 
-    if (!userLoaded) {
+    if (!currentUser) {
       return <AppLayout1>
         <Spinner />
       </AppLayout1>
     }
 
     const { updateStatus } = this.state
-    const currentUser = auth.get('currentUser')
 
     return (
       <AppLayout1>

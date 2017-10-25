@@ -47,44 +47,27 @@ class DonorAdmin(admin.ModelAdmin):
         'title',
         'description',
         'type',
-        'get_logo_obj',
-        'get_logo_url',
-        'get_video_obj',
-        'get_video_url',
+        'get_media',
     )
 
     def get_queryset(self, request):
-        return super(DonorAdmin, self).get_queryset(request).select_related(
-            'logo'
-        ).select_related(
-            'video'
+        return super(DonorAdmin, self).get_queryset(request).prefetch_related(
+            'donormedium_set'
+        ).prefetch_related(
+            'donormedium_set__medium'
         )
 
-    def get_logo_obj(self, obj):
-        if not obj.logo:
-            return None
-        return mark_safe('<a href="{}">{}</a>'.format(
-            reverse('admin:storage_medium_change', args=[obj.logo.pk]),
-            str(obj.logo)
-        ))
-    get_logo_obj.short_description = "Logo Object"
-
-    def get_logo_url(self, obj):
-        return obj.logo.url if obj.logo else None
-    get_logo_url.short_description = "Logo URL"
-
-    def get_video_obj(self, obj):
-        if not obj.video:
-            return None
-        return mark_safe('<a href="{}">{}</a>'.format(
-            reverse('admin:storage_medium_change', args=[obj.video.pk]),
-            str(obj.video)
-        ))
-    get_video_obj.short_description = "Video Object"
-
-    def get_video_url(self, obj):
-        return obj.video.url if obj.video else None
-    get_video_url.short_description = "Video URL"
+    def get_media(self, obj):
+        donor_media = obj.donormedium_set.select_related('medium').all()
+        links = []
+        for donor_medium in donor_media:
+            medium = donor_medium.medium
+            links.append('<a href="{}">{}</a>'.format(
+                reverse('admin:storage_medium_change', args=[medium.pk]),
+                str(medium)
+            ))
+        return mark_safe(', '.join(links))
+    get_media.short_description = "Media"
 
 admin.site.register(Donor, DonorAdmin)
 

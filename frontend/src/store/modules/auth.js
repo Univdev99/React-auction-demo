@@ -23,7 +23,6 @@ function getInitialState() {
   return {
     // current user info
     currentUser: null,
-    userLoaded: false,
     // sign in
     signedIn: !!token,
   }
@@ -61,12 +60,10 @@ export default handleActions({
 
   [requestSuccess(AUTH_CURRENT_USER)]: (state, { payload }) => state.withMutations(map => {
     map.set('currentUser', Immutable.fromJS(payload))
-    map.set('userLoaded', true)
   }),
 
   [requestFail(AUTH_CURRENT_USER)]: (state, { payload }) => state.withMutations(map => {
     map.set('currentUser', null)
-    map.set('userLoaded', false)
   }),
 
   /* Update current user actions */
@@ -80,7 +77,6 @@ export default handleActions({
   [AUTH_SIGNOUT]: (state) => state.withMutations(map => {
     map.set('currentUser', null)
     map.set('signedIn', false)
-    map.set('userLoaded', false)
     saveData({ token: '' })
   }),
 

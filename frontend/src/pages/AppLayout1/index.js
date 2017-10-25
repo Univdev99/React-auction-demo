@@ -39,7 +39,8 @@ class AppLayout1 extends PureComponent {
     return (
       <div className="app-layout1">
         {header}
-        <div className="container my-4">
+
+        <div className="content">
           {children}
         </div>
       </div>

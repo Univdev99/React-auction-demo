@@ -1,6 +1,9 @@
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 
+import AppHeaderMenu from 'components/AppHeaderMenu'
+
+
 class AppHeaderGuest extends PureComponent {
 
   render() {
@@ -11,16 +14,10 @@ class AppHeaderGuest extends PureComponent {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarText">
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item active">
-              <Link className="nav-link" to="/">Home</Link>
-            </li>
-          </ul>
-          <Link className="navbar-text pr-3" to="/signin">
-            Sign In
-          </Link>
-          <Link className="navbar-text" to="/signup">
-            Sign Up
+          <AppHeaderMenu />
+
+          <Link className="navbar-text ml-3" to="/signin">
+            <i className="fa fa-user-circle" />
           </Link>
         </div>
       </nav>

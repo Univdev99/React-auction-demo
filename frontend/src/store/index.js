@@ -11,6 +11,7 @@ import auth from 'store/modules/auth'
 import adminCharities from 'store/modules/admin/charities'
 import adminDonors from 'store/modules/admin/donors'
 import adminProducts from 'store/modules/admin/products'
+import donors from 'store/modules/donors'
 import sagas from 'store/sagas'
 import authMiddleware from 'store/middlewares/auth'
 
@@ -40,6 +41,7 @@ export const store = createStore(
     adminCharities,
     adminDonors,
     adminProducts,
+    donors,
   }),
   Immutable.Map(),
   applyMiddleware(...middlewares)

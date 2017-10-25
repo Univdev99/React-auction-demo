@@ -6,7 +6,7 @@ const locationHelper = locationHelperBuilder({})
 
 export const userIsAuthenticated = connectedRouterRedirect({
   redirectPath: '/signin',
-  authenticatedSelector: state => !!state.getIn(['auth', 'signedIn'], false),
+  authenticatedSelector: state => !!state.getIn(['auth', 'signedIn']),
   wrapperDisplayName: 'UserIsAuthenticated'
 })
 
@@ -14,15 +14,15 @@ export const userIsNotAuthenticated = connectedRouterRedirect({
   redirectPath: (state, ownProps) => 
     locationHelper.getRedirectQueryParam(ownProps) || '/',
   allowRedirectBack: false,
-  authenticatedSelector: state => !state.getIn(['auth', 'signedIn'], false),
+  authenticatedSelector: state => !state.getIn(['auth', 'signedIn']),
   wrapperDisplayName: 'UserIsNotAuthenticated'
 })
 
 export const userIsAdmin = connectedRouterRedirect({
-  redirectPath: '/',
-  authenticatedSelector: state => (
-    !state.getIn(['auth', 'userLoaded'], false) ||
-    (state.getIn(['auth', 'signedIn'], false) && state.getIn(['auth', 'currentUser', 'is_staff'], false))
-  ),
+  redirectPath: '/admin/authenticating',
+  authenticatedSelector: state => {
+    const auth = state.get('auth')
+    return auth.get('signedIn') && auth.getIn(['currentUser', 'is_staff'])
+  },
   wrapperDisplayName: 'UserIsAdmin'
 })

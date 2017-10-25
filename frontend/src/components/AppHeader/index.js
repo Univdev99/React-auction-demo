@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
+import AppHeaderMenu from 'components/AppHeaderMenu'
 import './style.css'
 
 
@@ -55,13 +56,11 @@ class AppHeader extends PureComponent {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarText">
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item active">
-              <Link className="nav-link" to="/">Home</Link>
-            </li>
-          </ul>
-          <a href="/" className="navbar-text" onClick={this.handleClickUsername}>
-            Welcome, {username}!
+          <AppHeaderMenu />
+
+          <a href="/" className="navbar-text ml-3" onClick={this.handleClickUsername}>
+            <span className="mr-2"><i className="fa fa-user-circle" /></span>
+            {username}
           </a>
           <div className={accountMenuClasses.join(' ')}>
             {isStaff && <Link className="dropdown-item" to="/admin">Admin</Link>}

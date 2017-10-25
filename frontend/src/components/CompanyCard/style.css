@@ -1,0 +1,8 @@
+.company-card .image {
+  padding-top: 60%;
+  background: center top/cover no-repeat;
+}
+
+.company-card .btn-round {
+  border-radius: 999px;
+}

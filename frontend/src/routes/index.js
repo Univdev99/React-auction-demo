@@ -11,6 +11,7 @@ import SignUpVerification from 'pages/SignUpVerification'
 import AccountSettings from 'pages/AccountSettings'
 
 // Admin pages
+import AdminAuthenticating from 'pages/AdminAuthenticating'
 import AdminIndex from 'pages/AdminIndex'
 import AdminCharityList from 'pages/AdminCharityList'
 import AdminCharityCreate from 'pages/AdminCharityCreate'
@@ -57,6 +58,7 @@ const Routes = ({ history }) => (
       <Route exact path="/verify-account/:token" component={SignUpVerification} />
       <Route exact path="/account-settings" component={userIsAuthenticated(AccountSettings)} />
 
+      <Route exact path="/admin/authenticating" component={userIsAuthenticated(AdminAuthenticating)} />
       <Route path="/admin" component={userIsAdmin(AdminRoutes)} />
     </div>
   </ConnectedRouter>
