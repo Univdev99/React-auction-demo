@@ -6,7 +6,7 @@ class AppContainerLayout extends PureComponent {
     const { children } = this.props
 
     return (
-      <div className="container py-5 my-5">
+      <div className="container pb-5 my-5">
         {children}
       </div>
     )

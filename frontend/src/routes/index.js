@@ -9,6 +9,8 @@ import SignUp from 'pages/SignUp'
 import SignUpWithFacebook from 'pages/SignUpWithFacebook'
 import SignUpVerification from 'pages/SignUpVerification'
 import AccountSettings from 'pages/AccountSettings'
+import Donors from 'pages/Donors'
+import DonorDetail from 'pages/DonorDetail'
 
 // Admin pages
 import AdminAuthenticating from 'pages/AdminAuthenticating'
@@ -57,6 +59,8 @@ const Routes = ({ history }) => (
       <Route exact path="/signup-with-facebook/:access_token" component={userIsNotAuthenticated(SignUpWithFacebook)} />
       <Route exact path="/verify-account/:token" component={SignUpVerification} />
       <Route exact path="/account-settings" component={userIsAuthenticated(AccountSettings)} />
+      <Route exact path="/donors" component={Donors} />
+      <Route exact path="/donors/:id" component={DonorDetail} />
 
       <Route exact path="/admin/authenticating" component={userIsAuthenticated(AdminAuthenticating)} />
       <Route path="/admin" component={userIsAdmin(AdminRoutes)} />

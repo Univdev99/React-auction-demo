@@ -40,6 +40,20 @@ class DonorSerializer(serializers.ModelSerializer):
         return DonorMediumSerializer(obj.donormedium_set.order_by('order'), many=True).data
 
 
+class DonorDetailSerializer(serializers.ModelSerializer):
+    charity = CharitySerializer()
+    media = serializers.SerializerMethodField()
+    similar_donors = DonorSerializer(many=True)
+
+    class Meta:
+        model = Donor
+        fields = ('pk', 'title', 'description', 'type', 'charity', 'media', 'similar_donors')
+        read_only_fields = ('pk',)
+
+    def get_media(self, obj):
+        return DonorMediumSerializer(obj.donormedium_set.order_by('order'), many=True).data
+
+
 class MediaReorderSerializer(serializers.Serializer):
     media_order = serializers.ListField(
         child=serializers.IntegerField(min_value=1)

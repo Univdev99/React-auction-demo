@@ -6,3 +6,5 @@ export const DONOR_TYPES = [
   { key: 'celebrity', value: 'Celebrity' },
   { key: 'other', value: 'Other' },
 ]
+
+export const PAGE_SIZE = 8

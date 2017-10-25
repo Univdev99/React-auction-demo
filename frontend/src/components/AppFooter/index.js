@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 
-import AppHeaderMenu from 'components/AppHeaderMenu'
 import AppLogo from 'components/AppLogo'
 
 

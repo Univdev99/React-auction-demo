@@ -34,4 +34,5 @@ export const ADMIN_DELETE_PRODUCT_MEDIUM = 'charibin/admin/delete-product-medium
 export const ADMIN_REORDER_PRODUCT_MEDIUM = 'charibin/admin/reorder-product-medium'
 
 export const DONOR_GET_FRONT_LIST = 'charibin/donors/get-front-list'
-export const DONOR_GET_LIST = 'charibin/donors/get-list'
+export const DONOR_GET_LIST_PAGE = 'charibin/donors/get-list-page'
+export const DONOR_GET_DETAIL = 'charibin/donors/get-detail'

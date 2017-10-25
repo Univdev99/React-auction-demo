@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import './style.css'
 
 
-class CompanyCard extends PureComponent {
+class DonorCard extends PureComponent {
 
   static propTypes = {
     id: PropTypes.number.isRequired,
@@ -17,12 +17,12 @@ class CompanyCard extends PureComponent {
     const { id, image, title } = this.props
 
     return (
-      <div className="card company-card">
+      <div className="card donor-card">
         <div className="image" style={{ backgroundImage: `url(${image})`}} />
         <div className="card-body">
           <h4 className="pull-left">{title}</h4>
           <Link
-            to={`/companies/${id}`}
+            to={`/donors/${id}`}
             className="btn btn-sm btn-outline-primary btn-round px-4 pull-right d-none d-sm-block"
           >
             Learn more
@@ -33,4 +33,4 @@ class CompanyCard extends PureComponent {
   }
 }
 
-export default CompanyCard
+export default DonorCard

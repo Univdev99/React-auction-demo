@@ -47,6 +47,11 @@ class Donor(models.Model):
     def __str__(self):
         return '{} <{}>'.format(self.type, self.title)
 
+    @property
+    def similar_donors(self):
+        ### correct algorithm based on tagging should be here
+        return Donor.objects.exclude(pk=self.pk).prefetch_related('donormedium_set')
+
 
 class DonorMedium(models.Model):
     medium = models.ForeignKey(Medium)
