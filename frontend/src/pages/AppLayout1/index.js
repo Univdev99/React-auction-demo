@@ -21,6 +21,10 @@ class AppLayout1 extends PureComponent {
     getCurrentUser: PropTypes.func.isRequired,
   }
 
+  state = {
+    minContentHeight: 0,
+  }
+
   handleSignOut = () => {
     this.props.signOut()
   }
@@ -33,22 +37,33 @@ class AppLayout1 extends PureComponent {
     this.props.getCurrentUser()
   }
 
+  componentDidMount() {
+    let headerFooterHeight = this.layoutElement.clientHeight - this.contentElement.clientHeight
+    let minContentHeight = window.innerHeight - headerFooterHeight
+    this.setState({
+      minContentHeight: minContentHeight > 0 ? minContentHeight : 0
+    })
+  }
+
   render() {
     const { auth, children } = this.props
     const username = auth.getIn(['currentUser', 'username'], '')
     const isStaff = auth.getIn(['currentUser', 'is_staff'], false)
+
+    const { minContentHeight } = this.state
 
     const header = auth.get('signedIn') ?
       <AppHeader username={username} onSignOut={this.handleSignOut} isStaff={isStaff} /> :
       <AppHeaderGuest />
 
     return (
-      <div className="app-layout1">
+      <div className="app-layout1" ref={element => this.layoutElement = element}>
         {header}
 
-        <div className="content">
+        <div className="content" ref={element => this.contentElement = element} style={{ minHeight: minContentHeight }}>
           {children}
         </div>
+
         <SubscribeToNewsletter onSubscribe={this.handleSubscribe} disabled={true} />
         <AppFooter />
       </div>
