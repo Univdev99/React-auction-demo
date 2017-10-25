@@ -7,6 +7,7 @@ from django.utils.crypto import get_random_string
 from facebook import GraphAPI, GraphAPIError
 from rest_framework import views
 from rest_framework.exceptions import ParseError
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -108,6 +109,8 @@ class SignUpWithFacebookView(views.APIView):
 
 
 class CurrentUserView(views.APIView):
+    permission_classes = (IsAuthenticated, )
+
     def get(self, *args, **kwargs):
         serializer = CurrentUserSerializer(self.request.user)
         return Response(serializer.data)
