@@ -1,6 +1,6 @@
 .donor-card .image {
   padding-top: 60%;
-  background: center top/cover no-repeat;
+  background: center/contain no-repeat 100% auto;
 }
 
 .donor-card .btn-round {

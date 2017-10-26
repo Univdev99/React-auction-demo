@@ -6,10 +6,40 @@ from django.urls import reverse
 
 from rest_framework import status
 
+from api.serializers.entities import DonorSerializer
+from entity.constants import DONOR_TYPE_COMPANY
+from entity.models import Donor
 from entity.models import DonorMedium
+from entity.test.factories import CharityFactory
 from entity.test.factories import DonorFactory
 from storage.constants import MEDIUM_TYPE_VIDEO
 from storage.test.factories import MediumFactory
+
+
+class DonorListViewTests(AdminTestCase):
+    def setUp(self):
+        super(DonorListViewTests, self).setUp()
+        self.charity = CharityFactory.create()
+
+    def get_data(self):
+        return {
+            'title': 'Test',
+            'description': 'Test description.',
+            'type': DONOR_TYPE_COMPANY,
+            'charity': self.charity.pk,
+            'tagnames': ['tag1', 'tag2'],
+        }
+
+    def test_create_donor_with_tags(self):
+        data = self.get_data()
+        response = self.client.post(
+            reverse('api:admin:donor-list'),
+            data
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        donor = Donor.objects.first()
+        self.assertNotEqual(donor, None)
+        self.assertEqual(donor.tagnames, ['tag1', 'tag2'])
 
 
 class DonorDetailViewTests(AdminTestCase):
@@ -18,6 +48,18 @@ class DonorDetailViewTests(AdminTestCase):
         self.donor = DonorFactory.create()
         self.medium = MediumFactory.create()
         dm = DonorMedium.objects.create(donor=self.donor, medium=self.medium, order=1)
+
+    def test_update_donor_with_tags(self):
+        serializer = DonorSerializer(self.donor)
+        data = serializer.data
+        data['tagnames'] = ['tag1', 'tag2']
+
+        response = self.client.put(
+            reverse('api:admin:donor-detail', kwargs=dict(pk=self.donor.pk)),
+            data
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(self.donor.tagnames, ['tag1', 'tag2'])
 
     def test_delete_donor(self):
         response = self.client.delete(

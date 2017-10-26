@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     # 3rd party apps
     'rest_framework',
     'corsheaders',
+    'tagging',
     # Project apps
     'account',
     'api',
@@ -162,6 +163,11 @@ CORS_ALLOW_HEADERS = default_headers + (
 )
 
 
+# Django tagging
+
+FORCE_LOWERCASE_TAGS = True
+
+
 # Local settings
 
 locset = os.path.join(os.path.dirname(__file__), 'local_settings.py')
@@ -169,3 +175,26 @@ if os.path.exists(locset):
     with open(locset) as f:
         code = compile(f.read(), "local_settings.py", 'exec')
         exec (code)
+
+
+# SQL Query Logging
+
+LOG_SQL_QUERY = False
+
+if DEBUG and LOG_SQL_QUERY:
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'console': {
+                'level': 'DEBUG',
+                'class': 'logging.StreamHandler',
+            }
+        },
+        'loggers': {
+            'django.db.backends': {
+                'handlers': ['console'],
+                'level': 'DEBUG',
+            },
+        }
+    }

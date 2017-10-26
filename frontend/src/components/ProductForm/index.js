@@ -6,6 +6,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import FormField from 'components/FormField'
 import InputField from 'components/InputField'
+import TagsInputField from 'components/TagsInputField'
 import TextareaField from 'components/TextareaField'
 import SelectField from 'components/SelectField'
 
@@ -55,6 +56,11 @@ class ProductForm extends PureComponent {
             value: donor.get('title'),
           }))}
         />
+        <FormField
+          name="tagnames"
+          label="Tags:"
+          component={TagsInputField}
+        />
         <center>
           {onBack && <button className="btn mr-3" onClick={this.handleClickBack}>
             Back
@@ -81,6 +87,10 @@ const validate = (values) => {
 
   if (!values.get('donor')) {
     errors.donor = 'Please select a donor'
+  }
+
+  if (!values.get('tagnames') || !values.get('tagnames').size) {
+    errors.tagnames = 'Please enter at least one tag'
   }
 
   return errors

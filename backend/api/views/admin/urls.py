@@ -15,15 +15,16 @@ from api.views.admin.products import ProductMediumUploadView
 from api.views.admin.products import ProductMediumDeleteView
 from api.views.admin.products import ProductListView
 from api.views.admin.products import ProductMediaReorderView
+from api.views.admin.tags import TagSuggestionListView
 
 
 urlpatterns = [
-    # charities api endpoints
+    # charities endpoints
     url(r'^charities/$', CharityListView.as_view(), name='charity-list'),
     url(r'^charities/(?P<pk>[0-9]+)/$', CharityDetailView.as_view(), name='charity-detail'),
     url(r'^charities/(?P<pk>[0-9]+)/logo/$', CharityLogoUploadView.as_view(), name='charity-logo'),
 
-    # donors api endpoints
+    # donors endpoints
     url(r'^donors/$', DonorListView.as_view(), name='donor-list'),
     url(r'^donors/(?P<pk>[0-9]+)/$', DonorDetailView.as_view(), name='donor-detail'),
     url(r'^donors/(?P<pk>[0-9]+)/products/$', DonorProductListView.as_view(), name='donor-product-list'),
@@ -35,7 +36,7 @@ urlpatterns = [
     ),
     url(r'^donors/(?P<pk>[0-9]+)/media/reorder/$', DonorMediaReorderView.as_view(), name='donor-media-reorder'),
 
-    # products api endpoints
+    # products endpoints
     url(r'^products/$', ProductListView.as_view(), name='product-list'),
     url(r'^products/(?P<pk>[0-9]+)/$', ProductDetailView.as_view(), name='product-detail'),
     url(r'^products/(?P<pk>[0-9]+)/media/$', ProductMediumUploadView.as_view(), name='product-medium'),
@@ -45,4 +46,7 @@ urlpatterns = [
         name='product-medium-delete'
     ),
     url(r'^products/(?P<pk>[0-9]+)/media/reorder/$', ProductMediaReorderView.as_view(), name='product-media-reorder'),
+
+    # tags endpoints
+    url(r'^tags/suggest/(?P<keyword>[a-zA-Z0-9]+)/$', TagSuggestionListView.as_view(), name='tag-suggestion-list'),
 ]

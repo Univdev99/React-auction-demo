@@ -14,16 +14,16 @@ class DonorFrontListView(generics.ListAPIView):
     serializer_class = DonorSerializer
 
     def get_queryset(self):
-        return Donor.objects.all()[:4]
+        return Donor.objects.prefetch_related('donormedium_set__medium')[:4]
 
 
 class DonorListView(generics.ListAPIView):
     serializer_class = DonorSerializer
     pagination_class = EightPerPagePagination
-    queryset = Donor.objects.all()
+    queryset = Donor.objects.prefetch_related('donormedium_set__medium')
 
 
 class DonorDetailView(generics.RetrieveAPIView):
     serializer_class = DonorDetailSerializer
     lookup_url_kwarg = 'pk'
-    queryset = Donor.objects.all()
+    queryset = Donor.objects.prefetch_related('donormedium_set__medium')

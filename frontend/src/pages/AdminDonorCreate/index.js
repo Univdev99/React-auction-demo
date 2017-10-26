@@ -75,7 +75,7 @@ class AdminDonorCreate extends PureComponent {
             {creatingStatus === -1 && <div className="mb-2 text-danger">
               Failed to create donor
             </div>}
-            
+
             <DonorForm
               charityList={charityList}
               disabled={creatingStatus === 1}

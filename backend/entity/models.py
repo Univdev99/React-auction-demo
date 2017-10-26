@@ -3,6 +3,10 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
+from tagging.models import Tag
+from tagging.models import TaggedItem
+from tagging.registry import register
+
 from entity.constants import DONOR_TYPE_CHOICES
 from storage.models import Medium
 
@@ -32,8 +36,16 @@ class Donor(models.Model):
 
     @property
     def similar_donors(self):
-        ### correct algorithm based on tagging should be here
-        return Donor.objects.exclude(pk=self.pk).prefetch_related('donormedium_set')
+        return self.get_similar_donors(2)
+
+    @property
+    def tagnames(self):
+        return [tag.name for tag in self.tags]
+
+    def get_similar_donors(self, count):
+        return TaggedItem.objects.get_related(self, Donor.objects.prefetch_related('donormedium_set__medium'), count)
+
+register(Donor)
 
 
 class DonorMedium(models.Model):
@@ -56,6 +68,12 @@ class Product(models.Model):
 
     def __str__(self):
         return 'Product <{}>'.format(self.title)
+
+    @property
+    def tagnames(self):
+        return [tag.name for tag in self.tags]
+
+register(Product)
 
 
 class ProductMedium(models.Model):

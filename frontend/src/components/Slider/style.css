@@ -18,7 +18,7 @@
 }
 
 .slide-image {
-  background: center top/cover no-repeat;
+  background: center top/contain no-repeat;
 }
 
 .slide-video {
