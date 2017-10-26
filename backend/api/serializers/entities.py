@@ -1,4 +1,7 @@
+from django.db import transaction
+
 from rest_framework import serializers
+from tagging.models import Tag
 
 from api.serializers.storage import MediumSerializer
 from entity.models import Charity
@@ -55,13 +58,19 @@ class DonorWithTagsSerializer(DonorSerializer):
         fields = DonorSerializer.Meta.fields + ('tagnames',)
         read_only_fields = ('pk',)
 
+    @transaction.atomic
     def create(self, validated_data):
-        validated_data.pop('tagnames')
-        return super(DonorWithTagsSerializer, self).create(validated_data)
+        tagnames = validated_data.pop('tagnames')
+        instance = super(DonorWithTagsSerializer, self).create(validated_data)
+        Tag.objects.update_tags(instance, ','.join(tagnames))
+        return instance
 
+    @transaction.atomic
     def update(self, instance, validated_data):
-        validated_data.pop('tagnames')
-        return super(DonorWithTagsSerializer, self).update(instance, validated_data)
+        tagnames = validated_data.pop('tagnames')
+        instance = super(DonorWithTagsSerializer, self).update(instance, validated_data)
+        Tag.objects.update_tags(instance, ','.join(tagnames))
+        return instance
 
 
 class DonorDetailSerializer(serializers.ModelSerializer):
@@ -126,13 +135,19 @@ class ProductWithTagsSerializer(ProductSerializer):
         fields = ProductSerializer.Meta.fields + ('tagnames',)
         read_only_fields = ('pk',)
 
+    @transaction.atomic
     def create(self, validated_data):
-        validated_data.pop('tagnames')
-        return super(ProductWithTagsSerializer, self).create(validated_data)
+        tagnames = validated_data.pop('tagnames')
+        instance = super(ProductWithTagsSerializer, self).create(validated_data)
+        Tag.objects.update_tags(instance, ','.join(tagnames))
+        return instance
 
+    @transaction.atomic
     def update(self, instance, validated_data):
-        validated_data.pop('tagnames')
-        return super(ProductWithTagsSerializer, self).update(instance, validated_data)
+        tagnames = validated_data.pop('tagnames')
+        instance = super(ProductWithTagsSerializer, self).update(instance, validated_data)
+        Tag.objects.update_tags(instance, ','.join(tagnames))
+        return instance
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):

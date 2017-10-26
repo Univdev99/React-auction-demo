@@ -8,7 +8,6 @@ from rest_framework import generics
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from tagging.models import Tag
 
 from api.serializers.entities import DonorSerializer
 from api.serializers.entities import DonorMediumSerializer
@@ -26,7 +25,7 @@ from storage.mixins import MediumDeleteMixin
 
 class DonorListView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
-    queryset = Donor.objects.all()
+    queryset = Donor.objects.order_by('pk')
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -34,23 +33,12 @@ class DonorListView(generics.ListCreateAPIView):
         else:
             return DonorWithTagsSerializer
 
-    @transaction.atomic
-    def perform_create(self, serializer):
-        donor = serializer.save()
-        Tag.objects.update_tags(donor, ','.join(serializer.validated_data['tagnames']))
-
 
 class DonorDetailView(MediumDeleteMixin, generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
     serializer_class = DonorWithTagsSerializer
     lookup_url_kwarg = 'pk'
     queryset = Donor.objects.all()
-
-    @transaction.atomic
-    def perform_update(self, serializer):
-        serializer.save()
-        donor = self.get_object()
-        Tag.objects.update_tags(donor, ','.join(serializer.validated_data['tagnames']))
 
     @transaction.atomic
     def perform_destroy(self, instance):

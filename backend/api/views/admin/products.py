@@ -26,7 +26,7 @@ from storage.mixins import MediumDeleteMixin
 
 class ProductListView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
-    queryset = Product.objects.select_related('donor')
+    queryset = Product.objects.select_related('donor').order_by('pk')
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -34,23 +34,12 @@ class ProductListView(generics.ListCreateAPIView):
         else:
             return ProductWithTagsSerializer
 
-    @transaction.atomic
-    def perform_create(self, serializer):
-        product = serializer.save()
-        Tag.objects.update_tags(product, ','.join(serializer.validated_data['tagnames']))
-
 
 class ProductDetailView(MediumDeleteMixin, generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
     serializer_class = ProductWithTagsSerializer
     lookup_url_kwarg = 'pk'
     queryset = Product.objects.select_related('donor')
-
-    @transaction.atomic
-    def perform_update(self, serializer):
-        serializer.save()
-        product = self.get_object()
-        Tag.objects.update_tags(product, ','.join(serializer.validated_data['tagnames']))
 
     @transaction.atomic
     def perform_destroy(self, instance):
