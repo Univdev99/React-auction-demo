@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import { Collapse, Navbar, NavbarToggler, NavbarBrand } from 'reactstrap'
 
 import AppHeaderMenu from 'components/AppHeaderMenu'
 import AppLogo from 'components/AppLogo'
@@ -16,7 +17,14 @@ class AppHeader extends PureComponent {
   }
 
   state = {
+    menuOpened: false,
     accountMenuOpened: false
+  }
+
+  handleToggleMenu = () => {
+    this.setState({
+      menuOpened: !this.state.menuOpened
+    })
   }
 
   handleClickUsername = (e) => {
@@ -43,7 +51,7 @@ class AppHeader extends PureComponent {
 
   render() {
     const { username, isStaff } = this.props
-    const { accountMenuOpened } = this.state
+    const { menuOpened, accountMenuOpened } = this.state
     const accountMenuClasses = ['dropdown-menu', 'dropdown-menu-right', 'mx-3', 'my-1']
 
     if (accountMenuOpened) {
@@ -51,15 +59,13 @@ class AppHeader extends PureComponent {
     }
 
     return (
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <Navbar color="dark" dark expand="md">
         <AppLogo />
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarText">
+        <NavbarToggler onClick={this.handleToggleMenu} />
+        <Collapse isOpen={menuOpened} navbar>
           <AppHeaderMenu />
 
-          <a href="/" className="navbar-text ml-3" onClick={this.handleClickUsername}>
+          <a href="/" className="navbar-text" onClick={this.handleClickUsername}>
             <span className="mr-2"><i className="fa fa-user-circle" /></span>
             {username}
           </a>
@@ -69,8 +75,8 @@ class AppHeader extends PureComponent {
             <a className="dropdown-item" href="/" onClick={this.handleSignOut}>Sign Out</a>
           </div>
           {accountMenuOpened && <div className="account-menu-bg" onClick={this.handleCloseAccountMenu} />}
-        </div>
-      </nav>
+        </Collapse>
+      </Navbar>
     )
   }
 }

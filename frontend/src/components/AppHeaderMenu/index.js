@@ -1,22 +1,23 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { Nav, NavItem, NavLink } from 'reactstrap'
 
 
 const AppHeaderMenu = () => (
-  <ul className="navbar-nav ml-auto">
-    <li className="nav-item">
-      <Link className="nav-link" to="/">Auctions</Link>
-    </li>
-    <li className="nav-item">
-      <Link className="nav-link" to="/">Mission</Link>
-    </li>
-    <li className="nav-item">
-      <Link className="nav-link" to="/">FAQ</Link>
-    </li>
-    <li className="nav-item">
-      <Link className="nav-link" to="/">The Good</Link>
-    </li>
-  </ul>
+  <Nav className="ml-auto mr-3" navbar>
+    <NavItem>
+      <NavLink tag={Link} to="/">Auctions</NavLink>
+    </NavItem>
+    <NavItem>
+      <NavLink tag={Link} to="/">Mission</NavLink>
+    </NavItem>
+    <NavItem>
+      <NavLink tag={Link} to="/">FAQ</NavLink>
+    </NavItem>
+    <NavItem>
+      <NavLink tag={Link} to="/">The Good</NavLink>
+    </NavItem>
+  </Nav>
 )
 
 export default AppHeaderMenu

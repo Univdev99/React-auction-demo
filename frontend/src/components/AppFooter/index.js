@@ -1,47 +1,60 @@
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
+import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap'
 
 import AppLogo from 'components/AppLogo'
 
 
 class AppFooter extends PureComponent {
 
+  state = {
+    menuOpened: false
+  }
+
+  handleToggleMenu = () => {
+    this.setState({
+      menuOpened: !this.state.menuOpened
+    })
+  }
+
   render() {
+    const { menuOpened } = this.state
+
     return (
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <Navbar color="dark" dark expand="md">
         <AppLogo />
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarText">
-          <ul className="navbar-nav ml-auto">
-            <li className="nav-item">
-              <Link className="nav-link" to="/">Privacy Policy</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/">Terms & Conditions</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/">Shipping</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/">Support</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/">Careers</Link>
-            </li>
-            <li className="nav-item ml-3">
-              <a className="nav-link" href="/"><i className="fa fa-facebook-square" /></a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/"><i className="fa fa-twitter-square" /></a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/"><i className="fa fa-linkedin-square" /></a>
-            </li>
-          </ul>
-        </div>
-      </nav>
+        <NavbarToggler onClick={this.handleToggleMenu} />
+        <Collapse isOpen={menuOpened} navbar>
+          <Nav className="ml-auto mr-3" navbar>
+            <NavItem>
+              <NavLink tag={Link} to="/">Privacy Policy</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink tag={Link} to="/">Terms & Conditions</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink tag={Link} to="/">Shipping</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink tag={Link} to="/">Support</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink tag={Link} to="/">Careers</NavLink>
+            </NavItem>
+          </Nav>
+        </Collapse>
+        <Nav className="d-none d-md-flex" navbar>
+          <NavItem>
+            <a className="nav-link" href="/"><i className="fa fa-facebook-square" /></a>
+          </NavItem>
+          <NavItem>
+            <a className="nav-link" href="/"><i className="fa fa-twitter-square" /></a>
+          </NavItem>
+          <NavItem>
+            <a className="nav-link" href="/"><i className="fa fa-linkedin-square" /></a>
+          </NavItem>
+        </Nav>
+      </Navbar>
     )
   }
 }

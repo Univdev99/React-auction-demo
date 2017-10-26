@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
+import { Collapse, Navbar, NavbarToggler, NavbarBrand } from 'reactstrap'
 
 import AppHeaderMenu from 'components/AppHeaderMenu'
 import AppLogo from 'components/AppLogo'
@@ -7,21 +8,31 @@ import AppLogo from 'components/AppLogo'
 
 class AppHeaderGuest extends PureComponent {
 
+  state = {
+    menuOpened: false
+  }
+
+  handleToggleMenu = () => {
+    this.setState({
+      menuOpened: !this.state.menuOpened
+    })
+  }
+
   render() {
+    const { menuOpened } = this.state
+
     return (
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <Navbar color="dark" dark expand="md">
         <AppLogo />
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarText">
+        <NavbarToggler onClick={this.handleToggleMenu} />
+        <Collapse isOpen={menuOpened} navbar>
           <AppHeaderMenu />
 
           <Link className="navbar-text ml-3" to="/signin">
             <i className="fa fa-user-circle" />
           </Link>
-        </div>
-      </nav>
+        </Collapse>
+      </Navbar>
     )
   }
 }
