@@ -24,7 +24,7 @@ from storage.mixins import MediumDeleteMixin
 
 class ProductListView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
-    queryset = Product.objects.select_related('donor').order_by('pk')
+    queryset = Product.objects.order_by('pk')
 
     def get_serializer_class(self):
         if self.request.method == 'GET':

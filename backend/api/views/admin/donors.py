@@ -24,7 +24,7 @@ from storage.mixins import MediumDeleteMixin
 
 class DonorListView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
-    queryset = Donor.objects.order_by('pk')
+    queryset = Donor.objects.order_by('pk').prefetch_related('media')
 
     def get_serializer_class(self):
         if self.request.method == 'GET':

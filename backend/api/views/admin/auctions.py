@@ -18,7 +18,10 @@ from auction.models import Auction
 
 class AuctionListView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
-    queryset = Auction.objects.order_by('pk')
+    queryset = Auction.objects.order_by('pk') \
+        .select_related('product') \
+        .select_related('product__donor') \
+        .prefetch_related('product__media')
     serializer_class = AuctionSerializer
 
 
@@ -26,7 +29,7 @@ class AuctionDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
     serializer_class = AuctionSerializer
     lookup_url_kwarg = 'pk'
-    queryset = Auction.objects.all()
+    queryset = Auction.objects.select_related('product')
 
     def destroy(self, *args, **kwargs):
         auction = self.get_object()
@@ -39,7 +42,7 @@ class AuctionStartView(generics.GenericAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
     serializer_class = AuctionSerializer
     lookup_url_kwarg = 'pk'
-    queryset = Auction.objects.all()
+    queryset = Auction.objects.select_related('product')
 
     def post(self, *args, **kwargs):
         auction = self.get_object()
@@ -53,7 +56,7 @@ class AuctionFinishView(generics.GenericAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
     serializer_class = AuctionSerializer
     lookup_url_kwarg = 'pk'
-    queryset = Auction.objects.all()
+    queryset = Auction.objects.select_related('product')
 
     def post(self, *args, **kwargs):
         auction = self.get_object()
@@ -67,7 +70,7 @@ class AuctionCancelView(generics.GenericAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
     serializer_class = AuctionSerializer
     lookup_url_kwarg = 'pk'
-    queryset = Auction.objects.all()
+    queryset = Auction.objects.select_related('product')
 
     def post(self, *args, **kwargs):
         auction = self.get_object()

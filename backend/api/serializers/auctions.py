@@ -4,6 +4,7 @@ from rest_framework import serializers
 
 from auction.models import Auction
 from api.serializers.entities import ProductSerializer
+from api.serializers.entities import ProductDetailSerializer
 from api.serializers.mixins import TagnamesSerializerMixin
 
 
@@ -23,7 +24,7 @@ class AuctionSerializer(serializers.ModelSerializer):
         read_only_fields = ('pk', 'current_price', 'status', 'started_at', 'ended_at', 'product_details')
 
     def get_product_details(self, obj):
-        serializer = ProductSerializer(obj.product)
+        serializer = ProductDetailSerializer(obj.product)
         return serializer.data
 
 

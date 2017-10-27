@@ -37,6 +37,16 @@ class DonorSerializer(serializers.ModelSerializer):
         return MediumSerializer(obj.media.order_by('order'), many=True).data
 
 
+class DonorWithoutMediaSerializer(serializers.ModelSerializer):
+    """
+    Serializer used in AuctionSerializer in nested fashion
+    """
+    class Meta:
+        model = Donor
+        fields = ('pk', 'title', 'description', 'type', 'charity')
+        read_only_fields = ('pk', 'title', 'description', 'type', 'charity')
+
+
 class DonorDetailSerializer(TagnamesSerializerMixin, DonorSerializer):
     """
     Serializer used in admin api for serializing and saving Donor model object
@@ -73,25 +83,25 @@ class ProductSerializer(serializers.ModelSerializer):
     """
     Serializer used in admin api for serializing Product query set
     """
-    donor_details = serializers.SerializerMethodField()
-    media = serializers.SerializerMethodField()
-
     class Meta:
         model = Product
-        fields = ('pk', 'title', 'description', 'donor', 'donor_details', 'media',)
-        read_only_fields = ('pk',)
-
-    def get_donor_details(self, obj):
-        return DonorSerializer(obj.donor).data
-
-    def get_media(self, obj):
-        return MediumSerializer(obj.media.all(), many=True).data
+        fields = ('pk', 'title', 'description', 'donor')
+        read_only_fields = ('pk', 'title', 'description', 'donor')
 
 
 class ProductDetailSerializer(TagnamesSerializerMixin, ProductSerializer):
     """
     Serializer used in admin api for serializing and saving Product model object
     """
+    donor_details = serializers.SerializerMethodField()
+    media = serializers.SerializerMethodField()
+
     class Meta(ProductSerializer.Meta):
-        fields = ProductSerializer.Meta.fields
+        fields = ProductSerializer.Meta.fields + ('donor_details', 'media')
         read_only_fields = ('pk',)
+
+    def get_donor_details(self, obj):
+        return DonorWithoutMediaSerializer(obj.donor).data
+
+    def get_media(self, obj):
+        return MediumSerializer(obj.media.all(), many=True).data
