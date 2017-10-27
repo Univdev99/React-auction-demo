@@ -10,14 +10,13 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from api.serializers.entities import DonorSerializer
-from api.serializers.entities import DonorMediumSerializer
 from api.serializers.entities import DonorDetailSerializer
 from api.serializers.entities import MediaReorderSerializer
 from api.serializers.entities import ProductSerializer
+from api.serializers.storage import MediumSerializer
 from api.serializers.storage import UploadMediumSerializer
 from api.permissions import IsAdmin
 from entity.models import Donor
-from entity.models import DonorMedium
 from storage.constants import VALID_VIDEO_MIMETYPES
 from storage.mixins import MediumUploadMixin
 from storage.mixins import MediumDeleteMixin
@@ -42,10 +41,8 @@ class DonorDetailView(MediumDeleteMixin, generics.RetrieveUpdateDestroyAPIView):
 
     @transaction.atomic
     def perform_destroy(self, instance):
-        donor_media = instance.donormedium_set.select_related('medium')
-        for dm in donor_media:
-            self.delete_medium(dm.medium)
-            dm.delete()
+        for medium in instance.media.all():
+            self.delete_medium(medium)
         super(DonorDetailView, self).perform_destroy(instance)
 
 
@@ -56,7 +53,7 @@ class DonorProductListView(generics.ListAPIView):
         donor_pk = self.kwargs['pk']
         return get_object_or_404(Donor, pk=donor_pk).product_set \
             .select_related('donor') \
-            .prefetch_related('productmedium_set')
+            .prefetch_related('media')
 
 
 class DonorMediumUploadView(MediumUploadMixin, generics.GenericAPIView):
@@ -74,28 +71,28 @@ class DonorMediumUploadView(MediumUploadMixin, generics.GenericAPIView):
     def post(self, *args, **kwargs):
         file = self.get_uploaded_file()
         donor = self.get_object()
+
+        max_record = donor.media.aggregate(Max('order'))
+        order = max_record['order__max'] + 1 if max_record['order__max'] else 1
+
         if file.content_type in VALID_VIDEO_MIMETYPES:
             medium = self.upload_video(
                 file,
                 'donor/media',
-                '{}_{}'.format(donor.pk, random.randint(10000000, 99999999))
+                '{}_{}'.format(donor.pk, random.randint(10000000, 99999999)),
+                content_object=donor,
+                order=order
             )
         else:
             medium = self.upload_image(
                 file,
                 'donor/media',
-                '{}_{}'.format(donor.pk, random.randint(10000000, 99999999))
+                '{}_{}'.format(donor.pk, random.randint(10000000, 99999999)),
+                content_object=donor,
+                order=order
             )
 
-        max_record = donor.donormedium_set.aggregate(Max('order'))
-        order = max_record['order__max'] + 1 if max_record['order__max'] else 1
-        donor_medium = DonorMedium.objects.create(
-            medium=medium,
-            donor=donor,
-            order=order
-        )
-
-        serializer = DonorMediumSerializer(donor_medium)
+        serializer = MediumSerializer(medium)
         return Response(serializer.data)
 
 
@@ -112,9 +109,8 @@ class DonorMediumDeleteView(MediumDeleteMixin, generics.GenericAPIView):
 
         donor = self.get_object()
         dm_pk = self.kwargs['dm_pk']
-        dm = get_object_or_404(donor.donormedium_set, pk=dm_pk)
-        self.delete_medium(dm.medium)
-        dm.delete()
+        medium = get_object_or_404(donor.media, pk=dm_pk)
+        self.delete_medium(medium)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -133,8 +129,8 @@ class DonorMediaReorderView(generics.GenericAPIView):
         medium_ids = serializer.validated_data['media_order']
         order = 1
         for medium_id in medium_ids:
-            donor.donormedium_set.filter(pk=medium_id).update(order=order)
+            donor.media.filter(pk=medium_id).update(order=order)
             order += 1
 
-        serializer = DonorMediumSerializer(donor.donormedium_set.order_by('order'), many=True)
+        serializer = MediumSerializer(donor.media.order_by('order'), many=True)
         return Response(serializer.data)

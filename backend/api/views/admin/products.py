@@ -13,12 +13,10 @@ from tagging.models import Tag
 from api.serializers.entities import MediaReorderSerializer
 from api.serializers.entities import ProductSerializer
 from api.serializers.entities import ProductDetailSerializer
-from api.serializers.entities import ProductMediumSerializer
 from api.serializers.storage import MediumSerializer
 from api.serializers.storage import UploadMediumSerializer
 from api.permissions import IsAdmin
 from entity.models import Product
-from entity.models import ProductMedium
 from storage.constants import VALID_VIDEO_MIMETYPES
 from storage.mixins import MediumUploadMixin
 from storage.mixins import MediumDeleteMixin
@@ -43,10 +41,8 @@ class ProductDetailView(MediumDeleteMixin, generics.RetrieveUpdateDestroyAPIView
 
     @transaction.atomic
     def perform_destroy(self, instance):
-        product_media = instance.productmedium_set.select_related('medium')
-        for pm in product_media:
-            self.delete_medium(pm.medium)
-            pm.delete()
+        for medium in instance.media.all():
+            self.delete_medium(medium)
         super(ProductDetailView, self).perform_destroy(instance)
 
 
@@ -65,28 +61,28 @@ class ProductMediumUploadView(MediumUploadMixin, generics.GenericAPIView):
     def post(self, *args, **kwargs):
         file = self.get_uploaded_file()
         product = self.get_object()
+
+        max_record = product.media.aggregate(Max('order'))
+        order = max_record['order__max'] + 1 if max_record['order__max'] else 1
+
         if file.content_type in VALID_VIDEO_MIMETYPES:
             medium = self.upload_video(
                 file,
                 'product',
-                '{}_{}'.format(product.pk, random.randint(10000000, 99999999))
+                '{}_{}'.format(product.pk, random.randint(10000000, 99999999)),
+                content_object=product,
+                order=order
             )
         else:
             medium = self.upload_image(
                 file,
                 'product',
-                '{}_{}'.format(product.pk, random.randint(10000000, 99999999))
+                '{}_{}'.format(product.pk, random.randint(10000000, 99999999)),
+                content_object=product,
+                order=order
             )
 
-        max_record = product.productmedium_set.aggregate(Max('order'))
-        order = max_record['order__max'] + 1 if max_record['order__max'] else 1
-        product_medium = ProductMedium.objects.create(
-            medium=medium,
-            product=product,
-            order=order
-        )
-
-        serializer = ProductMediumSerializer(product_medium)
+        serializer = MediumSerializer(medium)
         return Response(serializer.data)
 
 
@@ -103,9 +99,8 @@ class ProductMediumDeleteView(MediumDeleteMixin, generics.GenericAPIView):
 
         product = self.get_object()
         pm_pk = self.kwargs['pm_pk']
-        pm = get_object_or_404(product.productmedium_set, pk=pm_pk)
-        self.delete_medium(pm.medium)
-        pm.delete()
+        medium = get_object_or_404(product.media, pk=pm_pk)
+        self.delete_medium(medium)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -124,8 +119,8 @@ class ProductMediaReorderView(generics.GenericAPIView):
         medium_ids = serializer.validated_data['media_order']
         order = 1
         for medium_id in medium_ids:
-            product.productmedium_set.filter(pk=medium_id).update(order=order)
+            product.media.filter(pk=medium_id).update(order=order)
             order += 1
 
-        serializer = ProductMediumSerializer(product.productmedium_set.order_by('order'), many=True)
+        serializer = MediumSerializer(product.media.order_by('order'), many=True)
         return Response(serializer.data)

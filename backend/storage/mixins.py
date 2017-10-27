@@ -16,27 +16,39 @@ from storage.models import Medium
 
 
 class MediumCreateMixin(object):
-    def create_medium(self, url, type, mimetype):
-        medium = Medium(url=url, type=type, mimetype=mimetype)
-        medium.save()
-        return medium
+    # def create_medium(self, url, type, mimetype, content_object=None, order=1):
+    def create_medium(self, **kwargs):
+        return Medium.objects.create(**kwargs)
 
 
 class MediumDeleteMixin(object):
     def delete_medium(self, medium):
+        medium.content_object = None
         medium.deleted_at = datetime.utcnow().replace(tzinfo=utc)
         medium.save()
 
 
 class MediumUploadMixin(MediumCreateMixin, MediumDeleteMixin):
-    def upload_image(self, file_obj, s3_folder, s3_filename):
+    def upload_image(self, file_obj, s3_folder, s3_filename, content_object=None, order=1):
         file_url, mimetype = self.upload_to_s3(file_obj, s3_folder, s3_filename)
-        medium = self.create_medium(file_url, MEDIUM_TYPE_PHOTO, mimetype)
+        medium = self.create_medium(
+            content_object=content_object,
+            url=file_url,
+            type=MEDIUM_TYPE_PHOTO,
+            mimetype=mimetype,
+            order=order
+        )
         return medium
 
-    def upload_video(self, file_obj, s3_folder, s3_filename):
+    def upload_video(self, file_obj, s3_folder, s3_filename, content_object=None, order=1):
         file_url, mimetype = self.upload_to_s3(file_obj, s3_folder, s3_filename)
-        medium = self.create_medium(file_url, MEDIUM_TYPE_VIDEO, mimetype)
+        medium = self.create_medium(
+            content_object=content_object,
+            url=file_url,
+            type=MEDIUM_TYPE_VIDEO,
+            mimetype=mimetype,
+            order=order
+        )
         return medium
 
     def upload_to_s3(self, file_obj, s3_folder, s3_filename):

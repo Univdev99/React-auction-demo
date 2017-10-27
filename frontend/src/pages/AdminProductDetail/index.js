@@ -193,10 +193,10 @@ class AdminProductDetail extends PureComponent {
                                 {...provided.dragHandleProps}
                               >
                                 {
-                                  medium.getIn(['medium', 'type']) === 'video' ?
-                                  <video className="img-fluid" src={medium.getIn(['medium', 'url'])} controls />
+                                  medium.get('type') === 'video' ?
+                                  <video className="img-fluid" src={medium.get('url')} controls />
                                   :
-                                  <img className="img-fluid" src={medium.getIn(['medium', 'url'])} alt="Product Medium" />
+                                  <img className="img-fluid" src={medium.get('url')} alt="Product Medium" />
                                 }
                               </div>
                               {provided.placeholder}

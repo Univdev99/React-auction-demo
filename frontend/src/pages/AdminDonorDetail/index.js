@@ -209,10 +209,10 @@ class AdminDonorDetail extends PureComponent {
                                 {...provided.dragHandleProps}
                               >
                                 {
-                                  medium.getIn(['medium', 'type']) === 'video' ?
-                                  <video className="img-fluid" src={medium.getIn(['medium', 'url'])} controls />
+                                  medium.get('type') === 'video' ?
+                                  <video className="img-fluid" src={medium.get('url')} controls />
                                   :
-                                  <img className="img-fluid" src={medium.getIn(['medium', 'url'])} alt="Donor Medium" />
+                                  <img className="img-fluid" src={medium.get('url')} alt="Donor Medium" />
                                 }
                               </div>
                               {provided.placeholder}

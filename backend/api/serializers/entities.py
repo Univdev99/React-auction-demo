@@ -7,9 +7,7 @@ from api.serializers.mixins import TagnamesSerializerMixin
 from api.serializers.storage import MediumSerializer
 from entity.models import Charity
 from entity.models import Donor
-from entity.models import DonorMedium
 from entity.models import Product
-from entity.models import ProductMedium
 
 
 class CharitySerializer(serializers.ModelSerializer):
@@ -24,14 +22,6 @@ class CharitySerializer(serializers.ModelSerializer):
         return obj.logo.url if obj.logo else None
 
 
-class DonorMediumSerializer(serializers.ModelSerializer):
-    medium = MediumSerializer()
-
-    class Meta:
-        model = DonorMedium
-        fields = ('pk', 'medium', 'order')
-
-
 class DonorSerializer(serializers.ModelSerializer):
     """
     Serializer used in admin api for serializing Donor query set
@@ -44,7 +34,7 @@ class DonorSerializer(serializers.ModelSerializer):
         read_only_fields = ('pk', 'title', 'description', 'type', 'charity', 'media')
 
     def get_media(self, obj):
-        return DonorMediumSerializer(obj.donormedium_set.order_by('order'), many=True).data
+        return MediumSerializer(obj.media.order_by('order'), many=True).data
 
 
 class DonorDetailSerializer(TagnamesSerializerMixin, DonorSerializer):
@@ -70,21 +60,13 @@ class DonorDetailWithSimilarSerializer(serializers.ModelSerializer):
         read_only_fields = ('pk', 'title', 'description', 'type', 'charity', 'media', 'similar_donors')
 
     def get_media(self, obj):
-        return DonorMediumSerializer(obj.donormedium_set.order_by('order'), many=True).data
+        return MediumSerializer(obj.media.order_by('order'), many=True).data
 
 
 class MediaReorderSerializer(serializers.Serializer):
     media_order = serializers.ListField(
         child=serializers.IntegerField(min_value=1)
     )
-
-
-class ProductMediumSerializer(serializers.ModelSerializer):
-    medium = MediumSerializer()
-
-    class Meta:
-        model = ProductMedium
-        fields = ('pk', 'medium')
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -103,7 +85,7 @@ class ProductSerializer(serializers.ModelSerializer):
         return DonorSerializer(obj.donor).data
 
     def get_media(self, obj):
-        return ProductMediumSerializer(obj.productmedium_set.all(), many=True).data
+        return MediumSerializer(obj.media.all(), many=True).data
 
 
 class ProductDetailSerializer(TagnamesSerializerMixin, ProductSerializer):

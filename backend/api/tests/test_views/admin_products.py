@@ -8,7 +8,6 @@ from rest_framework import status
 
 from api.serializers.entities import ProductSerializer
 from entity.models import Product
-from entity.models import ProductMedium
 from entity.test.factories import DonorFactory
 from entity.test.factories import ProductFactory
 from storage.constants import MEDIUM_TYPE_VIDEO
@@ -44,8 +43,7 @@ class ProductDetailViewTests(AdminTestCase):
     def setUp(self):
         super(ProductDetailViewTests, self).setUp()
         self.product = ProductFactory.create()
-        self.medium = MediumFactory.create()
-        pm = ProductMedium.objects.create(product=self.product, medium=self.medium, order=1)
+        self.medium = MediumFactory.create(instance=self.product, order=1)
 
     def test_update_product_with_tags(self):
         serializer = ProductSerializer(self.product)
@@ -78,7 +76,7 @@ class ProductMediumUploadViewTests(AdminTestCase):
     @patch('api.views.admin.products.ProductMediumUploadView.get_uploaded_file')
     @patch('api.views.admin.products.MediumUploadMixin.upload_image')
     def test_upload_medium(self, mock_upload_image, mock_get_uploaded_file):
-        new_medium = MediumFactory.create()
+        new_medium = MediumFactory.create(instance=self.product)
         mock_upload_image.return_value = new_medium
 
         file = MagicMock()
@@ -90,19 +88,18 @@ class ProductMediumUploadViewTests(AdminTestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        self.assertNotEqual(self.product.productmedium_set.count(), 0)
+        self.assertNotEqual(self.product.media.count(), 0)
 
 
 class ProductMediumDeleteViewTests(AdminTestCase):
     def setUp(self):
         super(ProductMediumDeleteViewTests, self).setUp()
         self.product = ProductFactory.create()
-        self.medium = MediumFactory.create()
-        self.pm = ProductMedium.objects.create(product=self.product, medium=self.medium, order=1)
+        self.medium = MediumFactory.create(instance=self.product, )
 
     def test_delete_medium(self):
         response = self.client.delete(
-            reverse('api:admin:product-medium-delete', kwargs=dict(pk=self.product.pk, pm_pk=self.pm.pk))
+            reverse('api:admin:product-medium-delete', kwargs=dict(pk=self.product.pk, pm_pk=self.medium.pk))
         )
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
@@ -114,17 +111,17 @@ class ProductMediaReorderViewTests(AdminTestCase):
     def setUp(self):
         super(ProductMediaReorderViewTests, self).setUp()
         self.product = ProductFactory.create()
-        self.productMedia = (
-            ProductMedium.objects.create(product=self.product, medium=MediumFactory.create(), order=1),
-            ProductMedium.objects.create(product=self.product, medium=MediumFactory.create(), order=2),
-            ProductMedium.objects.create(product=self.product, medium=MediumFactory.create(), order=3),
+        self.media = (
+            MediumFactory.create(instance=self.product, order=1),
+            MediumFactory.create(instance=self.product, order=2),
+            MediumFactory.create(instance=self.product, order=3),
         )
 
     def test_media_reorder_performs_correct(self):
         reordered_pks = [
-            self.productMedia[0].pk,
-            self.productMedia[2].pk,
-            self.productMedia[1].pk,
+            self.media[0].pk,
+            self.media[2].pk,
+            self.media[1].pk,
         ]
         response = self.client.post(
             reverse('api:admin:product-media-reorder', kwargs=dict(
@@ -134,16 +131,16 @@ class ProductMediaReorderViewTests(AdminTestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        dms = self.product.productmedium_set.order_by('order')
+        dms = self.product.media.order_by('order')
         self.assertEqual(dms[0].pk, reordered_pks[0])
         self.assertEqual(dms[1].pk, reordered_pks[1])
         self.assertEqual(dms[2].pk, reordered_pks[2])
 
     def test_media_reorder_response(self):
         reordered_pks = [
-            self.productMedia[0].pk,
-            self.productMedia[2].pk,
-            self.productMedia[1].pk,
+            self.media[0].pk,
+            self.media[2].pk,
+            self.media[1].pk,
         ]
         response = self.client.post(
             reverse('api:admin:product-media-reorder', kwargs=dict(

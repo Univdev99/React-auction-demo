@@ -30,6 +30,7 @@ class Donor(models.Model):
     type = models.CharField(choices=DONOR_TYPE_CHOICES, max_length=50)
 
     charity = models.ForeignKey(Charity)
+    media = GenericRelation(Medium)
 
     def __str__(self):
         return '{} <{}>'.format(self.type, self.title)
@@ -43,21 +44,9 @@ class Donor(models.Model):
         return [tag.name for tag in self.tags]
 
     def get_similar_donors(self, count):
-        return TaggedItem.objects.get_related(self, Donor.objects.prefetch_related('donormedium_set__medium'), count)
+        return TaggedItem.objects.get_related(self, Donor.objects.prefetch_related('media'), count)
 
 register(Donor)
-
-
-class DonorMedium(models.Model):
-    medium = models.ForeignKey(Medium)
-    donor = models.ForeignKey(Donor)
-    order = models.PositiveIntegerField()
-
-    class Meta:
-        verbose_name_plural = 'Donor Media'
-
-    def __str__(self):
-        return 'Donor Medium {}'.format(self.pk)
 
 
 class Product(models.Model):
@@ -65,6 +54,7 @@ class Product(models.Model):
     description = models.TextField()
 
     donor = models.ForeignKey(Donor)
+    media = GenericRelation(Medium)
 
     def __str__(self):
         return 'Product <{}>'.format(self.title)
@@ -74,15 +64,3 @@ class Product(models.Model):
         return [tag.name for tag in self.tags]
 
 register(Product)
-
-
-class ProductMedium(models.Model):
-    medium = models.ForeignKey(Medium)
-    product = models.ForeignKey(Product)
-    order = models.PositiveIntegerField()
-
-    class Meta:
-        verbose_name_plural = 'Product Media'
-
-    def __str__(self):
-        return 'Product Medium {}'.format(self.pk)

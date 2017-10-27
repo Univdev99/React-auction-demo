@@ -80,7 +80,7 @@ class DonorDetail extends PureComponent {
 
             <div className="row mb-5">
               <div className="col-md-6 mb-5">
-                <Slider media={donorDetail.get('media').map(medium => medium.get('medium'))} />
+                <Slider media={donorDetail.get('media')} />
               </div>
               <div className="col-md-6 mb-5">
                 <div className="px-3">
@@ -105,7 +105,7 @@ class DonorDetail extends PureComponent {
                 <div key={donor.get('pk')} className="col-lg-6 col-md-12 mb-3">
                   <DonorCard
                     id={donor.get('pk')}
-                    image={donor.getIn(['media', 0, 'medium', 'url'], '')}
+                    image={donor.getIn(['media', 0, 'url'], '')}
                     title={donor.get('title')}
                   />
                 </div>

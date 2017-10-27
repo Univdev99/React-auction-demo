@@ -50,7 +50,7 @@ class Donors extends PureComponent {
               <div key={donor.get('pk')} className="col-lg-6 col-md-12 mb-3">
                 <DonorCard
                   id={donor.get('pk')}
-                  image={donor.getIn(['media', 0, 'medium', 'url'], '')}
+                  image={donor.getIn(['media', 0, 'url'], '')}
                   title={donor.get('title')}
                 />
               </div>
