@@ -33,6 +33,14 @@ export const ADMIN_UPLOAD_PRODUCT_MEDIUM = 'charibin/admin/upload-product-medium
 export const ADMIN_DELETE_PRODUCT_MEDIUM = 'charibin/admin/delete-product-medium'
 export const ADMIN_REORDER_PRODUCT_MEDIUM = 'charibin/admin/reorder-product-medium'
 
+export const ADMIN_GET_AUCTION_LIST = 'charibin/admin/get-auction-list'
+export const ADMIN_CREATE_AUCTION = 'charibin/admin/create-auction'
+export const ADMIN_GET_AUCTION_DETAIL = 'charibin/admin/get-auction-detail'
+export const ADMIN_UPDATE_AUCTION_DETAIL = 'charibin/admin/update-auction-detail'
+export const ADMIN_START_AUCTION = 'charibin/admin/start-auction'
+export const ADMIN_FINISH_AUCTION = 'charibin/admin/finish-auction'
+export const ADMIN_CANCEL_AUCTION = 'charibin/admin/cancel-auction'
+
 export const ADMIN_GET_TAG_SUGGESTIONS = 'charibin/admin/get-tag-suggestions'
 
 export const DONOR_GET_FRONT_LIST = 'charibin/donors/get-front-list'

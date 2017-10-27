@@ -9,26 +9,22 @@ from api.serializers.mixins import TagnamesSerializerMixin
 
 class AuctionSerializer(serializers.ModelSerializer):
     """
-    Serializer used for AuctionListView
+    Serializer used for AuctionListView and AuctionDetailView
     """
-    product = ProductSerializer()
+    product_details = serializers.SerializerMethodField()
 
     class Meta:
         model = Auction
-        fields = ('pk', 'title', 'starting_price', 'current_price', 'status', 'started_at', 'ended_at', 'product')
-        read_only_fields = (
-            'pk', 'title', 'starting_price', 'current_price', 'status', 'started_at', 'ended_at', 'product'
+        fields = (
+            'pk',
+            'title', 'starting_price', 'product',
+            'current_price', 'status', 'started_at', 'ended_at', 'product_details'
         )
+        read_only_fields = ('pk', 'current_price', 'status', 'started_at', 'ended_at', 'product_details')
 
-
-class AuctionDetailSerializer(TagnamesSerializerMixin, serializers.ModelSerializer):
-    """
-    Serializer used for AuctionDetailView
-    """
-    class Meta:
-        model = Auction
-        fields = ('pk', 'title', 'starting_price', 'status', 'started_at', 'ended_at', 'product')
-        read_only_fields = ('pk',)
+    def get_product_details(self, obj):
+        serializer = ProductSerializer(obj.product)
+        return serializer.data
 
 
 class AuctionDetailWithSimilarSerializer(serializers.ModelSerializer):

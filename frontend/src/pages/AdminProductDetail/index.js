@@ -49,9 +49,7 @@ class AdminProductDetail extends PureComponent {
     this.props.updateProductDetail({
       id: this.props.match.params.id,
       data,
-      success: () => this.setState({
-        updatingStatus: 10
-      }),
+      success: this.handleBack,
       fail: () => this.setState({
         updatingStatus: -1
       }),

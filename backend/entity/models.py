@@ -29,7 +29,7 @@ class Donor(models.Model):
     description = models.TextField()
     type = models.CharField(choices=DONOR_TYPE_CHOICES, max_length=50)
 
-    charity = models.ForeignKey(Charity)
+    charity = models.ForeignKey(Charity, null=True, on_delete=models.SET_NULL)
     media = GenericRelation(Medium)
 
     def __str__(self):
@@ -53,7 +53,7 @@ class Product(models.Model):
     title = models.CharField(unique=True, max_length=200)
     description = models.TextField()
 
-    donor = models.ForeignKey(Donor)
+    donor = models.ForeignKey(Donor, null=True, on_delete=models.SET_NULL)
     media = GenericRelation(Medium)
 
     def __str__(self):
@@ -62,5 +62,12 @@ class Product(models.Model):
     @property
     def tagnames(self):
         return [tag.name for tag in self.tags]
+
+    def get_similar_products(self, count):
+        return TaggedItem.objects.get_related(
+            self,
+            Product.objects.select_related('auction').prefetch_related('media'),
+            count
+        )
 
 register(Product)

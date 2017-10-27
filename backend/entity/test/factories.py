@@ -19,6 +19,7 @@ class CharityFactory(factory.DjangoModelFactory):
     description = factory.Sequence(
         lambda n: 'Description for charity {}'.format(n)
     )
+
     logo = factory.SubFactory(MediumFactory)
 
 

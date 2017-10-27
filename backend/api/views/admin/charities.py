@@ -63,5 +63,5 @@ class CharityLogoUploadView(MediumUploadMixin, generics.GenericAPIView):
             charity.logo = logo_medium
             charity.save()
 
-        serializer = self.get_serializer()
+        serializer = self.get_serializer(charity)
         return Response(serializer.data)

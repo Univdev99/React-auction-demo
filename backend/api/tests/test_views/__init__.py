@@ -2,3 +2,4 @@ from .auth import *
 from .admin_charities import *
 from .admin_donors import *
 from .admin_products import *
+from .admin_auctions import *
