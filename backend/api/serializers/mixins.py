@@ -4,7 +4,7 @@ from rest_framework import serializers
 from tagging.models import Tag
 
 
-class TagnamesSerializerMixin(serializers.ModelSerializer):
+class TagnamesSerializerMixin(object):
     def __init__(self, *args, **kwargs):
         super(TagnamesSerializerMixin, self).__init__(*args, **kwargs)
 
