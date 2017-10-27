@@ -2,6 +2,9 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Max
 
+from tagging.models import TaggedItem
+from tagging.registry import register
+
 from auction.constants import AUCTION_STATUS_CHOICES
 from auction.constants import AUCTION_STATUS_OPEN
 from auction.constants import BID_STATUS_CHOICES
@@ -29,6 +32,19 @@ class Auction(models.Model):
     def current_price(self):
         result = Bid.objects.aggregate(max_price=Max('price'))
         return result['max_price'] if result['max_price'] else self.starting_price
+
+    @property
+    def similar_auctions(self):
+        return self.get_similar_auctions(2)
+
+    @property
+    def tagnames(self):
+        return [tag.name for tag in self.tags]
+
+    def get_similar_auctions(self, count):
+        return TaggedItem.objects.get_related(self, Auction.objects.prefetch_related('product'), count)
+
+register(Auction)
 
 
 class Bid(models.Model):

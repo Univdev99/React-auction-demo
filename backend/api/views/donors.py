@@ -4,7 +4,7 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
 from api.serializers.entities import DonorSerializer
-from api.serializers.entities import DonorDetailSerializer
+from api.serializers.entities import DonorDetailWithSimilarSerializer
 from api.paginations import EightPerPagePagination
 from api.permissions import IsAdmin
 from entity.models import Donor
@@ -24,6 +24,6 @@ class DonorListView(generics.ListAPIView):
 
 
 class DonorDetailView(generics.RetrieveAPIView):
-    serializer_class = DonorDetailSerializer
+    serializer_class = DonorDetailWithSimilarSerializer
     lookup_url_kwarg = 'pk'
     queryset = Donor.objects.prefetch_related('donormedium_set__medium')

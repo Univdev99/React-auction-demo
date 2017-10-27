@@ -11,7 +11,7 @@ from rest_framework.response import Response
 
 from api.serializers.entities import DonorSerializer
 from api.serializers.entities import DonorMediumSerializer
-from api.serializers.entities import DonorWithTagsSerializer
+from api.serializers.entities import DonorDetailSerializer
 from api.serializers.entities import MediaReorderSerializer
 from api.serializers.entities import ProductSerializer
 from api.serializers.storage import UploadMediumSerializer
@@ -31,12 +31,12 @@ class DonorListView(generics.ListCreateAPIView):
         if self.request.method == 'GET':
             return DonorSerializer
         else:
-            return DonorWithTagsSerializer
+            return DonorDetailSerializer
 
 
 class DonorDetailView(MediumDeleteMixin, generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
-    serializer_class = DonorWithTagsSerializer
+    serializer_class = DonorDetailSerializer
     lookup_url_kwarg = 'pk'
     queryset = Donor.objects.all()
 

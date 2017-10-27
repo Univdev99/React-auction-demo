@@ -12,7 +12,7 @@ from tagging.models import Tag
 
 from api.serializers.entities import MediaReorderSerializer
 from api.serializers.entities import ProductSerializer
-from api.serializers.entities import ProductWithTagsSerializer
+from api.serializers.entities import ProductDetailSerializer
 from api.serializers.entities import ProductMediumSerializer
 from api.serializers.storage import MediumSerializer
 from api.serializers.storage import UploadMediumSerializer
@@ -32,12 +32,12 @@ class ProductListView(generics.ListCreateAPIView):
         if self.request.method == 'GET':
             return ProductSerializer
         else:
-            return ProductWithTagsSerializer
+            return ProductDetailSerializer
 
 
 class ProductDetailView(MediumDeleteMixin, generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
-    serializer_class = ProductWithTagsSerializer
+    serializer_class = ProductDetailSerializer
     lookup_url_kwarg = 'pk'
     queryset = Product.objects.select_related('donor')
 

@@ -3,6 +3,7 @@ from django.db import transaction
 from rest_framework import serializers
 from tagging.models import Tag
 
+from api.serializers.mixins import TagnamesSerializerMixin
 from api.serializers.storage import MediumSerializer
 from entity.models import Charity
 from entity.models import Donor
@@ -46,34 +47,16 @@ class DonorSerializer(serializers.ModelSerializer):
         return DonorMediumSerializer(obj.donormedium_set.order_by('order'), many=True).data
 
 
-class DonorWithTagsSerializer(DonorSerializer):
+class DonorDetailSerializer(TagnamesSerializerMixin, DonorSerializer):
     """
     Serializer used in admin api for serializing and saving Donor model object
     """
-    tagnames = serializers.ListField(
-        child=serializers.CharField()
-    )
-
     class Meta(DonorSerializer.Meta):
-        fields = DonorSerializer.Meta.fields + ('tagnames',)
+        fields = DonorSerializer.Meta.fields
         read_only_fields = ('pk',)
 
-    @transaction.atomic
-    def create(self, validated_data):
-        tagnames = validated_data.pop('tagnames')
-        instance = super(DonorWithTagsSerializer, self).create(validated_data)
-        Tag.objects.update_tags(instance, ','.join(tagnames))
-        return instance
 
-    @transaction.atomic
-    def update(self, instance, validated_data):
-        tagnames = validated_data.pop('tagnames')
-        instance = super(DonorWithTagsSerializer, self).update(instance, validated_data)
-        Tag.objects.update_tags(instance, ','.join(tagnames))
-        return instance
-
-
-class DonorDetailSerializer(serializers.ModelSerializer):
+class DonorDetailWithSimilarSerializer(serializers.ModelSerializer):
     """
     Serializer used in front api for serializing Donor model object, with data on similar donors
     """
@@ -123,47 +106,10 @@ class ProductSerializer(serializers.ModelSerializer):
         return ProductMediumSerializer(obj.productmedium_set.all(), many=True).data
 
 
-class ProductWithTagsSerializer(ProductSerializer):
+class ProductDetailSerializer(TagnamesSerializerMixin, ProductSerializer):
     """
     Serializer used in admin api for serializing and saving Product model object
     """
-    tagnames = serializers.ListField(
-        child=serializers.CharField()
-    )
-
     class Meta(ProductSerializer.Meta):
-        fields = ProductSerializer.Meta.fields + ('tagnames',)
+        fields = ProductSerializer.Meta.fields
         read_only_fields = ('pk',)
-
-    @transaction.atomic
-    def create(self, validated_data):
-        tagnames = validated_data.pop('tagnames')
-        instance = super(ProductWithTagsSerializer, self).create(validated_data)
-        Tag.objects.update_tags(instance, ','.join(tagnames))
-        return instance
-
-    @transaction.atomic
-    def update(self, instance, validated_data):
-        tagnames = validated_data.pop('tagnames')
-        instance = super(ProductWithTagsSerializer, self).update(instance, validated_data)
-        Tag.objects.update_tags(instance, ','.join(tagnames))
-        return instance
-
-
-class ProductDetailSerializer(serializers.ModelSerializer):
-    """
-    Serializer used in front api for serializing Product model object, with data on similar products
-    """
-    donor_details = serializers.SerializerMethodField()
-    media = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Product
-        fields = ('pk', 'title', 'description', 'type', 'donor_details', 'media')
-        read_only_fields = ('pk', 'title', 'description', 'type', 'donor_details', 'media')
-
-    def get_donor_details(self, obj):
-        return DonorSerializer(obj.donor).data
-
-    def get_media(self, obj):
-        return ProductMediumSerializer(obj.productmedium_set.order_by('order'), many=True).data
