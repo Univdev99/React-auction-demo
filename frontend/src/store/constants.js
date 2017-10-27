@@ -33,6 +33,8 @@ export const ADMIN_UPLOAD_PRODUCT_MEDIUM = 'charibin/admin/upload-product-medium
 export const ADMIN_DELETE_PRODUCT_MEDIUM = 'charibin/admin/delete-product-medium'
 export const ADMIN_REORDER_PRODUCT_MEDIUM = 'charibin/admin/reorder-product-medium'
 
+export const ADMIN_GET_TAG_SUGGESTIONS = 'charibin/admin/get-tag-suggestions'
+
 export const DONOR_GET_FRONT_LIST = 'charibin/donors/get-front-list'
 export const DONOR_GET_LIST_PAGE = 'charibin/donors/get-list-page'
 export const DONOR_GET_DETAIL = 'charibin/donors/get-detail'

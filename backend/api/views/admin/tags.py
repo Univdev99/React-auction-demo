@@ -15,6 +15,6 @@ class TagSuggestionListView(views.APIView):
         if not keyword:
             return Response([])
 
-        tag_queryset = Tag.objects.all()
+        tag_queryset = Tag.objects.filter(name__contains=keyword)
         tags = [tag.name for tag in tag_queryset]
         return Response(tags)

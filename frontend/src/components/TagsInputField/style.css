@@ -1,0 +1,14 @@
+.react-autosuggest__container,
+.react-autosuggest__container--open {
+  display: inline-block;
+  width: 200px;
+}
+
+.react-tagsinput-input {
+  width: 100%;
+}
+
+.react-autosuggest__suggestions-container,
+.react-autosuggest__suggestions-container--open {
+  position: absolute;
+}
