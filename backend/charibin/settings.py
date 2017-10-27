@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'tagging',
     # Project apps
     'account',
+    'auction',
     'api',
     'entity',
     'storage',

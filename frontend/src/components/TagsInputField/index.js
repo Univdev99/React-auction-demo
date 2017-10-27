@@ -36,9 +36,6 @@ class TagsInputField extends PureComponent {
 
     const { suggestedTags } = this.state
 
-    const inputValue = (props.value && props.value.trim().toLowerCase()) || ''
-    const inputLength = inputValue.length
-
     const theme = {
       container:                'react-autosuggest__container',
       containerOpen:            'react-autosuggest__container--open',
