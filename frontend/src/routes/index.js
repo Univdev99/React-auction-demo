@@ -14,6 +14,7 @@ import DonorDetail from 'pages/DonorDetail'
 import Faqs from 'pages/Faqs'
 import PrivacyPolicy from 'pages/PrivacyPolicy'
 import TermsConditions from 'pages/TermsConditions'
+import Shipping from 'pages/Shipping'
 
 // Admin pages
 import AdminAuthenticating from 'pages/AdminAuthenticating'
@@ -83,6 +84,7 @@ const Routes = ({ history }) => (
 
       <Route exact path="/faqs" component={Faqs} />
       <Route exact path="/privacy-policy" component={PrivacyPolicy} />
+      <Route exact path="/shipping" component={Shipping} />
       <Route exact path="/terms-conditions" component={TermsConditions} />
     </div>
   </ConnectedRouter>

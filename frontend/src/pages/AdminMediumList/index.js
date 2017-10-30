@@ -113,6 +113,7 @@ class AdminMediumList extends PureComponent {
                 {medium.get('type') === 'photo' && <img
                   className="img-fluid"
                   src={medium.get('url')}
+                  alt=""
                 />}
                 {medium.get('type') === 'video' && <div className="video-wrapper">
                   <video src={medium.get('url')} />

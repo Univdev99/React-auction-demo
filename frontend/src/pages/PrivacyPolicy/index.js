@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react'
-import { Link } from 'react-router-dom'
 
 import AppContainerLayout from 'components/AppContainerLayout'
 import AppLayout1 from 'pages/AppLayout1'
@@ -7,6 +6,10 @@ import Breadcrumb from 'components/Breadcrumb'
 import ContactTextLink from 'components/ContactTextLink'
 
 export default class PrivacyPolicy extends PureComponent {
+  componentDidMount() {
+    window.scrollTo(0, 0)
+  }
+
   breadcrumbPath() {
     return [
       { route: '/', text: 'Home' },
