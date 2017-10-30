@@ -6,6 +6,7 @@ import adminDonors from './admin/donors'
 import adminProducts from './admin/products'
 import adminAuctions from './admin/auctions'
 import adminTags from './admin/tags'
+import adminUsers from './admin/users'
 import donors from './donors'
 
 
@@ -17,6 +18,7 @@ export default function* rootSaga() {
     adminProducts(),
     adminAuctions(),
     adminTags(),
+    adminUsers(),
     donors()
   ])
 }

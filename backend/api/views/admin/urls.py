@@ -1,6 +1,11 @@
 from django.conf.urls import url
 from rest_framework_jwt.views import obtain_jwt_token
 
+from api.views.admin.auctions import AuctionListView
+from api.views.admin.auctions import AuctionDetailView
+from api.views.admin.auctions import AuctionStartView
+from api.views.admin.auctions import AuctionFinishView
+from api.views.admin.auctions import AuctionCancelView
 from api.views.admin.charities import CharityListView
 from api.views.admin.charities import CharityDetailView
 from api.views.admin.charities import CharityLogoUploadView
@@ -15,12 +20,9 @@ from api.views.admin.products import ProductMediumUploadView
 from api.views.admin.products import ProductMediumDeleteView
 from api.views.admin.products import ProductListView
 from api.views.admin.products import ProductMediaReorderView
-from api.views.admin.auctions import AuctionListView
-from api.views.admin.auctions import AuctionDetailView
-from api.views.admin.auctions import AuctionStartView
-from api.views.admin.auctions import AuctionFinishView
-from api.views.admin.auctions import AuctionCancelView
 from api.views.admin.tags import TagSuggestionListView
+from api.views.admin.users import UserBlockUnblockView
+from api.views.admin.users import UserListView
 
 
 urlpatterns = [
@@ -61,4 +63,8 @@ urlpatterns = [
 
     # tags endpoints
     url(r'^tags/suggest/(?P<keyword>[a-zA-Z0-9]+)/$', TagSuggestionListView.as_view(), name='tag-suggestion-list'),
+
+    # users endpoints
+    url(r'^users/$', UserListView.as_view(), name='user-list'),
+    url(r'^users/(?P<pk>[0-9]+)/block/$', UserBlockUnblockView.as_view(), name='user-block-unblock'),
 ]

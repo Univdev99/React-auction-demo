@@ -46,3 +46,6 @@ export const ADMIN_GET_TAG_SUGGESTIONS = 'charibin/admin/get-tag-suggestions'
 export const DONOR_GET_FRONT_LIST = 'charibin/donors/get-front-list'
 export const DONOR_GET_LIST_PAGE = 'charibin/donors/get-list-page'
 export const DONOR_GET_DETAIL = 'charibin/donors/get-detail'
+
+export const ADMIN_GET_USER_LIST = 'charibin/admin/get-user-list'
+export const ADMIN_BLOCK_UNBLOCK_USER = 'charibin/admin/block-unblock-user'

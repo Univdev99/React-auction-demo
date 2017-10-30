@@ -1,3 +1,5 @@
+from django.contrib.auth import get_user_model
+
 from rest_framework import serializers
 
 
@@ -43,3 +45,16 @@ class CurrentUserSerializer(OptionalPasswordVerificationMixin, serializers.Seria
     last_name = serializers.CharField(required=False)
     password = serializers.CharField(min_length=6, required=False, write_only=True)
     password_confirm = serializers.CharField(min_length=6, required=False, write_only=True)
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = (
+            'pk', 'username', 'first_name', 'last_name', 'email', 'is_staff', 'is_active', 'date_joined', 'last_login'
+        )
+        read_only_fields = ('pk',)
+
+
+class UserBlockUnblockSerializer(serializers.Serializer):
+    block = serializers.BooleanField()

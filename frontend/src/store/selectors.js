@@ -13,5 +13,9 @@ export const adminProductsSelector = state =>
 export const adminAuctionsSelector = state =>
   state.get('adminAuctions')
 
+export const adminUsersSelector = state =>
+  state.get('adminUsers')
+
 export const donorsSelector = state => 
   state.get('donors')
+
