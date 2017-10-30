@@ -11,6 +11,7 @@ import SignUpVerification from 'pages/SignUpVerification'
 import AccountSettings from 'pages/AccountSettings'
 import Donors from 'pages/Donors'
 import DonorDetail from 'pages/DonorDetail'
+import Faqs from 'pages/Faqs'
 
 // Admin pages
 import AdminAuthenticating from 'pages/AdminAuthenticating'
@@ -77,6 +78,8 @@ const Routes = ({ history }) => (
 
       <Route exact path="/admin-authenticating" component={userIsAuthenticated(currentUserNotLoadedForAdmin(AdminAuthenticating))} />
       <Route path="/admin" component={userIsAdmin(AdminRoutes)} />
+
+      <Route exact path="/faqs" component={Faqs} />
     </div>
   </ConnectedRouter>
 )

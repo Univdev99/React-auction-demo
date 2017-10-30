@@ -12,7 +12,7 @@ const AppHeaderMenu = () => (
       <NavLink tag={Link} to="/">Mission</NavLink>
     </NavItem>
     <NavItem>
-      <NavLink tag={Link} to="/">FAQ</NavLink>
+      <NavLink tag={Link} to="/faqs">FAQ</NavLink>
     </NavItem>
     <NavItem>
       <NavLink tag={Link} to="/">The Good</NavLink>
