@@ -6,11 +6,11 @@ import AppLayout1 from 'pages/AppLayout1'
 import Breadcrumb from 'components/Breadcrumb'
 import ContactTextLink from 'components/ContactTextLink'
 
-export default class PrivacyPolicy extends PureComponent {
+export default class TermsConditions extends PureComponent {
   breadcrumbPath() {
     return [
       { route: '/', text: 'Home' },
-      { text: 'Privacy Policy' },
+      { text: 'Terms & Conditions' },
     ]
   }
 
@@ -20,7 +20,7 @@ export default class PrivacyPolicy extends PureComponent {
         <AppContainerLayout>
           <Breadcrumb className="mb-5" path={this.breadcrumbPath()} />
 
-          <h3 className="mb-5">Privacy Policy</h3>
+          <h3 className="mb-5">Terms & Conditions</h3>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut nibh dictum, auctor libero ac,
             varius sem. Aenean in augue sed enim pulvinar ultricies eget at nibh. Sed ac iaculis lorem. Donec
