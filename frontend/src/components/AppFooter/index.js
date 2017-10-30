@@ -27,7 +27,7 @@ class AppFooter extends PureComponent {
         <Collapse isOpen={menuOpened} navbar>
           <Nav className="ml-auto mr-3" navbar>
             <NavItem>
-              <NavLink tag={Link} to="/">Privacy Policy</NavLink>
+              <NavLink tag={Link} to="/privacy-policy">Privacy Policy</NavLink>
             </NavItem>
             <NavItem>
               <NavLink tag={Link} to="/">Terms & Conditions</NavLink>
