@@ -11,11 +11,19 @@ export const userIsAuthenticated = connectedRouterRedirect({
 })
 
 export const userIsNotAuthenticated = connectedRouterRedirect({
-  redirectPath: (state, ownProps) => 
+  redirectPath: (state, ownProps) =>
     locationHelper.getRedirectQueryParam(ownProps) || '/',
   allowRedirectBack: false,
   authenticatedSelector: state => !state.getIn(['auth', 'signedIn']),
   wrapperDisplayName: 'UserIsNotAuthenticated'
+})
+
+export const currentUserNotLoadedForAdmin = connectedRouterRedirect({
+  redirectPath: (state, ownProps) =>
+    locationHelper.getRedirectQueryParam(ownProps) || '/admin',
+  authenticatedSelector: state => !state.getIn(['auth', 'currentUser']),
+  allowRedirectBack: false,
+  wrapperDisplayName: 'currentUserNotLoadedForAdmin'
 })
 
 export const userIsAdmin = connectedRouterRedirect({

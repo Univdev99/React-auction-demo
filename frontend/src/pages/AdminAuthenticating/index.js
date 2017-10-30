@@ -18,20 +18,12 @@ class AdminAuthenticating extends PureComponent {
     history: PropTypes.object.isRequired,
   }
 
-  goToAdmin = () => {
-    this.props.history.push({
-      pathname: '/admin'
-    })
-  }
-
   componentWillMount() {
     const { auth } = this.props
     if (!auth.get('currentUser')) {
       this.props.getCurrentUser({
         success: this.goToAdmin
       })
-    } else {
-      this.goToAdmin()
     }
   }
 

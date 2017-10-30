@@ -33,6 +33,7 @@ import AdminAuctionDetail from 'pages/AdminAuctionDetail'
 import {
   userIsAuthenticated,
   userIsNotAuthenticated,
+  currentUserNotLoadedForAdmin,
   userIsAdmin,
 } from './auth-wrapper'
 
@@ -68,7 +69,7 @@ const Routes = ({ history }) => (
       <Route exact path="/donors" component={Donors} />
       <Route exact path="/donors/:id" component={DonorDetail} />
 
-      <Route exact path="/admin/authenticating" component={userIsAuthenticated(AdminAuthenticating)} />
+      <Route exact path="/admin/authenticating" component={userIsAuthenticated(currentUserNotLoadedForAdmin(AdminAuthenticating))} />
       <Route path="/admin" component={userIsAdmin(AdminRoutes)} />
     </div>
   </ConnectedRouter>
