@@ -14,5 +14,5 @@ from storage.models import Medium
 class MediumListView(generics.ListAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
     pagination_class = TwelvePerPagePagination
-    queryset = Medium.objects.order_by('created_at')
+    queryset = Medium.objects.order_by('-created_at')
     serializer_class = MediumSerializer

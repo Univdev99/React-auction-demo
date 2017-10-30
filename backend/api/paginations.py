@@ -6,4 +6,4 @@ class EightPerPagePagination(PageNumberPagination):
 
 
 class TwelvePerPagePagination(PageNumberPagination):
-    page_size = 1  ### 12
+    page_size = 12

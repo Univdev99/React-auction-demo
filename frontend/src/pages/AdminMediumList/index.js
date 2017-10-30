@@ -14,6 +14,7 @@ import {
 import {
   adminMediaSelector,
 } from 'store/selectors'
+import './style.css'
 
 
 class AdminMediumList extends PureComponent {
@@ -35,13 +36,13 @@ class AdminMediumList extends PureComponent {
 
     const pages = []
     let i
+    const start = Math.max(1, Math.min(pageCount - 4, page - 2))
+    const end = Math.min(pageCount, Math.max(page + 2, 5))
 
-    if (pageCount > 3) {
+    if (pageCount > 3 && start > 2) {
       pages.push('.')
     }
 
-    const start = Math.max(1, Math.min(pageCount - 4, page - 2))
-    const end = Math.min(pageCount, Math.max(page + 2, 5))
     for (i = start; i <= end; i++) {
       pages.push(i)
     }
@@ -105,24 +106,21 @@ class AdminMediumList extends PureComponent {
           Failed to load data.
         </div>}
 
-        {loadingStatus !== -1 && <table className="table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Type</th>
-              <th>URL</th>
-            </tr>
-          </thead>
-          <tbody>
-            {mediumListPage.map(medium => (
-              <tr key={medium.get('pk')}>
-                <th scope="row">{medium.get('pk')}</th>
-                <td>{medium.get('type')}</td>
-                <td>{medium.get('url')}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>}
+        {loadingStatus !== -1 && <div className="row">
+          {mediumListPage.map(medium => (
+            <div key={medium.get('pk')} className="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4">
+              <div className="medium-wrapper">
+                {medium.get('type') === 'photo' && <img
+                  className="img-fluid"
+                  src={medium.get('url')}
+                />}
+                {medium.get('type') === 'video' && <div className="video-wrapper">
+                  <video src={medium.get('url')} />
+                </div>}
+              </div>
+            </div>
+          ))}
+        </div>}
 
         {loadingStatus !== -1 && <div className="mt-5">
           <Pagination>
