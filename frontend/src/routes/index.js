@@ -28,6 +28,7 @@ import AdminProductDetail from 'pages/AdminProductDetail'
 import AdminAuctionList from 'pages/AdminAuctionList'
 import AdminAuctionCreate from 'pages/AdminAuctionCreate'
 import AdminAuctionDetail from 'pages/AdminAuctionDetail'
+import AdminAuctionStart from 'pages/AdminAuctionStart'
 
 // Auth wrappers
 import {
@@ -54,6 +55,7 @@ const AdminRoutes = props => (
     <Route exact path="/admin/auctions" component={AdminAuctionList} />
     <Route exact path="/admin/auctions/create" component={AdminAuctionCreate} />
     <Route exact path="/admin/auctions/:id(\d+)" component={AdminAuctionDetail} />
+    <Route exact path="/admin/auctions/:id(\d+)/start" component={AdminAuctionStart} />
   </div>
 )
 

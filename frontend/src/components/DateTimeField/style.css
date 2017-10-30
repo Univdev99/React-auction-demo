@@ -1,0 +1,17 @@
+/* Overriding classes for date picker */
+.react-datepicker-wrapper,
+.react-datepicker__input-container {
+  display: block;
+}
+
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box {
+  width: 100px;
+}
+
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list {
+  padding: 0;
+}
+
+.react-datepicker__navigation--next--with-time:not(.react-datepicker__navigation--next--with-today-button) {
+  right: 110px;
+}

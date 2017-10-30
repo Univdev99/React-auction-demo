@@ -23,6 +23,7 @@ class Auction(models.Model):
         max_length=50,
     )
     started_at = models.DateTimeField(null=True, blank=True, default=None)
+    open_until = models.DateTimeField(null=True, blank=True, default=None)
     ended_at = models.DateTimeField(null=True, blank=True, default=None)
 
     product = models.OneToOneField(Product, on_delete=models.CASCADE)

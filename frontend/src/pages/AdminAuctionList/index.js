@@ -10,7 +10,6 @@ import Spinner from 'components/Spinner'
 import AdminLayout from 'pages/AdminLayout'
 import {
   getAuctionList,
-  startAuction,
   finishAuction,
   cancelAuction,
 } from 'store/modules/admin/auctions'
@@ -26,28 +25,12 @@ class AdminAuctionList extends PureComponent {
   static propTypes = {
     adminAuctions: ImmutablePropTypes.map.isRequired,
     getAuctionList: PropTypes.func.isRequired,
-    startAuction: PropTypes.func.isRequired,
     finishAuction: PropTypes.func.isRequired,
     cancelAuction: PropTypes.func.isRequired,
   }
 
   state = {
     loadingStatus: 1
-  }
-
-  handleStart = (id, event) => {
-    event.preventDefault()
-
-    if (!window.confirm('Are you sure to start this auction?')) {
-      return
-    }
-
-    this.props.startAuction({
-      id,
-      fail: () => {
-        alert('Failed to start auction')
-      },
-    })
   }
 
   handleFinish = (id, event) => {
@@ -136,13 +119,12 @@ class AdminAuctionList extends PureComponent {
                 <td>{auction.get('ended_at')}</td>
                 <td>
                   <Link className="text-secondary pr-3" to={`/admin/auctions/${auction.get('pk')}`}>Edit</Link>
-                  {auction.get('status') === AUCTION_STATUS_PREVIEW && <a
+                  {auction.get('status') === AUCTION_STATUS_PREVIEW && <Link
                     className="text-primary pr-3"
-                    href="/"
-                    onClick={this.handleStart.bind(this, auction.get('pk'))}
+                    to={`/admin/auctions/${auction.get('pk')}/start`}
                   >
                     Start
-                  </a>}
+                  </Link>}
                   {auction.get('status') === AUCTION_STATUS_OPEN && <a
                     className="text-primary pr-3"
                     href="/"
@@ -173,7 +155,6 @@ const selector = createStructuredSelector({
 
 const actions = {
   getAuctionList,
-  startAuction,
   finishAuction,
   cancelAuction,
 }
