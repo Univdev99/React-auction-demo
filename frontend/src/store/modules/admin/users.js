@@ -24,7 +24,7 @@ export const blockUnblockUser = createAction(ADMIN_BLOCK_UNBLOCK_USER)
 
 export default handleActions({
 
-  /* Get product list actions */
+  /* Get user list actions */
 
   [requestSuccess(ADMIN_GET_USER_LIST)]: (state, { payload }) => state.withMutations(map => {
     map.set('userList', Immutable.fromJS(payload))
@@ -36,7 +36,7 @@ export default handleActions({
     map.set('userListLoaded', false)
   }),
 
-  /* Get product list actions */
+  /* Block/unblock user actions */
 
   [requestSuccess(ADMIN_BLOCK_UNBLOCK_USER)]: (state, { payload }) => state.withMutations(map => {
     const userList = state.get('userList')

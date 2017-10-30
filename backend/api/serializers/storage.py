@@ -8,8 +8,8 @@ from storage.models import Medium
 class MediumSerializer(serializers.ModelSerializer):
     class Meta:
         model = Medium
-        fields = ('pk', 'url', 'type', 'mimetype', 'order')
-        read_only_fields = ('pk', 'url', 'type', 'mimetype', 'order')
+        fields = ('pk', 'url', 'type', 'mimetype', 'order', 'created_at', 'deleted_at')
+        read_only_fields = ('pk', 'url', 'type', 'mimetype', 'order', 'created_at', 'deleted_at')
 
 
 class UploadMediumSerializer(serializers.Serializer):

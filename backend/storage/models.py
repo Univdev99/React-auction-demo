@@ -9,6 +9,7 @@ class Medium(models.Model):
     url = models.URLField(max_length=300)
     type = models.CharField(choices=MEDIUM_TYPE_CHOICES, max_length=50)
     mimetype = models.CharField(max_length=30)
+    created_at = models.DateTimeField(auto_now_add=True)
     deleted_at = models.DateTimeField(null=True, default=None)
 
     order = models.PositiveIntegerField(default=1)

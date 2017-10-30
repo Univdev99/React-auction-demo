@@ -67,7 +67,7 @@ class AdminProductList extends PureComponent {
 
     return (
       <AdminLayout>
-        <div className="mb-4 clearfix">
+        <div className="mb-5 clearfix">
           <h2 className="pull-left">Products</h2>
           <Link className="btn btn-primary pull-right" to="/admin/products/create">Create</Link>
         </div>

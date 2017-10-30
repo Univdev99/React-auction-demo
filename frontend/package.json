@@ -6,6 +6,7 @@
     "axios": "^0.16.2",
     "bootstrap": "4.0.0-beta",
     "classnames": "^2.2.5",
+    "draft-js": "^0.10.4",
     "history": "^4.7.2",
     "immutable": "^3.8.2",
     "moment": "^2.19.1",

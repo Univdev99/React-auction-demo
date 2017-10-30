@@ -14,6 +14,7 @@ import adminProducts from 'store/modules/admin/products'
 import adminAuctions from 'store/modules/admin/auctions'
 import adminTags from 'store/modules/admin/tags'
 import adminUsers from 'store/modules/admin/users'
+import adminMedia from 'store/modules/admin/media'
 import donors from 'store/modules/donors'
 import sagas from 'store/sagas'
 import authMiddleware from 'store/middlewares/auth'
@@ -47,6 +48,7 @@ export const store = createStore(
     adminAuctions,
     adminTags,
     adminUsers,
+    adminMedia,
     donors,
   }),
   Immutable.Map(),

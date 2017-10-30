@@ -15,6 +15,7 @@ from api.views.admin.donors import DonorProductListView
 from api.views.admin.donors import DonorMediumUploadView
 from api.views.admin.donors import DonorMediumDeleteView
 from api.views.admin.donors import DonorMediaReorderView
+from api.views.admin.media import MediumListView
 from api.views.admin.products import ProductDetailView
 from api.views.admin.products import ProductMediumUploadView
 from api.views.admin.products import ProductMediumDeleteView
@@ -67,4 +68,7 @@ urlpatterns = [
     # users endpoints
     url(r'^users/$', UserListView.as_view(), name='user-list'),
     url(r'^users/(?P<pk>[0-9]+)/block/$', UserBlockUnblockView.as_view(), name='user-block-unblock'),
+
+    # media endpoints
+    url(r'^media/$', MediumListView.as_view(), name='medium-list')
 ]

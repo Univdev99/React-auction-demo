@@ -15,6 +15,7 @@ const initialState = Immutable.fromJS({
   donorListPage: [],
   donorListPageLoaded: false,
   donorCount: 0,
+  donorPageNumber: 1,
   donorFrontList: [],
   donorFrontListLoaded: false,
   donorDetail: null,

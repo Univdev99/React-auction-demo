@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import { Link } from 'react-router-dom'
 
 import Spinner from 'components/Spinner'
 import AdminLayout from 'pages/AdminLayout'
@@ -70,10 +69,7 @@ class AdminUserList extends PureComponent {
 
     return (
       <AdminLayout>
-        <div className="mb-4 clearfix">
-          <h2 className="pull-left">Users</h2>
-          <Link className="btn btn-primary pull-right" to="/admin/users/create">Create</Link>
-        </div>
+        <h2 className="mb-5">Users</h2>
 
         {loadingStatus === 1 && <Spinner />}
 

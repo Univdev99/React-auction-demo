@@ -30,6 +30,7 @@ import AdminAuctionCreate from 'pages/AdminAuctionCreate'
 import AdminAuctionDetail from 'pages/AdminAuctionDetail'
 import AdminAuctionStart from 'pages/AdminAuctionStart'
 import AdminUserList from 'pages/AdminUserList'
+import AdminMediumList from 'pages/AdminMediumList'
 
 // Auth wrappers
 import {
@@ -58,6 +59,7 @@ const AdminRoutes = props => (
     <Route exact path="/admin/auctions/:id(\d+)" component={AdminAuctionDetail} />
     <Route exact path="/admin/auctions/:id(\d+)/start" component={AdminAuctionStart} />
     <Route exact path="/admin/users" component={AdminUserList} />
+    <Route exact path="/admin/media" component={AdminMediumList} />
   </div>
 )
 
@@ -73,7 +75,7 @@ const Routes = ({ history }) => (
       <Route exact path="/donors" component={Donors} />
       <Route exact path="/donors/:id" component={DonorDetail} />
 
-      <Route exact path="/admin/authenticating" component={userIsAuthenticated(currentUserNotLoadedForAdmin(AdminAuthenticating))} />
+      <Route exact path="/admin-authenticating" component={userIsAuthenticated(currentUserNotLoadedForAdmin(AdminAuthenticating))} />
       <Route path="/admin" component={userIsAdmin(AdminRoutes)} />
     </div>
   </ConnectedRouter>

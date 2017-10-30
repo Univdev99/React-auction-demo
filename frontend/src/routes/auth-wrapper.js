@@ -27,7 +27,7 @@ export const currentUserNotLoadedForAdmin = connectedRouterRedirect({
 })
 
 export const userIsAdmin = connectedRouterRedirect({
-  redirectPath: '/admin/authenticating',
+  redirectPath: '/admin-authenticating',
   authenticatedSelector: state => {
     const auth = state.get('auth')
     return auth.get('signedIn') && auth.getIn(['currentUser', 'is_staff'])
