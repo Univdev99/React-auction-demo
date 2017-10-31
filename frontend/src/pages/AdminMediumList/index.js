@@ -4,7 +4,11 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import { Pagination, PaginationItem, PaginationLink } from 'reactstrap'
+import {
+  Pagination, PaginationItem, PaginationLink,
+  Row, Col, Input,
+} from 'reactstrap'
+import moment from 'moment'
 
 import AdminLayout from 'pages/AdminLayout'
 import { MEDIUM_PAGE_SIZE } from 'config'
@@ -25,7 +29,10 @@ class AdminMediumList extends PureComponent {
   }
 
   state = {
-    loadingStatus: 1
+    loadingStatus: 1,
+    page: 1,
+    typeFilter: '',
+    dateFilter: '',
   }
 
   getPageNumbers = (page) => {
@@ -64,13 +71,16 @@ class AdminMediumList extends PureComponent {
     return Math.max(Math.ceil(count / MEDIUM_PAGE_SIZE), 1)
   }
 
-  getPage = (page) => {
+  refreshPage = () => {
     this.setState({
       loadingStatus: 1
     })
 
+    const { page, typeFilter, dateFilter } = this.state
     this.props.getMediumListPage({
       page,
+      type: typeFilter,
+      date: dateFilter,
       success: () => this.setState({
         loadingStatus: 10
       }),
@@ -78,6 +88,43 @@ class AdminMediumList extends PureComponent {
         loadingStatus: -1
       }),
     })
+  }
+
+  getPage = (page) => {
+    this.setState({
+      page
+    }, this.refreshPage)
+  }
+
+  getMediumDates = () => {
+    const mediumDates = []
+    const today = new Date()
+    const startDate = new Date(today.getFullYear() - 2, 0, 1, 0, 0)
+
+    while (startDate < today) {
+      const m = moment(startDate)
+      mediumDates.push({
+        key: m.format('Y/MM'),
+        value: m.format('MMM Y')
+      })
+      startDate.setMonth(startDate.getMonth() + 1)
+    }
+
+    return mediumDates
+  }
+
+  handleChangeTypeFilter = (e) => {
+    this.setState({
+      typeFilter: e.target.value,
+      page: 1,
+    }, this.refreshPage)
+  }
+
+  handleChangeDateFilter = (e) => {
+    this.setState({
+      dateFilter: e.target.value,
+      page: 1,
+    }, this.refreshPage)
   }
 
   handleClickPageLink = (page, event) => {
@@ -96,7 +143,7 @@ class AdminMediumList extends PureComponent {
     const { adminMedia } = this.props
     const mediumListPage = adminMedia.get('mediumListPage')
     const currentPage = adminMedia.get('mediumPageNumber')
-    const { loadingStatus } = this.state
+    const { loadingStatus, typeFilter, dateFilter } = this.state
 
     return (
       <AdminLayout>
@@ -106,9 +153,28 @@ class AdminMediumList extends PureComponent {
           Failed to load data.
         </div>}
 
-        {loadingStatus !== -1 && <div className="row">
+        <Row className="mb-4">
+          <Col lg="3" md="4" sm="6" xs="12" className="mb-4">
+            <Input type="select" value={typeFilter} onChange={this.handleChangeTypeFilter}>
+              <option value="">All media items</option>
+              <option value="image">Images</option>
+              <option value="video">Videos</option>
+              <option value="audio">Audios</option>
+            </Input>
+          </Col>
+          <Col lg="3" md="4" sm="6" xs="12" className="mb-4">
+            <Input type="select" value={dateFilter} onChange={this.handleChangeDateFilter}>
+              <option value="">All dates</option>
+              {this.getMediumDates().map(dateObj => (
+                <option key={dateObj.key} value={dateObj.key}>{dateObj.value}</option>
+              ))}
+            </Input>
+          </Col>
+        </Row>
+
+        {loadingStatus !== -1 && <Row>
           {mediumListPage.map(medium => (
-            <div key={medium.get('pk')} className="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4">
+            <Col key={medium.get('pk')} className="mb-4" xl="2" lg="3" md="4" sm="6" xs="12">
               <div className="medium-wrapper">
                 {medium.get('type') === 'image' && <img
                   className="img-fluid" src={medium.get('url')} alt="Medium" />}
@@ -119,9 +185,9 @@ class AdminMediumList extends PureComponent {
                   <audio src={medium.get('url')} controls />
                 </div>}
               </div>
-            </div>
+            </Col>
           ))}
-        </div>}
+        </Row>}
 
         {loadingStatus !== -1 && <div className="mt-5">
           <Pagination>
