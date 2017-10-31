@@ -65,22 +65,13 @@ class ProductMediumUploadView(MediumUploadMixin, generics.GenericAPIView):
         max_record = product.media.aggregate(Max('order'))
         order = max_record['order__max'] + 1 if max_record['order__max'] else 1
 
-        if file.content_type in VALID_VIDEO_MIMETYPES:
-            medium = self.upload_video(
-                file,
-                'product',
-                '{}_{}'.format(product.pk, random.randint(10000000, 99999999)),
-                content_object=product,
-                order=order
-            )
-        else:
-            medium = self.upload_image(
-                file,
-                'product',
-                '{}_{}'.format(product.pk, random.randint(10000000, 99999999)),
-                content_object=product,
-                order=order
-            )
+        medium = self.upload_medium(
+            file,
+            'product',
+            '{}_{}'.format(product.pk, random.randint(10000000, 99999999)),
+            content_object=product,
+            order=order
+        )
 
         serializer = MediumSerializer(medium)
         return Response(serializer.data)

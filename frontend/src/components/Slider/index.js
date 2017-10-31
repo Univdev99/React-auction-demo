@@ -21,12 +21,13 @@ class Slider extends PureComponent {
   slide(medium) {
     return (
       <div className="slide">
-        {
-          medium.get('type') === 'video' ?
-          <video className="slide-inner slide-video" src={medium.get('url')} controls />
-          :
-          <div className="slide-inner slide-image" style={{ backgroundImage: `url(${medium.get('url')})` }} />
-        }
+        {medium.get('type') === 'video' && <video
+          className="slide-inner slide-video" src={medium.get('url')} controls />}
+        {medium.get('type') === 'audio' && <audio
+          className="slide-inner slide-video" src={medium.get('url')} controls
+          style={{ paddingTop: '60%', background: '#000' }} />}
+        {medium.get('type') === 'image' && <div
+          className="slide-inner slide-image" style={{ backgroundImage: `url(${medium.get('url')})` }} />}
       </div>
     )
   }
@@ -34,18 +35,24 @@ class Slider extends PureComponent {
   smallSlide(medium, index) {
     return (
       <div className="slide-thumb" onClick={this.handleClickThumb.bind(this, index)}>
-        {
-          medium.get('type') === 'video' ?
-          <video
-            className="slide-inner slide-video"
-            src={medium.get('url')}
-            disabled
-            preload="metadata"
-            onContextMenu={this.disableContextMenu}
-          />
-          :
-          <div className="slide-inner slide-image" style={{ backgroundImage: `url(${medium.get('url')})` }} />
-        }
+        {medium.get('type') === 'video' && <video
+          className="slide-inner slide-video"
+          src={medium.get('url')}
+          disabled
+          preload="metadata"
+          onContextMenu={this.disableContextMenu}
+        />}
+        {medium.get('type') === 'audio' && <audio
+          className="slide-inner slide-video"
+          src={medium.get('url')}
+          disabled
+          preload="metadata"
+          onContextMenu={this.disableContextMenu}
+          controls
+          style={{ paddingTop: '60%', background: '#000' }}
+        />}
+        {medium.get('type') === 'image' && <div
+          className="slide-inner slide-image" style={{ backgroundImage: `url(${medium.get('url')})` }} />}
       </div>
     )
   }

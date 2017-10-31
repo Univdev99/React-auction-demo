@@ -14,3 +14,9 @@ export const AUCTION_STATUS_PREVIEW = 'preview'
 export const AUCTION_STATUS_OPEN = 'open'
 export const AUCTION_STATUS_FINISHED = 'finished'
 export const AUCTION_STATUS_CANCELLED = 'cancelled'
+
+export const MEDIUM_TYPES = [
+  { key: 'image', value: 'Image' },
+  { key: 'video', value: 'Video' },
+  { key: 'audio', value: 'Audio' },
+]

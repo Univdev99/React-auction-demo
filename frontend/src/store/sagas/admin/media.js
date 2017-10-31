@@ -9,7 +9,9 @@ import {
 const getMediumListPage = apiCall({
   type: ADMIN_GET_MEDIUM_LIST_PAGE,
   method: 'get',
-  path: ({ payload }) => `admin/media/?page=${payload.page}`,
+  path: ({ payload }) => `admin/media/?page=${payload.page}` +
+    (payload.type ? `&type=${payload.type}` : '') +
+    (payload.date ? `&date=${payload.date}` : ''),
 })
 
 export default function* rootSaga () {

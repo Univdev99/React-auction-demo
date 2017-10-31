@@ -17,7 +17,6 @@ from api.serializers.storage import MediumSerializer
 from api.serializers.storage import UploadMediumSerializer
 from api.permissions import IsAdmin
 from entity.models import Donor
-from storage.constants import VALID_VIDEO_MIMETYPES
 from storage.mixins import MediumUploadMixin
 from storage.mixins import MediumDeleteMixin
 
@@ -75,22 +74,13 @@ class DonorMediumUploadView(MediumUploadMixin, generics.GenericAPIView):
         max_record = donor.media.aggregate(Max('order'))
         order = max_record['order__max'] + 1 if max_record['order__max'] else 1
 
-        if file.content_type in VALID_VIDEO_MIMETYPES:
-            medium = self.upload_video(
-                file,
-                'donor/media',
-                '{}_{}'.format(donor.pk, random.randint(10000000, 99999999)),
-                content_object=donor,
-                order=order
-            )
-        else:
-            medium = self.upload_image(
-                file,
-                'donor/media',
-                '{}_{}'.format(donor.pk, random.randint(10000000, 99999999)),
-                content_object=donor,
-                order=order
-            )
+        medium = self.upload_medium(
+            file,
+            'donor/media',
+            '{}_{}'.format(donor.pk, random.randint(10000000, 99999999)),
+            content_object=donor,
+            order=order
+        )
 
         serializer = MediumSerializer(medium)
         return Response(serializer.data)

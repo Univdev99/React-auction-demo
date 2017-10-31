@@ -10,8 +10,12 @@ from django.utils.timezone import utc
 from boto3.session import Session
 from rest_framework.exceptions import ParseError
 
-from storage.constants import MEDIUM_TYPE_PHOTO
+from storage.constants import MEDIUM_TYPE_IMAGE
+from storage.constants import MEDIUM_TYPE_AUDIO
 from storage.constants import MEDIUM_TYPE_VIDEO
+from storage.constants import VALID_IMAGE_MIMETYPES
+from storage.constants import VALID_AUDIO_MIMETYPES
+from storage.constants import VALID_VIDEO_MIMETYPES
 from storage.models import Medium
 
 
@@ -29,34 +33,53 @@ class MediumDeleteMixin(object):
 
 
 class MediumUploadMixin(MediumCreateMixin, MediumDeleteMixin):
-    def upload_image(self, file_obj, s3_folder, s3_filename, content_object=None, order=1):
-        file_url, mimetype = self.upload_to_s3(file_obj, s3_folder, s3_filename)
+    def is_mimetype_image(self, file_obj, raise_exception=True):
+        if file_obj.content_type in VALID_IMAGE_MIMETYPES:
+            return True
+        if raise_exception:
+            raise ParseError('Not supported image type')
+        return False
+
+    def upload_medium(self, file_obj, s3_folder, s3_filename, content_object=None, order=1):
+        if file_obj.content_type in VALID_VIDEO_MIMETYPES:
+            file_type = MEDIUM_TYPE_VIDEO
+        elif file_obj.content_type in VALID_AUDIO_MIMETYPES:
+            file_type = MEDIUM_TYPE_AUDIO
+        elif file_obj.content_type in VALID_IMAGE_MIMETYPES:
+            file_type = MEDIUM_TYPE_IMAGE
+        else:
+            raise ParseError('Invalid file mimetype')
+
+        file_url, mimetype = self._upload_to_s3(file_obj, s3_folder, s3_filename)
         medium = self.create_medium(
             content_object=content_object,
             url=file_url,
-            type=MEDIUM_TYPE_PHOTO,
+            type=file_type,
             mimetype=mimetype,
             order=order
         )
         return medium
 
-    def upload_video(self, file_obj, s3_folder, s3_filename, content_object=None, order=1):
-        file_url, mimetype = self.upload_to_s3(file_obj, s3_folder, s3_filename)
-        medium = self.create_medium(
-            content_object=content_object,
-            url=file_url,
-            type=MEDIUM_TYPE_VIDEO,
-            mimetype=mimetype,
-            order=order
-        )
-        return medium
+    def _mimetype_check(self, mimetype):
+        """
+        Some mimetypes are widely used but not correct, such as audio/mp3
+        """
+        mimetypes_for_check = {
+            'audio/mp3': 'mp3',
+        }
+        if mimetype in mimetypes_for_check:
+            return mimetypes_for_check[mimetype]
+        else:
+            return None
 
-    def upload_to_s3(self, file_obj, s3_folder, s3_filename):
+    def _upload_to_s3(self, file_obj, s3_folder, s3_filename):
         # Guess extension
-        extensions = mimetypes.guess_all_extensions(file_obj.content_type)
-        if len(extensions) == 0:
-            raise ParseError(detail='Unknown file type')
-        extension = extensions.pop()
+        extension = self._mimetype_check(file_obj.content_type)
+        if not extension:
+            extensions = mimetypes.guess_all_extensions(file_obj.content_type)
+            if len(extensions) == 0:
+                raise ParseError(detail='Unknown file type')
+            extension = extensions.pop()
 
         # Save uploaded content to tmp file
         file_path = '{}/tmp_{}_{}_{}'.format(
