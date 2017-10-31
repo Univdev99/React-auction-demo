@@ -8,7 +8,8 @@
   padding-top: 60%;
 }
 
-.video-wrapper video {
+.video-wrapper video,
+.video-wrapper audio {
   position: absolute;
   left: 0;
   top: 0;

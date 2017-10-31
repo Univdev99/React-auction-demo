@@ -206,12 +206,13 @@ class AdminDonorDetail extends PureComponent {
                                 style={this.getItemStyle(provided.draggableStyle, snapshot.isDragging)}
                                 {...provided.dragHandleProps}
                               >
-                                {
-                                  medium.get('type') === 'video' ?
-                                  <video className="img-fluid" src={medium.get('url')} controls />
-                                  :
-                                  <img className="img-fluid" src={medium.get('url')} alt="Donor Medium" />
-                                }
+                                {medium.get('type') === 'video' && <video
+                                  className="img-fluid" src={medium.get('url')} controls />}
+                                {medium.get('type') === 'audio' && <audio
+                                  className="img-fluid" src={medium.get('url')} controls
+                                  style={{ paddingTop: '60%', background: '#000' }} />}
+                                {medium.get('type') === 'image' && <img
+                                  className="img-fluid" src={medium.get('url')} alt="Donor Medium" />}
                               </div>
                               {provided.placeholder}
                             </div>

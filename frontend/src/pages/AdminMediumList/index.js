@@ -110,13 +110,13 @@ class AdminMediumList extends PureComponent {
           {mediumListPage.map(medium => (
             <div key={medium.get('pk')} className="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-12 mb-4">
               <div className="medium-wrapper">
-                {medium.get('type') === 'photo' && <img
-                  className="img-fluid"
-                  src={medium.get('url')}
-                  alt=""
-                />}
+                {medium.get('type') === 'image' && <img
+                  className="img-fluid" src={medium.get('url')} alt="Medium" />}
                 {medium.get('type') === 'video' && <div className="video-wrapper">
-                  <video src={medium.get('url')} />
+                  <video src={medium.get('url')} controls />
+                </div>}
+                {medium.get('type') === 'audio' && <div className="video-wrapper">
+                  <audio src={medium.get('url')} controls />
                 </div>}
               </div>
             </div>

@@ -75,10 +75,10 @@ class DonorMediumUploadViewTests(AdminTestCase):
         self.donor = DonorFactory.create()
 
     @patch('api.views.admin.donors.DonorMediumUploadView.get_uploaded_file')
-    @patch('api.views.admin.donors.MediumUploadMixin.upload_image')
-    def test_upload_medium(self, mock_upload_image, mock_get_uploaded_file):
+    @patch('api.views.admin.donors.MediumUploadMixin.upload_medium')
+    def test_upload_medium(self, mock_upload_medium, mock_get_uploaded_file):
         new_medium = MediumFactory.create(self.donor)
-        mock_upload_image.return_value = new_medium
+        mock_upload_medium.return_value = new_medium
 
         file = MagicMock()
         file.content_type = 'image/png'

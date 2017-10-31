@@ -50,7 +50,8 @@ class CharityLogoUploadView(MediumUploadMixin, generics.GenericAPIView):
         serializer = UploadMediumSerializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
 
-        logo_medium = self.upload_image(
+        self.is_mimetype_image(serializer.validated_data['file'])
+        logo_medium = self.upload_medium(
             serializer.validated_data['file'],
             'charity/logo',
             '{}_{}'.format(charity.pk, random.randint(10000000, 99999999)),

@@ -2,7 +2,7 @@ import factory
 
 from django.contrib.contenttypes.models import ContentType
 
-from storage.constants import MEDIUM_TYPE_PHOTO
+from storage.constants import MEDIUM_TYPE_IMAGE
 from storage.models import Medium
 
 
@@ -13,7 +13,7 @@ class MediumFactory(factory.DjangoModelFactory):
     url = factory.Sequence(
         lambda n: 'https://test-bucket.s3.amazon.com/test-media/test-{}'.format(n)
     )
-    type = MEDIUM_TYPE_PHOTO
+    type = MEDIUM_TYPE_IMAGE
     mimetype = 'image/png'
 
     @classmethod
