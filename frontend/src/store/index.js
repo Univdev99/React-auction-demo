@@ -16,6 +16,7 @@ import adminTags from 'store/modules/admin/tags'
 import adminUsers from 'store/modules/admin/users'
 import adminMedia from 'store/modules/admin/media'
 import donors from 'store/modules/donors'
+import jobs from 'store/modules/jobs'
 import sagas from 'store/sagas'
 import authMiddleware from 'store/middlewares/auth'
 
@@ -63,6 +64,7 @@ export const store = createStore(
     adminUsers,
     adminMedia,
     donors,
+    jobs
   }),
   Immutable.Map(),
   composeEnhancers(...enhancers)

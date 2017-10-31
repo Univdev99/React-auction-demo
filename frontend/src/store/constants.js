@@ -51,3 +51,6 @@ export const ADMIN_GET_USER_LIST = 'charibin/admin/get-user-list'
 export const ADMIN_BLOCK_UNBLOCK_USER = 'charibin/admin/block-unblock-user'
 
 export const ADMIN_GET_MEDIUM_LIST_PAGE = 'charibin/admin/get-medium-list'
+
+export const JOB_GET_LIST = 'charibin/jobs/get-list'
+export const JOB_GET_DETAIL = 'charibin/jobs/get-detail'

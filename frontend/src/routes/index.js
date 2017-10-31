@@ -9,6 +9,7 @@ import SignUp from 'pages/SignUp'
 import SignUpWithFacebook from 'pages/SignUpWithFacebook'
 import SignUpVerification from 'pages/SignUpVerification'
 import AccountSettings from 'pages/AccountSettings'
+import Careers from 'pages/Careers'
 import Donors from 'pages/Donors'
 import DonorDetail from 'pages/DonorDetail'
 import Faqs from 'pages/Faqs'
@@ -84,6 +85,7 @@ const Routes = ({ history }) => (
       <Route exact path="/admin-authenticating" component={userIsAuthenticated(currentUserNotLoadedForAdmin(AdminAuthenticating))} />
       <Route path="/admin" component={userIsAdmin(AdminRoutes)} />
 
+      <Route exact path="/careers" component={Careers} />
       <Route exact path="/faqs" component={Faqs} />
       <Route exact path="/privacy-policy" component={PrivacyPolicy} />
       <Route exact path="/shipping" component={Shipping} />
