@@ -71,7 +71,7 @@ class AppHeader extends PureComponent {
           </a>
           <div className={accountMenuClasses.join(' ')}>
             {isStaff && <Link className="dropdown-item" to="/admin">Admin</Link>}
-            <Link className="dropdown-item" to="/account-settings">Account Settings</Link>
+            <Link className="dropdown-item" to="/account">My Account</Link>
             <a className="dropdown-item" href="/" onClick={this.handleSignOut}>Sign Out</a>
           </div>
           {accountMenuOpened && <div className="account-menu-bg" onClick={this.handleCloseAccountMenu} />}

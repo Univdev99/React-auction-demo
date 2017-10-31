@@ -5,12 +5,10 @@ import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
-import AppContainerLayout from 'components/AppContainerLayout'
 import AccountForm from 'components/AccountForm'
 import Spinner from 'components/Spinner'
-import AppLayout1 from 'pages/AppLayout1'
-import { updateCurrentUser } from 'store/modules/auth'
 import { authSelector } from 'store/selectors'
+import { updateCurrentUser } from 'store/modules/auth'
 
 
 class AccountSettings extends PureComponent {
@@ -45,39 +43,31 @@ class AccountSettings extends PureComponent {
     const currentUser = auth.get('currentUser')
 
     if (!currentUser) {
-      return <AppLayout1>
-        <Spinner />
-      </AppLayout1>
+      return <Spinner />
     }
 
     const { updateStatus } = this.state
 
     return (
-      <AppLayout1>
-        <AppContainerLayout>
-          <div className="row justify-content-center">
-            <div className="col-12 col-md-8 col-lg-6">
+      <div>
 
-              <h3 className="mb-4 text-center">Account Settings</h3>
+        <h3 className="mb-4">Account Information</h3>
 
-              {updateStatus === -1 && <div className="mb-2 text-danger">
-                Failed to update your account settings
-              </div>}
+        {updateStatus === -1 && <div className="mb-2 text-danger">
+          Failed to update your account settings
+        </div>}
 
-              {updateStatus === 10 && <div className="mb-2 text-muted">
-                Successfully saved
-              </div>}
+        {updateStatus === 10 && <div className="mb-2 text-muted">
+          Successfully saved
+        </div>}
 
-              <AccountForm 
-                initialValues={currentUser}
-                disabled={updateStatus === 1}
-                onSubmit={this.handleSubmit}
-              />
+        <AccountForm 
+          initialValues={currentUser}
+          disabled={updateStatus === 1}
+          onSubmit={this.handleSubmit}
+        />
 
-            </div>
-          </div>
-        </AppContainerLayout>
-      </AppLayout1>
+      </div>
     )
   }
 }

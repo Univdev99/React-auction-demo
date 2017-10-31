@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
+import { Redirect, Route } from 'react-router-dom'
 import { ConnectedRouter } from 'react-router-redux'
 
 // Front pages
@@ -50,6 +50,10 @@ import {
 } from './auth-wrapper'
 
 
+// Layout components
+import AccountLayout from 'components/AccountLayout'
+
+
 const AdminRoutes = props => (
   <div>
     <Route exact path="/admin" component={AdminIndex} />
@@ -72,6 +76,13 @@ const AdminRoutes = props => (
   </div>
 )
 
+const AccountRoutes = props => (
+  <AccountLayout>
+    <Route exact path="/account" component={() => <Redirect to="/account/bids" />} />
+    <Route exact path="/account/info" component={AccountSettings} />
+  </AccountLayout>
+)
+
 const Routes = ({ history }) => (
   <ConnectedRouter history={history}>
     <div>
@@ -80,12 +91,13 @@ const Routes = ({ history }) => (
       <Route exact path="/signup" component={userIsNotAuthenticated(SignUp)} />
       <Route exact path="/signup-with-facebook/:access_token" component={userIsNotAuthenticated(SignUpWithFacebook)} />
       <Route exact path="/verify-account/:token" component={SignUpVerification} />
-      <Route exact path="/account-settings" component={userIsAuthenticated(AccountSettings)} />
       <Route exact path="/donors" component={Donors} />
       <Route exact path="/donors/:id" component={DonorDetail} />
 
       <Route exact path="/admin-authenticating" component={userIsAuthenticated(currentUserNotLoadedForAdmin(AdminAuthenticating))} />
       <Route path="/admin" component={userIsAdmin(AdminRoutes)} />
+
+      <Route path="/account/:slug?" component={userIsAuthenticated(AccountRoutes)} />
 
       <Route exact path="/careers" component={Careers} />
       <Route exact path="/faqs" component={Faqs} />
