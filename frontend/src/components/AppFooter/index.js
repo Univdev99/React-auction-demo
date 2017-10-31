@@ -39,7 +39,7 @@ class AppFooter extends PureComponent {
               <NavLink tag={Link} to="/support">Support</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink tag={Link} to="/">Careers</NavLink>
+              <NavLink tag={Link} to="/careers">Careers</NavLink>
             </NavItem>
           </Nav>
         </Collapse>

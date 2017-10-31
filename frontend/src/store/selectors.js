@@ -22,3 +22,6 @@ export const adminMediaSelector = state =>
 export const donorsSelector = state => 
   state.get('donors')
 
+export const jobsSelector = state => 
+  state.get('jobs')
+

@@ -8,10 +8,13 @@ import SignIn from 'pages/SignIn'
 import SignUp from 'pages/SignUp'
 import SignUpWithFacebook from 'pages/SignUpWithFacebook'
 import SignUpVerification from 'pages/SignUpVerification'
+
 import AccountSettings from 'pages/AccountSettings'
+import Careers from 'pages/Careers'
 import Donors from 'pages/Donors'
 import DonorDetail from 'pages/DonorDetail'
 import Faqs from 'pages/Faqs'
+import JobDetail from 'pages/JobDetail'
 import PrivacyPolicy from 'pages/PrivacyPolicy'
 import Shipping from 'pages/Shipping'
 import Support from 'pages/Support'
@@ -84,7 +87,9 @@ const Routes = ({ history }) => (
       <Route exact path="/admin-authenticating" component={userIsAuthenticated(currentUserNotLoadedForAdmin(AdminAuthenticating))} />
       <Route path="/admin" component={userIsAdmin(AdminRoutes)} />
 
+      <Route exact path="/careers" component={Careers} />
       <Route exact path="/faqs" component={Faqs} />
+      <Route exact path="/jobs/:id" component={JobDetail} />
       <Route exact path="/privacy-policy" component={PrivacyPolicy} />
       <Route exact path="/shipping" component={Shipping} />
       <Route exact path="/support" component={Support} />

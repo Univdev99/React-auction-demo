@@ -51,6 +51,7 @@ INSTALLED_APPS = (
     'api',
     'entity',
     'storage',
+    'job'
 )
 
 MIDDLEWARE_CLASSES = (

@@ -43,7 +43,7 @@ class Support extends PureComponent {
 
           <h3 className="mb-5">Support</h3>
           <Row className="mb-5">
-            <Col xs={12}  md={6}>
+            <Col xs={12} md={6}>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut nibh dictum, auctor libero ac,
                 varius sem. Aenean in augue sed enim pulvinar ultricies eget at nibh. Sed ac iaculis lorem. Donec

@@ -9,6 +9,7 @@ import adminTags from './admin/tags'
 import adminUsers from './admin/users'
 import adminMedia from './admin/media'
 import donors from './donors'
+import jobs from './jobs'
 
 
 export default function* rootSaga() {
@@ -21,6 +22,7 @@ export default function* rootSaga() {
     adminTags(),
     adminUsers(),
     adminMedia(),
-    donors()
+    donors(),
+    jobs()
   ])
 }
