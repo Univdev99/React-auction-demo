@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import { combineReducers } from 'redux-immutable'
 import createHistory from 'history/createBrowserHistory'
 import { routerMiddleware } from 'react-router-redux'
@@ -35,6 +35,19 @@ const middlewares = [
   authMiddleware,
 ]
 
+const enhancers = [
+  applyMiddleware(...middlewares),
+]
+
+// If Redux DevTools Extension is installed use it, otherwise use Redux compose
+  /* eslint-disable no-underscore-dangle */
+const composeEnhancers =
+    process.env.NODE_ENV !== 'production' &&
+    typeof window === 'object' &&
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : compose
+  /* eslint-enable */
+
 // Add the reducer to your store on the `router` key
 // Also apply our middleware for navigating
 export const store = createStore(
@@ -52,7 +65,7 @@ export const store = createStore(
     donors,
   }),
   Immutable.Map(),
-  applyMiddleware(...middlewares)
+  composeEnhancers(...enhancers)
 )
 
 sagaMiddleware.run(sagas)
