@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import { Label, Input, FormFeedback, FormGroup, FormText } from 'reactstrap'
 
 
 class InputField extends PureComponent {
@@ -19,31 +20,21 @@ class InputField extends PureComponent {
   render() {
     const {
       input,
-      meta,
+      meta: { error, touched },
       type,
       label,
       helpText,
     } = this.props
-    const { name, onChange, value } = input
-    const fieldError = meta.invalid
-    const errorClasses = ['form-text']
-    if (meta.pristine) {
-      errorClasses.push('text-muted')
-    } else {
-      errorClasses.push('text-danger')
-    }
+    const { name } = input
+    const fieldError = touched && error
 
     return (
-      <div className="form-group">
-        {label && <label htmlFor={name}>{label}</label>}
-        <input className="form-control" type={type} name={name} onChange={onChange} value={value} />
-        {fieldError && <small className={errorClasses.join(' ')}>
-          {meta.error}
-        </small>}
-        {helpText && !fieldError && <small className="form-text text-muted">
-          {helpText}
-        </small>}
-      </div>
+      <FormGroup>
+        {label && <Label htmlFor={name}>{label}</Label>}
+        <Input type={type} {...input} valid={fieldError ? false : undefined} />
+        {fieldError && <FormFeedback>{error}</FormFeedback>}
+        {helpText && !fieldError && <FormText>{helpText}</FormText>}
+      </FormGroup>
     )
   }
 }

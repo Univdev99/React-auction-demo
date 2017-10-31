@@ -13,8 +13,9 @@ import Donors from 'pages/Donors'
 import DonorDetail from 'pages/DonorDetail'
 import Faqs from 'pages/Faqs'
 import PrivacyPolicy from 'pages/PrivacyPolicy'
-import TermsConditions from 'pages/TermsConditions'
 import Shipping from 'pages/Shipping'
+import Support from 'pages/Support'
+import TermsConditions from 'pages/TermsConditions'
 
 // Admin pages
 import AdminAuthenticating from 'pages/AdminAuthenticating'
@@ -35,6 +36,7 @@ import AdminAuctionDetail from 'pages/AdminAuctionDetail'
 import AdminAuctionStart from 'pages/AdminAuctionStart'
 import AdminUserList from 'pages/AdminUserList'
 import AdminMediumList from 'pages/AdminMediumList'
+
 
 // Auth wrappers
 import {
@@ -85,6 +87,7 @@ const Routes = ({ history }) => (
       <Route exact path="/faqs" component={Faqs} />
       <Route exact path="/privacy-policy" component={PrivacyPolicy} />
       <Route exact path="/shipping" component={Shipping} />
+      <Route exact path="/support" component={Support} />
       <Route exact path="/terms-conditions" component={TermsConditions} />
     </div>
   </ConnectedRouter>

@@ -11,7 +11,10 @@ class FormField extends PureComponent {
     helpText: PropTypes.string,
     type: PropTypes.string,
     component: PropTypes.func.isRequired,
-    validate: PropTypes.func,
+    validate: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.func
+    ]),
     options: PropTypes.any,
   }
 

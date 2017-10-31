@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import { Label, Input, FormFeedback, FormGroup, FormText } from 'reactstrap'
 
 
 class TextareaField extends PureComponent {
@@ -12,38 +13,23 @@ class TextareaField extends PureComponent {
     helpText: PropTypes.string,
   }
 
-  static defaultProps = {
-    type: 'text',
-  }
-
   render() {
     const {
       input,
-      meta,
-      type,
+      meta: { error, touched },
       label,
       helpText,
     } = this.props
-    const { name, onChange, value } = input
-    const fieldError = meta.invalid
-    const errorClasses = ['form-text']
-    if (meta.pristine) {
-      errorClasses.push('text-muted')
-    } else {
-      errorClasses.push('text-danger')
-    }
+    const { name } = input
+    const fieldError = touched && error
 
     return (
-      <div className="form-group">
-        {label && <label htmlFor={name}>{label}</label>}
-        <textarea className="form-control" type={type} name={name} onChange={onChange} value={value} rows={5} />
-        {fieldError && <small className={errorClasses.join(' ')}>
-          {meta.error}
-        </small>}
-        {helpText && !fieldError && <small className="form-text text-muted">
-          {helpText}
-        </small>}
-      </div>
+      <FormGroup>
+        {label && <Label htmlFor={name}>{label}</Label>}
+        <Input type="textarea" {...input} valid={fieldError ? false : undefined} rows={5} />
+        {fieldError && <FormFeedback>{error}</FormFeedback>}
+        {helpText && !fieldError && <FormText>{helpText}</FormText>}
+      </FormGroup>
     )
   }
 }
