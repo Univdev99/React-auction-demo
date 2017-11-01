@@ -2,7 +2,6 @@ from django.db import transaction
 from django.utils import timezone
 
 from rest_framework import serializers
-from rest_framework.exceptions import ParseError
 
 from auction.constants import AUCTION_STATUS_OPEN
 from auction.models import Auction
@@ -53,9 +52,9 @@ class AuctionDetailWithSimilarSerializer(serializers.ModelSerializer):
 
 class StartAuctionSerializer(serializers.Serializer):
     open_until = serializers.DateTimeField(required=False)
-    duration_days = serializers.IntegerField(required=False)
-    duration_minutes = serializers.IntegerField(required=False)
-    duration_seconds = serializers.IntegerField(required=False)
+    duration_days = serializers.IntegerField(required=False, min_value=0)
+    duration_minutes = serializers.IntegerField(required=False, min_value=0)
+    duration_seconds = serializers.IntegerField(required=False, min_value=0)
 
     def validate(self, data):
         data = super(StartAuctionSerializer, self).validate(data)
@@ -70,6 +69,19 @@ class StartAuctionSerializer(serializers.Serializer):
                 ('duration_days' in data or 'duration_minutes' in data or 'duration_seconds' in data)):
             raise serializers.ValidationError(
                 'open_until field and duration fields should not be provided at the same time'
+            )
+
+        if 'open_until' in data and data['open_until'] <= timezone.now():
+            raise serializers.ValidationError(
+                'open_until field cannot be past or present datetime'
+            )
+
+        if ('open_until' not in data and
+                ('duration_days' not in data or int(data['duration_days']) == 0) and
+                ('duration_minutes' not in data or int(data['duration_minutes']) == 0) and
+                ('duration_seconds' not in data or int(data['duration_seconds']) == 0)):
+            raise serializers.ValidationError(
+                'At least of one of duration fields should be larger than zero'
             )
 
         return data
@@ -87,13 +99,13 @@ class BidSerializer(serializers.ModelSerializer):
         price = data['price']
 
         if auction.status != AUCTION_STATUS_OPEN:
-            raise ParseError('Bids can be placed to open auctions only')
+            raise serializers.ValidationError('Bids can be placed to open auctions only')
 
         if auction.open_until < timezone.now():
-            raise ParseError('This auction is now waiting to close')
+            raise serializers.ValidationError('This auction is now waiting to close')
 
         if price <= auction.current_price:
-            raise ParseError('Price should be higher than current price of this auction')
+            raise serializers.ValidationError('Price should be higher than current price of this auction')
 
         return data
 
