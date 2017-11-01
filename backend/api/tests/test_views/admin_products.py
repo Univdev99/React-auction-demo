@@ -1,7 +1,7 @@
 import json
 from unittest.mock import MagicMock, patch
 
-from common.test import AdminTestCase
+from common.test import AdminAPITestCase
 from django.urls import reverse
 
 from rest_framework import status
@@ -14,7 +14,7 @@ from storage.constants import MEDIUM_TYPE_VIDEO
 from storage.test.factories import MediumFactory
 
 
-class ProductListViewTests(AdminTestCase):
+class ProductListViewTests(AdminAPITestCase):
     def setUp(self):
         super(ProductListViewTests, self).setUp()
         self.donor = DonorFactory.create()
@@ -39,7 +39,7 @@ class ProductListViewTests(AdminTestCase):
         self.assertEqual(product.tagnames, ['tag1', 'tag2'])
 
 
-class ProductDetailViewTests(AdminTestCase):
+class ProductDetailViewTests(AdminAPITestCase):
     def setUp(self):
         super(ProductDetailViewTests, self).setUp()
         self.product = ProductFactory.create()
@@ -68,7 +68,7 @@ class ProductDetailViewTests(AdminTestCase):
         self.assertNotEqual(self.medium.deleted_at, None)
 
 
-class ProductMediumUploadViewTests(AdminTestCase):
+class ProductMediumUploadViewTests(AdminAPITestCase):
     def setUp(self):
         super(ProductMediumUploadViewTests, self).setUp()
         self.product = ProductFactory.create()
@@ -91,7 +91,7 @@ class ProductMediumUploadViewTests(AdminTestCase):
         self.assertNotEqual(self.product.media.count(), 0)
 
 
-class ProductMediumDeleteViewTests(AdminTestCase):
+class ProductMediumDeleteViewTests(AdminAPITestCase):
     def setUp(self):
         super(ProductMediumDeleteViewTests, self).setUp()
         self.product = ProductFactory.create()
@@ -107,7 +107,7 @@ class ProductMediumDeleteViewTests(AdminTestCase):
         self.assertNotEqual(self.medium.deleted_at, None)
 
 
-class ProductMediaReorderViewTests(AdminTestCase):
+class ProductMediaReorderViewTests(AdminAPITestCase):
     def setUp(self):
         super(ProductMediaReorderViewTests, self).setUp()
         self.product = ProductFactory.create()

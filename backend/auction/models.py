@@ -9,6 +9,7 @@ from auction.constants import AUCTION_STATUS_PREVIEW
 from auction.constants import AUCTION_STATUS_OPEN
 from auction.constants import AUCTION_STATUS_FINISHED
 from auction.constants import AUCTION_STATUS_CANCELLED
+from auction.constants import AUCTION_STATUS_CANCELLED_DUE_TO_NO_BIDS
 from auction.constants import BID_STATUS_CHOICES
 from auction.constants import BID_STATUS_ACTIVE
 from entity.models import Product
@@ -50,7 +51,16 @@ class Auction(models.Model):
         return [product.auction for product in similar_products]
 
     def _do_finishing_process(self):
-        raise NotImplementedError('Auction finishing process not implemented yet')
+        bid_queryset = self.bid_set
+        if bid_queryset.count() == 0:
+            self.status = AUCTION_STATUS_CANCELLED_DUE_TO_NO_BIDS
+            self.save()
+            return
+
+        highest_bid_price = bid_queryset.aggregate(highest_price=Max('price'))['highest_price']
+        highest_bid = bid_queryset.objects.get(price=highest_bid_price)
+
+        raise NotImplementedError('Payment process not implemented yet')
 
     def start(self):
         if self.status != AUCTION_STATUS_PREVIEW:

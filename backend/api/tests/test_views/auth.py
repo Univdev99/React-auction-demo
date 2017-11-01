@@ -1,7 +1,7 @@
 import json
 from unittest.mock import patch
 
-from common.test import TestCase
+from common.test import APITestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
@@ -10,7 +10,7 @@ from rest_framework import status
 from account.models import UserVerification
 
 
-class SignUpTests(TestCase):
+class SignUpTests(APITestCase):
     def get_data(self):
         return {
             'username': 'tester1',
@@ -55,7 +55,7 @@ class SignUpTests(TestCase):
         self.assertEqual(user.last_name, 'TestLast')
 
 
-class CurrentUserTests(TestCase):
+class CurrentUserTests(APITestCase):
     def get_user_data(self):
         return {
             'username': 'tester',

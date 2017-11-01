@@ -1,7 +1,7 @@
 import json
 from unittest.mock import MagicMock, patch
 
-from common.test import AdminTestCase
+from common.test import AdminAPITestCase
 from django.urls import reverse
 
 from rest_framework import status
@@ -16,7 +16,7 @@ from auction.test.factories import ProductFactory
 from auction.test.factories import AuctionFactory
 
 
-class AuctionDetailViewTests(AdminTestCase):
+class AuctionDetailViewTests(AdminAPITestCase):
     def setUp(self):
         super(AuctionDetailViewTests, self).setUp()
         self.auction = AuctionFactory.create()
@@ -62,7 +62,7 @@ class AuctionStatusChangeTestMixin(object):
         self.assertEqual(self.auction.status, current_status)
 
 
-class AuctionStartViewTests(AuctionStatusChangeTestMixin, AdminTestCase):
+class AuctionStartViewTests(AuctionStatusChangeTestMixin, AdminAPITestCase):
     def setUp(self):
         super(AuctionStartViewTests, self).setUp()
         self.auction = AuctionFactory.create()
@@ -83,7 +83,7 @@ class AuctionStartViewTests(AuctionStatusChangeTestMixin, AdminTestCase):
         self._test_should_not_change_from_this_status(AUCTION_STATUS_CANCELLED)
 
 
-class AuctionFinishViewTests(AuctionStatusChangeTestMixin, AdminTestCase):
+class AuctionFinishViewTests(AuctionStatusChangeTestMixin, AdminAPITestCase):
     def setUp(self):
         super(AuctionFinishViewTests, self).setUp()
         self.auction = AuctionFactory.create(status=AUCTION_STATUS_OPEN)
@@ -105,7 +105,7 @@ class AuctionFinishViewTests(AuctionStatusChangeTestMixin, AdminTestCase):
         self._test_should_not_change_from_this_status(AUCTION_STATUS_CANCELLED)
 
 
-class AuctionCancelViewTests(AuctionStatusChangeTestMixin, AdminTestCase):
+class AuctionCancelViewTests(AuctionStatusChangeTestMixin, AdminAPITestCase):
     def setUp(self):
         super(AuctionCancelViewTests, self).setUp()
         self.auction = AuctionFactory.create(status=AUCTION_STATUS_OPEN)

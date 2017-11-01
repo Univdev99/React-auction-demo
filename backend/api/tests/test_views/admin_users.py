@@ -1,7 +1,7 @@
 import json
 from unittest.mock import MagicMock, patch
 
-from common.test import AdminTestCase
+from common.test import AdminAPITestCase
 from django.urls import reverse
 
 from rest_framework import status
@@ -9,7 +9,7 @@ from rest_framework import status
 from account.test.factories import UserFactory
 
 
-class UserBlockUnblockViewTests(AdminTestCase):
+class UserBlockUnblockViewTests(AdminAPITestCase):
     def setUp(self):
         super(UserBlockUnblockViewTests, self).setUp()
         self.user = UserFactory.create()
