@@ -1,7 +1,7 @@
 import json
 from unittest.mock import patch
 
-from common.test import AdminTestCase
+from common.test import AdminAPITestCase
 from django.urls import reverse
 
 from rest_framework import status
@@ -10,7 +10,7 @@ from entity.test.factories import CharityFactory
 from storage.test.factories import MediumFactory
 
 
-class CharityDetailViewTests(AdminTestCase):
+class CharityDetailViewTests(AdminAPITestCase):
     def setUp(self):
         super(CharityDetailViewTests, self).setUp()
         self.charity = CharityFactory.create()
@@ -25,7 +25,7 @@ class CharityDetailViewTests(AdminTestCase):
         self.assertNotEqual(self.charity.logo.deleted_at, None)
 
 
-class CharityLogoUploadViewTests(AdminTestCase):
+class CharityLogoUploadViewTests(AdminAPITestCase):
     def setUp(self):
         super(CharityLogoUploadViewTests, self).setUp()
         self.charity = CharityFactory.create()

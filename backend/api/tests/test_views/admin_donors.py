@@ -1,7 +1,7 @@
 import json
 from unittest.mock import MagicMock, patch
 
-from common.test import AdminTestCase
+from common.test import AdminAPITestCase
 from django.urls import reverse
 
 from rest_framework import status
@@ -15,7 +15,7 @@ from storage.constants import MEDIUM_TYPE_VIDEO
 from storage.test.factories import MediumFactory
 
 
-class DonorListViewTests(AdminTestCase):
+class DonorListViewTests(AdminAPITestCase):
     def setUp(self):
         super(DonorListViewTests, self).setUp()
         self.charity = CharityFactory.create()
@@ -41,7 +41,7 @@ class DonorListViewTests(AdminTestCase):
         self.assertEqual(donor.tagnames, ['tag1', 'tag2'])
 
 
-class DonorDetailViewTests(AdminTestCase):
+class DonorDetailViewTests(AdminAPITestCase):
     def setUp(self):
         super(DonorDetailViewTests, self).setUp()
         self.donor = DonorFactory.create()
@@ -69,7 +69,7 @@ class DonorDetailViewTests(AdminTestCase):
         self.assertNotEqual(self.medium.deleted_at, None)
 
 
-class DonorMediumUploadViewTests(AdminTestCase):
+class DonorMediumUploadViewTests(AdminAPITestCase):
     def setUp(self):
         super(DonorMediumUploadViewTests, self).setUp()
         self.donor = DonorFactory.create()
@@ -92,7 +92,7 @@ class DonorMediumUploadViewTests(AdminTestCase):
         self.assertNotEqual(self.donor.media.count(), 0)
 
 
-class DonorMediumDeleteViewTests(AdminTestCase):
+class DonorMediumDeleteViewTests(AdminAPITestCase):
     def setUp(self):
         super(DonorMediumDeleteViewTests, self).setUp()
         self.donor = DonorFactory.create()
@@ -108,7 +108,7 @@ class DonorMediumDeleteViewTests(AdminTestCase):
         self.assertNotEqual(self.medium.deleted_at, None)
 
 
-class DonorMediaReorderViewTests(AdminTestCase):
+class DonorMediaReorderViewTests(AdminAPITestCase):
     def setUp(self):
         super(DonorMediaReorderViewTests, self).setUp()
         self.donor = DonorFactory.create()
