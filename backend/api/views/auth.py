@@ -124,8 +124,6 @@ class CurrentUserView(views.APIView):
         user.username = serializer.validated_data['username']
         user.first_name = serializer.validated_data['first_name']
         user.last_name = serializer.validated_data['last_name']
-        if 'password' in serializer.validated_data:
-            user.set_password(serializer.validated_data['password'])
         user.save()
 
         serializer = CurrentUserSerializer(self.request.user)
