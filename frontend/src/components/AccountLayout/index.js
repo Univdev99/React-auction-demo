@@ -33,7 +33,7 @@ const AccountLayout = ({ children }) => (
   <AppLayout1>
     <AppContainerLayout>
       <Row>
-        <Col xs={12} md={4}>
+        <Col xs={12} md={4} className="mb-5">
           <Nav vertical>
             {navs.map((item, index) => (
               <NavItem key={index}>

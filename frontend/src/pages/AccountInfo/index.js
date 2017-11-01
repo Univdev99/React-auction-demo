@@ -11,7 +11,7 @@ import { authSelector } from 'store/selectors'
 import { updateCurrentUser } from 'store/modules/auth'
 
 
-class AccountSettings extends PureComponent {
+class AccountInfo extends PureComponent {
 
   static propTypes = {
     auth: ImmutablePropTypes.map.isRequired,
@@ -82,4 +82,4 @@ const actions = {
 
 export default compose(
   connect(selector, actions)
-)(AccountSettings)
+)(AccountInfo)
