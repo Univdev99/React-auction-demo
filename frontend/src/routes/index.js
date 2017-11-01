@@ -10,6 +10,7 @@ import SignUpWithFacebook from 'pages/SignUpWithFacebook'
 import SignUpVerification from 'pages/SignUpVerification'
 
 import AccountInfo from 'pages/AccountInfo'
+import AccountPassword from 'pages/AccountPassword'
 import Careers from 'pages/Careers'
 import Donors from 'pages/Donors'
 import DonorDetail from 'pages/DonorDetail'
@@ -80,6 +81,7 @@ const AccountRoutes = props => (
   <AccountLayout>
     <Route exact path="/account" component={() => <Redirect to="/account/bids" />} />
     <Route exact path="/account/info" component={AccountInfo} />
+    <Route exact path="/account/change-password" component={AccountPassword} />
   </AccountLayout>
 )
 
