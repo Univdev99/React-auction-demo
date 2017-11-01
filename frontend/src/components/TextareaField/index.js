@@ -11,6 +11,7 @@ class TextareaField extends PureComponent {
     type: PropTypes.string,
     label: PropTypes.string,
     helpText: PropTypes.string,
+    placeholder: PropTypes.string
   }
 
   render() {
@@ -19,6 +20,7 @@ class TextareaField extends PureComponent {
       meta: { error, touched },
       label,
       helpText,
+      placeholder
     } = this.props
     const { name } = input
     const fieldError = touched && error
@@ -26,7 +28,7 @@ class TextareaField extends PureComponent {
     return (
       <FormGroup>
         {label && <Label htmlFor={name}>{label}</Label>}
-        <Input type="textarea" {...input} valid={fieldError ? false : undefined} rows={5} />
+        <Input type="textarea" {...input} placeholder={placeholder} valid={fieldError ? false : undefined} rows={5} />
         {fieldError && <FormFeedback>{error}</FormFeedback>}
         {helpText && !fieldError && <FormText>{helpText}</FormText>}
       </FormGroup>

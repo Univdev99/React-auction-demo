@@ -11,6 +11,7 @@ class InputField extends PureComponent {
     type: PropTypes.string,
     label: PropTypes.string,
     helpText: PropTypes.string,
+    placeholder: PropTypes.string
   }
 
   static defaultProps = {
@@ -24,6 +25,7 @@ class InputField extends PureComponent {
       type,
       label,
       helpText,
+      placeholder
     } = this.props
     const { name } = input
     const fieldError = touched && error
@@ -31,7 +33,7 @@ class InputField extends PureComponent {
     return (
       <FormGroup>
         {label && <Label htmlFor={name}>{label}</Label>}
-        <Input type={type} {...input} valid={fieldError ? false : undefined} />
+        <Input type={type} {...input} placeholder={placeholder} valid={fieldError ? false : undefined} />
         {fieldError && <FormFeedback>{error}</FormFeedback>}
         {helpText && !fieldError && <FormText>{helpText}</FormText>}
       </FormGroup>
