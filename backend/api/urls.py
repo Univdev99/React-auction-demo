@@ -10,6 +10,11 @@ from api.views.donors import DonorListView
 from api.views.donors import DonorDetailView
 from api.views.jobs import JobListView
 from api.views.jobs import JobDetailView
+from api.views.auctions import AuctionFrontListView
+from api.views.auctions import AuctionListView
+from api.views.auctions import AuctionDetailView
+from api.views.auctions import AuctionPlaceBidView
+
 # temporary endpoint for testing
 from api.views.test import TestView
 
@@ -28,6 +33,10 @@ urlpatterns = [
 
     url(r'^jobs/$', JobListView.as_view(), name='job-list'),
     url(r'^jobs/(?P<pk>[0-9]+)/$', JobDetailView.as_view(), name='job-detail'),
+    url(r'^auctions/front/$', AuctionFrontListView.as_view(), name='auction-front-list'),
+    url(r'^auctions/$', AuctionListView.as_view(), name='auction-list'),
+    url(r'^auctions/(?P<pk>[0-9]+)/$', AuctionDetailView.as_view(), name='auction-detail'),
+    url(r'^auctions/(?P<pk>[0-9]+)/bid/$', AuctionPlaceBidView.as_view(), name='auction-place-bid'),
 
     url(r'^admin/', include('api.views.admin.urls', namespace='admin')),
 ]

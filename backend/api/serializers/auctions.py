@@ -1,8 +1,12 @@
 from django.db import transaction
+from django.utils import timezone
 
 from rest_framework import serializers
+from rest_framework.exceptions import ParseError
 
+from auction.constants import AUCTION_STATUS_OPEN
 from auction.models import Auction
+from auction.models import Bid
 from api.serializers.entities import ProductSerializer
 from api.serializers.entities import ProductDetailSerializer
 from api.serializers.mixins import TagnamesSerializerMixin
@@ -32,13 +36,19 @@ class AuctionDetailWithSimilarSerializer(serializers.ModelSerializer):
     """
     Serializer used in front api for serializing Auction model object, with data on similar auctions
     """
-    product = ProductSerializer(read_only=True)
+    product = ProductDetailSerializer(read_only=True)
     similar_auctions = AuctionSerializer(many=True, read_only=True)
 
     class Meta:
         model = Auction
-        fields = ('pk', 'title', 'description', 'type', 'product', 'similar_auctions')
-        read_only_fields = ('pk', 'title', 'description', 'type', 'product', 'similar_auctions')
+        fields = (
+            'pk', 'title', 'starting_price', 'status',
+            'started_at', 'open_until', 'ended_at',
+            'product', 'similar_auctions')
+        read_only_fields = (
+            'pk', 'title', 'starting_price', 'status',
+            'started_at', 'open_until', 'ended_at',
+            'product', 'similar_auctions')
 
 
 class StartAuctionSerializer(serializers.Serializer):
@@ -63,3 +73,40 @@ class StartAuctionSerializer(serializers.Serializer):
             )
 
         return data
+
+
+class BidSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Bid
+        fields = ('price', 'status', 'placed_at', 'closed_at', 'user', 'auction')
+        read_only_fields = ('status', 'placed_at', 'closed_at', 'user')
+
+    def validate(self, data):
+        data = super(BidSerializer, self).validate(data)
+        auction = data['auction']
+        price = data['price']
+
+        if auction.status != AUCTION_STATUS_OPEN:
+            raise ParseError('Bids can be placed to open auctions only')
+
+        if auction.open_until < timezone.now():
+            raise ParseError('This auction is now waiting to close')
+
+        if price <= auction.current_price:
+            raise ParseError('Price should be higher than current price of this auction')
+
+        return data
+
+    def create(self, validated_data):
+        request = self.context.get('request')
+        auction = validated_data['auction']
+        price = validated_data['price']
+
+        bid = Bid.objects.create(
+            price=price,
+            placed_at=timezone.now(),
+            user=request.user,
+            auction=auction
+        )
+
+        return bid
