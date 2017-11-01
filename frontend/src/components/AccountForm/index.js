@@ -49,23 +49,9 @@ class AccountForm extends PureComponent {
           label="Email:"
           component={InputField}
         />*/}
-        <FormField
-          name="password"
-          type="password"
-          label="Password:"
-          helpText="Leave this field empty to keep current password unchanged"
-          component={InputField}
-        />
-        <FormField
-          name="password_confirm"
-          type="password"
-          label="Password Confirmation:"
-          helpText="Leave this field empty to keep current password unchanged"
-          component={InputField}
-        />
-        <center>
+        <div className="text-right">
           <button type="submit" className="btn btn-primary" disabled={disabled}>Update</button>
-        </center>
+        </div>
       </form>
     )
   }

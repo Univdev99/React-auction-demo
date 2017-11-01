@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
+import ImmutablePropTypes from 'react-immutable-proptypes'
+import { Alert } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
-import PropTypes from 'prop-types'
-import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import AccountForm from 'components/AccountForm'
 import Spinner from 'components/Spinner'
@@ -53,13 +54,13 @@ class AccountInfo extends PureComponent {
 
         <h3 className="mb-4">Account Information</h3>
 
-        {updateStatus === -1 && <div className="mb-2 text-danger">
+        {updateStatus === -1 && <Alert color="danger">
           Failed to update your account settings
-        </div>}
+        </Alert>}
 
-        {updateStatus === 10 && <div className="mb-2 text-muted">
+        {updateStatus === 10 && <Alert color="success">
           Successfully saved
-        </div>}
+        </Alert>}
 
         <AccountForm 
           initialValues={currentUser}
