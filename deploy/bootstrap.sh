@@ -1,6 +1,10 @@
 # build tools
 sudo apt -y install build-essential
 
+# python tools
+sudo apt -y install python3-pip
+sudo pip3 install virtualenv
+
 # nodejs
 curl -sL https://deb.nodesource.com/setup_8.x -o nodesource_setup.sh | sudo bash -
 sudo apt -y install nodejs
