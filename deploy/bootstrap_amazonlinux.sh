@@ -18,5 +18,5 @@ yarn run build
 cd ..
 # gunicorn to boot app
 sudo cp -f ./deploy/configs/gunicorn.conf /etc/init/
-sudo service gunicorn reload
+sudo initctl reload-configuration
 sudo service gunicorn restart
