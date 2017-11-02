@@ -10,6 +10,7 @@ from auction.models import Shipment
 from api.serializers.entities import ProductSerializer
 from api.serializers.entities import ProductDetailSerializer
 from api.serializers.mixins import TagnamesSerializerMixin
+from notification.models import Notification
 
 
 class AuctionSerializer(serializers.ModelSerializer):
@@ -129,6 +130,7 @@ class AuctionShipProductSerializer(serializers.Serializer):
     sent_at = serializers.DateTimeField()
     tracking_number = serializers.CharField()
 
+    @transaction.atomic
     def create(self, validated_data):
         view = self.context.get('view')
         auction = view.get_object()
@@ -139,5 +141,7 @@ class AuctionShipProductSerializer(serializers.Serializer):
             auction=auction,
             product=auction.product,
         )
+
+        notification = Notification.objects.create()
 
         return shipment

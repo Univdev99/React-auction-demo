@@ -41,6 +41,9 @@ import AdminAuctionStart from 'pages/AdminAuctionStart'
 import AdminUserList from 'pages/AdminUserList'
 import AdminMediumList from 'pages/AdminMediumList'
 
+// Managers (currently implemented as invisible page components)
+import NotificationManager from 'pages/NotificationManager'
+
 
 // Auth wrappers
 import {
@@ -108,6 +111,8 @@ const Routes = ({ history }) => (
       <Route exact path="/shipping" component={Shipping} />
       <Route exact path="/support" component={Support} />
       <Route exact path="/terms-conditions" component={TermsConditions} />
+
+      <Route path="/" component={NotificationManager} />
     </div>
   </ConnectedRouter>
 )

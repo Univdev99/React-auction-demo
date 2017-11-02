@@ -45,13 +45,16 @@ INSTALLED_APPS = (
     'rest_framework',
     'corsheaders',
     'tagging',
+    'channels',
     # Project apps
     'account',
     'auction',
     'api',
     'entity',
     'storage',
-    'job'
+    'job',
+    'notification',
+    'payment'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -201,3 +204,13 @@ if DEBUG and LOG_SQL_QUERY:
             },
         }
     }
+
+
+# Django channels
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "ROUTING": "notification.routing.channel_routing",
+    },
+}
