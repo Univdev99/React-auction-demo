@@ -1,4 +1,4 @@
-sudo -u www-data git pull
+# build
 source venv/bin/activate
 cd backend
 pip install -r ./requirements.txt
@@ -9,4 +9,9 @@ cd frontend
 yarn
 yarn run build
 cd ..
-sudo service gunicorn restart
+
+# permission
+sudo chown www-data:ubuntu -r /var/www/charibin-tmp/frontend/public
+
+# restart app
+sudo systemctl restart gunicorn

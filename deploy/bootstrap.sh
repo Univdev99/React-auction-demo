@@ -42,5 +42,5 @@ sudo cp -f ./deploy/configs/charibin /etc/nginx/sites-available
 sudo ln -s /etc/nginx/sites-available/charibin /etc/nginx/sites-enabled/charibin
 touch /var/www/charibin-tmp/charibin.sock
 sudo chown www-data:ubuntu /var/www/charibin-tmp/charibin.sock
-sudo chown www-data:ubuntu /var/www/charibin-tmp/frontend/public
+sudo chown www-data:ubuntu -r /var/www/charibin-tmp/frontend/public
 sudo service nginx restart
