@@ -115,12 +115,23 @@ class BidSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         auction = validated_data['auction']
         price = validated_data['price']
+        placed_at = timezone.now()
 
         bid = Bid.objects.create(
             price=price,
-            placed_at=timezone.now(),
+            placed_at=placed_at,
             user=request.user,
             auction=auction
+        )
+
+        Notification.create_notification(
+            request.user,
+            auction,
+            NOTIFICATION_AUCTION_NEW_BID,
+            {
+                'price': price,
+                'placed_at': placed_at,
+            }
         )
 
         return bid
@@ -141,7 +152,5 @@ class AuctionShipProductSerializer(serializers.Serializer):
             auction=auction,
             product=auction.product,
         )
-
-        notification = Notification.objects.create()
 
         return shipment

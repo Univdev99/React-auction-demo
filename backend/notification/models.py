@@ -41,6 +41,26 @@ class Notification(models.Model):
             str += ' by {}'.format(self.subject.content_object)
         return str
 
+    @classmethod
+    def create_notification(cls, subject, object, action, extra=None):
+        if subject:
+            subject_notification_entity = NotificationEntity()
+            subject_notification_entity.content_object = subject
+            subject_notification_entity.save()
+        else:
+            subject_notification_entity = None
+
+        object_notification_entity = NotificationEntity()
+        object_notification_entity.content_object = object
+        object_notification_entity.save()
+
+        return cls.objects.create(
+            subject=subject_notification_entity,
+            object=object_notification_entity,
+            action=action,
+            extra=extra
+        )
+
     @property
     def action_type(self):
         sep_pos = self.action.find('/')
