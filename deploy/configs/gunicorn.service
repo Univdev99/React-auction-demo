@@ -1,0 +1,12 @@
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=ec2-user
+Group=www-data
+WorkingDirectory=/var/www/charibin-tmp/backend
+ExecStart=/var/www/charibin-tmp/venv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/var/www/charibin-tmp/charibin.sock charibin.wsgi:application
+
+[Install]
+WantedBy=multi-user.target

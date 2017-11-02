@@ -1,0 +1,18 @@
+server {
+    listen 80;
+    server_name ec2-34-201-70-236.compute-1.amazonaws.com;
+
+    location /static/ {
+        root /var/www/charibin-tmp/backend;
+    }
+
+    location ^~ /(api|django-admin)/ {
+        include proxy_params;
+        proxy_pass /var/www/charibin-tmp/charibin.sock;
+    }
+
+    location / {
+        root /var/www/charibin-tmp/frontend/public;
+        try_files /index.html;
+    }
+}
