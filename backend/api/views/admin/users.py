@@ -12,7 +12,7 @@ from api.permissions import IsAdmin
 
 class UserListView(generics.ListAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
-    queryset = get_user_model().objects.order_by('-is_staff', 'date_joined')
+    queryset = get_user_model().objects.select_related('profile').order_by('-is_staff', 'date_joined')
     serializer_class = UserSerializer
 
 
@@ -20,7 +20,7 @@ class UserBlockUnblockView(generics.UpdateAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
     serializer_class = UserBlockUnblockSerializer
     lookup_url_kwarg = 'pk'
-    queryset = get_user_model().objects.all()
+    queryset = get_user_model().objects.all().select_related('profile')
 
     def update(self, request, *args, **kwargs):
         user = self.get_object()
