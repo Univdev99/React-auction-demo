@@ -14,7 +14,7 @@
     "react": "^16.0.0",
     "react-autosuggest": "^9.3.2",
     "react-beautiful-dnd": "^2.4.1",
-    "react-datepicker": "^0.57.0",
+    "react-datepicker": "^0.58.0",
     "react-dom": "^16.0.0",
     "react-dropzone": "^4.2.0",
     "react-immutable-proptypes": "^2.1.0",
