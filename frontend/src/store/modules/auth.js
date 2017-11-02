@@ -10,6 +10,7 @@ import {
   AUTH_VERIFY_SIGNUP,
   AUTH_VERIFY_SIGNUP_RESET,
   AUTH_CURRENT_USER,
+  AUTH_PASSWORD_UPDATE,
   AUTH_CURRENT_USER_UPDATE,
 } from 'store/constants'
 
@@ -39,6 +40,7 @@ export const signUp = createAction(AUTH_SIGNUP)
 export const signUpWithFacebook = createAction(AUTH_SIGNUP_WITH_FACEBOOK)
 export const verifySignUp = createAction(AUTH_VERIFY_SIGNUP)
 export const resetSignUpVerification = createAction(AUTH_VERIFY_SIGNUP_RESET)
+export const updatePassword = createAction(AUTH_PASSWORD_UPDATE)
 
 /* Reducer */
 

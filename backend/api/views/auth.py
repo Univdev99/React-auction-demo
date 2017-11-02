@@ -5,7 +5,7 @@ from django.db import transaction
 from django.utils.crypto import get_random_string
 
 from facebook import GraphAPI, GraphAPIError
-from rest_framework import views
+from rest_framework import generics, views
 from rest_framework.exceptions import ParseError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -15,6 +15,7 @@ from api.serializers.auth import SignUpSerializer
 from api.serializers.auth import SignUpVerificationSerializer
 from api.serializers.auth import SignUpWithFacebookSerializer
 from api.serializers.auth import CurrentUserSerializer
+from api.serializers.auth import UpdatePasswordSerializer
 
 from account.models import UserVerification
 
@@ -123,9 +124,35 @@ class CurrentUserView(views.APIView):
         user.username = serializer.validated_data['username']
         user.first_name = serializer.validated_data['first_name']
         user.last_name = serializer.validated_data['last_name']
-        if 'password' in serializer.validated_data:
-            user.set_password(serializer.validated_data['password'])
         user.save()
 
         serializer = CurrentUserSerializer(self.request.user)
         return Response(serializer.data)
+
+
+class UpdatePasswordView(generics.UpdateAPIView):
+    """
+    An endpoint for updating password.
+    """
+    serializer_class = UpdatePasswordSerializer
+    model = get_user_model()
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self, queryset=None):
+        obj = self.request.user
+        return obj
+
+    def update(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            # Check old password
+            if not self.object.check_password(serializer.data.get('old_password')):
+                return Response({'old_password': ['Wrong password.']}, status=status.HTTP_400_BAD_REQUEST)
+            # set_password also hashes the password that the user will get
+            self.object.set_password(serializer.data.get('new_password'))
+            self.object.save()
+            return Response('ok', status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

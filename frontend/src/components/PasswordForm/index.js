@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Col, Row } from 'reactstrap'
 import { compose } from 'redux'
 import { reduxForm } from 'redux-form/immutable'
 
@@ -8,7 +7,7 @@ import FormField from 'components/FormField'
 import InputField from 'components/InputField'
 
 
-class AccountForm extends PureComponent {
+class PasswordForm extends PureComponent {
 
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
@@ -19,36 +18,29 @@ class AccountForm extends PureComponent {
     const { handleSubmit, disabled } = this.props
     return (
       <form onSubmit={handleSubmit}>
-        <Row>
-          <Col xs={12} sm={6}>
-            <FormField
-              name="first_name"
-              type="text"
-              label="First name:"
-              component={InputField}
-            />
-          </Col>
-          <Col xs={12} sm={6}>
-            <FormField
-              name="last_name"
-              type="text"
-              label="Last name:"
-              component={InputField}
-            />
-          </Col>
-        </Row>
         <FormField
-          name="username"
-          type="text"
-          label="Username:"
+          name="old_password"
+          type="password"
+          label="Current Password"
+          helpText="Must have at least 6 characters"
+          placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;"
           component={InputField}
         />
-        {/*<FormField
-          name="email"
-          type="email"
-          label="Email:"
+        <FormField
+          name="new_password"
+          type="password"
+          label="New Password"
+          helpText="Must have at least 6 characters"
+          placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;"
           component={InputField}
-        />*/}
+        />
+        <FormField
+          name="password_confirm"
+          type="password"
+          label="Confirmation New Password"
+          placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;"
+          component={InputField}
+        />
         <div className="text-right">
           <button type="submit" className="btn btn-primary" disabled={disabled}>Update</button>
         </div>
@@ -60,13 +52,9 @@ class AccountForm extends PureComponent {
 const validate = (values) => {
   const errors = {}
 
-  if (!values.get('username')) {
-    errors.username = 'Username is required'
-  }
-
-  const password = values.get('password')
+  const password = values.get('new_password')
   if (password && password.length < 6) {
-    errors.password = 'Must be at least 6 characters'
+    errors.password = 'Must have at least 6 characters'
   }
 
   const passwordConfirm = values.get('password_confirm')
@@ -79,7 +67,7 @@ const validate = (values) => {
 
 export default compose(
   reduxForm({
-    form: 'accountForm',
+    form: 'changePasswordForm',
     validate,
   })
-)(AccountForm)
+)(PasswordForm)

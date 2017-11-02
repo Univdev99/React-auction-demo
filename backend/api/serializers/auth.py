@@ -58,3 +58,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 class UserBlockUnblockSerializer(serializers.Serializer):
     block = serializers.BooleanField()
+
+
+class UpdatePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
