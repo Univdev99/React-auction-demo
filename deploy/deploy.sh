@@ -3,6 +3,7 @@ source venv/bin/activate
 cd backend
 pip install -r ./requirements.txt
 ./manage.py migrate
+./manage.py collectstatic
 cd ..
 deactivate
 cd frontend
