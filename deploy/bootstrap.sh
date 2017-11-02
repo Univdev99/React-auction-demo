@@ -14,6 +14,10 @@ curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 sudo apt update && sudo apt -y install yarn
 
+# postgresql
+sudo apt -y update
+sudo apt -y install postgresql postgresql-contrib
+
 # project venv, build
 virtualenv -p python3 venv
 source venv/bin/activate
@@ -29,7 +33,8 @@ cd ..
 
 # gunicorn
 sudo cp -f ./deploy/configs/gunicorn.service /etc/systemd/system/gunicorn.service
-sudo service gunicorn start
+sudo systemctl daemon-reload
+sudo systemctl restart gunicorn
 
 # nginx
 sudo apt update && sudo apt -y install nginx
