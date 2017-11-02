@@ -1,6 +1,6 @@
 # nginx
 sudo service nginx start
-sudo cp -f ./configs/charibin /etc/nginx/sites-available
+sudo cp -f ./deploy/configs/charibin /etc/nginx/sites-available
 sudo ln -s /etc/nginx/sites-available/charibin /etc/nginx/sites-enabled/charibin
 sudo service nginx restart
 # project setup
@@ -16,6 +16,6 @@ yarn
 yarn run build
 cd ..
 # gunicorn to boot app
-sudo cp -f ./configs/gunicorn.conf /etc/init/
+sudo cp -f ./deploy/configs/gunicorn.conf /etc/init/
 sudo service gunicorn start
 sudo yum -y install nginx
