@@ -6,6 +6,7 @@ from api.views.admin.auctions import AuctionDetailView
 from api.views.admin.auctions import AuctionStartView
 from api.views.admin.auctions import AuctionFinishView
 from api.views.admin.auctions import AuctionCancelView
+from api.views.admin.auctions import AuctionShipProductView
 from api.views.admin.charities import CharityListView
 from api.views.admin.charities import CharityDetailView
 from api.views.admin.charities import CharityLogoUploadView
@@ -61,6 +62,7 @@ urlpatterns = [
     url(r'^auctions/(?P<pk>[0-9]+)/start/$', AuctionStartView.as_view(), name='auction-start'),
     url(r'^auctions/(?P<pk>[0-9]+)/finish/$', AuctionFinishView.as_view(), name='auction-finish'),
     url(r'^auctions/(?P<pk>[0-9]+)/cancel/$', AuctionCancelView.as_view(), name='auction-cancel'),
+    url(r'^auctions/(?P<pk>[0-9]+)/ship/$', AuctionShipProductView.as_view(), name='auction-ship'),
 
     # tags endpoints
     url(r'^tags/suggest/(?P<keyword>[a-zA-Z0-9]+)/$', TagSuggestionListView.as_view(), name='tag-suggestion-list'),

@@ -1,3 +1,5 @@
+from unittest.mock import patch, MagicMock
+
 from django import test
 
 from rest_framework.test import APIClient
@@ -41,9 +43,14 @@ class APISerializerTestCase(test.TestCase):
     def get_serializer(self, *args, **kwargs):
         serializer_class = kwargs.pop('serializer_class', self.serializer_class)
         user = kwargs.pop('user', self.user)
+        model_object = kwargs.pop('model_object', None)
 
         context = kwargs.setdefault('context', {})
         context.setdefault('request', self.get_request(user=user))
+
+        view = MagicMock()
+        view.get_object.return_value = model_object
+        context.setdefault('view', view)
 
         if serializer_class is None:
             raise ValueError(

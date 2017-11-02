@@ -10,9 +10,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from api.serializers.auctions import AuctionSerializer
+from api.serializers.auctions import AuctionShipProductSerializer
 from api.serializers.storage import UploadMediumSerializer
 from api.permissions import IsAdmin
 from auction.constants import AUCTION_STATUS_PREVIEW
+from auction.constants import AUCTION_STATUS_WAITING_TO_SHIP
 from auction.models import Auction
 
 
@@ -78,3 +80,11 @@ class AuctionCancelView(generics.GenericAPIView):
 
         serializer = self.get_serializer(auction)
         return Response(serializer.data)
+
+
+class AuctionShipProductView(generics.CreateAPIView):
+    permission_classes = (IsAuthenticated, IsAdmin,)
+    serializer_class = AuctionShipProductSerializer
+    lookup_url_kwarg = 'pk'
+    queryset = Auction.objects.filter(status=AUCTION_STATUS_WAITING_TO_SHIP) \
+        .select_related('product')

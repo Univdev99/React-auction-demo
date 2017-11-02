@@ -6,6 +6,7 @@ from rest_framework import serializers
 from auction.constants import AUCTION_STATUS_OPEN
 from auction.models import Auction
 from auction.models import Bid
+from auction.models import Shipment
 from api.serializers.entities import ProductSerializer
 from api.serializers.entities import ProductDetailSerializer
 from api.serializers.mixins import TagnamesSerializerMixin
@@ -122,3 +123,21 @@ class BidSerializer(serializers.ModelSerializer):
         )
 
         return bid
+
+
+class AuctionShipProductSerializer(serializers.Serializer):
+    sent_at = serializers.DateTimeField()
+    tracking_number = serializers.CharField()
+
+    def create(self, validated_data):
+        view = self.context.get('view')
+        auction = view.get_object()
+
+        shipment = Shipment.objects.create(
+            sent_at=validated_data['sent_at'],
+            tracking_number=validated_data['tracking_number'],
+            auction=auction,
+            product=auction.product,
+        )
+
+        return shipment

@@ -7,8 +7,11 @@ from django.utils import timezone
 from common.test import APISerializerTestCase
 from api.serializers.auctions import StartAuctionSerializer
 from api.serializers.auctions import BidSerializer
+from api.serializers.auctions import AuctionShipProductSerializer
 from account.test.factories import UserFactory
 from auction.constants import AUCTION_STATUS_OPEN
+from auction.constants import AUCTION_STATUS_WAITING_FOR_PAYMENT
+from auction.constants import AUCTION_STATUS_WAITING_TO_SHIP
 from auction.test.factories import AuctionFactory
 
 
@@ -94,3 +97,27 @@ class BidSerializerTests(APISerializerTestCase):
 
         serializer = self.get_serializer(data=self.get_data())
         self.assertInvalid(serializer)
+
+
+class AuctionShipProductSerializerTests(APISerializerTestCase):
+    serializer_class = AuctionShipProductSerializer
+
+    def setUp(self):
+        super(AuctionShipProductSerializerTests, self).setUp()
+        self.auction = AuctionFactory.create(status=AUCTION_STATUS_WAITING_TO_SHIP)
+
+    def get_data(self):
+        return {
+            'sent_at': timezone.now(),
+            'tracking_number': 'some_tracking_number'
+        }
+
+    def test_shipment_created(self):
+        serializer = self.get_serializer(
+            data=self.get_data(),
+            model_object=self.auction,
+        )
+        self.assertValid(serializer)
+
+        shipment = serializer.create(serializer.validated_data)
+        self.assertIsNotNone(shipment)

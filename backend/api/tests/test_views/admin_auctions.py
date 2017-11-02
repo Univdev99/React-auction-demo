@@ -9,7 +9,7 @@ from rest_framework import status
 from api.serializers.auctions import AuctionSerializer
 from auction.constants import AUCTION_STATUS_PREVIEW
 from auction.constants import AUCTION_STATUS_OPEN
-from auction.constants import AUCTION_STATUS_FINISHED
+from auction.constants import AUCTION_STATUS_WAITING_FOR_PAYMENT
 from auction.constants import AUCTION_STATUS_CANCELLED
 from auction.models import Auction
 from auction.test.factories import ProductFactory
@@ -77,7 +77,7 @@ class AuctionStartViewTests(AuctionStatusChangeTestMixin, AdminAPITestCase):
         self._test_should_not_change_from_this_status(AUCTION_STATUS_OPEN)
 
     def test_should_not_start_from_finished_status(self):
-        self._test_should_not_change_from_this_status(AUCTION_STATUS_FINISHED)
+        self._test_should_not_change_from_this_status(AUCTION_STATUS_WAITING_FOR_PAYMENT)
 
     def test_should_not_start_from_cancelled_status(self):
         self._test_should_not_change_from_this_status(AUCTION_STATUS_CANCELLED)
@@ -88,7 +88,7 @@ class AuctionFinishViewTests(AuctionStatusChangeTestMixin, AdminAPITestCase):
         super(AuctionFinishViewTests, self).setUp()
         self.auction = AuctionFactory.create(status=AUCTION_STATUS_OPEN)
         self.api_url_name = 'api:admin:auction-finish'
-        self.after_status = AUCTION_STATUS_FINISHED
+        self.after_status = AUCTION_STATUS_WAITING_FOR_PAYMENT
 
     @patch('auction.models.Auction._do_finishing_process')
     def test_finish_auction(self, mock):
@@ -99,7 +99,7 @@ class AuctionFinishViewTests(AuctionStatusChangeTestMixin, AdminAPITestCase):
         self._test_should_not_change_from_this_status(AUCTION_STATUS_PREVIEW)
 
     def test_should_not_start_from_finished_status(self):
-        self._test_should_not_change_from_this_status(AUCTION_STATUS_FINISHED)
+        self._test_should_not_change_from_this_status(AUCTION_STATUS_WAITING_FOR_PAYMENT)
 
     def test_should_not_start_from_cancelled_status(self):
         self._test_should_not_change_from_this_status(AUCTION_STATUS_CANCELLED)
@@ -120,7 +120,7 @@ class AuctionCancelViewTests(AuctionStatusChangeTestMixin, AdminAPITestCase):
         self._test_should_not_change_from_this_status(AUCTION_STATUS_PREVIEW)
 
     def test_should_not_start_from_finished_status(self):
-        self._test_should_not_change_from_this_status(AUCTION_STATUS_FINISHED)
+        self._test_should_not_change_from_this_status(AUCTION_STATUS_WAITING_FOR_PAYMENT)
 
     def test_should_not_start_from_cancelled_status(self):
         self._test_should_not_change_from_this_status(AUCTION_STATUS_CANCELLED)
