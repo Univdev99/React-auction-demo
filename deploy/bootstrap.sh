@@ -3,7 +3,7 @@ sudo apt -y install build-essential
 
 # nodejs
 curl -sL https://deb.nodesource.com/setup_8.x -o nodesource_setup.sh | sudo bash -
-sudo apt install nodejs
+sudo apt -y install nodejs
 
 # nginx
 sudo apt update && sudo apt -y install nginx
