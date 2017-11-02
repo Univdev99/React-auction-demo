@@ -24,7 +24,7 @@ class AccountForm extends PureComponent {
             <FormField
               name="first_name"
               type="text"
-              label="First name:"
+              label="First name"
               component={InputField}
             />
           </Col>
@@ -32,7 +32,7 @@ class AccountForm extends PureComponent {
             <FormField
               name="last_name"
               type="text"
-              label="Last name:"
+              label="Last name"
               component={InputField}
             />
           </Col>
@@ -40,7 +40,7 @@ class AccountForm extends PureComponent {
         <FormField
           name="username"
           type="text"
-          label="Username:"
+          label="Username"
           component={InputField}
         />
         {/*<FormField
@@ -49,6 +49,43 @@ class AccountForm extends PureComponent {
           label="Email:"
           component={InputField}
         />*/}
+        <FormField
+          name="profile.phone_number"
+          type="text"
+          label="Phone Number:"
+          component={InputField}
+        />
+        <h4 className="mt-5 mb-4">Address</h4>
+        <Row>
+          <Col xs={12} sm={6}>
+            <FormField
+              name="profile.country"
+              type="text"
+              label="Country"
+              component={InputField}
+            />
+          </Col>
+          <Col xs={12} sm={6}>
+            <FormField
+              name="profile.city"
+              type="text"
+              label="City"
+              component={InputField}
+            />
+          </Col>
+        </Row>
+        <FormField
+          name="profile.zipcode"
+          type="text"
+          label="Zip / Postal Code"
+          component={InputField}
+        />
+        <FormField
+          name="profile.address_line"
+          type="text"
+          label="Address Line"
+          component={InputField}
+        />
         <div className="text-right">
           <button type="submit" className="btn btn-primary" disabled={disabled}>Update</button>
         </div>
