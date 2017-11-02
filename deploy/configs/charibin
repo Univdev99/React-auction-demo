@@ -8,11 +8,11 @@ server {
 
     location ~ ^/(api|django-admin)/ {
         include proxy_params;
-        proxy_pass unix:/var/www/charibin-tmp/charibin.sock;
+        proxy_pass http://unix:/var/www/charibin-tmp/charibin.sock;
     }
 
     location / {
         root /var/www/charibin-tmp/frontend/public;
-        try_files /index.html;
+        try_files $uri, /index.html;
     }
 }
