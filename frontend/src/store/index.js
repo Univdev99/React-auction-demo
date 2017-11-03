@@ -1,25 +1,26 @@
-import { createStore, applyMiddleware, compose } from 'redux'
-import { combineReducers } from 'redux-immutable'
 import createHistory from 'history/createBrowserHistory'
-import { routerMiddleware } from 'react-router-redux'
-import { reducer as formReducer } from 'redux-form/immutable'
 import createSagaMiddleware from 'redux-saga'
 import Immutable from 'immutable'
+import { combineReducers } from 'redux-immutable'
+import { createStore, applyMiddleware, compose } from 'redux'
+import { reducer as formReducer } from 'redux-form/immutable'
+import { routerMiddleware } from 'react-router-redux'
 
-import routerReducer from 'store/modules/route'
-import auth from 'store/modules/auth'
+import account from 'store/modules/account'
+import adminAuctions from 'store/modules/admin/auctions'
 import adminCharities from 'store/modules/admin/charities'
 import adminDonors from 'store/modules/admin/donors'
+import adminMedia from 'store/modules/admin/media'
 import adminProducts from 'store/modules/admin/products'
-import adminAuctions from 'store/modules/admin/auctions'
 import adminTags from 'store/modules/admin/tags'
 import adminUsers from 'store/modules/admin/users'
-import adminMedia from 'store/modules/admin/media'
+import auth from 'store/modules/auth'
+import authMiddleware from 'store/middlewares/auth'
 import donors from 'store/modules/donors'
 import jobs from 'store/modules/jobs'
-import settings from 'store/modules/settings'
+import routerReducer from 'store/modules/route'
 import sagas from 'store/sagas'
-import authMiddleware from 'store/middlewares/auth'
+import settings from 'store/modules/settings'
 
 
 // Create a history of your choosing (we're using a browser history in this case)
@@ -64,6 +65,7 @@ export const store = createStore(
     adminTags,
     adminUsers,
     adminMedia,
+    account,
     donors,
     jobs,
     settings

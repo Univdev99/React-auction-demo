@@ -21,7 +21,7 @@ export const getCountries = createAction(SETTINGS_GET_COUNTRIES)
 
 export default handleActions({
 
-  /* Get donor list actions */
+  /* Get countries list actions */
 
   [requestSuccess(SETTINGS_GET_COUNTRIES)]: (state, { payload }) => state.withMutations(map => {
     map.set('countries', Immutable.fromJS(payload))
