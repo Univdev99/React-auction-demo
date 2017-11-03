@@ -5,6 +5,24 @@ import { WS_BACKEND_URL } from 'config'
 
 const AUTO_RECONNECT_INTERVAL = 10000
 
+/*
+ * Real-time notification handler map
+ *
+ * This is an array of handler configs in the form of
+ *  { action: String, handler: Function }
+ */
+const notificationHandlerMap = []
+
+export function registerNotificationHandler(action, handler) {
+  if (handler.constructor !== Function) {
+    return false
+  }
+  notificationHandlerMap.push({
+    action,
+    handler
+  })
+}
+
 class NotificationManager extends Component {
 
   socket = null
@@ -42,7 +60,17 @@ class NotificationManager extends Component {
   }
 
   handleMessageReceived = (e) => {
-    console.log('message arrived', e.data)
+    let data = null
+    try {
+      data = JSON.parse(e.data)
+    } catch(e) {
+      console.error('Received invalid websocket message')
+    }
+    notificationHandlerMap.forEach(handlerConfig => {
+      if (handlerConfig.action === data.action) {
+        handlerConfig.handler(data)
+      }
+    })
   }
 
   handleClose = () => {

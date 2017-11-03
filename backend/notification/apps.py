@@ -1,5 +1,8 @@
 from django.apps import AppConfig
 
 
-class MetaConfig(AppConfig):
-    name = 'meta'
+class NotificationConfig(AppConfig):
+    name = 'notification'
+
+    def ready(self):
+        import notification.signals  # noqa

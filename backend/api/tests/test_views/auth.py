@@ -103,7 +103,6 @@ class CurrentUserTests(APITestCase):
         self.assertEqual(self.user.profile.address_line, new_data['profile']['address_line'])
         self.assertEqual(self.user.profile.phone_number, new_data['profile']['phone_number'])
 
-
     def test_put_current_user_with_password_unchanged(self):
         new_data = {
             'username': 'tester1',

@@ -10,12 +10,15 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from api.serializers.auctions import AuctionSerializer
+from api.serializers.auctions import BidSerializer
 from api.serializers.auctions import AuctionShipProductSerializer
 from api.serializers.storage import UploadMediumSerializer
+from api.paginations import TenPerPagePagination
 from api.permissions import IsAdmin
 from auction.constants import AUCTION_STATUS_PREVIEW
 from auction.constants import AUCTION_STATUS_WAITING_TO_SHIP
 from auction.models import Auction
+from auction.models import Bid
 
 
 class AuctionListView(generics.ListCreateAPIView):
@@ -88,3 +91,13 @@ class AuctionShipProductView(generics.CreateAPIView):
     lookup_url_kwarg = 'pk'
     queryset = Auction.objects.filter(status=AUCTION_STATUS_WAITING_TO_SHIP) \
         .select_related('product')
+
+
+class AuctionBidListView(generics.ListAPIView):
+    permission_classes = (IsAuthenticated, IsAdmin,)
+    serializer_class = BidSerializer
+    pagination_class = TenPerPagePagination
+
+    def get_queryset(self):
+        auction_pk = self.kwargs.get('pk', None)
+        return Bid.objects.filter(auction=auction_pk).order_by('-price').select_related('user')

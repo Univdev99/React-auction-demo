@@ -9,6 +9,10 @@ from account.test.factories import AdminFactory
 from account.test.factories import UserFactory
 
 
+class TestCase(test.TestCase):
+    pass
+
+
 class APITestCase(test.TestCase):
     def setUp(self):
         self.client = APIClient()

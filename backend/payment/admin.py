@@ -4,7 +4,6 @@ from django.utils.safestring import mark_safe
 from django.utils import html
 
 from payment.models import Transaction
-from payment.models import TransactionParticipant
 
 
 class TransactionAdmin(admin.ModelAdmin):

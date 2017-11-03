@@ -10,6 +10,7 @@ import {
   ADMIN_START_AUCTION,
   ADMIN_FINISH_AUCTION,
   ADMIN_CANCEL_AUCTION,
+  ADMIN_GET_AUCTION_BID_LIST_PAGE,
 } from 'store/constants'
 
 
@@ -22,6 +23,10 @@ const initialState = Immutable.fromJS({
   auctionDetail: null,
   auctionProductList: [],
   auctionProductListLoaded: false,
+  /* Bid */
+  bidListPage: [],
+  bidCount: 0,
+  bidListPageLoaded: false,
 })
 
 /* Action creators */
@@ -33,6 +38,7 @@ export const updateAuctionDetail = createAction(ADMIN_UPDATE_AUCTION_DETAIL)
 export const startAuction = createAction(ADMIN_START_AUCTION)
 export const finishAuction = createAction(ADMIN_FINISH_AUCTION)
 export const cancelAuction = createAction(ADMIN_CANCEL_AUCTION)
+export const getAuctionBidListPage = createAction(ADMIN_GET_AUCTION_BID_LIST_PAGE)
 
 /* Reducer helpers */
 
@@ -95,6 +101,20 @@ export default handleActions({
 
   [requestSuccess(ADMIN_CANCEL_AUCTION)]: (state, { payload }) => state.withMutations(map => {
     replaceListItem(payload, state, map)
+  }),
+
+  /* Get auction bid list page actions */
+
+  [requestSuccess(ADMIN_GET_AUCTION_BID_LIST_PAGE)]: (state, { payload }) => state.withMutations(map => {
+    map.set('bidListPage', Immutable.fromJS(payload.results))
+    map.set('bidCount', payload.count)
+    map.set('bidListPageLoaded', true)
+  }),
+
+  [requestFail(ADMIN_GET_AUCTION_BID_LIST_PAGE)]: (state, { payload }) => state.withMutations(map => {
+    map.set('bidListPage', Immutable.List())
+    map.set('bidCount', 0)
+    map.set('bidListPageLoaded', false)
   }),
 
 }, initialState)

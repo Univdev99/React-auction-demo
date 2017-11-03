@@ -12,9 +12,3 @@ def ws_connect(message):
 
 def ws_disconnect(message):
     Group(WS_CHANNEL_AUCTION).discard(message.reply_channel)
-
-
-def ws_message(message):
-    Group(WS_CHANNEL_AUCTION).send({
-        "text": "[user] %s" % message.content['text'],
-    })

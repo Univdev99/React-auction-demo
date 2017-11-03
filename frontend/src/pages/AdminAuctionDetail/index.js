@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
+import { Link } from 'react-router-dom'
 
 import Spinner from 'components/Spinner'
 import AuctionForm from 'components/AuctionForm'
@@ -74,7 +75,7 @@ class AdminAuctionDetail extends PureComponent {
   }
 
   render() {
-    const { adminProducts } = this.props
+    const { adminProducts, match } = this.props
     const productListLoaded = adminProducts.get('productListLoaded')
     const productList = adminProducts.get('productList')
     const { adminAuctions } = this.props
@@ -92,7 +93,10 @@ class AdminAuctionDetail extends PureComponent {
     return (
       <AdminLayout>
         <div>
-          <h3 className="mb-5">Edit Auction</h3>
+          <div className="mb-5 clearfix">
+            <h2 className="pull-left">Edit Auction</h2>
+            <Link className="btn btn-primary pull-right" to={`/admin/auctions/${match.params.id}/bids`}>Bids</Link>
+          </div>
 
           {(loadingStatus === 1 || !auctionDetail || !productListLoaded) && <Spinner />}
 

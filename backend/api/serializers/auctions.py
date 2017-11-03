@@ -7,9 +7,11 @@ from auction.constants import AUCTION_STATUS_OPEN
 from auction.models import Auction
 from auction.models import Bid
 from auction.models import Shipment
+from api.serializers.auth import UserSerializer
 from api.serializers.entities import ProductSerializer
 from api.serializers.entities import ProductDetailSerializer
 from api.serializers.mixins import TagnamesSerializerMixin
+from notification.constants import NOTIFICATION_AUCTION_NEW_BID
 from notification.models import Notification
 
 
@@ -90,10 +92,15 @@ class StartAuctionSerializer(serializers.Serializer):
 
 
 class BidSerializer(serializers.ModelSerializer):
+    user_detail = serializers.SerializerMethodField()
+
     class Meta:
         model = Bid
-        fields = ('price', 'status', 'placed_at', 'closed_at', 'user', 'auction')
+        fields = ('price', 'status', 'placed_at', 'closed_at', 'user', 'user_detail', 'auction')
         read_only_fields = ('status', 'placed_at', 'closed_at', 'user')
+
+    def get_user_detail(self, obj):
+        return UserSerializer(obj.user).data
 
     def validate(self, data):
         data = super(BidSerializer, self).validate(data)
@@ -103,7 +110,7 @@ class BidSerializer(serializers.ModelSerializer):
         if auction.status != AUCTION_STATUS_OPEN:
             raise serializers.ValidationError('Bids can be placed to open auctions only')
 
-        if auction.open_until < timezone.now():
+        if auction.open_until and auction.open_until < timezone.now():
             raise serializers.ValidationError('This auction is now waiting to close')
 
         if price <= auction.current_price:
@@ -111,6 +118,7 @@ class BidSerializer(serializers.ModelSerializer):
 
         return data
 
+    @transaction.atomic
     def create(self, validated_data):
         request = self.context.get('request')
         auction = validated_data['auction']

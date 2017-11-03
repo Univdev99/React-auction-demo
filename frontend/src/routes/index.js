@@ -38,6 +38,7 @@ import AdminAuctionList from 'pages/AdminAuctionList'
 import AdminAuctionCreate from 'pages/AdminAuctionCreate'
 import AdminAuctionDetail from 'pages/AdminAuctionDetail'
 import AdminAuctionStart from 'pages/AdminAuctionStart'
+import AdminAuctionBidList from 'pages/AdminAuctionBidList'
 import AdminUserList from 'pages/AdminUserList'
 import AdminMediumList from 'pages/AdminMediumList'
 
@@ -75,6 +76,7 @@ const AdminRoutes = props => (
     <Route exact path="/admin/auctions/create" component={AdminAuctionCreate} />
     <Route exact path="/admin/auctions/:id(\d+)" component={AdminAuctionDetail} />
     <Route exact path="/admin/auctions/:id(\d+)/start" component={AdminAuctionStart} />
+    <Route exact path="/admin/auctions/:id(\d+)/bids" component={AdminAuctionBidList} />
     <Route exact path="/admin/users" component={AdminUserList} />
     <Route exact path="/admin/media" component={AdminMediumList} />
   </div>
