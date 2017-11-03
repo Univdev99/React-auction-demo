@@ -9,9 +9,11 @@ from rest_framework import views
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from api.filters.status import StatusFilterBackend
 from api.serializers.auctions import AuctionSerializer
-from api.serializers.auctions import BidWithUserDetailSerializer
 from api.serializers.auctions import AuctionShipProductSerializer
+from api.serializers.auctions import BidWithUserDetailSerializer
+from api.serializers.auctions import BidStatusChangeSerializer
 from api.serializers.storage import UploadMediumSerializer
 from api.paginations import TenPerPagePagination
 from api.permissions import IsAdmin
@@ -97,7 +99,18 @@ class AuctionBidListView(generics.ListAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
     serializer_class = BidWithUserDetailSerializer
     pagination_class = TenPerPagePagination
+    filter_backends = (StatusFilterBackend, )
 
     def get_queryset(self):
         auction_pk = self.kwargs.get('pk', None)
         return Bid.objects.filter(auction=auction_pk).order_by('-price').select_related('user')
+
+
+class AuctionBidStatusChangeView(generics.UpdateAPIView):
+    permission_classes = (IsAuthenticated, IsAdmin,)
+    serializer_class = BidStatusChangeSerializer
+    lookup_url_kwarg = 'bid_pk'
+
+    def get_queryset(self):
+        auction_pk = self.kwargs.get('pk', None)
+        return Bid.objects.filter(auction=auction_pk)

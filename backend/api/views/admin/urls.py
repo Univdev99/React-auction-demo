@@ -8,6 +8,7 @@ from api.views.admin.auctions import AuctionFinishView
 from api.views.admin.auctions import AuctionCancelView
 from api.views.admin.auctions import AuctionShipProductView
 from api.views.admin.auctions import AuctionBidListView
+from api.views.admin.auctions import AuctionBidStatusChangeView
 from api.views.admin.charities import CharityListView
 from api.views.admin.charities import CharityDetailView
 from api.views.admin.charities import CharityLogoUploadView
@@ -39,22 +40,16 @@ urlpatterns = [
     url(r'^donors/(?P<pk>[0-9]+)/$', DonorDetailView.as_view(), name='donor-detail'),
     url(r'^donors/(?P<pk>[0-9]+)/products/$', DonorProductListView.as_view(), name='donor-product-list'),
     url(r'^donors/(?P<pk>[0-9]+)/media/$', DonorMediumUploadView.as_view(), name='donor-medium'),
-    url(
-        r'^donors/(?P<pk>[0-9]+)/media/(?P<dm_pk>[0-9]+)/$',
-        DonorMediumDeleteView.as_view(),
-        name='donor-medium-delete'
-    ),
+    url(r'^donors/(?P<pk>[0-9]+)/media/(?P<dm_pk>[0-9]+)/$',
+        DonorMediumDeleteView.as_view(), name='donor-medium-delete'),
     url(r'^donors/(?P<pk>[0-9]+)/media/reorder/$', DonorMediaReorderView.as_view(), name='donor-media-reorder'),
 
     # products endpoints
     url(r'^products/$', ProductListView.as_view(), name='product-list'),
     url(r'^products/(?P<pk>[0-9]+)/$', ProductDetailView.as_view(), name='product-detail'),
     url(r'^products/(?P<pk>[0-9]+)/media/$', ProductMediumUploadView.as_view(), name='product-medium'),
-    url(
-        r'^products/(?P<pk>[0-9]+)/media/(?P<pm_pk>[0-9]+)/$',
-        ProductMediumDeleteView.as_view(),
-        name='product-medium-delete'
-    ),
+    url(r'^products/(?P<pk>[0-9]+)/media/(?P<pm_pk>[0-9]+)/$',
+        ProductMediumDeleteView.as_view(), name='product-medium-delete'),
     url(r'^products/(?P<pk>[0-9]+)/media/reorder/$', ProductMediaReorderView.as_view(), name='product-media-reorder'),
 
     # auctions endpoints
@@ -65,6 +60,8 @@ urlpatterns = [
     url(r'^auctions/(?P<pk>[0-9]+)/cancel/$', AuctionCancelView.as_view(), name='auction-cancel'),
     url(r'^auctions/(?P<pk>[0-9]+)/ship/$', AuctionShipProductView.as_view(), name='auction-ship'),
     url(r'^auctions/(?P<pk>[0-9]+)/bids/$', AuctionBidListView.as_view(), name='auction-bids'),
+    url(r'^auctions/(?P<pk>[0-9]+)/bids/(?P<bid_pk>[0-9]+)/change-status/$',
+        AuctionBidStatusChangeView.as_view(), name='auction-bid-status-change'),
 
     # tags endpoints
     url(r'^tags/suggest/(?P<keyword>[a-zA-Z0-9]+)/$', TagSuggestionListView.as_view(), name='tag-suggestion-list'),

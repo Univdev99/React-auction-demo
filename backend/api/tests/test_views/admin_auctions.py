@@ -11,9 +11,11 @@ from auction.constants import AUCTION_STATUS_PREVIEW
 from auction.constants import AUCTION_STATUS_OPEN
 from auction.constants import AUCTION_STATUS_WAITING_FOR_PAYMENT
 from auction.constants import AUCTION_STATUS_CANCELLED
+from auction.constants import BID_STATUS_ACTIVE
+from auction.constants import BID_STATUS_REJECTED
 from auction.models import Auction
-from auction.test.factories import ProductFactory
 from auction.test.factories import AuctionFactory
+from auction.test.factories import BidFactory
 
 
 class AuctionDetailViewTests(AdminAPITestCase):
@@ -124,3 +126,43 @@ class AuctionCancelViewTests(AuctionStatusChangeTestMixin, AdminAPITestCase):
 
     def test_should_not_start_from_cancelled_status(self):
         self._test_should_not_change_from_this_status(AUCTION_STATUS_CANCELLED)
+
+
+class AuctionBidStatusChangeViewTests(AdminAPITestCase):
+    def setUp(self):
+        super(AuctionBidStatusChangeViewTests, self).setUp()
+        self.bid = BidFactory.create()
+        self.auction = self.bid.auction
+
+    def test_reject_bid(self):
+        response = self.client.put(
+            reverse('api:admin:auction-bid-status-change', kwargs=dict(
+                pk=self.auction.pk,
+                bid_pk=self.bid.pk,
+            )),
+            dict(active=False),
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.content)
+        data = json.loads(response.content)
+        self.assertEqual(data['status'], BID_STATUS_REJECTED)
+
+        self.bid.refresh_from_db()
+        self.assertEqual(self.bid.status, BID_STATUS_REJECTED)
+
+    def test_activate_bid(self):
+        self.bid.status = BID_STATUS_REJECTED
+        self.bid.save()
+
+        response = self.client.put(
+            reverse('api:admin:auction-bid-status-change', kwargs=dict(
+                pk=self.auction.pk,
+                bid_pk=self.bid.pk,
+            )),
+            dict(active=True),
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.content)
+        data = json.loads(response.content)
+        self.assertEqual(data['status'], BID_STATUS_ACTIVE)
+
+        self.bid.refresh_from_db()
+        self.assertEqual(self.bid.status, BID_STATUS_ACTIVE)

@@ -5,6 +5,7 @@ export const WS_BACKEND_URL = 'ws://localhost:8000'
 
 export const PAGE_SIZE = 8
 export const MEDIUM_PAGE_SIZE = 12
+export const AUCTION_BID_PAGE_SIZE = 10
 
 /* Donor constants */
 

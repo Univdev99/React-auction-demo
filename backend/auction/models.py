@@ -38,7 +38,7 @@ class Auction(models.Model):
 
     @property
     def current_price(self):
-        result = Bid.objects.aggregate(max_price=Max('price'))
+        result = Bid.objects.filter(status=BID_STATUS_ACTIVE).aggregate(max_price=Max('price'))
         return result['max_price'] if result['max_price'] else self.starting_price
 
     @property
@@ -55,14 +55,13 @@ class Auction(models.Model):
         return [product.auction for product in similar_products]
 
     def _do_finishing_process(self):
-        bid_queryset = self.bid_set
+        bid_queryset = self.bid_set.filter(status=BID_STATUS_ACTIVE)
         if bid_queryset.count() == 0:
             self.status = AUCTION_STATUS_CANCELLED_DUE_TO_NO_BIDS
             self.save()
             return
 
-        highest_bid_price = bid_queryset.aggregate(highest_price=Max('price'))['highest_price']
-        highest_bid = bid_queryset.objects.get(price=highest_bid_price)
+        highest_bid = bid_queryset.objects.get(price=self.current_price)
 
         raise NotImplementedError('Payment process not implemented yet')
 
