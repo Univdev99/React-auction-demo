@@ -5,10 +5,12 @@ import { Alert } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
+import { stopSubmit } from 'redux-form'
 
 import AccountForm from 'components/AccountForm'
 import Spinner from 'components/Spinner'
-import { authSelector } from 'store/selectors'
+import { authSelector, countriesSelector } from 'store/selectors'
+import { getCountries } from 'store/modules/settings'
 import { updateCurrentUser } from 'store/modules/auth'
 
 
@@ -16,14 +18,26 @@ class AccountInfo extends PureComponent {
 
   static propTypes = {
     auth: ImmutablePropTypes.map.isRequired,
+    countries: PropTypes.array.isRequired,
+    getCountries: PropTypes.func.isRequired,
+    stopSubmit: PropTypes.func.isRequired,
     updateCurrentUser: PropTypes.func.isRequired,
   }
 
-  state = {
-    updateStatus: 0
+  constructor(props) {
+    super(props)
+    this.state = {
+      updateStatus: 0
+    }
+  }
+
+  componentDidMount() {
+    const { getCountries } = this.props
+    getCountries()
   }
 
   handleSubmit = (data) => {
+    const { stopSubmit } = this.props
     this.setState({
       updateStatus: 1
     })
@@ -33,14 +47,17 @@ class AccountInfo extends PureComponent {
       success: () => this.setState({
         updateStatus: 10
       }),
-      fail: () => this.setState({
-        updateStatus: -1
-      }),
+      fail: ({ data }) => {
+        this.setState({
+          updateStatus: -1
+        })
+        stopSubmit('accountForm', data)
+      },
     })
   }
 
   render() {
-    const { auth } = this.props
+    const { auth, countries } = this.props
     const currentUser = auth.get('currentUser')
 
     if (!currentUser) {
@@ -62,7 +79,8 @@ class AccountInfo extends PureComponent {
           Successfully saved
         </Alert>}
 
-        <AccountForm 
+        <AccountForm
+          countries={countries}
           initialValues={currentUser}
           disabled={updateStatus === 1}
           onSubmit={this.handleSubmit}
@@ -75,10 +93,13 @@ class AccountInfo extends PureComponent {
 
 const selector = createStructuredSelector({
   auth: authSelector,
+  countries: countriesSelector
 })
 
 const actions = {
-  updateCurrentUser,
+  getCountries,
+  stopSubmit,
+  updateCurrentUser
 }
 
 export default compose(

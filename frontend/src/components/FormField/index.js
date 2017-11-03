@@ -6,24 +6,26 @@ import { Field } from 'redux-form/immutable'
 class FormField extends PureComponent {
 
   static propTypes = {
-    name: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
+    children: PropTypes.node,
+    component: PropTypes.func.isRequired,
     helpText: PropTypes.string,
+    label: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    options: PropTypes.any,
     placeholder: PropTypes.string,
     type: PropTypes.string,
-    component: PropTypes.func.isRequired,
     validate: PropTypes.oneOfType([
       PropTypes.array,
       PropTypes.func
     ]),
-    options: PropTypes.any,
   }
 
   render() {
-    const { name, label, helpText, component, type, validate, options, placeholder } = this.props
+    const { name, label, helpText, children, component, type, validate, options, placeholder } = this.props
 
     return (
-      <Field name={name} component={component} type={type} validate={validate} props={{ label, helpText, options, placeholder }} />
+      <Field name={name} component={component} type={type} validate={validate}
+        props={{ children, label, helpText, options, placeholder }} />
     )
   }
 }

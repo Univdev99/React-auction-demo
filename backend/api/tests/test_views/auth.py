@@ -87,17 +87,22 @@ class CurrentUserTests(APITestCase):
             'username': 'tester1',
             'first_name': 'tester1',
             'last_name': 'Tester1',
-            'password': 'abcdef123',
-            'password_confirm': 'abcdef123',
+            'profile': {
+                'address_line': 'New Address',
+                'city': 'New York',
+                'country': 'US',
+                'phone_number': '+1 (415) 412-4233',
+                'zipcode': '10011'
+            }
         }
-        response = self.client.put(reverse('api:current-user'), new_data)
+        response = self.client.put(reverse('api:current-user'), new_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.user.refresh_from_db()
+        self.user.profile.refresh_from_db()
         self.assertEqual(self.user.username, new_data['username'])
-        self.assertEqual(self.client.login(
-            username=self.user.username,
-            password=new_data['password']
-        ), True)
+        self.assertEqual(self.user.profile.address_line, new_data['profile']['address_line'])
+        self.assertEqual(self.user.profile.phone_number, new_data['profile']['phone_number'])
+
 
     def test_put_current_user_with_password_unchanged(self):
         new_data = {

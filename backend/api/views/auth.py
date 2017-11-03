@@ -14,7 +14,7 @@ from rest_framework import status
 from api.serializers.auth import SignUpSerializer
 from api.serializers.auth import SignUpVerificationSerializer
 from api.serializers.auth import SignUpWithFacebookSerializer
-from api.serializers.auth import CurrentUserSerializer
+from api.serializers.auth import UserSerializer
 from api.serializers.auth import UpdatePasswordSerializer
 
 from account.models import UserVerification
@@ -113,20 +113,13 @@ class CurrentUserView(views.APIView):
     permission_classes = (IsAuthenticated, )
 
     def get(self, *args, **kwargs):
-        serializer = CurrentUserSerializer(self.request.user)
+        serializer = UserSerializer(self.request.user)
         return Response(serializer.data)
 
     def put(self, *args, **kwargs):
-        serializer = CurrentUserSerializer(data=self.request.data)
+        serializer = UserSerializer(instance=self.request.user, data=self.request.data)
         serializer.is_valid(raise_exception=True)
-
-        user = self.request.user
-        user.username = serializer.validated_data['username']
-        user.first_name = serializer.validated_data['first_name']
-        user.last_name = serializer.validated_data['last_name']
-        user.save()
-
-        serializer = CurrentUserSerializer(self.request.user)
+        serializer.save()
         return Response(serializer.data)
 
 

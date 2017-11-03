@@ -25,3 +25,5 @@ export const donorsSelector = state =>
 export const jobsSelector = state => 
   state.get('jobs')
 
+export const countriesSelector = state =>
+	state.get('settings').get('countries').toJS()

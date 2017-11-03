@@ -11,12 +11,13 @@ import InputField from 'components/InputField'
 class AccountForm extends PureComponent {
 
   static propTypes = {
+    countries: PropTypes.array.isRequired,
     handleSubmit: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
   }
 
   render() {
-    const { handleSubmit, disabled } = this.props
+    const { countries, handleSubmit, disabled } = this.props
     return (
       <form onSubmit={handleSubmit}>
         <Row>
@@ -24,7 +25,7 @@ class AccountForm extends PureComponent {
             <FormField
               name="first_name"
               type="text"
-              label="First name:"
+              label="First name"
               component={InputField}
             />
           </Col>
@@ -32,7 +33,7 @@ class AccountForm extends PureComponent {
             <FormField
               name="last_name"
               type="text"
-              label="Last name:"
+              label="Last name"
               component={InputField}
             />
           </Col>
@@ -40,7 +41,7 @@ class AccountForm extends PureComponent {
         <FormField
           name="username"
           type="text"
-          label="Username:"
+          label="Username"
           component={InputField}
         />
         {/*<FormField
@@ -49,6 +50,48 @@ class AccountForm extends PureComponent {
           label="Email:"
           component={InputField}
         />*/}
+        <FormField
+          name="profile.phone_number"
+          type="text"
+          label="Phone Number:"
+          component={InputField}
+        />
+        <h4 className="mt-5 mb-4">Address</h4>
+        <Row>
+          <Col xs={12} sm={6}>
+            <FormField
+              name="profile.country"
+              type="select"
+              label="Country"
+              component={InputField}
+            >
+              <option value="">-- Select a Country --</option>
+              {countries.map((item, index) => (
+                <option key={index} value={item.code}>{item.name}</option>
+              ))}
+            </FormField>
+          </Col>
+          <Col xs={12} sm={6}>
+            <FormField
+              name="profile.city"
+              type="text"
+              label="City"
+              component={InputField}
+            />
+          </Col>
+        </Row>
+        <FormField
+          name="profile.zipcode"
+          type="text"
+          label="Zip / Postal Code"
+          component={InputField}
+        />
+        <FormField
+          name="profile.address_line"
+          type="text"
+          label="Address Line"
+          component={InputField}
+        />
         <div className="text-right">
           <button type="submit" className="btn btn-primary" disabled={disabled}>Update</button>
         </div>
