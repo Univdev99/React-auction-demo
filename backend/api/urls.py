@@ -15,6 +15,7 @@ from api.views.auctions import AuctionFrontListView
 from api.views.auctions import AuctionListView
 from api.views.auctions import AuctionDetailView
 from api.views.auctions import AuctionPlaceBidView
+from api.views.auctions import AccountBidListView
 from api.views.settings import CountriesView
 # temporary endpoint for testing
 from api.views.test import TestView
@@ -39,6 +40,8 @@ urlpatterns = [
     url(r'^auctions/$', AuctionListView.as_view(), name='auction-list'),
     url(r'^auctions/(?P<pk>[0-9]+)/$', AuctionDetailView.as_view(), name='auction-detail'),
     url(r'^auctions/(?P<pk>[0-9]+)/bid/$', AuctionPlaceBidView.as_view(), name='auction-place-bid'),
+
+    url(r'^account/bids/$', AccountBidListView.as_view(), name='account-bid-list'),
 
     url(r'^admin/', include('api.views.admin.urls', namespace='admin')),
     url(r'^settings/countries$', CountriesView.as_view(), name='settings-countries'),

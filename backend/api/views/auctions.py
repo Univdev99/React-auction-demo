@@ -4,13 +4,16 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
 from api.filters.category import AuctionCategoryFilterBackend
+from api.filters.status import StatusFilterBackend
 from api.serializers.auctions import AuctionSerializer
 from api.serializers.auctions import AuctionDetailWithSimilarSerializer
 from api.serializers.auctions import BidSerializer
 from api.paginations import FourPerPagePagination
+from api.paginations import EightPerPagePagination
 from api.paginations import TwelvePerPagePagination
 from api.permissions import IsAdmin
 from auction.models import Auction
+from auction.models import Bid
 
 
 class AuctionFrontListView(generics.ListAPIView):
@@ -47,3 +50,13 @@ class AuctionPlaceBidView(generics.CreateAPIView):
     lookup_url_kwarg = 'pk'
     queryset = Auction.objects.select_related('product') \
         .select_related('product__donor')
+
+
+class AccountBidListView(generics.ListAPIView):
+    permission_classes = (IsAuthenticated, )
+    serializer_class = BidSerializer
+    pagination_class = EightPerPagePagination
+    filter_backends = (StatusFilterBackend, )
+
+    def get_queryset(self):
+        return Bid.objects.filter(user=self.request.user).order_by('-placed_at')

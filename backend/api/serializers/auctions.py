@@ -91,7 +91,7 @@ class StartAuctionSerializer(serializers.Serializer):
         return data
 
 
-class BidSerializer(serializers.ModelSerializer):
+class BidWithUserDetailSerializer(serializers.ModelSerializer):
     user_detail = serializers.SerializerMethodField()
 
     class Meta:
@@ -101,6 +101,13 @@ class BidSerializer(serializers.ModelSerializer):
 
     def get_user_detail(self, obj):
         return UserSerializer(obj.user).data
+
+
+class BidSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Bid
+        fields = ('price', 'status', 'placed_at', 'closed_at', 'user', 'auction')
+        read_only_fields = ('status', 'placed_at', 'closed_at', 'user')
 
     def validate(self, data):
         data = super(BidSerializer, self).validate(data)

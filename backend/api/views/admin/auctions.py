@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from api.serializers.auctions import AuctionSerializer
-from api.serializers.auctions import BidSerializer
+from api.serializers.auctions import BidWithUserDetailSerializer
 from api.serializers.auctions import AuctionShipProductSerializer
 from api.serializers.storage import UploadMediumSerializer
 from api.paginations import TenPerPagePagination
@@ -95,7 +95,7 @@ class AuctionShipProductView(generics.CreateAPIView):
 
 class AuctionBidListView(generics.ListAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
-    serializer_class = BidSerializer
+    serializer_class = BidWithUserDetailSerializer
     pagination_class = TenPerPagePagination
 
     def get_queryset(self):
