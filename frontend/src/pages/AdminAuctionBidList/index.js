@@ -5,6 +5,7 @@ import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
+import Pagination from 'components/Pagination'
 import Spinner from 'components/Spinner'
 import AdminLayout from 'pages/AdminLayout'
 import {
@@ -13,7 +14,10 @@ import {
   changeBidStatus,
 } from 'store/modules/admin/auctions'
 import { adminAuctionsSelector } from 'store/selectors'
-import { BID_STATUS_ACTIVE, BID_STATUS_REJECTED } from 'config'
+import {
+  BID_STATUS_ACTIVE, BID_STATUS_REJECTED,
+  AUCTION_BID_PAGE_SIZE
+} from 'config'
 
 
 class AdminAuctionBidList extends PureComponent {
@@ -27,7 +31,32 @@ class AdminAuctionBidList extends PureComponent {
 
   state = {
     loadingAuctionStatus: 1,
-    loadingStatus: 1
+    loadingStatus: 1,
+    page: 1,
+  }
+
+  refreshPage = () => {
+    this.setState({
+      loadingStatus: 1
+    })
+
+    const { page } = this.state
+    this.props.getAuctionBidListPage({
+      id: this.props.match.params.id,
+      page,
+      success: () => this.setState({
+        loadingStatus: 10
+      }),
+      fail: () => this.setState({
+        loadingStatus: -1
+      }),
+    })
+  }
+
+  getPage = (page) => {
+    this.setState({
+      page
+    }, this.refreshPage)
   }
 
   handleClickActivate = (id, event) => {
@@ -73,21 +102,15 @@ class AdminAuctionBidList extends PureComponent {
       }),
     })
 
-    this.props.getAuctionBidListPage({
-      id: this.props.match.params.id,
-      success: () => this.setState({
-        loadingStatus: 10
-      }),
-      fail: () => this.setState({
-        loadingStatus: -1
-      }),
-    })
+    this.refreshPage()
   }
 
   render() {
     const { adminAuctions } = this.props
     const auctionDetail = adminAuctions.get('auctionDetail')
     const bidListPage = adminAuctions.get('bidListPage')
+    const currentPage = adminAuctions.get('bidListPageNumber')
+    const totalCount = adminAuctions.get('bidCount')
     const { loadingStatus, loadingAuctionStatus } = this.state
 
     return (
@@ -136,6 +159,15 @@ class AdminAuctionBidList extends PureComponent {
               ))}
             </tbody>
           </table>
+
+          <div className="mt-5">
+            <Pagination
+              currentPage={currentPage}
+              totalCount={totalCount}
+              pageSize={AUCTION_BID_PAGE_SIZE}
+              onPage={this.getPage}
+            />
+          </div>
         </div>}
       </AdminLayout>
     )

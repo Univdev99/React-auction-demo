@@ -5,11 +5,11 @@ import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {
-  Pagination, PaginationItem, PaginationLink,
   Row, Col, Input,
 } from 'reactstrap'
 import moment from 'moment'
 
+import Pagination from 'components/Pagination'
 import AdminLayout from 'pages/AdminLayout'
 import { MEDIUM_PAGE_SIZE } from 'config'
 import {
@@ -33,42 +33,6 @@ class AdminMediumList extends PureComponent {
     page: 1,
     typeFilter: '',
     dateFilter: '',
-  }
-
-  getPageNumbers = (page) => {
-    const { adminMedia } = this.props
-    const count = adminMedia.get('mediumCount')
-    let pageCount = Math.max(Math.ceil(count / MEDIUM_PAGE_SIZE), 1)
-    page = Math.max(1, Math.min(page, pageCount))
-
-    const pages = []
-    let i
-    const start = Math.max(1, Math.min(pageCount - 4, page - 2))
-    const end = Math.min(pageCount, Math.max(page + 2, 5))
-
-    if (pageCount > 3 && start > 2) {
-      pages.push('.')
-    }
-
-    for (i = start; i <= end; i++) {
-      pages.push(i)
-    }
-
-    if (end < pageCount - 2) {
-      pages.push('..')
-    }
-
-    if (pageCount > end) {
-      pages.push(pageCount)
-    }
-
-    return pages
-  }
-
-  getPageCount = () => {
-    const { adminMedia } = this.props
-    const count = adminMedia.get('mediumCount')
-    return Math.max(Math.ceil(count / MEDIUM_PAGE_SIZE), 1)
   }
 
   refreshPage = () => {
@@ -127,14 +91,6 @@ class AdminMediumList extends PureComponent {
     }, this.refreshPage)
   }
 
-  handleClickPageLink = (page, event) => {
-    if (event) {
-      event.preventDefault()
-    }
-
-    this.getPage(page)
-  }
-
   componentWillMount() {
     this.getPage(1)
   }
@@ -143,6 +99,7 @@ class AdminMediumList extends PureComponent {
     const { adminMedia } = this.props
     const mediumListPage = adminMedia.get('mediumListPage')
     const currentPage = adminMedia.get('mediumPageNumber')
+    const totalCount = adminMedia.get('mediumCount')
     const { loadingStatus, typeFilter, dateFilter } = this.state
 
     return (
@@ -190,32 +147,12 @@ class AdminMediumList extends PureComponent {
         </Row>}
 
         {loadingStatus !== -1 && <div className="mt-5">
-          <Pagination>
-            <PaginationItem>
-              <PaginationLink previous onClick={this.handleClickPageLink.bind(this, 1)} />
-            </PaginationItem>
-            {this.getPageNumbers(currentPage).map(pageNumber => {
-              const ellipsis = (pageNumber === '.' || pageNumber === '..')
-              return (
-                <PaginationItem key={pageNumber} disabled={ellipsis}>
-                  <PaginationLink href="#" onClick={ellipsis ? null : this.handleClickPageLink.bind(this, pageNumber)}>
-                    {
-                      ellipsis ?
-                      <span dangerouslySetInnerHTML={{ __html: '&#8230' }} /> :
-                      pageNumber
-                    }
-                  </PaginationLink>
-                </PaginationItem>
-              )
-            })}
-            <PaginationItem>
-              <PaginationLink
-                next
-                href="#"
-                onClick={this.handleClickPageLink.bind(this, this.getPageCount())}
-              />
-            </PaginationItem>
-          </Pagination>
+          <Pagination
+            currentPage={currentPage}
+            totalCount={totalCount}
+            pageSize={MEDIUM_PAGE_SIZE}
+            onPage={this.getPage}
+          />
         </div>}
       </AdminLayout>
     )

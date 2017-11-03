@@ -13,6 +13,7 @@ import {
   ADMIN_GET_AUCTION_BID_LIST_PAGE,
   ADMIN_AUCTION_CHANGE_BID_STATUS,
 } from 'store/constants'
+import { replaceListItem } from 'utils/list'
 
 
 /* Initial state */
@@ -28,6 +29,7 @@ const initialState = Immutable.fromJS({
   bidListPage: [],
   bidCount: 0,
   bidListPageLoaded: false,
+  bidListPageNumber: 1,
 })
 
 /* Action creators */
@@ -41,19 +43,6 @@ export const finishAuction = createAction(ADMIN_FINISH_AUCTION)
 export const cancelAuction = createAction(ADMIN_CANCEL_AUCTION)
 export const getAuctionBidListPage = createAction(ADMIN_GET_AUCTION_BID_LIST_PAGE)
 export const changeBidStatus = createAction(ADMIN_AUCTION_CHANGE_BID_STATUS)
-
-/* Reducer helpers */
-
-function replaceListItem(payload, map, key) {
-  if (map.get('auctionListLoaded')) {
-    const { pk } = payload
-    const list = map.get(key)
-    const index = list.findIndex(item => item.get('pk') === pk)
-    if (index >= 0) {
-      map.setIn([key, index], Immutable.fromJS(payload))
-    }
-  }
-}
 
 /* Reducer */
 
@@ -106,6 +95,10 @@ export default handleActions({
   }),
 
   /* Get auction bid list page actions */
+
+  [ADMIN_GET_AUCTION_BID_LIST_PAGE]: (state, { payload }) => state.withMutations(map => {
+    map.set('bidListPageNumber', payload.page)
+  }),
 
   [requestSuccess(ADMIN_GET_AUCTION_BID_LIST_PAGE)]: (state, { payload }) => state.withMutations(map => {
     map.set('bidListPage', Immutable.fromJS(payload.results))

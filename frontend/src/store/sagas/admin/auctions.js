@@ -59,7 +59,8 @@ const cancelAuction = apiCall({
 const getAuctionBidListPage = apiCall({
   type: ADMIN_GET_AUCTION_BID_LIST_PAGE,
   method: 'get',
-  path: ({ payload }) => `admin/auctions/${payload.id}/bids/`,
+  path: ({ payload }) => `admin/auctions/${payload.id}/bids/?page=${payload.page}` +
+    (payload.status ? `&status=${payload.status}` : ''),
 })
 
 const changeBidStatus = apiCall({

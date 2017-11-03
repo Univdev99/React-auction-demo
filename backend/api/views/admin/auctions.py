@@ -9,6 +9,7 @@ from rest_framework import views
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from api.filters.status import StatusFilterBackend
 from api.serializers.auctions import AuctionSerializer
 from api.serializers.auctions import AuctionShipProductSerializer
 from api.serializers.auctions import BidWithUserDetailSerializer
@@ -98,6 +99,7 @@ class AuctionBidListView(generics.ListAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
     serializer_class = BidWithUserDetailSerializer
     pagination_class = TenPerPagePagination
+    filter_backends = (StatusFilterBackend, )
 
     def get_queryset(self):
         auction_pk = self.kwargs.get('pk', None)
