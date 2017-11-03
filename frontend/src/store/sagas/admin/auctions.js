@@ -9,6 +9,7 @@ import {
   ADMIN_START_AUCTION,
   ADMIN_FINISH_AUCTION,
   ADMIN_CANCEL_AUCTION,
+  ADMIN_GET_AUCTION_BID_LIST_PAGE,
 } from 'store/constants'
 
 
@@ -54,6 +55,12 @@ const cancelAuction = apiCall({
   path: ({ payload }) => `admin/auctions/${payload.id}/cancel/`,
 })
 
+const getAuctionBidListPage = apiCall({
+  type: ADMIN_GET_AUCTION_BID_LIST_PAGE,
+  method: 'get',
+  path: ({ payload }) => `admin/auctions/${payload.id}/bids/`,
+})
+
 export default function* rootSaga () {
   yield takeLatest(ADMIN_GET_AUCTION_LIST, getAuctionList)
   yield takeLatest(ADMIN_CREATE_AUCTION, createAuction)
@@ -62,4 +69,5 @@ export default function* rootSaga () {
   yield takeLatest(ADMIN_START_AUCTION, startAuction)
   yield takeLatest(ADMIN_FINISH_AUCTION, finishAuction)
   yield takeLatest(ADMIN_CANCEL_AUCTION, cancelAuction)
+  yield takeLatest(ADMIN_GET_AUCTION_BID_LIST_PAGE, getAuctionBidListPage)
 }

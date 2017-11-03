@@ -33,7 +33,7 @@ class Donor(models.Model):
     media = GenericRelation(Medium)
 
     def __str__(self):
-        return '{} <{}>'.format(self.type, self.title)
+        return '{} <{}>'.format(self.type.title(), self.title)
 
     @property
     def similar_donors(self):

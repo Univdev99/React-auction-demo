@@ -12,11 +12,11 @@ class AuctionAdmin(admin.ModelAdmin):
     list_display = (
         'title',
         'get_product',
+        'status',
         'starting_price',
         'current_price',
         'started_at',
         'ended_at',
-        'status',
     )
 
     def get_queryset(self, request):

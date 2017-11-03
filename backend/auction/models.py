@@ -7,11 +7,15 @@ from django.utils import timezone
 from auction.constants import AUCTION_STATUS_CHOICES
 from auction.constants import AUCTION_STATUS_PREVIEW
 from auction.constants import AUCTION_STATUS_OPEN
+from auction.constants import AUCTION_STATUS_WAITING_FOR_PAYMENT
+from auction.constants import AUCTION_STATUS_WAITING_TO_SHIP
 from auction.constants import AUCTION_STATUS_FINISHED
 from auction.constants import AUCTION_STATUS_CANCELLED
 from auction.constants import AUCTION_STATUS_CANCELLED_DUE_TO_NO_BIDS
 from auction.constants import BID_STATUS_CHOICES
 from auction.constants import BID_STATUS_ACTIVE
+from auction.constants import SHIPMENT_STATUS_CHOICES
+from auction.constants import SHIPMENT_STATUS_SHIPPING
 from entity.models import Product
 
 
@@ -62,6 +66,9 @@ class Auction(models.Model):
 
         raise NotImplementedError('Payment process not implemented yet')
 
+    def _send_payment_to_charity(self):
+        raise NotImplementedError('Payment process not implemented yet')
+
     def start(self):
         if self.status != AUCTION_STATUS_PREVIEW:
             raise ParseError('Only auctions in preview status can be started')
@@ -76,7 +83,7 @@ class Auction(models.Model):
 
         self._do_finishing_process()
 
-        self.status = AUCTION_STATUS_FINISHED
+        self.status = AUCTION_STATUS_WAITING_FOR_PAYMENT
         self.ended_at = timezone.now()
         self.save()
 
@@ -86,6 +93,12 @@ class Auction(models.Model):
 
         self.status = AUCTION_STATUS_CANCELLED
         self.ended_at = timezone.now()
+        self.save()
+
+    def _received_payment(self):
+        raise NotImplementedError('Payment receive logic not implemented yet')
+
+        self.status = AUCTION_STATUS_AUCTION_STATUS_WAITING_TO_SHIP
         self.save()
 
 
@@ -104,3 +117,20 @@ class Bid(models.Model):
 
     def __str__(self):
         return 'Bid by {} on {}'.format(self.user.username, str(self.auction))
+
+
+class Shipment(models.Model):
+    sent_at = models.DateTimeField()
+    arrived_at = models.DateTimeField(null=True, blank=True, default=None)
+    tracking_number = models.CharField(max_length=100)
+    status = models.CharField(
+        max_length=50,
+        choices=SHIPMENT_STATUS_CHOICES,
+        default=SHIPMENT_STATUS_SHIPPING
+    )
+
+    auction = models.ForeignKey(Auction, null=True, blank=True, on_delete=models.SET_NULL)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return 'Shipment {}'.format(self.tracking_number)
