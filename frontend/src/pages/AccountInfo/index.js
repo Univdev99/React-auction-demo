@@ -5,6 +5,7 @@ import { Alert } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
+import { stopSubmit } from 'redux-form'
 
 import AccountForm from 'components/AccountForm'
 import Spinner from 'components/Spinner'
@@ -17,8 +18,9 @@ class AccountInfo extends PureComponent {
 
   static propTypes = {
     auth: ImmutablePropTypes.map.isRequired,
-    getCountries: PropTypes.func.isRequired,
     countries: PropTypes.array.isRequired,
+    getCountries: PropTypes.func.isRequired,
+    stopSubmit: PropTypes.func.isRequired,
     updateCurrentUser: PropTypes.func.isRequired,
   }
 
@@ -35,6 +37,7 @@ class AccountInfo extends PureComponent {
   }
 
   handleSubmit = (data) => {
+    const { stopSubmit } = this.props
     this.setState({
       updateStatus: 1
     })
@@ -44,9 +47,12 @@ class AccountInfo extends PureComponent {
       success: () => this.setState({
         updateStatus: 10
       }),
-      fail: () => this.setState({
-        updateStatus: -1
-      }),
+      fail: ({ data }) => {
+        this.setState({
+          updateStatus: -1
+        })
+        stopSubmit('accountForm', data)
+      },
     })
   }
 
@@ -91,8 +97,9 @@ const selector = createStructuredSelector({
 })
 
 const actions = {
-  updateCurrentUser,
-  getCountries
+  getCountries,
+  stopSubmit,
+  updateCurrentUser
 }
 
 export default compose(
