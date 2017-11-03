@@ -41,7 +41,7 @@ urlpatterns = [
     url(r'^auctions/(?P<pk>[0-9]+)/$', AuctionDetailView.as_view(), name='auction-detail'),
     url(r'^auctions/(?P<pk>[0-9]+)/bid/$', AuctionPlaceBidView.as_view(), name='auction-place-bid'),
 
-    url(r'^account/bids/$', AccountBidListView.as_view(), name='account-bid-list'),
+    url(r'^account/bid-auctions/$', AccountBidListView.as_view(), name='account-bid-auctions-list'),
 
     url(r'^admin/', include('api.views.admin.urls', namespace='admin')),
     url(r'^settings/countries$', CountriesView.as_view(), name='settings-countries'),
