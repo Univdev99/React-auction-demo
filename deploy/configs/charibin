@@ -2,8 +2,12 @@ server {
     listen 80;
     server_name ec2-34-238-84-14.compute-1.amazonaws.com;
 
-    location /static/ {
+    location /staticfiles/ {
         root /var/www/charibin-tmp/backend;
+    }
+
+    location /static/ {
+        root /var/www/charibin-tmp/frontend/build;
     }
 
     location ~ ^/(api|django-admin)/ {
@@ -12,7 +16,7 @@ server {
     }
 
     location / {
-        root /var/www/charibin-tmp/frontend/public;
+        root /var/www/charibin-tmp/frontend/build;
         try_files $uri, /index.html;
     }
 }

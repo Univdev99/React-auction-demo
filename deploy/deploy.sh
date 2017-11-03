@@ -12,7 +12,7 @@ yarn run build
 cd ..
 
 # permission
-sudo chown www-data:ubuntu -r /var/www/charibin-tmp/frontend/public
+sudo chown www-data:ubuntu -r /var/www/charibin-tmp/frontend/build
 
 # restart app
 sudo systemctl restart gunicorn
