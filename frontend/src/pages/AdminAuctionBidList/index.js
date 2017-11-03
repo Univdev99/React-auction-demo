@@ -58,7 +58,7 @@ class AdminAuctionBidList extends PureComponent {
 
     return (
       <AdminLayout>
-        {loadingStatus === 1 || loadingAuctionStatus === 1 && <Spinner />}
+        {(loadingStatus === 1 || loadingAuctionStatus === 1) && <Spinner />}
 
         {(loadingStatus === -1 || loadingAuctionStatus === -1) && <div>
           Failed to load data.
