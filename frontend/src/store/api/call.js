@@ -3,8 +3,8 @@ import { call, put } from 'redux-saga/effects'
 import { get } from 'lodash'
 import { requestFail, requestPending, requestSuccess } from './request'
 
+import { BASE_API_URL } from 'config'
 
-const BASE_API_URL = 'http://localhost:8000/api/v1/'
 
 export default ({
   type,
