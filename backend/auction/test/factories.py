@@ -1,7 +1,12 @@
+from django.utils import timezone
+
 import factory
 
+from account.test.factories import UserFactory
 from auction.constants import AUCTION_STATUS_PREVIEW
+from auction.constants import BID_STATUS_ACTIVE
 from auction.models import Auction
+from auction.models import Bid
 from entity.test.factories import ProductFactory
 
 
@@ -16,3 +21,16 @@ class AuctionFactory(factory.DjangoModelFactory):
     status = AUCTION_STATUS_PREVIEW
 
     product = factory.SubFactory(ProductFactory)
+
+
+class BidFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = Bid
+
+    price = factory.Sequence(lambda n: 11000 + n * 100)
+    status = BID_STATUS_ACTIVE
+    placed_at = timezone.now()
+    closed_at = None
+
+    user = factory.SubFactory(UserFactory)
+    auction = factory.SubFactory(AuctionFactory)

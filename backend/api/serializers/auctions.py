@@ -2,8 +2,11 @@ from django.db import transaction
 from django.utils import timezone
 
 from rest_framework import serializers
+from rest_framework.exceptions import ParseError
 
 from auction.constants import AUCTION_STATUS_OPEN
+from auction.constants import BID_STATUS_ACTIVE
+from auction.constants import BID_STATUS_REJECTED
 from auction.models import Auction
 from auction.models import Bid
 from auction.models import Shipment
@@ -45,11 +48,11 @@ class AuctionDetailWithSimilarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Auction
         fields = (
-            'pk', 'title', 'starting_price', 'status',
+            'pk', 'title', 'starting_price', 'current_price', 'status',
             'started_at', 'open_until', 'ended_at',
             'product', 'similar_auctions')
         read_only_fields = (
-            'pk', 'title', 'starting_price', 'status',
+            'pk', 'title', 'starting_price', 'current_price', 'status',
             'started_at', 'open_until', 'ended_at',
             'product', 'similar_auctions')
 
@@ -89,18 +92,6 @@ class StartAuctionSerializer(serializers.Serializer):
             )
 
         return data
-
-
-class BidWithUserDetailSerializer(serializers.ModelSerializer):
-    user_detail = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Bid
-        fields = ('price', 'status', 'placed_at', 'closed_at', 'user', 'user_detail', 'auction')
-        read_only_fields = ('status', 'placed_at', 'closed_at', 'user')
-
-    def get_user_detail(self, obj):
-        return UserSerializer(obj.user).data
 
 
 class BidSerializer(serializers.ModelSerializer):
@@ -150,6 +141,45 @@ class BidSerializer(serializers.ModelSerializer):
         )
 
         return bid
+
+
+class BidWithUserDetailSerializer(serializers.ModelSerializer):
+    user_detail = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Bid
+        fields = ('pk', 'price', 'status', 'placed_at', 'closed_at', 'user', 'user_detail', 'auction')
+        read_only_fields = ('pk', 'price', 'status', 'placed_at', 'closed_at', 'user', 'user_detail', 'auction')
+
+    def get_user_detail(self, obj):
+        return UserSerializer(obj.user).data
+
+
+class BidStatusChangeSerializer(serializers.ModelSerializer):
+    active = serializers.BooleanField(write_only=True)
+    user_detail = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Bid
+        fields = ('pk', 'price', 'status', 'placed_at', 'closed_at', 'user', 'user_detail', 'auction', 'active')
+        read_only_fields = ('pk', 'price', 'status', 'placed_at', 'closed_at', 'user', 'user_detail', 'auction')
+
+    def get_user_detail(self, obj):
+        return UserSerializer(obj.user).data
+
+    def update(self, instance, validated_data):
+        target_status = BID_STATUS_ACTIVE if validated_data['active'] else BID_STATUS_REJECTED
+
+        if instance.status != BID_STATUS_ACTIVE and instance.status != BID_STATUS_REJECTED:
+            raise ParseError('Invalid current status of this bid')
+
+        if instance.status == target_status:
+            raise ParseError('Invalid status change')
+
+        instance.status = target_status
+        instance.save()
+
+        return instance
 
 
 class AuctionShipProductSerializer(serializers.Serializer):

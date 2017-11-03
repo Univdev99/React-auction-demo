@@ -10,9 +10,10 @@ import AdminLayout from 'pages/AdminLayout'
 import {
   getAuctionDetail,
   getAuctionBidListPage,
+  changeBidStatus,
 } from 'store/modules/admin/auctions'
 import { adminAuctionsSelector } from 'store/selectors'
-import { BID_STATUS_ACTIVE } from 'config'
+import { BID_STATUS_ACTIVE, BID_STATUS_REJECTED } from 'config'
 
 
 class AdminAuctionBidList extends PureComponent {
@@ -21,11 +22,44 @@ class AdminAuctionBidList extends PureComponent {
     adminAuctions: ImmutablePropTypes.map.isRequired,
     getAuctionDetail: PropTypes.func.isRequired,
     getAuctionBidListPage: PropTypes.func.isRequired,
+    changeBidStatus: PropTypes.func.isRequired,
   }
 
   state = {
     loadingAuctionStatus: 1,
     loadingStatus: 1
+  }
+
+  handleClickActivate = (id, event) => {
+    event.preventDefault()
+
+    if (!window.confirm('Are you sure to reactivate this bid?')) {
+      return
+    }
+
+    this.props.changeBidStatus({
+      id: this.props.match.params.id,
+      bidId: id,
+      data: {
+        active: true
+      }
+    })
+  }
+
+  handleClickReject = (id, event) => {
+    event.preventDefault()
+
+    if (!window.confirm('Are you sure to reject this bid?')) {
+      return
+    }
+
+    this.props.changeBidStatus({
+      id: this.props.match.params.id,
+      bidId: id,
+      data: {
+        active: false
+      }
+    })
   }
 
   componentWillMount() {
@@ -87,7 +121,16 @@ class AdminAuctionBidList extends PureComponent {
                   <td>{bid.get('closed_at')}</td>
                   <td>{bid.getIn(['user_detail', 'first_name'])} {bid.getIn(['user_detail', 'last_name'])} ({bid.getIn(['user_detail', 'email'])}</td>
                   <td>
-                    {bid.get('status') === BID_STATUS_ACTIVE && <a href="/" className="text-danger">Reject</a>}
+                    {bid.get('status') === BID_STATUS_REJECTED && <a
+                      href="/"
+                      className="text-primary"
+                      onClick={this.handleClickActivate.bind(this, bid.get('pk'))}
+                    >Activate</a>}
+                    {bid.get('status') === BID_STATUS_ACTIVE && <a
+                      href="/"
+                      className="text-danger"
+                      onClick={this.handleClickReject.bind(this, bid.get('pk'))}
+                    >Reject</a>}
                   </td>
                 </tr>
               ))}
@@ -106,6 +149,7 @@ const selector = createStructuredSelector({
 const actions = {
   getAuctionDetail,
   getAuctionBidListPage,
+  changeBidStatus,
 }
 
 export default compose(
