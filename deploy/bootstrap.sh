@@ -37,7 +37,5 @@ sudo systemctl restart gunicorn
 sudo apt update && sudo apt -y install nginx
 sudo cp -f ./deploy/configs/charibin /etc/nginx/sites-available
 sudo ln -s /etc/nginx/sites-available/charibin /etc/nginx/sites-enabled/charibin
-touch /var/www/charibin-tmp/charibin.sock
-sudo chown www-data:ubuntu /var/www/charibin-tmp/charibin.sock
-sudo chown www-data:ubuntu -r /var/www/charibin-tmp/frontend/build
+sudo chown www-data:ubuntu -R /var/www/charibin-tmp/frontend/build
 sudo service nginx restart
