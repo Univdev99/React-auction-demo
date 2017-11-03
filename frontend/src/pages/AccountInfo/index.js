@@ -8,7 +8,8 @@ import { createStructuredSelector } from 'reselect'
 
 import AccountForm from 'components/AccountForm'
 import Spinner from 'components/Spinner'
-import { authSelector } from 'store/selectors'
+import { authSelector, countriesSelector } from 'store/selectors'
+import { getCountries } from 'store/modules/settings'
 import { updateCurrentUser } from 'store/modules/auth'
 
 
@@ -16,11 +17,21 @@ class AccountInfo extends PureComponent {
 
   static propTypes = {
     auth: ImmutablePropTypes.map.isRequired,
+    getCountries: PropTypes.func.isRequired,
+    countries: PropTypes.array.isRequired,
     updateCurrentUser: PropTypes.func.isRequired,
   }
 
-  state = {
-    updateStatus: 0
+  constructor(props) {
+    super(props)
+    this.state = {
+      updateStatus: 0
+    }
+  }
+
+  componentDidMount() {
+    const { getCountries } = this.props
+    getCountries()
   }
 
   handleSubmit = (data) => {
@@ -40,7 +51,7 @@ class AccountInfo extends PureComponent {
   }
 
   render() {
-    const { auth } = this.props
+    const { auth, countries } = this.props
     const currentUser = auth.get('currentUser')
 
     if (!currentUser) {
@@ -62,7 +73,8 @@ class AccountInfo extends PureComponent {
           Successfully saved
         </Alert>}
 
-        <AccountForm 
+        <AccountForm
+          countries={countries}
           initialValues={currentUser}
           disabled={updateStatus === 1}
           onSubmit={this.handleSubmit}
@@ -75,10 +87,12 @@ class AccountInfo extends PureComponent {
 
 const selector = createStructuredSelector({
   auth: authSelector,
+  countries: countriesSelector
 })
 
 const actions = {
   updateCurrentUser,
+  getCountries
 }
 
 export default compose(

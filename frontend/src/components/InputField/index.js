@@ -6,12 +6,13 @@ import { Label, Input, FormFeedback, FormGroup, FormText } from 'reactstrap'
 class InputField extends PureComponent {
 
   static propTypes = {
-    input: PropTypes.object.isRequired,
-    meta: PropTypes.object.isRequired,
-    type: PropTypes.string,
-    label: PropTypes.string,
+    children: PropTypes.node,
     helpText: PropTypes.string,
-    placeholder: PropTypes.string
+    input: PropTypes.object.isRequired,
+    label: PropTypes.string,
+    meta: PropTypes.object.isRequired,
+    placeholder: PropTypes.string,
+    type: PropTypes.string
   }
 
   static defaultProps = {
@@ -20,12 +21,13 @@ class InputField extends PureComponent {
 
   render() {
     const {
-      input,
-      meta: { error, touched },
-      type,
-      label,
+      children,
       helpText,
-      placeholder
+      input,
+      label,
+      meta: { error, touched },
+      placeholder,
+      type
     } = this.props
     const { name } = input
     const fieldError = touched && error
@@ -33,7 +35,8 @@ class InputField extends PureComponent {
     return (
       <FormGroup>
         {label && <Label htmlFor={name}>{label}</Label>}
-        <Input type={type} {...input} placeholder={placeholder} valid={fieldError ? false : undefined} />
+        <Input type={type} {...input} placeholder={placeholder}
+          valid={fieldError ? false : undefined} children={children} />
         {fieldError && <FormFeedback>{error}</FormFeedback>}
         {helpText && !fieldError && <FormText>{helpText}</FormText>}
       </FormGroup>

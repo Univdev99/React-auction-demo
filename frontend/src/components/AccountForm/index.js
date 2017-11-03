@@ -11,12 +11,13 @@ import InputField from 'components/InputField'
 class AccountForm extends PureComponent {
 
   static propTypes = {
+    countries: PropTypes.array.isRequired,
     handleSubmit: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
   }
 
   render() {
-    const { handleSubmit, disabled } = this.props
+    const { countries, handleSubmit, disabled } = this.props
     return (
       <form onSubmit={handleSubmit}>
         <Row>
@@ -60,10 +61,15 @@ class AccountForm extends PureComponent {
           <Col xs={12} sm={6}>
             <FormField
               name="profile.country"
-              type="text"
+              type="select"
               label="Country"
               component={InputField}
-            />
+            >
+              <option value="">-- Select a Country --</option>
+              {countries.map((item, index) => (
+                <option key={index} value={item.code}>{item.name}</option>
+              ))}
+            </FormField>
           </Col>
           <Col xs={12} sm={6}>
             <FormField
