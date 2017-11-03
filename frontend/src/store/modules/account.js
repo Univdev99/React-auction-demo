@@ -12,6 +12,7 @@ import {
 const initialState = Immutable.fromJS({
   bidAuctionsList: [],
   bidAuctionsCount: 0,
+  bidAuctionsPageNumber: 1,
   bidAuctionsLoaded: false
 })
 
@@ -23,7 +24,11 @@ export const getMyBids = createAction(ACCOUNT_GET_MY_BID_AUCTIONS)
 
 export default handleActions({
 
-  /* Get job list actions */
+  /* Get bid auctions list actions */
+
+  [ACCOUNT_GET_MY_BID_AUCTIONS]: (state, { payload }) => state.withMutations(map => {
+    map.set('bidAuctionsPageNumber', payload.params.page)
+  }),
 
   [requestSuccess(ACCOUNT_GET_MY_BID_AUCTIONS)]: (state, { payload }) => state.withMutations(map => {
     map.set('bidAuctionsList', Immutable.fromJS(payload.results))

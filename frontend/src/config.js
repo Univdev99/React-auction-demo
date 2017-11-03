@@ -10,6 +10,7 @@ export const FACEBOOK_API_VERSION = 'v2.10'
 export const PAGE_SIZE = 8
 export const MEDIUM_PAGE_SIZE = 12
 export const AUCTION_BID_PAGE_SIZE = 10
+export const ACCOUNT_BID_AUCTIONS_PAGE_SIZE = 4
 
 /* Donor constants */
 

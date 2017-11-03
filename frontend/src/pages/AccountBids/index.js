@@ -1,35 +1,72 @@
 import React, { PureComponent } from 'react'
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import { Button, Col, Row } from 'reactstrap'
+import { Alert, Button, Col, Row } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
+import Pagination from 'components/Pagination'
+import Spinner from 'components/Spinner'
 import TimeLeft from 'components/TimeLeft'
+import { ACCOUNT_BID_AUCTIONS_PAGE_SIZE } from 'config'
 import { accountSelector } from 'store/selectors'
 import { getMyBids } from 'store/modules/account'
 
 
 class AccountBids extends PureComponent {
   static propTypes = {
-    account: ImmutablePropTypes.map.isRequired
+    account: ImmutablePropTypes.map.isRequired,
+    getMyBids: PropTypes.func.isRequired
   };
 
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      loadingStatus: 1
+    }
+  }
+
   componentDidMount() {
+    this.getPage(1)
+  }
+
+  getPage = (page) => {
     const { getMyBids } = this.props
-    getMyBids()
+    this.setState({
+      loadingStatus: 1
+    })
+
+    getMyBids({
+      params: { page },
+      success: () => this.setState({
+        loadingStatus: 10
+      }),
+      fail: () => this.setState({
+        loadingStatus: -1
+      }),
+    })
   }
 
   render() {
     const { account } = this.props
+    const { loadingStatus } = this.state
     const bidAuctionsList = account.get('bidAuctionsList')
+    const currentPage = account.get('bidAuctionsPageNumber')
+    const totalCount = account.get('bidAuctionsCount')
 
     return (
       <div>
         <h3 className="mb-4">My Bids</h3>
 
-        {bidAuctionsList.map((item, index) => (
+        {loadingStatus === 1 && <Spinner />}
+
+        {loadingStatus === -1 && <Alert color="danger">
+          Failed to load data.
+        </Alert>}
+
+        {loadingStatus === 10 && bidAuctionsList.map((item, index) => (
           <Row key={index} className="align-items-center mb-3">
             <Col md={6} xs={12} className="mb-3 text-center">
               <img
@@ -47,6 +84,15 @@ class AccountBids extends PureComponent {
             </Col>
           </Row>
         ))}
+
+        <div className="mt-5 text-center">
+          <Pagination
+            currentPage={currentPage}
+            totalCount={totalCount}
+            pageSize={ACCOUNT_BID_AUCTIONS_PAGE_SIZE}
+            onPage={this.getPage}
+          />
+        </div>
       </div>
     )
   }
