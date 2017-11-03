@@ -46,14 +46,16 @@ export const ADMIN_AUCTION_CHANGE_BID_STATUS = 'charibin/admin/auction-change-bi
 
 export const ADMIN_GET_TAG_SUGGESTIONS = 'charibin/admin/get-tag-suggestions'
 
-export const DONOR_GET_FRONT_LIST = 'charibin/donors/get-front-list'
-export const DONOR_GET_LIST_PAGE = 'charibin/donors/get-list-page'
-export const DONOR_GET_DETAIL = 'charibin/donors/get-detail'
-
 export const ADMIN_GET_USER_LIST = 'charibin/admin/get-user-list'
 export const ADMIN_BLOCK_UNBLOCK_USER = 'charibin/admin/block-unblock-user'
 
 export const ADMIN_GET_MEDIUM_LIST_PAGE = 'charibin/admin/get-medium-list'
+
+export const ACCOUNT_GET_MY_BID_AUCTIONS = 'charibin/account/get-my-bid-auctions'
+
+export const DONOR_GET_FRONT_LIST = 'charibin/donors/get-front-list'
+export const DONOR_GET_LIST_PAGE = 'charibin/donors/get-list-page'
+export const DONOR_GET_DETAIL = 'charibin/donors/get-detail'
 
 export const JOB_GET_LIST = 'charibin/jobs/get-list'
 export const JOB_GET_DETAIL = 'charibin/jobs/get-detail'

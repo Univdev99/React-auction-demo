@@ -29,7 +29,7 @@ class AuctionSerializer(serializers.ModelSerializer):
         fields = (
             'pk',
             'title', 'starting_price', 'product',
-            'current_price', 'status', 'started_at', 'ended_at', 'product_details'
+            'current_price', 'status', 'started_at', 'open_until', 'ended_at', 'product_details'
         )
         read_only_fields = ('pk', 'current_price', 'status', 'started_at', 'ended_at', 'product_details')
 

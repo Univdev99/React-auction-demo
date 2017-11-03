@@ -19,6 +19,9 @@ export const adminUsersSelector = state =>
 export const adminMediaSelector = state =>
   state.get('adminMedia')
 
+export const accountSelector = state =>
+  state.get('account')
+
 export const donorsSelector = state => 
   state.get('donors')
 

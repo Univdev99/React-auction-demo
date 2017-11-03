@@ -12,6 +12,7 @@ from api.paginations import FourPerPagePagination
 from api.paginations import EightPerPagePagination
 from api.paginations import TwelvePerPagePagination
 from api.permissions import IsAdmin
+from auction.constants import AUCTION_STATUS_OPEN
 from auction.models import Auction
 from auction.models import Bid
 
@@ -54,9 +55,12 @@ class AuctionPlaceBidView(generics.CreateAPIView):
 
 class AccountBidListView(generics.ListAPIView):
     permission_classes = (IsAuthenticated, )
-    serializer_class = BidSerializer
-    pagination_class = EightPerPagePagination
+    serializer_class = AuctionSerializer
+    pagination_class = FourPerPagePagination
     filter_backends = (StatusFilterBackend, )
 
     def get_queryset(self):
-        return Bid.objects.filter(user=self.request.user).order_by('-placed_at')
+        return Auction.objects \
+            .filter(bid__user=self.request.user, status=AUCTION_STATUS_OPEN) \
+            .order_by('-open_until') \
+            .order_by('pk').distinct('pk')
