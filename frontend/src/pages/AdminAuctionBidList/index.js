@@ -7,6 +7,9 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import Pagination from 'components/Pagination'
 import Spinner from 'components/Spinner'
+import {
+  registerRealTimeNotificationHandler, unregisterRealTimeNotificationHandler
+} from 'managers/RealTimeNotificationManager'
 import AdminLayout from 'pages/AdminLayout'
 import {
   getAuctionDetail,
@@ -16,7 +19,8 @@ import {
 import { adminAuctionsSelector } from 'store/selectors'
 import {
   BID_STATUS_ACTIVE, BID_STATUS_REJECTED,
-  AUCTION_BID_PAGE_SIZE
+  AUCTION_BID_PAGE_SIZE,
+  NOTIFICATION_AUCTION_NEW_BID,
 } from 'config'
 
 
@@ -91,6 +95,11 @@ class AdminAuctionBidList extends PureComponent {
     })
   }
 
+  handleNewBidNotification = () => {
+    const { adminAuctions } = this.props
+    this.getPage(adminAuctions.get('bidListPageNumber'))
+  }
+
   componentWillMount() {
     this.props.getAuctionDetail({
       id: this.props.match.params.id,
@@ -103,6 +112,14 @@ class AdminAuctionBidList extends PureComponent {
     })
 
     this.refreshPage()
+  }
+
+  componentDidMount() {
+    registerRealTimeNotificationHandler(NOTIFICATION_AUCTION_NEW_BID, this.handleNewBidNotification)
+  }
+
+  componentWillUnmount() {
+    unregisterRealTimeNotificationHandler(NOTIFICATION_AUCTION_NEW_BID, this.handleNewBidNotification)
   }
 
   render() {

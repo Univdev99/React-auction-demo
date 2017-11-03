@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import {
   Pagination as ReactstrapPagination,
   PaginationItem, PaginationLink,
-  Row, Col, Input,
 } from 'reactstrap'
 
 
@@ -22,7 +21,6 @@ class Pagination extends PureComponent {
   }
 
   getPageNumbers = (page) => {
-    const { totalCount, pageSize } = this.props
     let pageCount = this.getPageCount()
     page = Math.max(1, Math.min(page, pageCount))
 

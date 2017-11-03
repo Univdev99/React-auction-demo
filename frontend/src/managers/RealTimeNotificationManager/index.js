@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Immutable from 'immutable'
 
 import { WS_BACKEND_URL } from 'config'
 
@@ -11,19 +12,26 @@ const AUTO_RECONNECT_INTERVAL = 10000
  * This is an array of handler configs in the form of
  *  { action: String, handler: Function }
  */
-const notificationHandlerMap = []
+let notificationHandlerMap = Immutable.List()
 
-export function registerNotificationHandler(action, handler) {
+export function registerRealTimeNotificationHandler(action, handler) {
   if (handler.constructor !== Function) {
     return false
   }
-  notificationHandlerMap.push({
+  notificationHandlerMap = notificationHandlerMap.push(Immutable.Map({
     action,
     handler
-  })
+  }))
 }
 
-class NotificationManager extends Component {
+export function unregisterRealTimeNotificationHandler(action, handler = null) {
+  notificationHandlerMap = notificationHandlerMap.filter(handlerConfig => (
+    handlerConfig.get('action') !== action ||
+    (handler && handlerConfig.get('handler') !== handler)
+  ))
+}
+
+class RealTimeNotificationManager extends Component {
 
   socket = null
   reconnectTimerID = 0
@@ -66,10 +74,11 @@ class NotificationManager extends Component {
     } catch(e) {
       console.error('Received invalid websocket message')
     }
-    notificationHandlerMap.forEach(handlerConfig => {
-      if (handlerConfig.action === data.action) {
-        handlerConfig.handler(data)
+    notificationHandlerMap.map(handlerConfig => {
+      if (handlerConfig.get('action') === data.action) {
+        handlerConfig.get('handler')(data)
       }
+      return handlerConfig
     })
   }
 
@@ -94,4 +103,4 @@ class NotificationManager extends Component {
   }
 }
 
-export default NotificationManager
+export default RealTimeNotificationManager

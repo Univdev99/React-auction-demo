@@ -43,7 +43,7 @@ import AdminUserList from 'pages/AdminUserList'
 import AdminMediumList from 'pages/AdminMediumList'
 
 // Managers (currently implemented as invisible page components)
-import NotificationManager from 'pages/NotificationManager'
+import RealTimeNotificationManager from 'managers/RealTimeNotificationManager'
 
 
 // Auth wrappers
@@ -114,7 +114,7 @@ const Routes = ({ history }) => (
       <Route exact path="/support" component={Support} />
       <Route exact path="/terms-conditions" component={TermsConditions} />
 
-      <Route path="/" component={NotificationManager} />
+      <Route path="/" component={RealTimeNotificationManager} />
     </div>
   </ConnectedRouter>
 )
