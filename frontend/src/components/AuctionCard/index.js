@@ -16,11 +16,12 @@ class AuctionCard extends PureComponent {
 
   render() {
     const { auction: { pk, title, product_details: product } } = this.props
-    console.log(this.props)
 
     return (
       <Card>
-        <div className={cx(bem('image'), 'card-img-top')} style={{ backgroundImage: `url(${product.media[0].url})`}} />
+        <Link to={`/auctions/${pk}`}>
+          <div className={cx(bem('image'), 'card-img-top')} style={{ backgroundImage: `url(${product.media[0].url})`}} />
+        </Link>
         <CardBody>
           <CardSubtitle className={bem('title')} title={title}>{title}</CardSubtitle>
           <div className="mt-3">
