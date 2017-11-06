@@ -12,6 +12,7 @@ import SignUpVerification from 'pages/SignUpVerification'
 import AccountBids from 'pages/AccountBids'
 import AccountInfo from 'pages/AccountInfo'
 import AccountPassword from 'pages/AccountPassword'
+import AccountPaymentInfo from 'pages/AccountPaymentInfo'
 import AccountWins from 'pages/AccountWins'
 import Careers from 'pages/Careers'
 import Donors from 'pages/Donors'
@@ -90,6 +91,7 @@ const AccountRoutes = props => (
     <Route exact path="/account/bids" component={AccountBids} />
     <Route exact path="/account/wins" component={AccountWins} />
     <Route exact path="/account/info" component={AccountInfo} />
+    <Route exact path="/account/payment-info" component={AccountPaymentInfo} />
     <Route exact path="/account/change-password" component={AccountPassword} />
   </AccountLayout>
 )
