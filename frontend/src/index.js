@@ -11,6 +11,8 @@ import 'utils/localstorage-polyfill'
 import { loadData } from 'utils/storage'
 import registerServiceWorker from './registerServiceWorker'
 
+import './index.css'
+
 
 /* Set up axios request interceptor for adding authorization header */
 axios.interceptors.request.use((config) => {
