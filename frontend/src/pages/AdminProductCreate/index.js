@@ -8,7 +8,6 @@ import { withRouter } from 'react-router'
 
 import ProductForm from 'components/ProductForm'
 import Spinner from 'components/Spinner'
-import AdminLayout from 'pages/AdminLayout'
 import { getDonorList } from 'store/modules/admin/donors'
 import { createProduct } from 'store/modules/admin/products'
 import { adminDonorsSelector } from 'store/selectors'
@@ -65,7 +64,7 @@ class AdminProductCreate extends PureComponent {
     const { creatingStatus } = this.state
 
     return (
-      <AdminLayout>
+      <div>
         <div>
           <h3 className="mb-5">Create Product</h3>
 
@@ -84,7 +83,7 @@ class AdminProductCreate extends PureComponent {
             />
           </div>}
         </div>
-      </AdminLayout>
+      </div>
     )
   }
 }

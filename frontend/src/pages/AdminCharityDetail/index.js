@@ -8,7 +8,6 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import Spinner from 'components/Spinner'
 import Uploader from 'components/Uploader'
 import CharityForm from 'components/CharityForm'
-import AdminLayout from 'pages/AdminLayout'
 import {
   getCharityDetail,
   updateCharityDetail,
@@ -74,14 +73,14 @@ class AdminCharityDetail extends PureComponent {
 
     if (loadingStatus === -1) {
       return (
-        <AdminLayout>
+        <div>
           <h2>Charity not found</h2>
-        </AdminLayout>
+        </div>
       )
     }
 
     return (
-      <AdminLayout>
+      <div>
         <div>
           <h3 className="mb-5">Edit Charity</h3>
 
@@ -109,7 +108,7 @@ class AdminCharityDetail extends PureComponent {
             />
           </div>}
         </div>
-      </AdminLayout>
+      </div>
     )
   }
 }

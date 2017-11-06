@@ -8,7 +8,6 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import Spinner from 'components/Spinner'
 import AuctionStartForm from 'components/AuctionStartForm'
-import AdminLayout from 'pages/AdminLayout'
 import {
   getAuctionDetail,
   startAuction,
@@ -77,14 +76,14 @@ class AdminAuctionDetail extends PureComponent {
 
     if (loadingStatus === -1) {
       return (
-        <AdminLayout>
+        <div>
           <h2>Auction not found</h2>
-        </AdminLayout>
+        </div>
       )
     }
 
     return (
-      <AdminLayout>
+      <div>
         <div>
           {(loadingStatus === 1 || !auctionDetail) && <Spinner />}
 
@@ -105,7 +104,7 @@ class AdminAuctionDetail extends PureComponent {
             />
           </div>}
         </div>
-      </AdminLayout>
+      </div>
     )
   }
 }

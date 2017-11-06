@@ -6,7 +6,6 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import Spinner from 'components/Spinner'
-import AdminLayout from 'pages/AdminLayout'
 import {
   getUserList,
   blockUnblockUser,
@@ -68,7 +67,7 @@ class AdminUserList extends PureComponent {
     const { loadingStatus } = this.state
 
     return (
-      <AdminLayout>
+      <div>
         <h2 className="mb-5">Users</h2>
 
         {loadingStatus === 1 && <Spinner />}
@@ -110,7 +109,7 @@ class AdminUserList extends PureComponent {
             ))}
           </tbody>
         </table>}
-      </AdminLayout>
+      </div>
     )
   }
 }

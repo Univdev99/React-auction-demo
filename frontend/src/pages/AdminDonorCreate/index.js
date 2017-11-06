@@ -8,7 +8,6 @@ import { withRouter } from 'react-router'
 
 import DonorForm from 'components/DonorForm'
 import Spinner from 'components/Spinner'
-import AdminLayout from 'pages/AdminLayout'
 import { getCharityList } from 'store/modules/admin/charities'
 import { createDonor } from 'store/modules/admin/donors'
 import { adminCharitiesSelector } from 'store/selectors'
@@ -65,7 +64,7 @@ class AdminDonorCreate extends PureComponent {
     const { creatingStatus } = this.state
 
     return (
-      <AdminLayout>
+      <div>
         <div>
           <h3 className="mb-5">Create Donor</h3>
 
@@ -84,7 +83,7 @@ class AdminDonorCreate extends PureComponent {
             />
           </div>}
         </div>
-      </AdminLayout>
+      </div>
     )
   }
 }

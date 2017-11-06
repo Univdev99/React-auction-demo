@@ -6,7 +6,6 @@ import PropTypes from 'prop-types'
 import { withRouter } from 'react-router'
 
 import CharityForm from 'components/CharityForm'
-import AdminLayout from 'pages/AdminLayout'
 import {
   createCharity,
 } from 'store/modules/admin/charities'
@@ -50,7 +49,7 @@ class AdminCharityCreate extends PureComponent {
     const { creatingStatus } = this.state
 
     return (
-      <AdminLayout>
+      <div>
         <div>
           <h3 className="mb-5">Create Charity</h3>
 
@@ -64,7 +63,7 @@ class AdminCharityCreate extends PureComponent {
             onBack={this.handleBack}
           />
         </div>
-      </AdminLayout>
+      </div>
     )
   }
 }

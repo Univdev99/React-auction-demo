@@ -10,7 +10,6 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import Spinner from 'components/Spinner'
 import Uploader from 'components/Uploader'
 import DonorForm from 'components/DonorForm'
-import AdminLayout from 'pages/AdminLayout'
 import { getCharityList } from 'store/modules/admin/charities'
 import {
   getDonorDetail,
@@ -20,6 +19,7 @@ import {
   reorderDonorMedia,
 } from 'store/modules/admin/donors'
 import { adminCharitiesSelector, adminDonorsSelector } from 'store/selectors'
+import { convertHTMLToEditorState, convertEditorStateToHTML } from 'utils/editor-state'
 import './style.css'
 
 
@@ -43,13 +43,18 @@ class AdminDonorDetail extends PureComponent {
   }
 
   handleSubmit = (data) => {
+    const formData = data.set(
+      'description',
+      convertEditorStateToHTML(data.get('description'))
+    )
+
     this.setState({
       updatingStatus: 1
     })
 
     this.props.updateDonorDetail({
       id: this.props.match.params.id,
-      data,
+      data: formData,
       success: this.handleBack,
       fail: () => this.setState({
         updatingStatus: -1
@@ -140,16 +145,25 @@ class AdminDonorDetail extends PureComponent {
     const { loadingStatus, updatingStatus } = this.state
     const donorMedia = this.getMedia()
 
+    let _donorDetail = null;
+    if (donorDetail) {
+      _donorDetail = donorDetail.delete('pk')
+      _donorDetail = _donorDetail.set(
+        'description',
+        convertHTMLToEditorState(_donorDetail.get('description'))
+      )
+    }
+
     if (loadingStatus === -1) {
       return (
-        <AdminLayout>
+        <div>
           <h2>Donor not found</h2>
-        </AdminLayout>
+        </div>
       )
     }
 
     return (
-      <AdminLayout>
+      <div>
         <div>
           <div className="clearfix">
             <h3 className="mb-5 pull-left">Edit Donor</h3>
@@ -176,7 +190,7 @@ class AdminDonorDetail extends PureComponent {
             </div>}
             
             <DonorForm
-              initialValues={donorDetail.delete('pk')}
+              initialValues={_donorDetail}
               charityList={charityList}
               disabled={updatingStatus === 1}
               onSubmit={this.handleSubmit}
@@ -235,7 +249,7 @@ class AdminDonorDetail extends PureComponent {
             </div>
           </div>}
         </div>
-      </AdminLayout>
+      </div>
     )
   }
 }

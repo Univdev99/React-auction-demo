@@ -7,6 +7,7 @@
   max-width: 100%;
   background-color: #f0f0f1;
   z-index: 20;
+  overflow: hidden;
 }
 
 .admin-layout .admin-content {
@@ -70,4 +71,28 @@
   .admin-layout .admin-menu {
     width: 100%;
   }
+}
+
+.admin-header {
+  height: 70px;
+  padding: 15px 0;
+}
+
+.admin-header.shadow {
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
+}
+
+.admin-header .logo,
+.admin-header .user-avatar {
+  height: 40px;
+  width: auto;
+  vertical-align: middle;
+}
+
+.admin-header .user-avatar {
+  border-radius: 999px;
+}
+
+.admin-header .content {
+  height: 100%;
 }

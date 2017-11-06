@@ -7,7 +7,6 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Link } from 'react-router-dom'
 
 import Spinner from 'components/Spinner'
-import AdminLayout from 'pages/AdminLayout'
 import {
   getProductList,
   deleteProduct,
@@ -66,7 +65,7 @@ class AdminProductList extends PureComponent {
     const { loadingStatus } = this.state
 
     return (
-      <AdminLayout>
+      <div>
         <div className="mb-5 clearfix">
           <h2 className="pull-left">Products</h2>
           <Link className="btn btn-primary pull-right" to="/admin/products/create">Create</Link>
@@ -101,7 +100,7 @@ class AdminProductList extends PureComponent {
             ))}
           </tbody>
         </table>}
-      </AdminLayout>
+      </div>
     )
   }
 }

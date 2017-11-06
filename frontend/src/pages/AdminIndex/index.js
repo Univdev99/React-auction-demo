@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
-import AdminLayout from 'pages/AdminLayout'
 import { authSelector } from 'store/selectors'
 
 
@@ -16,9 +15,9 @@ class AdminIndex extends PureComponent {
 
   render() {
     return (
-      <AdminLayout>
+      <div>
         Admin index page
-      </AdminLayout>
+      </div>
     )
   }
 }

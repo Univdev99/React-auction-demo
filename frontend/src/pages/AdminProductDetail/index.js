@@ -9,7 +9,6 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import Spinner from 'components/Spinner'
 import Uploader from 'components/Uploader'
 import ProductForm from 'components/ProductForm'
-import AdminLayout from 'pages/AdminLayout'
 import { getDonorList } from 'store/modules/admin/donors'
 import {
   getProductDetail,
@@ -141,14 +140,14 @@ class AdminProductDetail extends PureComponent {
 
     if (loadingStatus === -1) {
       return (
-        <AdminLayout>
+        <div>
           <h2>Product not found</h2>
-        </AdminLayout>
+        </div>
       )
     }
 
     return (
-      <AdminLayout>
+      <div>
         <div>
           <h3 className="mb-5">Edit Product</h3>
 
@@ -219,7 +218,7 @@ class AdminProductDetail extends PureComponent {
             </div>
           </div>}
         </div>
-      </AdminLayout>
+      </div>
     )
   }
 }
