@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from api.filters.category import AuctionCategoryFilterBackend
 from api.filters.status import StatusFilterBackend
+from api.filters.status import AuctionBidStatusFilterBackend
 from api.serializers.auctions import AuctionSerializer
 from api.serializers.auctions import AuctionDetailWithSimilarSerializer
 from api.serializers.auctions import BidSerializer
@@ -57,10 +58,10 @@ class AccountBidListView(generics.ListAPIView):
     permission_classes = (IsAuthenticated, )
     serializer_class = AuctionSerializer
     pagination_class = FourPerPagePagination
-    filter_backends = (StatusFilterBackend, )
+    filter_backends = (AuctionBidStatusFilterBackend, )
 
     def get_queryset(self):
         return Auction.objects \
-            .filter(bid__user=self.request.user, status=AUCTION_STATUS_OPEN) \
+            .filter(bid__user=self.request.user) \
             .order_by('-open_until') \
             .order_by('pk').distinct('pk')
