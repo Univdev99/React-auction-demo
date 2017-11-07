@@ -120,6 +120,15 @@ class AuctionDetail extends PureComponent {
               {auctionDetail.getIn(['product', 'description'])}
             </p>
 
+            <h3 className="mb-5">More from {auctionDetail.getIn(['product', 'donor_details', 'title'])}</h3>
+            <Row className="mb-5">
+              {auctionDetail.get('donor_auctions').map(auction => (
+                <Col key={auction.get('pk')} xs={12} md={2} lg={3} className="mb-3">
+                  <AuctionCard auction={auction.toJS()} />
+                </Col>
+              ))}
+            </Row>
+
             <h3 className="mb-5">Similar Auctions</h3>
             <Row className="mb-5">
               {auctionDetail.get('similar_auctions').map(auction => (
