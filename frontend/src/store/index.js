@@ -4,6 +4,7 @@ import Immutable from 'immutable'
 import { combineReducers } from 'redux-immutable'
 import { createStore, applyMiddleware, compose } from 'redux'
 import { reducer as formReducer } from 'redux-form/immutable'
+import { reducer as modal } from 'redux-modal'
 import { routerMiddleware } from 'react-router-redux'
 
 import account from 'store/modules/account'
@@ -70,6 +71,7 @@ export const store = createStore(
     auctions,
     donors,
     jobs,
+    modal,
     settings
   }),
   Immutable.Map(),
