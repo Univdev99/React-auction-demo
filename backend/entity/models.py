@@ -63,11 +63,10 @@ class Product(models.Model):
     def tagnames(self):
         return [tag.name for tag in self.tags]
 
-    def get_similar_products(self, count):
-        return TaggedItem.objects.get_related(
-            self,
-            Product.objects.select_related('auction').prefetch_related('media'),
-            count
-        )
+    def get_similar_products(self, count, **kwargs):
+        qs = Product.objects.select_related('auction').prefetch_related('media')
+        if bool(kwargs):
+            qs = qs.filter(**kwargs)
+        return TaggedItem.objects.get_related(self, qs, count)
 
 register(Product)

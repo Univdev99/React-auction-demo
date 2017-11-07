@@ -44,17 +44,18 @@ class AuctionDetailWithSimilarSerializer(serializers.ModelSerializer):
     """
     product = ProductDetailSerializer(read_only=True)
     similar_auctions = AuctionSerializer(many=True, read_only=True)
+    donor_auctions = AuctionSerializer(many=True, read_only=True)
 
     class Meta:
         model = Auction
         fields = (
             'pk', 'title', 'starting_price', 'current_price', 'status',
             'started_at', 'open_until', 'ended_at',
-            'product', 'similar_auctions')
+            'product', 'similar_auctions', 'donor_auctions')
         read_only_fields = (
             'pk', 'title', 'starting_price', 'current_price', 'status',
             'started_at', 'open_until', 'ended_at',
-            'product', 'similar_auctions')
+            'product', 'similar_auctions', 'donor_auctions')
 
 
 class StartAuctionSerializer(serializers.Serializer):
