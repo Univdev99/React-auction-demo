@@ -14,6 +14,7 @@ import adminMedia from 'store/modules/admin/media'
 import adminProducts from 'store/modules/admin/products'
 import adminTags from 'store/modules/admin/tags'
 import adminUsers from 'store/modules/admin/users'
+import auctions from 'store/modules/auctions'
 import auth from 'store/modules/auth'
 import authMiddleware from 'store/middlewares/auth'
 import donors from 'store/modules/donors'
@@ -66,6 +67,7 @@ export const store = createStore(
     adminUsers,
     adminMedia,
     account,
+    auctions,
     donors,
     jobs,
     settings

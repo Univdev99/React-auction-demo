@@ -41,6 +41,8 @@ class DonorWithoutMediaSerializer(serializers.ModelSerializer):
     """
     Serializer used in AuctionSerializer in nested fashion
     """
+    charity = CharitySerializer(read_only=True)
+
     class Meta:
         model = Donor
         fields = ('pk', 'title', 'description', 'type', 'charity')

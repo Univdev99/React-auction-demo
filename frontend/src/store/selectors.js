@@ -22,6 +22,9 @@ export const adminMediaSelector = state =>
 export const accountSelector = state =>
   state.get('account')
 
+export const auctionsSelector = state => 
+  state.get('auctions')
+
 export const donorsSelector = state => 
   state.get('donors')
 
@@ -29,4 +32,4 @@ export const jobsSelector = state =>
   state.get('jobs')
 
 export const countriesSelector = state =>
-	state.get('settings').get('countries').toJS()
+  state.get('settings').get('countries').toJS()

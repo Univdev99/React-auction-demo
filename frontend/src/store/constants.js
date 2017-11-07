@@ -53,6 +53,9 @@ export const ADMIN_GET_MEDIUM_LIST_PAGE = 'charibin/admin/get-medium-list'
 
 export const ACCOUNT_GET_MY_BID_AUCTIONS = 'charibin/account/get-my-bid-auctions'
 
+export const AUCTION_GET_FRONT_LIST = 'charibin/auctions/get-front-list'
+export const AUCTION_GET_FRONT_DETAIL = 'charibin/auctions/get-front-detail'
+
 export const DONOR_GET_FRONT_LIST = 'charibin/donors/get-front-list'
 export const DONOR_GET_LIST_PAGE = 'charibin/donors/get-list-page'
 export const DONOR_GET_DETAIL = 'charibin/donors/get-detail'

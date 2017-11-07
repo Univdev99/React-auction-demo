@@ -49,10 +49,17 @@ class Auction(models.Model):
     def tagnames(self):
         return [tag.name for tag in self.tags]
 
+    @property
+    def donor_auctions(self):
+        return self.get_donor_auctions(4)
+
     def get_similar_auctions(self, count):
         product = self.product
-        similar_products = self.product.get_similar_products(count)
+        similar_products = self.product.get_similar_products(count, auction__isnull=False)
         return [product.auction for product in similar_products]
+
+    def get_donor_auctions(self, count):
+        return Auction.objects.filter(product__donor=self.product.donor).exclude(pk=self.pk)[:count]
 
     def _do_finishing_process(self):
         bid_queryset = self.bid_set.filter(status=BID_STATUS_ACTIVE)

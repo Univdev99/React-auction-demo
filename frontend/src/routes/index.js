@@ -14,6 +14,8 @@ import AccountInfo from 'pages/AccountInfo'
 import AccountPassword from 'pages/AccountPassword'
 import AccountPaymentInfo from 'pages/AccountPaymentInfo'
 import AccountWins from 'pages/AccountWins'
+import AuctionDetail from 'pages/AuctionDetail'
+import Auctions from 'pages/Auctions'
 import Careers from 'pages/Careers'
 import Donors from 'pages/Donors'
 import DonorDetail from 'pages/DonorDetail'
@@ -104,6 +106,10 @@ const Routes = ({ history }) => (
       <Route exact path="/signup" component={userIsNotAuthenticated(SignUp)} />
       <Route exact path="/signup-with-facebook/:access_token" component={userIsNotAuthenticated(SignUpWithFacebook)} />
       <Route exact path="/verify-account/:token" component={SignUpVerification} />
+
+      <Route exact path="/auctions" component={Auctions} />
+      <Route exact path="/auctions/:id" component={AuctionDetail} />
+
       <Route exact path="/donors" component={Donors} />
       <Route exact path="/donors/:id" component={DonorDetail} />
 

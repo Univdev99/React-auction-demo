@@ -1,0 +1,14 @@
+.card__image {
+  padding-top: 60%;
+  background: center/contain no-repeat;
+}
+
+.card__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card__button {
+  border-radius: 999px;
+}

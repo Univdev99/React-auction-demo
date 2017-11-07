@@ -6,7 +6,7 @@ import { Nav, NavItem, NavLink } from 'reactstrap'
 const AppHeaderMenu = () => (
   <Nav className="ml-auto mr-3" navbar>
     <NavItem>
-      <NavLink tag={Link} to="/">Auctions</NavLink>
+      <NavLink tag={Link} to="/auctions">Auctions</NavLink>
     </NavItem>
     <NavItem>
       <NavLink tag={Link} to="/">Mission</NavLink>
