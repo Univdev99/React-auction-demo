@@ -49,22 +49,23 @@ export default ({
       onDownloadProgress,
     })
 
-    successCallback && successCallback(res)
-    success && success(res, action)
-
     yield put({
       type: requestSuccess(type),
       payload: payloadOnSuccess ? payloadOnSuccess(res.data, action) : res.data
     })
+
+    successCallback && successCallback(res)
+    success && success(res, action)
+
   } catch (err) {
     const errRes = get(err, 'response', err)
-
-    failCallback && failCallback(errRes)
-    fail && fail(errRes)
 
     yield put({
       type: requestFail(type),
       payload: payloadOnFail ? payloadOnFail(errRes, action) : errRes
     })
+
+    failCallback && failCallback(errRes)
+    fail && fail(errRes)
   }
 }
