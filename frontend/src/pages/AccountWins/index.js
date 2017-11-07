@@ -21,7 +21,7 @@ class AccountWins extends PureComponent {
   static propTypes = {
     account: ImmutablePropTypes.map.isRequired,
     getMyBids: PropTypes.func.isRequired
-  };
+  }
 
   constructor(props) {
     super(props)

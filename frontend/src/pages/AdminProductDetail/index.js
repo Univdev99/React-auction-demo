@@ -63,7 +63,7 @@ class AdminProductDetail extends PureComponent {
     event.preventDefault()
 
     if (!window.confirm('Are you sure to delete this medium?')) {
-      return;
+      return
     }
 
     this.props.deleteProductMedium({

@@ -19,6 +19,7 @@ class DonorForm extends PureComponent {
     initialValues: ImmutablePropTypes.map,
     disabled: PropTypes.bool,
     charityList: ImmutablePropTypes.list.isRequired,
+    renderMediaDropzone: PropTypes.func,
     handleSubmit: PropTypes.func.isRequired,
     onBack: PropTypes.func,
   }
@@ -33,12 +34,12 @@ class DonorForm extends PureComponent {
   }
 
   render() {
-    const { initialValues, charityList, disabled, handleSubmit, onBack } = this.props
+    const { initialValues, charityList, disabled, renderMediaDropzone, handleSubmit, onBack } = this.props
 
     return (
       <form onSubmit={handleSubmit}>
         <Row>
-          <Col md="7" sm="12">
+          <Col md="8" sm="12" className="mb-4">
             <FormField
               name="title"
               type="text"
@@ -52,7 +53,7 @@ class DonorForm extends PureComponent {
               component={RichEditorField}
             />
           </Col>
-          <Col md="5" sm="12">
+          <Col md="4" sm="12" className="mb-4">
             <FormField
               name="type"
               label="Type:"
@@ -75,6 +76,13 @@ class DonorForm extends PureComponent {
             />
           </Col>
         </Row>
+
+        <Row>
+          <Col md="8" sm="12" className="mb-4">
+            {renderMediaDropzone && renderMediaDropzone()}
+          </Col>
+        </Row>
+
         <div className="text-right">
           {onBack && <button className="btn mr-3 px-4" onClick={this.handleClickBack}>
             Back

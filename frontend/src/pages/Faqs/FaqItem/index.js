@@ -6,7 +6,7 @@ export default class FaqItem extends PureComponent {
   static propTypes = {
     question: PropTypes.string.isRequired,
     answer: PropTypes.string.isRequired
-  };
+  }
 
   constructor(props) {
     super(props)
@@ -16,7 +16,7 @@ export default class FaqItem extends PureComponent {
   toggle = () => {
     this.setState({
       open: !this.state.open
-    });
+    })
   }
 
   render() {
