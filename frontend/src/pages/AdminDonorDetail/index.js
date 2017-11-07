@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
+import Immutable from 'immutable'
+import { EditorState } from 'draft-js'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Link } from 'react-router-dom'
@@ -163,6 +165,10 @@ class AdminDonorDetail extends PureComponent {
         'description',
         convertHTMLToEditorState(_donorDetail.get('description'))
       )
+    } else {
+      _donorDetail = Immutable.Map({
+        description: EditorState.createEmpty()
+      })
     }
 
     if (loadingStatus === -1) {

@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
+import Immutable from 'immutable'
+import { EditorState } from 'draft-js'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withRouter } from 'react-router'
@@ -63,6 +65,10 @@ class AdminDonorCreate extends PureComponent {
     const charityList = adminCharities.get('charityList')
     const { creatingStatus } = this.state
 
+    const _donorDetail = Immutable.Map({
+      description: EditorState.createEmpty()
+    })
+
     return (
       <div>
         <div>
@@ -76,6 +82,7 @@ class AdminDonorCreate extends PureComponent {
             </div>}
 
             <DonorForm
+              initialValues={_donorDetail}
               charityList={charityList}
               disabled={creatingStatus === 1}
               onSubmit={this.handleSubmit}

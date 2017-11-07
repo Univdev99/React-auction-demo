@@ -50,6 +50,22 @@ class AdminCharityDetail extends PureComponent {
     pathname: '/admin/charities'
   })
 
+  renderMediaDropzone = () => {
+    const { adminCharities } = this.props
+    const charityDetail = adminCharities.get('charityDetail')
+
+    return (
+      <div className="mb-4">
+        <label>Upload logo here:</label>
+        <Uploader
+          uploadAction={this.props.uploadCharityLogo}
+          uploadActionParams={{ id: this.props.match.params.id }}
+          defaultImageURL={charityDetail.get('logo')}
+        />
+      </div>
+    )
+  }
+
   componentWillMount() {
     this.setState({
       loadingStatus: 1
@@ -87,15 +103,6 @@ class AdminCharityDetail extends PureComponent {
           {(loadingStatus === 1 || !charityDetail) && <Spinner />}
 
           {loadingStatus === 10 && charityDetail && <div>
-            <div className="mb-4">
-              <label>Upload logo here:</label>
-              <Uploader
-                uploadAction={this.props.uploadCharityLogo}
-                uploadActionParams={{ id: this.props.match.params.id }}
-                defaultImageURL={charityDetail.get('logo')}
-              />
-            </div>
-
             {updatingStatus === -1 && <div className="mb-2 text-danger">
               Failed to update charity
             </div>}
@@ -103,6 +110,7 @@ class AdminCharityDetail extends PureComponent {
             <CharityForm
               initialValues={charityDetail.delete('pk')}
               disabled={updatingStatus === 1}
+              renderMediaDropzone={this.renderMediaDropzone}
               onSubmit={this.handleSubmit}
               onBack={this.handleBack}
             />
