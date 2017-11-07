@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import { Link } from 'react-router-dom'
 import { Badge, Button, Col, Row } from 'reactstrap'
 
 import AppContainerLayout from 'components/AppContainerLayout'
