@@ -1,12 +1,12 @@
 import { connectedRouterRedirect } from 'redux-auth-wrapper/history4/redirect'
 import locationHelperBuilder from 'redux-auth-wrapper/history4/locationHelper'
-
+import { authSelector, isAuthenticatedSelector } from 'store/selectors'
 
 const locationHelper = locationHelperBuilder({})
 
 export const userIsAuthenticated = connectedRouterRedirect({
   redirectPath: '/signin',
-  authenticatedSelector: state => !!state.getIn(['auth', 'signedIn']),
+  authenticatedSelector: isAuthenticatedSelector,
   wrapperDisplayName: 'UserIsAuthenticated'
 })
 
@@ -14,7 +14,7 @@ export const userIsNotAuthenticated = connectedRouterRedirect({
   redirectPath: (state, ownProps) =>
     locationHelper.getRedirectQueryParam(ownProps) || '/',
   allowRedirectBack: false,
-  authenticatedSelector: state => !state.getIn(['auth', 'signedIn']),
+  authenticatedSelector: state => !isAuthenticatedSelector(state),
   wrapperDisplayName: 'UserIsNotAuthenticated'
 })
 
@@ -29,7 +29,7 @@ export const currentUserNotLoadedForAdmin = connectedRouterRedirect({
 export const userIsAdmin = connectedRouterRedirect({
   redirectPath: '/admin-authenticating',
   authenticatedSelector: state => {
-    const auth = state.get('auth')
+    const auth = authSelector(state)
     return auth.get('signedIn') && auth.getIn(['currentUser', 'is_staff'])
   },
   wrapperDisplayName: 'UserIsAdmin'
