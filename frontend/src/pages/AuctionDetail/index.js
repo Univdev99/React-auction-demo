@@ -13,6 +13,7 @@ import Slider from 'components/Slider'
 import Spinner from 'components/Spinner'
 import AppLayout1 from 'pages/AppLayout1'
 import TimeLeft from 'components/TimeLeft'
+import auctionBidFlow from 'utils/auctionBidFlow'
 import { getAuctionFrontDetail } from 'store/modules/auctions'
 import { auctionsSelector } from 'store/selectors'
 
@@ -22,6 +23,7 @@ class AuctionDetail extends PureComponent {
   static propTypes = {
     auctions: ImmutablePropTypes.map.isRequired,
     getAuctionFrontDetail: PropTypes.func.isRequired,
+    startBidFlow: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -70,6 +72,12 @@ class AuctionDetail extends PureComponent {
     }
   }
 
+  handleBid = () => {
+    const { auctions, startBidFlow } = this.props
+    const auctionId = auctions.getIn(['auctionDetail', 'pk'])
+    startBidFlow(auctionId)
+  }
+
   render() {
     const { auctions } = this.props
     const auctionDetail = auctions.get('auctionDetail')
@@ -96,9 +104,10 @@ class AuctionDetail extends PureComponent {
                     <div className="h4">
                       <Badge color="light">
                         <img
-                        src={auctionDetail.getIn(['product', 'donor_details', 'charity', 'logo'])}
-                        alt="Charity Logo" 
-                        style={{ maxHeight: 50, maxWidth: '100%' }} />
+                          src={auctionDetail.getIn(['product', 'donor_details', 'charity', 'logo'])}
+                          alt="Charity Logo" 
+                          style={{ maxHeight: 50, maxWidth: '100%' }}
+                        />
                         {' '}
                         {auctionDetail.getIn(['product', 'donor_details', 'charity', 'title'])}
                       </Badge>
@@ -107,7 +116,7 @@ class AuctionDetail extends PureComponent {
                     <div className="h5 mb-4 mt-4">
                       Time Left: <TimeLeft until={auctionDetail.get('open_until')} />
                     </div>
-                    <Button color="primary">
+                    <Button color="primary" onClick={this.handleBid}>
                       Place a bid
                     </Button>
                   </div>
@@ -152,5 +161,6 @@ const actions = {
 }
 
 export default compose(
+  auctionBidFlow,
   connect(selector, actions)
 )(AuctionDetail)
