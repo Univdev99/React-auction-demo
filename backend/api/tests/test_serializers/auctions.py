@@ -68,11 +68,21 @@ class BidSerializerTests(APISerializerTestCase):
     def get_data(self):
         return {
             'price': self.auction.current_price + 100,
-            'auction': self.auction.pk,
+        }
+
+    def get_context(self):
+        class MockView():
+            def get_object(s):
+                return self.auction
+
+        view = MockView()
+
+        return {
+            'view': view,
         }
 
     def test_place_bid_successes(self, mock_now):
-        serializer = self.get_serializer(data=self.get_data())
+        serializer = self.get_serializer(data=self.get_data(), context=self.get_context())
         self.assertValid(serializer)
 
         bid = serializer.create(serializer.validated_data)
@@ -82,20 +92,20 @@ class BidSerializerTests(APISerializerTestCase):
         data = self.get_data()
         data['price'] = self.auction.current_price - 100
 
-        serializer = self.get_serializer(data=data)
+        serializer = self.get_serializer(data=data, context=self.get_context())
         self.assertInvalid(serializer)
 
     def test_bid_on_cancelled_auction_fails(self, mock_now):
         self.auction.cancel()
 
-        serializer = self.get_serializer(data=self.get_data())
+        serializer = self.get_serializer(data=self.get_data(), context=self.get_context())
         self.assertInvalid(serializer)
 
     @patch('auction.models.Auction._do_finishing_process')
     def test_bid_on_finished_auction_fails(self, mock_finish, mock_now):
         self.auction.finish()
 
-        serializer = self.get_serializer(data=self.get_data())
+        serializer = self.get_serializer(data=self.get_data(), context=self.get_context())
         self.assertInvalid(serializer)
 
 
