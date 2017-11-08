@@ -82,7 +82,6 @@ class AdminProductList extends PureComponent {
             <tr>
               <th>ID</th>
               <th>Title</th>
-              <th>Description</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -91,7 +90,6 @@ class AdminProductList extends PureComponent {
               <tr key={product.get('pk')}>
                 <th scope="row">{product.get('pk')}</th>
                 <td>{product.get('title')}</td>
-                <td>{product.get('description')}</td>
                 <td>
                   <Link className="text-secondary pr-3" to={`/admin/products/${product.get('pk')}`}>Edit</Link>
                   <a className="text-danger" href="/" onClick={this.handleDelete.bind(this, product.get('pk'))}>Delete</a>

@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
+import Immutable from 'immutable'
+import RichTextEditor from 'react-rte'
 
 import Spinner from 'components/Spinner'
 import Uploader from 'components/Uploader'
@@ -32,13 +34,18 @@ class AdminCharityDetail extends PureComponent {
   }
 
   handleSubmit = (data) => {
+    const formData = data.set(
+      'description',
+      data.get('description').toString('html')
+    )
+
     this.setState({
       updatingStatus: 1
     })
 
     this.props.updateCharityDetail({
       id: this.props.match.params.id,
-      data,
+      data: formData,
       success: this.handleBack,
       fail: () => this.setState({
         updatingStatus: -1
@@ -95,6 +102,19 @@ class AdminCharityDetail extends PureComponent {
       )
     }
 
+    let _charityDetail = null
+    if (charityDetail) {
+      _charityDetail = charityDetail.delete('pk')
+      _charityDetail = _charityDetail.set(
+        'description',
+        RichTextEditor.createValueFromString(_charityDetail.get('description'), 'html')
+      )
+    } else {
+      _charityDetail = Immutable.Map({
+        description: RichTextEditor.createEmptyValue()
+      })
+    }
+
     return (
       <div>
         <div>
@@ -106,9 +126,9 @@ class AdminCharityDetail extends PureComponent {
             {updatingStatus === -1 && <div className="mb-2 text-danger">
               Failed to update charity
             </div>}
-            
+
             <CharityForm
-              initialValues={charityDetail.delete('pk')}
+              initialValues={_charityDetail}
               disabled={updatingStatus === 1}
               renderMediaDropzone={this.renderMediaDropzone}
               onSubmit={this.handleSubmit}

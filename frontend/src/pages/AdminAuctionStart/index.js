@@ -95,7 +95,7 @@ class AdminAuctionDetail extends PureComponent {
             {startingStatus === -1 && <div className="mb-2 text-danger">
               Failed to start auction
             </div>}
-            
+
             <AuctionStartForm
               initialValues={initialValues}
               disabled={startingStatus === 1}

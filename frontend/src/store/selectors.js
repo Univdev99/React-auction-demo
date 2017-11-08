@@ -1,4 +1,4 @@
-export const authSelector = state => 
+export const authSelector = state =>
   state.get('auth')
 
 export const adminCharitiesSelector = state =>
@@ -22,13 +22,13 @@ export const adminMediaSelector = state =>
 export const accountSelector = state =>
   state.get('account')
 
-export const auctionsSelector = state => 
+export const auctionsSelector = state =>
   state.get('auctions')
 
-export const donorsSelector = state => 
+export const donorsSelector = state =>
   state.get('donors')
 
-export const jobsSelector = state => 
+export const jobsSelector = state =>
   state.get('jobs')
 
 export const countriesSelector = state =>

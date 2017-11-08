@@ -8,7 +8,7 @@ import { Row, Col } from 'reactstrap'
 import FormField from 'components/FormField'
 import InputField from 'components/InputField'
 import TagsInputField from 'components/TagsInputField'
-import TextareaField from 'components/TextareaField'
+import RichEditorField from 'components/RichEditorField'
 import SelectField from 'components/SelectField'
 
 
@@ -49,7 +49,7 @@ class ProductForm extends PureComponent {
               name="description"
               type="text"
               label="Description:"
-              component={TextareaField}
+              component={RichEditorField}
             />
           </Col>
           <Col md="4" sm="12" className="mb-4">
@@ -81,7 +81,7 @@ class ProductForm extends PureComponent {
             Back
           </button>}
           <button type="submit" className="btn btn-primary px-4" disabled={disabled}>
-            {initialValues ? 'Update' : 'Create'}
+            {initialValues.get('title') ? 'Update' : 'Create'}
           </button>
         </div>
       </form>
@@ -94,10 +94,6 @@ const validate = (values) => {
 
   if (!values.get('title')) {
     errors.title = 'Title is required'
-  }
-
-  if (!values.get('description')) {
-    errors.description = 'Description is required'
   }
 
   if (!values.get('donor')) {

@@ -3,7 +3,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import Immutable from 'immutable'
-import { EditorState } from 'draft-js'
+import RichTextEditor from 'react-rte'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Link } from 'react-router-dom'
@@ -21,7 +21,6 @@ import {
   reorderDonorMedia,
 } from 'store/modules/admin/donors'
 import { adminCharitiesSelector, adminDonorsSelector } from 'store/selectors'
-import { convertHTMLToEditorState, convertEditorStateToHTML } from 'utils/editor-state'
 
 
 class AdminDonorDetail extends PureComponent {
@@ -46,7 +45,7 @@ class AdminDonorDetail extends PureComponent {
   handleSubmit = (data) => {
     const formData = data.set(
       'description',
-      convertEditorStateToHTML(data.get('description'))
+      data.get('description').toString('html')
     )
 
     this.setState({
@@ -158,25 +157,25 @@ class AdminDonorDetail extends PureComponent {
     const donorDetail = adminDonors.get('donorDetail')
     const { loadingStatus, updatingStatus } = this.state
 
-    let _donorDetail = null
-    if (donorDetail) {
-      _donorDetail = donorDetail.delete('pk')
-      _donorDetail = _donorDetail.set(
-        'description',
-        convertHTMLToEditorState(_donorDetail.get('description'))
-      )
-    } else {
-      _donorDetail = Immutable.Map({
-        description: EditorState.createEmpty()
-      })
-    }
-
     if (loadingStatus === -1) {
       return (
         <div>
           <h2>Donor not found</h2>
         </div>
       )
+    }
+
+    let _donorDetail = null
+    if (donorDetail) {
+      _donorDetail = donorDetail.delete('pk')
+      _donorDetail = _donorDetail.set(
+        'description',
+        RichTextEditor.createValueFromString(_donorDetail.get('description'), 'html')
+      )
+    } else {
+      _donorDetail = Immutable.Map({
+        description: RichTextEditor.createEmptyValue()
+      })
     }
 
     return (
@@ -205,7 +204,7 @@ class AdminDonorDetail extends PureComponent {
             {updatingStatus === -1 && <div className="mb-2 text-danger">
               Failed to update donor
             </div>}
-            
+
             <DonorForm
               initialValues={_donorDetail}
               charityList={charityList}

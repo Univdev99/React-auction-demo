@@ -82,7 +82,6 @@ class AdminCharityList extends PureComponent {
             <tr>
               <th>ID</th>
               <th>Title</th>
-              <th>Description</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -91,7 +90,6 @@ class AdminCharityList extends PureComponent {
               <tr key={charity.get('pk')}>
                 <th scope="row">{charity.get('pk')}</th>
                 <td>{charity.get('title')}</td>
-                <td>{charity.get('description')}</td>
                 <td>
                   <Link className="text-secondary pr-3" to={`/admin/charities/${charity.get('pk')}`}>Edit</Link>
                   <a className="text-danger" href="/" onClick={this.handleDelete.bind(this, charity.get('pk'))}>Delete</a>

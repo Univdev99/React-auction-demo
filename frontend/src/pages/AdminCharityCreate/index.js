@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router'
+import Immutable from 'immutable'
+import RichTextEditor from 'react-rte'
 
 import CharityForm from 'components/CharityForm'
 import {
@@ -23,11 +25,17 @@ class AdminCharityCreate extends PureComponent {
   }
 
   handleSubmit = (data) => {
+    const formData = data.set(
+      'description',
+      data.get('description').toString('html')
+    )
+
     this.setState({
       creatingStatus: 1
     })
+
     this.props.createCharity({
-      data,
+      data: formData,
       success: ({ data }) => {
         this.props.history.push({
           pathname: `/admin/charities/${data.pk}`
@@ -48,6 +56,10 @@ class AdminCharityCreate extends PureComponent {
   render() {
     const { creatingStatus } = this.state
 
+    const _charityDetail = Immutable.Map({
+      description: RichTextEditor.createEmptyValue()
+    })
+
     return (
       <div>
         <div>
@@ -56,8 +68,9 @@ class AdminCharityCreate extends PureComponent {
           {creatingStatus === -1 && <div className="mb-2 text-danger">
             Failed to create charity
           </div>}
-          
+
           <CharityForm
+            initialValues={_charityDetail}
             disabled={creatingStatus === 1}
             onSubmit={this.handleSubmit}
             onBack={this.handleBack}

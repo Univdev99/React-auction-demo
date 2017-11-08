@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
+import Immutable from 'immutable'
+import RichTextEditor from 'react-rte'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
@@ -40,13 +42,18 @@ class AdminProductDetail extends PureComponent {
   }
 
   handleSubmit = (data) => {
+    const formData = data.set(
+      'description',
+      data.get('description').toString('html')
+    )
+
     this.setState({
       updatingStatus: 1
     })
 
     this.props.updateProductDetail({
       id: this.props.match.params.id,
-      data,
+      data: formData,
       success: this.handleBack,
       fail: () => this.setState({
         updatingStatus: -1
@@ -157,6 +164,19 @@ class AdminProductDetail extends PureComponent {
       )
     }
 
+    let _productDetail = null
+    if (productDetail) {
+      _productDetail = productDetail.delete('pk')
+      _productDetail = _productDetail.set(
+        'description',
+        RichTextEditor.createValueFromString(_productDetail.get('description'), 'html')
+      )
+    } else {
+      _productDetail = Immutable.Map({
+        description: RichTextEditor.createEmptyValue()
+      })
+    }
+
     return (
       <div>
         <div>
@@ -168,9 +188,9 @@ class AdminProductDetail extends PureComponent {
             {updatingStatus === -1 && <div className="mb-2 text-danger">
               Failed to update product
             </div>}
-            
+
             <ProductForm
-              initialValues={productDetail.delete('pk')}
+              initialValues={_productDetail}
               donorList={donorList}
               disabled={updatingStatus === 1}
               renderMediaDropzone={this.renderMediaDropzone}

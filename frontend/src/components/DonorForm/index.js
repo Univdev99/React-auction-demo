@@ -88,7 +88,7 @@ class DonorForm extends PureComponent {
             Back
           </button>}
           <button type="submit" className="btn btn-primary px-4" disabled={disabled}>
-            {initialValues ? 'Update' : 'Create'}
+            {initialValues.get('title') ? 'Update' : 'Create'}
           </button>
         </div>
       </form>
@@ -101,10 +101,6 @@ const validate = (values) => {
 
   if (!values.get('title')) {
     errors.title = 'Title is required'
-  }
-
-  if (!values.get('description')) {
-    errors.description = 'Description is required'
   }
 
   if (!values.get('type')) {

@@ -6,7 +6,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import FormField from 'components/FormField'
 import InputField from 'components/InputField'
-import TextareaField from 'components/TextareaField'
+import RichEditorField from 'components/RichEditorField'
 
 
 class CharityForm extends PureComponent {
@@ -43,7 +43,7 @@ class CharityForm extends PureComponent {
           name="description"
           type="text"
           label="Description:"
-          component={TextareaField}
+          component={RichEditorField}
         />
         <div className="mb-4">
           {renderMediaDropzone && renderMediaDropzone()}
@@ -53,7 +53,7 @@ class CharityForm extends PureComponent {
             Back
           </button>}
           <button type="submit" className="btn btn-primary px-4" disabled={disabled}>
-            {initialValues ? 'Update' : 'Create'}
+            {initialValues.get('title') ? 'Update' : 'Create'}
           </button>
         </div>
       </form>
@@ -66,10 +66,6 @@ const validate = (values) => {
 
   if (!values.get('title')) {
     errors.title = 'Title is required'
-  }
-
-  if (!values.get('description')) {
-    errors.description = 'Description is required'
   }
 
   return errors

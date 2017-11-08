@@ -3,10 +3,10 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import Immutable from 'immutable'
-import { EditorState } from 'draft-js'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withRouter } from 'react-router'
+import RichTextEditor from 'react-rte'
 
 import DonorForm from 'components/DonorForm'
 import Spinner from 'components/Spinner'
@@ -29,11 +29,17 @@ class AdminDonorCreate extends PureComponent {
   }
 
   handleSubmit = (data) => {
+    const formData = data.set(
+      'description',
+      data.get('description').toString('html')
+    )
+
     this.setState({
       creatingStatus: 1
     })
+
     this.props.createDonor({
-      data,
+      data: formData,
       success: ({ data }) => {
         this.props.history.push({
           pathname: `/admin/donors/${data.pk}`
@@ -66,7 +72,7 @@ class AdminDonorCreate extends PureComponent {
     const { creatingStatus } = this.state
 
     const _donorDetail = Immutable.Map({
-      description: EditorState.createEmpty()
+      description: RichTextEditor.createEmptyValue()
     })
 
     return (

@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Label, FormFeedback, FormGroup, FormText } from 'reactstrap'
-
-import RichTextEditor from 'components/RichTextEditor'
+import RichTextEditor from 'react-rte'
 
 
 class RichEditorField extends PureComponent {

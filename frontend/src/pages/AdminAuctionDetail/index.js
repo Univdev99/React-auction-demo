@@ -103,7 +103,7 @@ class AdminAuctionDetail extends PureComponent {
             {updatingStatus === -1 && <div className="mb-2 text-danger">
               Failed to update auction
             </div>}
-            
+
             <AuctionForm
               initialValues={auctionDetail.delete('pk')}
               productList={productList}
