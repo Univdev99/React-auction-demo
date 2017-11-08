@@ -87,8 +87,16 @@ class ProductSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Product
-        fields = ('pk', 'title', 'description', 'donor')
-        read_only_fields = ('pk', 'title', 'description', 'donor')
+        fields = (
+            'pk', 'title', 'description',
+            'charge_tax', 'requires_shipping', 'weight_unit', 'weight', 'hs_tariff_code',
+            'donor'
+        )
+        read_only_fields = (
+            'pk', 'title', 'description',
+            'charge_tax', 'requires_shipping', 'weight_unit', 'weight', 'hs_tariff_code',
+            'donor'
+        )
 
 
 class ProductDetailSerializer(TagnamesSerializerMixin, ProductSerializer):

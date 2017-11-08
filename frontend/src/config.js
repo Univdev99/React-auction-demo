@@ -42,10 +42,24 @@ export const MEDIUM_TYPES = [
   { key: 'audio', value: 'Audio' },
 ]
 
-/* auction constants */
+/* Notification constants */
 
 export const NOTIFICATION_TYPE_AUCTION = 'auction'
 export const NOTIFICATION_AUCTION_NEW = `${NOTIFICATION_TYPE_AUCTION}/new`
 export const NOTIFICATION_AUCTION_NEW_BID = `${NOTIFICATION_TYPE_AUCTION}/new-bid`
 export const NOTIFICATION_AUCTION_CLOSE = `${NOTIFICATION_TYPE_AUCTION}/close`
 export const NOTIFICATION_AUCTION_PAYMENT = `${NOTIFICATION_TYPE_AUCTION}/payment`
+
+/* Product constants */
+
+export const PRODUCT_WEIGHT_UNIT_OUNCE = 'oz'
+export const PRODUCT_WEIGHT_UNIT_POUND = 'lb'
+export const PRODUCT_WEIGHT_UNIT_KG = 'kg'
+export const PRODUCT_WEIGHT_UNIT_GRAM = 'g'
+
+export const PRODUCT_WEIGHT_UNIT_CHOICES = [
+  PRODUCT_WEIGHT_UNIT_OUNCE,
+  PRODUCT_WEIGHT_UNIT_POUND,
+  PRODUCT_WEIGHT_UNIT_KG,
+  PRODUCT_WEIGHT_UNIT_GRAM,
+]

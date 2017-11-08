@@ -41,7 +41,6 @@ class CharityForm extends PureComponent {
         />
         <FormField
           name="description"
-          type="text"
           label="Description:"
           component={RichEditorField}
         />

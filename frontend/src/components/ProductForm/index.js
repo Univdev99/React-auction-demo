@@ -10,6 +10,8 @@ import InputField from 'components/InputField'
 import TagsInputField from 'components/TagsInputField'
 import RichEditorField from 'components/RichEditorField'
 import SelectField from 'components/SelectField'
+import InputGroupFormField from 'components/InputGroupFormField'
+import { PRODUCT_WEIGHT_UNIT_CHOICES } from 'config'
 
 
 class ProductForm extends PureComponent {
@@ -47,12 +49,35 @@ class ProductForm extends PureComponent {
             />
             <FormField
               name="description"
-              type="text"
               label="Description:"
               component={RichEditorField}
             />
           </Col>
           <Col md="4" sm="12" className="mb-4">
+            <FormField
+              name="charge_tax"
+              type="checkbox"
+              label="Charge taxes on this product"
+              component={InputField}
+            />
+            <h6>Shipping</h6>
+            <FormField
+              name="requires_shipping"
+              type="checkbox"
+              label="This product requires shipping"
+              component={InputField}
+            />
+            <InputGroupFormField
+              valueName="weight"
+              choiceName="weight_unit"
+              label="Product weight"
+              choices={PRODUCT_WEIGHT_UNIT_CHOICES}
+            />
+            <FormField
+              name="hs_tariff_code"
+              label="HS tariff code (for international customers):"
+              component={InputField}
+            />
             <FormField
               name="donor"
               label="Donor:"

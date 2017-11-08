@@ -32,15 +32,29 @@ class InputField extends PureComponent {
     const { name } = input
     const fieldError = touched && error
 
-    return (
-      <FormGroup>
-        {label && <Label htmlFor={name}>{label}</Label>}
-        <Input type={type} {...input} placeholder={placeholder}
-          valid={fieldError ? false : undefined} children={children} />
-        {fieldError && <FormFeedback>{error}</FormFeedback>}
-        {helpText && !fieldError && <FormText>{helpText}</FormText>}
-      </FormGroup>
-    )
+    if (type === 'checkbox') {
+      return (
+        <FormGroup>
+          <Label check htmlFor={name}>
+            <Input type={type} {...input} placeholder={placeholder}
+              valid={fieldError ? false : undefined} children={children} />
+            {label}
+          </Label>
+          {fieldError && <FormFeedback>{error}</FormFeedback>}
+          {helpText && !fieldError && <FormText>{helpText}</FormText>}
+        </FormGroup>
+      )
+    } else {
+      return (
+        <FormGroup>
+          {label && <Label htmlFor={name}>{label}</Label>}
+          <Input type={type} {...input} placeholder={placeholder}
+            valid={fieldError ? false : undefined} children={children} />
+          {fieldError && <FormFeedback>{error}</FormFeedback>}
+          {helpText && !fieldError && <FormText>{helpText}</FormText>}
+        </FormGroup>
+      )
+    }
   }
 }
 
