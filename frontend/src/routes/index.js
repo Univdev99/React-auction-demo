@@ -53,6 +53,7 @@ import RealTimeNotificationManager from 'managers/RealTimeNotificationManager'
 
 // Modals
 import AuctionBidModal from 'components/AuctionBidModal'
+import AuctionBidPlacedModal from 'components/AuctionBidPlacedModal'
 import SignInModal from 'components/SignInModal'
 
 // Auth wrappers
@@ -106,6 +107,7 @@ const modals = (
   <div>
     <SignInModal />
     <AuctionBidModal />
+    <AuctionBidPlacedModal />
   </div>
 )
 
