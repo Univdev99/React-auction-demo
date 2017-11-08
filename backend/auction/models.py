@@ -38,7 +38,7 @@ class Auction(models.Model):
 
     @property
     def current_price(self):
-        result = Bid.objects.filter(status=BID_STATUS_ACTIVE).aggregate(max_price=Max('price'))
+        result = self.bid_set.filter(status=BID_STATUS_ACTIVE).aggregate(max_price=Max('price'))
         return result['max_price'] if result['max_price'] else self.starting_price
 
     @property

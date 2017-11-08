@@ -1,6 +1,9 @@
 export const authSelector = state =>
   state.get('auth')
 
+export const isAuthenticatedSelector = state => 
+  !!state.getIn(['auth', 'signedIn'])
+
 export const adminCharitiesSelector = state =>
   state.get('adminCharities')
 
@@ -33,3 +36,6 @@ export const jobsSelector = state =>
 
 export const countriesSelector = state =>
   state.get('settings').get('countries').toJS()
+
+export const modalSelector = state =>
+  state.get('modal')

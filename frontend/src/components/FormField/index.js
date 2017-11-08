@@ -9,7 +9,7 @@ class FormField extends PureComponent {
     children: PropTypes.node,
     component: PropTypes.func.isRequired,
     helpText: PropTypes.string,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.string,
     name: PropTypes.string.isRequired,
     options: PropTypes.any,
     placeholder: PropTypes.string,

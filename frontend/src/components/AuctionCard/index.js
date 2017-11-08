@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'
 import { Card, CardBody, CardSubtitle, Button } from 'reactstrap'
 import { Link } from 'react-router-dom'
 
+import auctionBidFlow from 'utils/auctionBidFlow'
+
 import './style.css'
 
 const bem = (suffix) => `card__${suffix}`
@@ -11,7 +13,13 @@ const bem = (suffix) => `card__${suffix}`
 class AuctionCard extends PureComponent {
 
   static propTypes = {
-    auction: PropTypes.object.isRequired
+    auction: PropTypes.object.isRequired,
+    startBidFlow: PropTypes.func.isRequired
+  }
+
+  handleBid = () => {
+    const { auction: { pk }, startBidFlow } = this.props
+    startBidFlow(pk)
   }
 
   render() {
@@ -25,7 +33,7 @@ class AuctionCard extends PureComponent {
         <CardBody>
           <CardSubtitle className={bem('title')} title={title}>{title}</CardSubtitle>
           <div className="mt-3">
-            <Button tag={Link} outline block color='primary' to={`/auctions/${pk}`} className={bem('button')}>
+            <Button outline block color='primary' onClick={this.handleBid} className={bem('button')}>
               Make a bid
             </Button>
           </div>
@@ -35,4 +43,4 @@ class AuctionCard extends PureComponent {
   }
 }
 
-export default AuctionCard
+export default auctionBidFlow(AuctionCard)
