@@ -51,6 +51,8 @@ import AdminMediumList from 'pages/AdminMediumList'
 // Managers (currently implemented as invisible page components)
 import RealTimeNotificationManager from 'managers/RealTimeNotificationManager'
 
+// Modals
+import SignInModal from 'components/SignInModal'
 
 // Auth wrappers
 import {
@@ -99,6 +101,12 @@ const AccountRoutes = props => (
   </AccountLayout>
 )
 
+const modals = (
+  <div>
+    <SignInModal />
+  </div>
+)
+
 const Routes = ({ history }) => (
   <ConnectedRouter history={history}>
     <div>
@@ -128,6 +136,8 @@ const Routes = ({ history }) => (
       <Route exact path="/terms-conditions" component={TermsConditions} />
 
       <Route path="/" component={RealTimeNotificationManager} />
+
+      {modals}
     </div>
   </ConnectedRouter>
 )
