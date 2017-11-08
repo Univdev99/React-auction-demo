@@ -52,6 +52,7 @@ import AdminMediumList from 'pages/AdminMediumList'
 import RealTimeNotificationManager from 'managers/RealTimeNotificationManager'
 
 // Modals
+import AuctionBidModal from 'components/AuctionBidModal'
 import SignInModal from 'components/SignInModal'
 
 // Auth wrappers
@@ -104,6 +105,7 @@ const AccountRoutes = props => (
 const modals = (
   <div>
     <SignInModal />
+    <AuctionBidModal />
   </div>
 )
 

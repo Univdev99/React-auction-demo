@@ -4,7 +4,8 @@ import { createAction, handleActions } from 'redux-actions'
 import { requestSuccess, requestFail } from 'store/api/request'
 import {
   AUCTION_GET_FRONT_LIST,
-  AUCTION_GET_FRONT_DETAIL
+  AUCTION_GET_FRONT_DETAIL,
+  AUCTION_PLACE_BID
 } from 'store/constants'
 
 
@@ -21,6 +22,7 @@ const initialState = Immutable.fromJS({
 
 export const getAuctionFrontList = createAction(AUCTION_GET_FRONT_LIST)
 export const getAuctionFrontDetail = createAction(AUCTION_GET_FRONT_DETAIL)
+export const placeBid = createAction(AUCTION_PLACE_BID)
 
 /* Reducer */
 
