@@ -27,7 +27,7 @@ const breadcrumbPath = [
 class Support extends PureComponent {
   static propTypes = {
     handleSubmit: PropTypes.func
-  };
+  }
 
   submitForm = (data) => {
     console.log(data)

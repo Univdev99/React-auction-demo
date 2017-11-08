@@ -10,7 +10,6 @@ import Spinner from 'components/Spinner'
 import {
   registerRealTimeNotificationHandler, unregisterRealTimeNotificationHandler
 } from 'managers/RealTimeNotificationManager'
-import AdminLayout from 'pages/AdminLayout'
 import {
   getAuctionDetail,
   getAuctionBidListPage,
@@ -131,7 +130,7 @@ class AdminAuctionBidList extends PureComponent {
     const { loadingStatus, loadingAuctionStatus } = this.state
 
     return (
-      <AdminLayout>
+      <div>
         {(loadingStatus === 1 || loadingAuctionStatus === 1) && <Spinner />}
 
         {(loadingStatus === -1 || loadingAuctionStatus === -1) && <div>
@@ -186,7 +185,7 @@ class AdminAuctionBidList extends PureComponent {
             />
           </div>
         </div>}
-      </AdminLayout>
+      </div>
     )
   }
 }

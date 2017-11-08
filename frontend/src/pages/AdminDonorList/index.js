@@ -7,7 +7,6 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Link } from 'react-router-dom'
 
 import Spinner from 'components/Spinner'
-import AdminLayout from 'pages/AdminLayout'
 import {
   getDonorList,
   deleteDonor,
@@ -66,7 +65,7 @@ class AdminDonorList extends PureComponent {
     const { loadingStatus } = this.state
 
     return (
-      <AdminLayout>
+      <div>
         <div className="mb-5 clearfix">
           <h2 className="pull-left">Donors</h2>
           <Link className="btn btn-primary pull-right" to="/admin/donors/create">Create</Link>
@@ -83,7 +82,6 @@ class AdminDonorList extends PureComponent {
             <tr>
               <th>ID</th>
               <th>Title</th>
-              <th>Description</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -92,7 +90,6 @@ class AdminDonorList extends PureComponent {
               <tr key={donor.get('pk')}>
                 <th scope="row">{donor.get('pk')}</th>
                 <td>{donor.get('title')}</td>
-                <td>{donor.get('description')}</td>
                 <td>
                   <Link className="text-secondary pr-3" to={`/admin/donors/${donor.get('pk')}`}>Edit</Link>
                   <a className="text-danger" href="/" onClick={this.handleDelete.bind(this, donor.get('pk'))}>Delete</a>
@@ -101,7 +98,7 @@ class AdminDonorList extends PureComponent {
             ))}
           </tbody>
         </table>}
-      </AdminLayout>
+      </div>
     )
   }
 }

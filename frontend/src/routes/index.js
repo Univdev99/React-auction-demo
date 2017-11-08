@@ -27,6 +27,7 @@ import Support from 'pages/Support'
 import TermsConditions from 'pages/TermsConditions'
 
 // Admin pages
+import AdminLayout from 'pages/AdminLayout'
 import AdminAuthenticating from 'pages/AdminAuthenticating'
 import AdminIndex from 'pages/AdminIndex'
 import AdminCharityList from 'pages/AdminCharityList'
@@ -65,7 +66,7 @@ import AccountLayout from 'components/AccountLayout'
 
 
 const AdminRoutes = props => (
-  <div>
+  <AdminLayout>
     <Route exact path="/admin" component={AdminIndex} />
     <Route exact path="/admin/charities" component={AdminCharityList} />
     <Route exact path="/admin/charities/create" component={AdminCharityCreate} />
@@ -84,7 +85,7 @@ const AdminRoutes = props => (
     <Route exact path="/admin/auctions/:id(\d+)/bids" component={AdminAuctionBidList} />
     <Route exact path="/admin/users" component={AdminUserList} />
     <Route exact path="/admin/media" component={AdminMediumList} />
-  </div>
+  </AdminLayout>
 )
 
 const AccountRoutes = props => (

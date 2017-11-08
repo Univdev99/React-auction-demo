@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import axios from 'axios'
-import 'bootstrap/dist/css/bootstrap.css'
 
 import { store, history } from 'store'
 import Routes from 'routes'

@@ -2,13 +2,14 @@ import React, { PureComponent } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
+import Immutable from 'immutable'
+import RichTextEditor from 'react-rte'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withRouter } from 'react-router'
 
 import ProductForm from 'components/ProductForm'
 import Spinner from 'components/Spinner'
-import AdminLayout from 'pages/AdminLayout'
 import { getDonorList } from 'store/modules/admin/donors'
 import { createProduct } from 'store/modules/admin/products'
 import { adminDonorsSelector } from 'store/selectors'
@@ -28,11 +29,16 @@ class AdminProductCreate extends PureComponent {
   }
 
   handleSubmit = (data) => {
+    const formData = data.set(
+      'description',
+      data.get('description').toString('html')
+    )
+
     this.setState({
       creatingStatus: 1
     })
     this.props.createProduct({
-      data,
+      data: formData,
       success: ({ data }) => {
         this.props.history.push({
           pathname: `/admin/products/${data.pk}`
@@ -64,8 +70,12 @@ class AdminProductCreate extends PureComponent {
     const donorList = adminDonors.get('donorList')
     const { creatingStatus } = this.state
 
+    const _productDetail = Immutable.Map({
+      description: RichTextEditor.createEmptyValue()
+    })
+
     return (
-      <AdminLayout>
+      <div>
         <div>
           <h3 className="mb-5">Create Product</h3>
 
@@ -75,8 +85,9 @@ class AdminProductCreate extends PureComponent {
             {creatingStatus === -1 && <div className="mb-2 text-danger">
               Failed to create product
             </div>}
-            
+
             <ProductForm
+              initialValues={_productDetail}
               donorList={donorList}
               disabled={creatingStatus === 1}
               onSubmit={this.handleSubmit}
@@ -84,7 +95,7 @@ class AdminProductCreate extends PureComponent {
             />
           </div>}
         </div>
-      </AdminLayout>
+      </div>
     )
   }
 }

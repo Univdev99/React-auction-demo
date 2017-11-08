@@ -30,8 +30,8 @@ class DonorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Donor
-        fields = ('pk', 'title', 'description', 'type', 'charity', 'media')
-        read_only_fields = ('pk', 'title', 'description', 'type', 'charity', 'media')
+        fields = ('pk', 'title', 'description', 'type', 'website', 'charity', 'media')
+        read_only_fields = ('pk', 'title', 'description', 'type', 'website', 'charity', 'media')
 
     def get_media(self, obj):
         return MediumSerializer(obj.media.order_by('order'), many=True).data
@@ -45,8 +45,8 @@ class DonorWithoutMediaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Donor
-        fields = ('pk', 'title', 'description', 'type', 'charity')
-        read_only_fields = ('pk', 'title', 'description', 'type', 'charity')
+        fields = ('pk', 'title', 'description', 'type', 'website', 'charity')
+        read_only_fields = ('pk', 'title', 'description', 'type', 'website', 'charity')
 
 
 class DonorDetailSerializer(TagnamesSerializerMixin, DonorSerializer):
@@ -68,8 +68,8 @@ class DonorDetailWithSimilarSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Donor
-        fields = ('pk', 'title', 'description', 'type', 'charity', 'media', 'similar_donors')
-        read_only_fields = ('pk', 'title', 'description', 'type', 'charity', 'media', 'similar_donors')
+        fields = ('pk', 'title', 'description', 'type', 'website', 'charity', 'media', 'similar_donors')
+        read_only_fields = ('pk', 'title', 'description', 'type', 'website', 'charity', 'media', 'similar_donors')
 
     def get_media(self, obj):
         return MediumSerializer(obj.media.order_by('order'), many=True).data
@@ -87,8 +87,16 @@ class ProductSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Product
-        fields = ('pk', 'title', 'description', 'donor')
-        read_only_fields = ('pk', 'title', 'description', 'donor')
+        fields = (
+            'pk', 'title', 'description',
+            'charge_tax', 'requires_shipping', 'weight_unit', 'weight', 'hs_tariff_code',
+            'donor'
+        )
+        read_only_fields = (
+            'pk', 'title', 'description',
+            'charge_tax', 'requires_shipping', 'weight_unit', 'weight', 'hs_tariff_code',
+            'donor'
+        )
 
 
 class ProductDetailSerializer(TagnamesSerializerMixin, ProductSerializer):

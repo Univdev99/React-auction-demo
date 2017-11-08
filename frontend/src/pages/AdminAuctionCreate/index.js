@@ -8,7 +8,6 @@ import { withRouter } from 'react-router'
 
 import AuctionForm from 'components/AuctionForm'
 import Spinner from 'components/Spinner'
-import AdminLayout from 'pages/AdminLayout'
 import { getProductList } from 'store/modules/admin/products'
 import { createAuction } from 'store/modules/admin/auctions'
 import { adminProductsSelector } from 'store/selectors'
@@ -65,7 +64,7 @@ class AdminAuctionCreate extends PureComponent {
     const { creatingStatus } = this.state
 
     return (
-      <AdminLayout>
+      <div>
         <div>
           <h3 className="mb-5">Create Auction</h3>
 
@@ -84,7 +83,7 @@ class AdminAuctionCreate extends PureComponent {
             />
           </div>}
         </div>
-      </AdminLayout>
+      </div>
     )
   }
 }

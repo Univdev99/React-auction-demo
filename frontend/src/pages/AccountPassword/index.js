@@ -10,7 +10,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import PasswordForm from 'components/PasswordForm'
 import Spinner from 'components/Spinner'
 import { authSelector } from 'store/selectors'
-import { updatePassword } from 'store/modules/auth' 
+import { updatePassword } from 'store/modules/auth'
 
 
 class AccountPassword extends PureComponent {

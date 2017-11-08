@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import Dropzone from 'react-dropzone'
-
-import './style.css'
+import { Progress } from 'reactstrap'
 
 
 class Uploader extends PureComponent {
@@ -81,28 +80,33 @@ class Uploader extends PureComponent {
     return style
   }
 
+  acceptStyle = () => {
+    const style = this.uploaderStyle()
+    style.borderColor = '#28a745'
+    return style
+  }
+
   render() {
     const { disabled } = this.props
     const { uploading, progress } = this.state
 
     return (
       <div className="uploader">
-        <Dropzone
-          style={this.uploaderStyle()}
-          multiple={false}
-          disabled={disabled || uploading}
-          onDrop={this.handleDrop}
-        />
+        <div className="clearfix">
+          <div className="dropzone-wrapper">
+            <Dropzone
+              style={this.uploaderStyle()}
+              acceptStyle={this.acceptStyle()}
+              multiple={false}
+              disabled={disabled || uploading}
+              onDrop={this.handleDrop}
+            />
+          </div>
+        </div>
 
         {uploading && <div className="mt-3">
           {progress < 100 ? 'Uploading...' : 'Processing...'}
-          <div className="progress">
-            <div
-              className="progress-bar" role="progressbar"
-              aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"
-              style={{ width: `${progress}%`, height: 3 }}
-            ></div>
-          </div>
+          <Progress animated color="success" value={progress} />
         </div>}
       </div>
     )

@@ -6,7 +6,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import FormField from 'components/FormField'
 import InputField from 'components/InputField'
-import TextareaField from 'components/TextareaField'
+import RichEditorField from 'components/RichEditorField'
 
 
 class CharityForm extends PureComponent {
@@ -14,6 +14,7 @@ class CharityForm extends PureComponent {
   static propTypes = {
     initialValues: ImmutablePropTypes.map,
     disabled: PropTypes.bool,
+    renderMediaDropzone: PropTypes.func,
     handleSubmit: PropTypes.func.isRequired,
     onBack: PropTypes.func,
   }
@@ -28,7 +29,7 @@ class CharityForm extends PureComponent {
   }
 
   render() {
-    const { initialValues, disabled, handleSubmit, onBack } = this.props
+    const { initialValues, disabled, renderMediaDropzone, handleSubmit, onBack } = this.props
 
     return (
       <form onSubmit={handleSubmit}>
@@ -40,18 +41,20 @@ class CharityForm extends PureComponent {
         />
         <FormField
           name="description"
-          type="text"
           label="Description:"
-          component={TextareaField}
+          component={RichEditorField}
         />
-        <center>
-          {onBack && <button className="btn mr-3" onClick={this.handleClickBack}>
+        <div className="mb-4">
+          {renderMediaDropzone && renderMediaDropzone()}
+        </div>
+        <div className="text-right">
+          {onBack && <button className="btn mr-3 px-4" onClick={this.handleClickBack}>
             Back
           </button>}
-          <button type="submit" className="btn btn-primary" disabled={disabled}>
-            {initialValues ? 'Update' : 'Create'}
+          <button type="submit" className="btn btn-primary px-4" disabled={disabled}>
+            {initialValues.get('title') ? 'Update' : 'Create'}
           </button>
-        </center>
+        </div>
       </form>
     )
   }
@@ -62,10 +65,6 @@ const validate = (values) => {
 
   if (!values.get('title')) {
     errors.title = 'Title is required'
-  }
-
-  if (!values.get('description')) {
-    errors.description = 'Description is required'
   }
 
   return errors

@@ -3,11 +3,12 @@ import { compose } from 'redux'
 import { reduxForm } from 'redux-form/immutable'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
+import { Row, Col } from 'reactstrap'
 
 import FormField from 'components/FormField'
 import InputField from 'components/InputField'
 import TagsInputField from 'components/TagsInputField'
-import TextareaField from 'components/TextareaField'
+import RichEditorField from 'components/RichEditorField'
 import SelectField from 'components/SelectField'
 import { DONOR_TYPES } from 'config'
 
@@ -18,6 +19,7 @@ class DonorForm extends PureComponent {
     initialValues: ImmutablePropTypes.map,
     disabled: PropTypes.bool,
     charityList: ImmutablePropTypes.list.isRequired,
+    renderMediaDropzone: PropTypes.func,
     handleSubmit: PropTypes.func.isRequired,
     onBack: PropTypes.func,
   }
@@ -32,50 +34,62 @@ class DonorForm extends PureComponent {
   }
 
   render() {
-    const { initialValues, charityList, disabled, handleSubmit, onBack } = this.props
+    const { initialValues, charityList, disabled, renderMediaDropzone, handleSubmit, onBack } = this.props
 
     return (
       <form onSubmit={handleSubmit}>
-        <FormField
-          name="title"
-          type="text"
-          label="Title:"
-          component={InputField}
-        />
-        <FormField
-          name="description"
-          type="text"
-          label="Description:"
-          component={TextareaField}
-        />
-        <FormField
-          name="type"
-          label="Type:"
-          component={SelectField}
-          options={DONOR_TYPES}
-        />
-        <FormField
-          name="charity"
-          label="Charity:"
-          component={SelectField}
-          options={charityList.map(charity => ({
-            key: charity.get('pk'),
-            value: charity.get('title'),
-          }))}
-        />
-        <FormField
-          name="tagnames"
-          label="Tags:"
-          component={TagsInputField}
-        />
-        <center>
-          {onBack && <button className="btn mr-3" onClick={this.handleClickBack}>
+        <Row>
+          <Col md="8" sm="12" className="mb-4">
+            <FormField
+              name="title"
+              type="text"
+              label="Title:"
+              component={InputField}
+            />
+            <FormField
+              name="description"
+              label="Description:"
+              component={RichEditorField}
+            />
+          </Col>
+          <Col md="4" sm="12" className="mb-4">
+            <FormField
+              name="type"
+              label="Type:"
+              component={SelectField}
+              options={DONOR_TYPES}
+            />
+            <FormField
+              name="charity"
+              label="Charity:"
+              component={SelectField}
+              options={charityList.map(charity => ({
+                key: charity.get('pk'),
+                value: charity.get('title'),
+              }))}
+            />
+            <FormField
+              name="tagnames"
+              label="Tags:"
+              component={TagsInputField}
+            />
+          </Col>
+        </Row>
+
+        <Row>
+          <Col md="8" sm="12" className="mb-4">
+            {renderMediaDropzone && renderMediaDropzone()}
+          </Col>
+        </Row>
+
+        <div className="text-right">
+          {onBack && <button className="btn mr-3 px-4" onClick={this.handleClickBack}>
             Back
           </button>}
-          <button type="submit" className="btn btn-primary" disabled={disabled}>
-            {initialValues ? 'Update' : 'Create'}
+          <button type="submit" className="btn btn-primary px-4" disabled={disabled}>
+            {initialValues.get('title') ? 'Update' : 'Create'}
           </button>
-        </center>
+        </div>
       </form>
     )
   }
@@ -86,10 +100,6 @@ const validate = (values) => {
 
   if (!values.get('title')) {
     errors.title = 'Title is required'
-  }
-
-  if (!values.get('description')) {
-    errors.description = 'Description is required'
   }
 
   if (!values.get('type')) {

@@ -10,7 +10,6 @@ import {
 import moment from 'moment'
 
 import Pagination from 'components/Pagination'
-import AdminLayout from 'pages/AdminLayout'
 import { MEDIUM_PAGE_SIZE } from 'config'
 import {
   getMediumListPage,
@@ -103,7 +102,7 @@ class AdminMediumList extends PureComponent {
     const { loadingStatus, typeFilter, dateFilter } = this.state
 
     return (
-      <AdminLayout>
+      <div>
         <h2 className="mb-5">Media Library</h2>
 
         {loadingStatus === -1 && <div>
@@ -154,7 +153,7 @@ class AdminMediumList extends PureComponent {
             onPage={this.getPage}
           />
         </div>}
-      </AdminLayout>
+      </div>
     )
   }
 }

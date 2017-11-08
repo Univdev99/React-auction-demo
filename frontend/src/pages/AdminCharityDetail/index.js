@@ -4,11 +4,12 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
+import Immutable from 'immutable'
+import RichTextEditor from 'react-rte'
 
 import Spinner from 'components/Spinner'
 import Uploader from 'components/Uploader'
 import CharityForm from 'components/CharityForm'
-import AdminLayout from 'pages/AdminLayout'
 import {
   getCharityDetail,
   updateCharityDetail,
@@ -33,13 +34,18 @@ class AdminCharityDetail extends PureComponent {
   }
 
   handleSubmit = (data) => {
+    const formData = data.set(
+      'description',
+      data.get('description').toString('html')
+    )
+
     this.setState({
       updatingStatus: 1
     })
 
     this.props.updateCharityDetail({
       id: this.props.match.params.id,
-      data,
+      data: formData,
       success: this.handleBack,
       fail: () => this.setState({
         updatingStatus: -1
@@ -50,6 +56,22 @@ class AdminCharityDetail extends PureComponent {
   handleBack = () => this.props.history.push({
     pathname: '/admin/charities'
   })
+
+  renderMediaDropzone = () => {
+    const { adminCharities } = this.props
+    const charityDetail = adminCharities.get('charityDetail')
+
+    return (
+      <div className="mb-4">
+        <label>Upload logo here:</label>
+        <Uploader
+          uploadAction={this.props.uploadCharityLogo}
+          uploadActionParams={{ id: this.props.match.params.id }}
+          defaultImageURL={charityDetail.get('logo')}
+        />
+      </div>
+    )
+  }
 
   componentWillMount() {
     this.setState({
@@ -74,42 +96,47 @@ class AdminCharityDetail extends PureComponent {
 
     if (loadingStatus === -1) {
       return (
-        <AdminLayout>
+        <div>
           <h2>Charity not found</h2>
-        </AdminLayout>
+        </div>
       )
     }
 
+    let _charityDetail = null
+    if (charityDetail) {
+      _charityDetail = charityDetail.delete('pk')
+      _charityDetail = _charityDetail.set(
+        'description',
+        RichTextEditor.createValueFromString(_charityDetail.get('description'), 'html')
+      )
+    } else {
+      _charityDetail = Immutable.Map({
+        description: RichTextEditor.createEmptyValue()
+      })
+    }
+
     return (
-      <AdminLayout>
+      <div>
         <div>
           <h3 className="mb-5">Edit Charity</h3>
 
           {(loadingStatus === 1 || !charityDetail) && <Spinner />}
 
           {loadingStatus === 10 && charityDetail && <div>
-            <div className="mb-4">
-              <label>Upload logo here:</label>
-              <Uploader
-                uploadAction={this.props.uploadCharityLogo}
-                uploadActionParams={{ id: this.props.match.params.id }}
-                defaultImageURL={charityDetail.get('logo')}
-              />
-            </div>
-
             {updatingStatus === -1 && <div className="mb-2 text-danger">
               Failed to update charity
             </div>}
-            
+
             <CharityForm
-              initialValues={charityDetail.delete('pk')}
+              initialValues={_charityDetail}
               disabled={updatingStatus === 1}
+              renderMediaDropzone={this.renderMediaDropzone}
               onSubmit={this.handleSubmit}
               onBack={this.handleBack}
             />
           </div>}
         </div>
-      </AdminLayout>
+      </div>
     )
   }
 }

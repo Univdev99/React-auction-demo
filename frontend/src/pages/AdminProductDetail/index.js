@@ -2,14 +2,15 @@ import React, { PureComponent } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
+import Immutable from 'immutable'
+import RichTextEditor from 'react-rte'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
 import Spinner from 'components/Spinner'
 import Uploader from 'components/Uploader'
 import ProductForm from 'components/ProductForm'
-import AdminLayout from 'pages/AdminLayout'
+import SortableMediaList from 'components/SortableMediaList'
 import { getDonorList } from 'store/modules/admin/donors'
 import {
   getProductDetail,
@@ -19,7 +20,6 @@ import {
   reorderProductMedia,
 } from 'store/modules/admin/products'
 import { adminDonorsSelector, adminProductsSelector } from 'store/selectors'
-import './style.css'
 
 
 class AdminProductDetail extends PureComponent {
@@ -42,13 +42,18 @@ class AdminProductDetail extends PureComponent {
   }
 
   handleSubmit = (data) => {
+    const formData = data.set(
+      'description',
+      data.get('description').toString('html')
+    )
+
     this.setState({
       updatingStatus: 1
     })
 
     this.props.updateProductDetail({
       id: this.props.match.params.id,
-      data,
+      data: formData,
       success: this.handleBack,
       fail: () => this.setState({
         updatingStatus: -1
@@ -64,7 +69,7 @@ class AdminProductDetail extends PureComponent {
     event.preventDefault()
 
     if (!window.confirm('Are you sure to delete this medium?')) {
-      return;
+      return
     }
 
     this.props.deleteProductMedium({
@@ -82,15 +87,6 @@ class AdminProductDetail extends PureComponent {
     return adminProducts.getIn(['productDetail', 'media'])
   }
 
-  getDeleteLinkStyle = (isDragging) => ({
-    display: isDragging ? 'none' : 'block'
-  })
-
-  getItemStyle = (draggableStyle, isDragging) => ({
-    userSelect: 'none',
-    ...draggableStyle,
-  })
-
   handleDragEnd = (result) => {
     const { adminProducts } = this.props
     const productDetail = adminProducts.get('productDetail')
@@ -106,6 +102,28 @@ class AdminProductDetail extends PureComponent {
         media_order: newMedia.map(medium => medium.get('pk')).toJS()
       }
     })
+  }
+
+  renderMediaDropzone = () => {
+    const productMedia = this.getMedia()
+
+    return (
+      <div className="form-group">
+        <label className="mb-4">Add, remove or change order of images, audio and video:</label>
+        <SortableMediaList
+          media={productMedia}
+          onDragEnd={this.handleDragEnd}
+          onDelete={this.handleDeleteProductMedium}
+        />
+
+        <div className="mt-3">
+          <Uploader
+            uploadAction={this.props.uploadProductMedium}
+            uploadActionParams={{ id: this.props.match.params.id }}
+          />
+        </div>
+      </div>
+    )
   }
 
   componentWillMount() {
@@ -137,18 +155,30 @@ class AdminProductDetail extends PureComponent {
     const { adminProducts } = this.props
     const productDetail = adminProducts.get('productDetail')
     const { loadingStatus, updatingStatus } = this.state
-    const productMedia = this.getMedia()
 
     if (loadingStatus === -1) {
       return (
-        <AdminLayout>
+        <div>
           <h2>Product not found</h2>
-        </AdminLayout>
+        </div>
       )
     }
 
+    let _productDetail = null
+    if (productDetail) {
+      _productDetail = productDetail.delete('pk')
+      _productDetail = _productDetail.set(
+        'description',
+        RichTextEditor.createValueFromString(_productDetail.get('description'), 'html')
+      )
+    } else {
+      _productDetail = Immutable.Map({
+        description: RichTextEditor.createEmptyValue()
+      })
+    }
+
     return (
-      <AdminLayout>
+      <div>
         <div>
           <h3 className="mb-5">Edit Product</h3>
 
@@ -158,68 +188,18 @@ class AdminProductDetail extends PureComponent {
             {updatingStatus === -1 && <div className="mb-2 text-danger">
               Failed to update product
             </div>}
-            
+
             <ProductForm
-              initialValues={productDetail.delete('pk')}
+              initialValues={_productDetail}
               donorList={donorList}
               disabled={updatingStatus === 1}
+              renderMediaDropzone={this.renderMediaDropzone}
               onSubmit={this.handleSubmit}
               onBack={this.handleBack}
             />
-
-            <div className="mt-5">
-              <h5 className="mb-4">Product images and videos:</h5>
-              <DragDropContext onDragEnd={this.handleDragEnd}>
-                <Droppable droppableId="droppable" direction="horizontal">
-                  {(provided, snapshotGlobal) => (
-                    <div ref={provided.innerRef}>
-                      {productMedia.map(medium => (
-                        <Draggable key={medium.get('pk')} draggableId={medium.get('pk')}>
-                          {(provided, snapshot) => (
-                            <div className="product-medium mr-3 mb-3">
-                              <a
-                                href="/"
-                                className="btn-product-medium-delete"
-                                style={this.getDeleteLinkStyle(snapshotGlobal.isDragging)}
-                                onClick={this.handleDeleteProductMedium.bind(this, medium.get('pk'))}
-                              >
-                                <i className="fa fa-times"></i>
-                              </a>
-                              <div
-                                ref={provided.innerRef}
-                                style={this.getItemStyle(provided.draggableStyle, snapshot.isDragging)}
-                                {...provided.dragHandleProps}
-                              >
-                                {medium.get('type') === 'video' && <video
-                                  className="img-fluid" src={medium.get('url')} controls />}
-                                {medium.get('type') === 'audio' && <audio
-                                  className="img-fluid" src={medium.get('url')} controls
-                                  style={{ paddingTop: '60%', background: '#000' }} />}
-                                {medium.get('type') === 'image' && <img
-                                  className="img-fluid" src={medium.get('url')} alt="Product Medium" />}
-                              </div>
-                              {provided.placeholder}
-                            </div>
-                          )}
-                        </Draggable>
-                      ))}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-              </DragDropContext>
-
-              <div className="mt-4">
-                <label>Upload new image or video:</label>
-                <Uploader
-                  uploadAction={this.props.uploadProductMedium}
-                  uploadActionParams={{ id: this.props.match.params.id }}
-                />
-              </div>
-            </div>
           </div>}
         </div>
-      </AdminLayout>
+      </div>
     )
   }
 }

@@ -2,13 +2,14 @@ import React, { PureComponent } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
+import Immutable from 'immutable'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withRouter } from 'react-router'
+import RichTextEditor from 'react-rte'
 
 import DonorForm from 'components/DonorForm'
 import Spinner from 'components/Spinner'
-import AdminLayout from 'pages/AdminLayout'
 import { getCharityList } from 'store/modules/admin/charities'
 import { createDonor } from 'store/modules/admin/donors'
 import { adminCharitiesSelector } from 'store/selectors'
@@ -28,11 +29,17 @@ class AdminDonorCreate extends PureComponent {
   }
 
   handleSubmit = (data) => {
+    const formData = data.set(
+      'description',
+      data.get('description').toString('html')
+    )
+
     this.setState({
       creatingStatus: 1
     })
+
     this.props.createDonor({
-      data,
+      data: formData,
       success: ({ data }) => {
         this.props.history.push({
           pathname: `/admin/donors/${data.pk}`
@@ -64,8 +71,12 @@ class AdminDonorCreate extends PureComponent {
     const charityList = adminCharities.get('charityList')
     const { creatingStatus } = this.state
 
+    const _donorDetail = Immutable.Map({
+      description: RichTextEditor.createEmptyValue()
+    })
+
     return (
-      <AdminLayout>
+      <div>
         <div>
           <h3 className="mb-5">Create Donor</h3>
 
@@ -77,6 +88,7 @@ class AdminDonorCreate extends PureComponent {
             </div>}
 
             <DonorForm
+              initialValues={_donorDetail}
               charityList={charityList}
               disabled={creatingStatus === 1}
               onSubmit={this.handleSubmit}
@@ -84,7 +96,7 @@ class AdminDonorCreate extends PureComponent {
             />
           </div>}
         </div>
-      </AdminLayout>
+      </div>
     )
   }
 }

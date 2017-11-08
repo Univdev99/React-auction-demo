@@ -7,7 +7,6 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Link } from 'react-router-dom'
 
 import Spinner from 'components/Spinner'
-import AdminLayout from 'pages/AdminLayout'
 import {
   getDonorDetail,
   getDonorProductList,
@@ -99,14 +98,14 @@ class AdminDonorProductList extends PureComponent {
 
     if (loadingDonorStatus === -1) {
       return (
-        <AdminLayout>
+        <div>
           <h2>Donor not found</h2>
-        </AdminLayout>
+        </div>
       )
     }
 
     return (
-      <AdminLayout>
+      <div>
         <div>
           {(loadingDonorStatus === 1 || loadingProductListStatus === 1 || !donorDetail) && <Spinner />}
 
@@ -142,7 +141,7 @@ class AdminDonorProductList extends PureComponent {
             </table>
           </div>}
         </div>
-      </AdminLayout>
+      </div>
     )
   }
 }

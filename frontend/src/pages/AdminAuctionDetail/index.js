@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom'
 
 import Spinner from 'components/Spinner'
 import AuctionForm from 'components/AuctionForm'
-import AdminLayout from 'pages/AdminLayout'
 import { getProductList } from 'store/modules/admin/products'
 import {
   getAuctionDetail,
@@ -84,14 +83,14 @@ class AdminAuctionDetail extends PureComponent {
 
     if (loadingStatus === -1) {
       return (
-        <AdminLayout>
+        <div>
           <h2>Auction not found</h2>
-        </AdminLayout>
+        </div>
       )
     }
 
     return (
-      <AdminLayout>
+      <div>
         <div>
           <div className="mb-5 clearfix">
             <h2 className="pull-left">Edit Auction</h2>
@@ -104,7 +103,7 @@ class AdminAuctionDetail extends PureComponent {
             {updatingStatus === -1 && <div className="mb-2 text-danger">
               Failed to update auction
             </div>}
-            
+
             <AuctionForm
               initialValues={auctionDetail.delete('pk')}
               productList={productList}
@@ -114,7 +113,7 @@ class AdminAuctionDetail extends PureComponent {
             />
           </div>}
         </div>
-      </AdminLayout>
+      </div>
     )
   }
 }

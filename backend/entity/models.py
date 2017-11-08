@@ -8,6 +8,8 @@ from tagging.models import TaggedItem
 from tagging.registry import register
 
 from entity.constants import DONOR_TYPE_CHOICES
+from entity.constants import PRODUCT_WEIGHT_UNIT_CHOICES
+from entity.constants import PRODUCT_WEIGHT_UNIT_KG
 from storage.models import Medium
 
 
@@ -28,6 +30,7 @@ class Donor(models.Model):
     title = models.CharField(unique=True, max_length=200)
     description = models.TextField()
     type = models.CharField(choices=DONOR_TYPE_CHOICES, max_length=50)
+    website = models.CharField(max_length=300, null=True, blank=True)
 
     charity = models.ForeignKey(Charity, null=True, on_delete=models.SET_NULL)
     media = GenericRelation(Medium)
@@ -52,6 +55,15 @@ register(Donor)
 class Product(models.Model):
     title = models.CharField(unique=True, max_length=200)
     description = models.TextField()
+    charge_tax = models.BooleanField(default=False)
+    requires_shipping = models.BooleanField(default=False)
+    weight_unit = models.CharField(
+        max_length=10,
+        choices=PRODUCT_WEIGHT_UNIT_CHOICES,
+        default=PRODUCT_WEIGHT_UNIT_KG
+    )
+    weight = models.FloatField(default=0)
+    hs_tariff_code = models.CharField(max_length=50, null=True, default=None)
 
     donor = models.ForeignKey(Donor, null=True, on_delete=models.SET_NULL)
     media = GenericRelation(Medium)

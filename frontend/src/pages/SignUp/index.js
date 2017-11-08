@@ -66,7 +66,7 @@ class SignUp extends PureComponent {
         xfbml : true,
         version : FACEBOOK_API_VERSION
       })
-      
+
       this.setState({
         fbReady: true
       })

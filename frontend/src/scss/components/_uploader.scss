@@ -1,0 +1,36 @@
+.uploader-dropzone {
+  background-size: cover;
+  background-position: center top;
+}
+
+.uploader {
+  .dropzone-wrapper {
+    float: left;
+    position: relative;
+
+    $plus-icon-width: 4px;
+    $plus-icon-length: 40px;
+
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      background-color: map-get($theme-colors, success);
+      border-radius: 999px;
+      left: 50%;
+      top: 50%;
+    }
+    
+    &:before {
+      width: $plus-icon-length;
+      height: $plus-icon-width;
+      margin: (-$plus-icon-width / 2 - 5px) 0 0 (-$plus-icon-length / 2);
+    }
+
+    &:after {
+      width: $plus-icon-width;
+      height: $plus-icon-length;
+      margin: (-$plus-icon-length / 2 - 5px) 0 0 (-$plus-icon-width / 2);
+    }
+  }
+}
