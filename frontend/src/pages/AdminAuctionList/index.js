@@ -5,8 +5,12 @@ import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Link } from 'react-router-dom'
+import classnames from 'classnames'
+import {
+  TabContent, TabPane,
+  Nav, NavItem, NavLink,
+} from 'reactstrap'
 
-import Spinner from 'components/Spinner'
 import {
   getAuctionList,
   finishAuction,
@@ -16,7 +20,10 @@ import { adminAuctionsSelector } from 'store/selectors'
 import {
   AUCTION_STATUS_PREVIEW,
   AUCTION_STATUS_OPEN,
+  AUCTION_STATUS_FINISHED,
+  AUCTION_STATUS_CANCELLED,
 } from 'config'
+import AuctionTable from './AuctionTable'
 
 
 class AdminAuctionList extends PureComponent {
@@ -28,13 +35,53 @@ class AdminAuctionList extends PureComponent {
     cancelAuction: PropTypes.func.isRequired,
   }
 
+  static columnList = [
+    { field: 'item_number', label: 'Item Number' },
+    { field: 'item_donor', label: 'Item Donor' },
+    { field: 'max_bid', label: 'Max Bid' },
+    { field: 'min_bid', label: 'Min Bid' },
+    { field: 'highest_bidder', label: 'Highest Bidder' },
+    { field: 'time_started', label: 'Time Started' },
+    { field: 'time_remaining', label: 'Time Remaining' },
+    { field: 'number_of_bids', label: 'Number of Bids' },
+  ]
+
   state = {
-    loadingStatus: 1
+    loadingStatus: 1,
+    statusFilter: AUCTION_STATUS_OPEN,
   }
 
-  handleFinish = (id, event) => {
-    event.preventDefault()
+  loadData = () => {
+    this.setState({
+      loadingStatus: 1
+    }, () => {
+      const { statusFilter } = this.state
+      this.props.getAuctionList({
+        status: statusFilter,
+        success: () => this.setState({
+          loadingStatus: 10
+        }),
+        fail: () => this.setState({
+          loadingStatus: -1
+        }),
+      })
+    })
+  }
 
+  handleChangeTab = (statusFilter, e) => {
+    e.preventDefault()
+
+    this.setState({
+      statusFilter,
+    })
+    this.loadData()
+  }
+
+  handleToggleColumnSelection = (e) => {
+    e.preventDefault()
+  }
+
+  handleFinish = (id) => {
     if (!window.confirm('Are you sure to finish this auction?')) {
       return
     }
@@ -47,9 +94,7 @@ class AdminAuctionList extends PureComponent {
     })
   }
 
-  handleCancel = (id, event) => {
-    event.preventDefault()
-
+  handleCancel = (id) => {
     if (!window.confirm('Are you sure to cancel this auction?')) {
       return
     }
@@ -63,24 +108,13 @@ class AdminAuctionList extends PureComponent {
   }
 
   componentWillMount() {
-    this.setState({
-      loadingStatus: 1
-    })
-
-    this.props.getAuctionList({
-      success: () => this.setState({
-        loadingStatus: 10
-      }),
-      fail: () => this.setState({
-        loadingStatus: -1
-      }),
-    })
+    this.loadData()
   }
 
   render() {
     const { adminAuctions } = this.props
     const auctionList = adminAuctions.get('auctionList')
-    const { loadingStatus } = this.state
+    const { loadingStatus, statusFilter } = this.state
 
     return (
       <div>
@@ -89,60 +123,89 @@ class AdminAuctionList extends PureComponent {
           <Link className="btn btn-primary pull-right" to="/admin/auctions/create">Create</Link>
         </div>
 
-        {loadingStatus === 1 && <Spinner />}
+        <div>
+          <Nav pills>
+            <NavItem>
+              <NavLink
+                href="/"
+                className={classnames({ active: statusFilter === AUCTION_STATUS_OPEN })}
+                onClick={this.handleChangeTab.bind(this, AUCTION_STATUS_OPEN)}
+              >
+                In Progress
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink
+                href="/"
+                className={classnames({ active: statusFilter === AUCTION_STATUS_PREVIEW })}
+                onClick={this.handleChangeTab.bind(this, AUCTION_STATUS_PREVIEW)}
+              >
+                Upcoming
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink
+                href="/"
+                className={classnames({ active: statusFilter === AUCTION_STATUS_FINISHED })}
+                onClick={this.handleChangeTab.bind(this, AUCTION_STATUS_FINISHED)}
+              >
+                Finished
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink
+                href="/"
+                className={classnames({ active: statusFilter === AUCTION_STATUS_CANCELLED })}
+                onClick={this.handleChangeTab.bind(this, AUCTION_STATUS_CANCELLED)}
+              >
+                Cancelled
+              </NavLink>
+            </NavItem>
+            <NavItem className="ml-auto">
+              <NavLink
+                href="/"
+                onClick={this.handleToggleColumnSelection}
+              >
+                Column Selection
+              </NavLink>
+            </NavItem>
+          </Nav>
 
-        {loadingStatus === -1 && <div>
-          Failed to load data.
-        </div>}
-
-        {loadingStatus === 10 && <table className="table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Title</th>
-              <th>Current Price</th>
-              <th>Status</th>
-              <th>Started At</th>
-              <th>Ended At</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {auctionList.map(auction => (
-              <tr key={auction.get('pk')}>
-                <th scope="row">{auction.get('pk')}</th>
-                <td>{auction.get('title')}</td>
-                <td>{auction.get('current_price')}</td>
-                <td>{auction.get('status')}</td>
-                <td>{auction.get('started_at')}</td>
-                <td>{auction.get('ended_at')}</td>
-                <td>
-                  <Link className="text-secondary pr-3" to={`/admin/auctions/${auction.get('pk')}`}>Edit</Link>
-                  {auction.get('status') === AUCTION_STATUS_PREVIEW && <Link
-                    className="text-primary pr-3"
-                    to={`/admin/auctions/${auction.get('pk')}/start`}
-                  >
-                    Start
-                  </Link>}
-                  {auction.get('status') === AUCTION_STATUS_OPEN && <a
-                    className="text-primary pr-3"
-                    href="/"
-                    onClick={this.handleFinish.bind(this, auction.get('pk'))}
-                  >
-                    Finish
-                  </a>}
-                  {auction.get('status') === AUCTION_STATUS_OPEN && <a
-                    className="text-danger pr-3"
-                    href="/"
-                    onClick={this.handleCancel.bind(this, auction.get('pk'))}
-                  >
-                    Cancel
-                  </a>}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>}
+          <TabContent activeTab={statusFilter}>
+            <TabPane tabId={AUCTION_STATUS_OPEN}>
+              <AuctionTable
+                loadingStatus={loadingStatus}
+                auctionList={auctionList}
+                onFinish={this.handleFinish}
+                onCancel={this.handleCancel}
+              />
+            </TabPane>
+            <TabPane tabId={AUCTION_STATUS_PREVIEW}>
+              <AuctionTable
+                loadingStatus={loadingStatus}
+                auctionList={auctionList}
+                onFinish={this.handleFinish}
+                onCancel={this.handleCancel}
+              />
+            </TabPane>
+            <TabPane tabId={AUCTION_STATUS_FINISHED}>
+              <AuctionTable
+                loadingStatus={loadingStatus}
+                auctionList={auctionList}
+                onFinish={this.handleFinish}
+                onCancel={this.handleCancel}
+              />
+            </TabPane>
+            <TabPane tabId={AUCTION_STATUS_CANCELLED}>
+              <AuctionTable
+                loadingStatus={loadingStatus}
+                auctionList={auctionList}
+                onFinish={this.handleFinish}
+                onCancel={this.handleCancel}
+              />
+            </TabPane>
+          </TabContent>
+        </div>
       </div>
     )
   }

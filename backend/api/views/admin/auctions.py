@@ -30,6 +30,7 @@ class AuctionListView(generics.ListCreateAPIView):
         .select_related('product__donor') \
         .prefetch_related('product__media')
     serializer_class = AuctionSerializer
+    filter_backends = (StatusFilterBackend, )
 
 
 class AuctionDetailView(generics.RetrieveUpdateDestroyAPIView):
