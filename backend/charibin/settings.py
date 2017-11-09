@@ -130,6 +130,9 @@ AUTHENTICATION_BACKENDS = (
 )
 
 
+AUTH_USER_MODEL = 'account.User'
+
+
 # Email
 
 NO_REPLY_EMAIL_ADDRESS = 'no-reply@charibin.com'

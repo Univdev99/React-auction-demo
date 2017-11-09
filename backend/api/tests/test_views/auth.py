@@ -13,8 +13,8 @@ from account.models import UserVerification
 class SignUpTests(APITestCase):
     def get_data(self):
         return {
-            'username': 'tester1',
             'email': 'tester1@test.com',
+            'username': 'tester1',
             'password': 'abcde123',
             'password_confirm': 'abcde123',
         }
@@ -23,7 +23,7 @@ class SignUpTests(APITestCase):
         data = self.get_data()
         response = self.client.post(reverse('api:signup'), data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        user = get_user_model().objects.get(username=data['username'])
+        user = get_user_model().objects.get(email=data['email'])
         self.assertNotEqual(user, None)
 
     def test_signup_verification(self):
@@ -31,7 +31,7 @@ class SignUpTests(APITestCase):
         response = self.client.post(reverse('api:signup'), data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        user = get_user_model().objects.select_related('userverification').get(username=data['username'])
+        user = get_user_model().objects.select_related('userverification').get(email=data['email'])
         response = self.client.post(reverse('api:verify-signup'), dict(token=user.userverification.token))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         user.refresh_from_db()
@@ -49,7 +49,7 @@ class SignUpTests(APITestCase):
         data['access_token'] = 'any_string_for_mock_acces_token'
         response = self.client.post(reverse('api:signup-with-facebook'), data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        user = get_user_model().objects.get(username=data['username'])
+        user = get_user_model().objects.get(email='test@test.com')
         self.assertEqual(user.email, 'test@test.com')
         self.assertEqual(user.first_name, 'TestFirst')
         self.assertEqual(user.last_name, 'TestLast')
@@ -58,8 +58,8 @@ class SignUpTests(APITestCase):
 class CurrentUserTests(APITestCase):
     def get_user_data(self):
         return {
-            'username': 'tester',
             'email': 'tester@test.com',
+            'username': 'tester',
             'first_name': 'Test',
             'last_name': 'Tester',
             'password': 'abcde123',
@@ -73,41 +73,34 @@ class CurrentUserTests(APITestCase):
         self.user.set_password(password)
         self.user.save()
         self.client.logout()
-        self.client.login(username=self.user.username, password=password)
+        self.client.login(email=self.user.email, password=password)
 
     def test_get_current_user(self):
         response = self.client.get(reverse('api:current-user'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         user_data = self.get_user_data()
         response_data = json.loads(response.content)
-        self.assertEqual(response_data['username'], user_data['username'])
+        self.assertEqual(response_data['email'], user_data['email'])
 
     def test_put_current_user(self):
         new_data = {
-            'username': 'tester1',
+            'email': 'test@test.com',
+            'username': 'testuser',
             'first_name': 'tester1',
             'last_name': 'Tester1',
-            'profile': {
-                'address_line': 'New Address',
-                'city': 'New York',
-                'country': 'US',
-                'phone_number': '+1 (415) 412-4233',
-                'zipcode': '10011'
-            }
+            'address_line': 'New Address',
+            'city': 'New York',
+            'country': 'US',
+            'phone_number': '+1 (415) 412-4233',
+            'zipcode': '10011'
         }
         response = self.client.put(reverse('api:current-user'), new_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.user.refresh_from_db()
-        self.user.profile.refresh_from_db()
+        self.assertEqual(self.user.email, new_data['email'])
         self.assertEqual(self.user.username, new_data['username'])
-        self.assertEqual(self.user.profile.address_line, new_data['profile']['address_line'])
-        self.assertEqual(self.user.profile.phone_number, new_data['profile']['phone_number'])
-
-    def test_put_current_user_with_password_unchanged(self):
-        new_data = {
-            'username': 'tester1',
-            'first_name': 'tester1',
-            'last_name': 'Tester1',
-        }
-        response = self.client.put(reverse('api:current-user'), new_data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK, response.content)
+        self.assertEqual(self.user.address_line, new_data['address_line'])
+        self.assertEqual(self.user.city, new_data['city'])
+        self.assertEqual(self.user.country, new_data['country'])
+        self.assertEqual(self.user.phone_number, new_data['phone_number'])
+        self.assertEqual(self.user.zipcode, new_data['zipcode'])
