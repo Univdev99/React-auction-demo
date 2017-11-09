@@ -47,7 +47,11 @@ class AppLayout1 extends PureComponent {
 
   render() {
     const { auth, children } = this.props
-    const username = auth.getIn(['currentUser', 'username'], '')
+    const username = auth.getIn(
+      ['currentUser', 'first_name'],
+      auth.getIn(['currentUser', 'username'], '')
+    )
+
     const isStaff = auth.getIn(['currentUser', 'is_staff'], false)
 
     const { minContentHeight } = this.state

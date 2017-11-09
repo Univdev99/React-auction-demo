@@ -52,7 +52,7 @@ class AdminLayout extends PureComponent {
     }
 
     const { menuOpen } = this.state
-    const username = currentUser.get('username')
+    const username = currentUser.get('first_name') || currentUser.get('username')
 
     const menuClasses = ['admin-menu']
     const menuBgClasses = ['menu-bg']

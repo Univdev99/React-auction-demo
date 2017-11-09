@@ -44,7 +44,7 @@ class SignIn extends PureComponent {
               <h3 className="mb-4 text-center">Sign In</h3>
 
               {signInError && <div className="mb-2 text-danger">
-                Login failed, please enter correct username and password
+                Login failed, please enter correct email and password
               </div>}
 
               <SignInForm onSubmit={this.handleSubmit} />

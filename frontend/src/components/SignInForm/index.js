@@ -20,10 +20,10 @@ class SignInForm extends PureComponent {
     return (
       <form onSubmit={handleSubmit}>
         <FormField
-          name="username"
-          type="text"
-          label={forModal ? undefined : 'Username or Email:'}
-          placeholder={forModal ? 'Username or Email' : undefined}
+          name="email"
+          type="email"
+          label={forModal ? undefined : 'Email:'}
+          placeholder={forModal ? 'Email' : undefined}
           component={InputField}
         />
         <FormField
@@ -46,8 +46,8 @@ class SignInForm extends PureComponent {
 const validate = (values) => {
   const errors = {}
 
-  if (!values.get('username')) {
-    errors.username = 'Username or email is required'
+  if (!values.get('email')) {
+    errors.username = 'Email is required'
   }
 
   if (!values.get('password')) {

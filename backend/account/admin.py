@@ -1,6 +1,41 @@
 from django.contrib import admin
+from django.contrib.auth.hashers import make_password
+from django.utils.translation import ugettext_lazy as _
 
-from account.models import UserVerification
+from .models import User
+from .models import UserVerification
+
+
+class UserAdmin(admin.ModelAdmin):
+    list_display = (
+        'email',
+        'first_name',
+        'last_name',
+        'username',
+    )
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(UserAdmin, self).get_form(request, obj, **kwargs)
+
+        def clean_password(me):
+            password = me.cleaned_data['password']
+
+            if me.instance:
+                if me.instance.password != password:
+                    password = make_password(password)
+            else:
+                password = make_password(password)
+
+            return password
+
+        form.clean_password = clean_password
+
+        return form
+
+    pass
+
+
+admin.site.register(User, UserAdmin)
 
 
 class UserVerificationAdmin(admin.ModelAdmin):
