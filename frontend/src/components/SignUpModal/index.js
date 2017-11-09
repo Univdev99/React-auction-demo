@@ -31,11 +31,12 @@ class SignUpModal extends PureComponent {
   }
 
   handleSubmit = (data) => {
-    const { handleHide, signUp } = this.props
+    const { handleHide, showModal, signUp } = this.props
     signUp({
       data,
       success: () => {
         handleHide()
+        showModal('accountCreatedModal')
       },
       fail: () => this.setState({
         signUpError: true

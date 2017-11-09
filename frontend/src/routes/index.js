@@ -52,6 +52,7 @@ import AdminMediumList from 'pages/AdminMediumList'
 import RealTimeNotificationManager from 'managers/RealTimeNotificationManager'
 
 // Modals
+import AccountCreatedModal from 'components/AccountCreatedModal'
 import AuctionBidModal from 'components/AuctionBidModal'
 import AuctionBidPlacedModal from 'components/AuctionBidPlacedModal'
 import SignInModal from 'components/SignInModal'
@@ -110,6 +111,7 @@ const modals = (
     <AuctionBidPlacedModal />
     <SignInModal />
     <SignUpModal />
+    <AccountCreatedModal />
   </div>
 )
 
