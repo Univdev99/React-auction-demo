@@ -16,7 +16,7 @@ export default (WrappedComponent, selectData) => {
       const { signedIn, show } = this.props
       signedIn
         ? show('auctionBidModal', { auctionId })
-        : show('signinModal')
+        : show('signinModal', { auctionId })
     }
 
     render() {

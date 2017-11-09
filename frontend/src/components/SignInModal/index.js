@@ -12,6 +12,7 @@ import { signIn } from 'store/modules/auth'
 
 class SignInModal extends PureComponent {
   static propTypes = {
+    auctionId: PropTypes.number,
     handleHide: PropTypes.func.isRequired,
     startBidFlow: PropTypes.func.isRequired,
     show: PropTypes.bool.isRequired,
@@ -26,12 +27,12 @@ class SignInModal extends PureComponent {
   }
 
   handleSubmit = (data) => {
-    const { handleHide, startBidFlow, signIn } = this.props
+    const { auctionId, handleHide, startBidFlow, signIn } = this.props
     signIn({
       data,
       success: () => {
         handleHide()
-        startBidFlow()
+        startBidFlow(auctionId)
       },
       fail: () => this.setState({
         signInError: true
