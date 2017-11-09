@@ -49,7 +49,7 @@ class SignInModal extends PureComponent {
         <Modal isOpen={show} toggle={handleHide} size="sm">
           <ModalHeader toggle={handleHide}>Hello there</ModalHeader>
           {signInError && <div className="mb-2 text-danger">
-            Login failed, please enter correct username and password
+            Login failed, please enter correct email and password
           </div>}
           <ModalBody>
             <p>Please sign in to your account</p>

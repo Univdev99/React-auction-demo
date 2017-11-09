@@ -51,7 +51,7 @@ class AccountForm extends PureComponent {
           component={InputField}
         />*/}
         <FormField
-          name="profile.phone_number"
+          name="phone_number"
           type="text"
           label="Phone Number:"
           component={InputField}
@@ -60,7 +60,7 @@ class AccountForm extends PureComponent {
         <Row>
           <Col xs={12} sm={6}>
             <FormField
-              name="profile.country"
+              name="country"
               type="select"
               label="Country"
               component={InputField}
@@ -73,7 +73,7 @@ class AccountForm extends PureComponent {
           </Col>
           <Col xs={12} sm={6}>
             <FormField
-              name="profile.city"
+              name="city"
               type="text"
               label="City"
               component={InputField}
@@ -81,13 +81,13 @@ class AccountForm extends PureComponent {
           </Col>
         </Row>
         <FormField
-          name="profile.zipcode"
+          name="zipcode"
           type="text"
           label="Zip / Postal Code"
           component={InputField}
         />
         <FormField
-          name="profile.address_line"
+          name="address_line"
           type="text"
           label="Address Line"
           component={InputField}
@@ -102,10 +102,6 @@ class AccountForm extends PureComponent {
 
 const validate = (values) => {
   const errors = {}
-
-  if (!values.get('username')) {
-    errors.username = 'Username is required'
-  }
 
   const password = values.get('password')
   if (password && password.length < 6) {

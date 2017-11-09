@@ -80,8 +80,8 @@ class AdminUserList extends PureComponent {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Username</th>
               <th>Email</th>
+              <th>Username</th>
               <th>Full name</th>
               <th>Admin</th>
               <th>Status</th>
@@ -92,8 +92,8 @@ class AdminUserList extends PureComponent {
             {userList.map(user => (
               <tr key={user.get('pk')}>
                 <th scope="row">{user.get('pk')}</th>
-                <td>{user.get('username')}</td>
                 <td>{user.get('email')}</td>
+                <td>{user.get('username')}</td>
                 <td>{user.get('first_name')} {user.get('last_name')}</td>
                 <td>{user.get('is_staff') ? 'Admin' : 'Normal User'}</td>
                 <td>{user.get('is_active') ? 'Active' : 'Blocked'}</td>

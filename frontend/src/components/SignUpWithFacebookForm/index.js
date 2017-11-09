@@ -19,12 +19,6 @@ class SignUpWithFacebookForm extends PureComponent {
     return (
       <form onSubmit={handleSubmit}>
         <FormField
-          name="username"
-          type="text"
-          label="Username:"
-          component={InputField}
-        />
-        <FormField
           name="password"
           type="password"
           label="Password:"
@@ -46,10 +40,6 @@ class SignUpWithFacebookForm extends PureComponent {
 
 const validate = (values) => {
   const errors = {}
-
-  if (!values.get('username')) {
-    errors.username = 'Username is required'
-  }
 
   const password = values.get('password')
   if (!password) {
