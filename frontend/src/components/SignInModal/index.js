@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Button, Modal, ModalHeader, ModalBody } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { connectModal } from 'redux-modal'
+import { connectModal, show as showModal } from 'redux-modal'
 import { modalSelector } from 'store/selectors'
 
 import auctionBidFlow from 'utils/auctionBidFlow'
@@ -24,6 +24,12 @@ class SignInModal extends PureComponent {
     this.state = {
       signInError: false
     }
+  }
+
+  handleSignup = () => {
+    const { handleHide, showModal } = this.props
+    handleHide()
+    showModal('signupModal')
   }
 
   handleSubmit = (data) => {
@@ -53,7 +59,7 @@ class SignInModal extends PureComponent {
           </div>}
           <ModalBody>
             <p>Please sign in to your account</p>
-            <Button color="secondary" block>Sign in with Facebook</Button>
+            <Button color="secondary" block>Sign in with facebook</Button>
             <hr />
             <SignInForm forModal onSubmit={this.handleSubmit} />
             <div className="text-center">
@@ -69,6 +75,7 @@ class SignInModal extends PureComponent {
 }
 
 const actions = {
+  showModal,
   signIn
 }
 

@@ -55,6 +55,7 @@ import RealTimeNotificationManager from 'managers/RealTimeNotificationManager'
 import AuctionBidModal from 'components/AuctionBidModal'
 import AuctionBidPlacedModal from 'components/AuctionBidPlacedModal'
 import SignInModal from 'components/SignInModal'
+import SignUpModal from 'components/SignUpModal'
 
 // Auth wrappers
 import {
@@ -105,9 +106,10 @@ const AccountRoutes = props => (
 
 const modals = (
   <div>
-    <SignInModal />
     <AuctionBidModal />
     <AuctionBidPlacedModal />
+    <SignInModal />
+    <SignUpModal />
   </div>
 )
 
