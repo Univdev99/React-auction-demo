@@ -58,7 +58,7 @@ class SignUpModal extends PureComponent {
           <p>Please sign up to our website</p>
           <Button color="secondary" block>Sign up using facebook</Button>
           <hr />
-          <SignUpForm forModal onSubmit={this.handleSubmit} />
+          <SignUpForm forModal onSubmit={this.handleSubmit} simple />
           <div className="text-center">
             <Button tag="a" href="#" color="link" onClick={this.handleSignIn}>
               I already have an account

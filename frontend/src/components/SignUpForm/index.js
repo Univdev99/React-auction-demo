@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import { compose } from 'redux'
+import { Col, Row } from 'reactstrap'
 import { reduxForm } from 'redux-form/immutable'
 import PropTypes from 'prop-types'
 
@@ -12,10 +13,11 @@ class SignUpForm extends PureComponent {
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
+    simple: PropTypes.bool
   }
 
   render() {
-    const { handleSubmit, disabled } = this.props
+    const { handleSubmit, disabled, simple } = this.props
     return (
       <form onSubmit={handleSubmit}>
         <FormField
@@ -24,6 +26,24 @@ class SignUpForm extends PureComponent {
           label="Email:"
           component={InputField}
         />
+        {!simple && <Row>
+          <Col xs={12} md={6}>
+            <FormField
+              name="first_name"
+              type="text"
+              label="First Name:"
+              component={InputField}
+            />
+          </Col>
+          <Col xs={12} md={6}>
+            <FormField
+              name="last_name"
+              type="text"
+              label="Last Name:"
+              component={InputField}
+            />
+          </Col>
+        </Row>}
         <FormField
           name="password"
           type="password"
