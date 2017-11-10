@@ -6,9 +6,9 @@ import { Link } from 'react-router-dom'
 
 import auctionBidFlow from 'utils/auctionBidFlow'
 
-import './style.css'
 
-const bem = (suffix) => `card__${suffix}`
+const COMPONENT_CLASS = 'auction-card'
+const bem = (suffix) => `${COMPONENT_CLASS}__${suffix}`
 
 class AuctionCard extends PureComponent {
 
@@ -26,7 +26,7 @@ class AuctionCard extends PureComponent {
     const { auction: { pk, title, product_details: product } } = this.props
 
     return (
-      <Card>
+      <Card className={COMPONENT_CLASS}>
         <Link to={`/auctions/${pk}`}>
           <div className={cx(bem('image'), 'card-img-top')} style={{ backgroundImage: `url(${product.media[0].url})`}} />
         </Link>

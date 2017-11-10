@@ -1,0 +1,7 @@
+.app-layout1 {
+  &__content {
+    @media (min-width: 576px) {
+      display: flex;
+    }
+  }
+}
