@@ -29,11 +29,15 @@ const doSignUp = apiCall({
   path: 'signup/',
 })
 
-const doSignUpWithFacebook = apiCall({
-  type: AUTH_SIGNUP_WITH_FACEBOOK,
-  method: 'post',
-  path: 'signup-with-facebook/',
-})
+const doSignUpWithFacebook = function* (action) {
+  yield call(apiCall({
+    type: AUTH_SIGNUP_WITH_FACEBOOK,
+    method: 'post',
+    path: 'signup-with-facebook/',
+  }), action)
+
+  yield put(getCurrentUserAction())
+}
 
 const doVerifySignUp = apiCall({
   type: AUTH_VERIFY_SIGNUP,

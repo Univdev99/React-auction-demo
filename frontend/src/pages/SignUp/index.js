@@ -10,8 +10,7 @@ import AppContainerLayout from 'components/AppContainerLayout'
 import AppLayout1 from 'pages/AppLayout1'
 import SignUpForm from 'components/SignUpForm'
 import { FACEBOOK_APP_ID, FACEBOOK_API_VERSION } from 'config'
-import { signUp } from 'store/modules/auth'
-
+import { signUp, signUpWithFacebook } from 'store/modules/auth'
 
 class SignUp extends PureComponent {
 
@@ -22,40 +21,6 @@ class SignUp extends PureComponent {
   state = {
     fbReady: false,
     signUpStatus: 0,
-  }
-
-  handleSubmit = (data) => {
-    this.setState({
-      signUpStatus: 1
-    })
-
-    this.props.signUp({
-      data,
-      success: () => this.setState({
-        signUpStatus: 10
-      }),
-      fail: () => this.setState({
-        signUpStatus: -1
-      }),
-    })
-  }
-
-  signUpWithFacebook = (event) => {
-    event.preventDefault()
-
-    if (!this.state.fbReady) {
-      return
-    }
-
-    FB.login((response) => {
-      if (response.status === 'connected') {
-        this.props.history.push({
-          pathname: `/signup-with-facebook/${response.authResponse.accessToken}`
-        })
-      }
-    }, {
-      scope: 'public_profile,email'
-    })
   }
 
   componentDidMount() {
@@ -82,6 +47,51 @@ class SignUp extends PureComponent {
     }(document, 'script', 'facebook-jssdk'))
   }
 
+  handleSubmit = (data) => {
+    this.setState({
+      signUpStatus: 1
+    })
+
+    this.props.signUp({
+      data,
+      success: () => this.setState({
+        signUpStatus: 10
+      }),
+      fail: () => this.setState({
+        signUpStatus: -1
+      }),
+    })
+  }
+
+  handleSignUpWithFacebook = (event) => {
+    const { signUpWithFacebook } = this.props
+    event.preventDefault()
+
+    if (!this.state.fbReady) {
+      return
+    }
+
+    FB.login((response) => {
+      if (response.status === 'connected') {
+        this.setState({
+          signUpStatus: 1
+        })
+
+        signUpWithFacebook({
+          data: { access_token: response.authResponse.accessToken },
+          success: () => this.setState({
+            signUpStatus: 10
+          }),
+          fail: () => this.setState({
+            signUpStatus: -1
+          })
+        })
+      }
+    }, {
+      scope: 'public_profile,email'
+    })
+  }
+
   render() {
     const { fbReady, signUpStatus } = this.state
 
@@ -105,9 +115,11 @@ class SignUp extends PureComponent {
 
                   <SignUpForm onSubmit={this.handleSubmit} disabled={signUpStatus === 1} />
 
-                  <center className="mt-2">
-                    <a className={fbReady ? '' : 'text-muted'} href="/" onClick={this.signUpWithFacebook}>Sign Up With Facebook</a>
-                  </center>
+                  <div className="text-center mt-2">
+                    <a className={fbReady ? '' : 'text-muted'} href="/" onClick={this.handleSignUpWithFacebook}>
+                      Sign Up With Facebook
+                    </a>
+                  </div>
 
                 </div>
               }
@@ -124,6 +136,7 @@ const selector = createStructuredSelector({
 
 const actions = {
   signUp,
+  signUpWithFacebook
 }
 
 export default compose(
