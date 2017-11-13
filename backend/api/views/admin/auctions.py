@@ -11,6 +11,7 @@ from rest_framework.response import Response
 
 from api.filters.status import StatusFilterBackend
 from api.serializers.auctions import AuctionSerializer
+from api.serializers.auctions import AuctionAdminSerializer
 from api.serializers.auctions import AuctionShipProductSerializer
 from api.serializers.auctions import BidWithUserDetailSerializer
 from api.serializers.auctions import BidStatusChangeSerializer
@@ -29,7 +30,8 @@ class AuctionListView(generics.ListCreateAPIView):
         .select_related('product') \
         .select_related('product__donor') \
         .prefetch_related('product__media')
-    serializer_class = AuctionSerializer
+    serializer_class = AuctionAdminSerializer
+    filter_backends = (StatusFilterBackend, )
 
 
 class AuctionDetailView(generics.RetrieveUpdateDestroyAPIView):

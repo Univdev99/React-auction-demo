@@ -27,14 +27,14 @@ class AdminAPITestCase(test.TestCase):
         self.client.force_authenticate(user=self.user)
 
 
-class APISerializerTestCase(test.TestCase):
+class SerializerTestCase(test.TestCase):
     """
     TestCase mixin for writing API serializer tests.
     """
     serializer_class = None
 
     def setUp(self):
-        super(APISerializerTestCase, self).setUp()
+        super(SerializerTestCase, self).setUp()
         self.user = None
 
     def get_request(self, user=None, method='get', path='/', data=None):

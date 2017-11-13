@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.db import models
-from django.db.models import Max
+from django.db.models import Max, Min
 from rest_framework.exceptions import ParseError
 from django.utils import timezone
 
@@ -38,7 +38,7 @@ class Auction(models.Model):
 
     @property
     def current_price(self):
-        result = self.bid_set.filter(status=BID_STATUS_ACTIVE).aggregate(max_price=Max('price'))
+        result = self.get_active_bid_queryset().aggregate(max_price=Max('price'))
         return result['max_price'] if result['max_price'] else self.starting_price
 
     @property
@@ -53,6 +53,36 @@ class Auction(models.Model):
     def donor_auctions(self):
         return self.get_donor_auctions(4)
 
+    @property
+    def max_bid(self):
+        return self.current_price
+
+    @property
+    def min_bid(self):
+        result = self.get_active_bid_queryset().aggregate(min_price=Min('price'))
+        return result['min_price'] if result['min_price'] else 0
+
+    @property
+    def highest_bid(self):
+        return self.get_active_bid_queryset() \
+            .filter(price=self.max_bid) \
+            .select_related('user') \
+            .first()
+
+    @property
+    def time_remaining(self):
+        if self.status == AUCTION_STATUS_OPEN:
+            return (self.open_until - self.started_at).total_seconds()
+        else:
+            return 0
+
+    @property
+    def number_of_bids(self):
+        return self.bid_set.count()
+
+    def get_active_bid_queryset(self):
+        return self.bid_set.filter(status=BID_STATUS_ACTIVE)
+
     def get_similar_auctions(self, count):
         product = self.product
         similar_products = self.product.get_similar_products(count, auction__isnull=False)
@@ -62,7 +92,7 @@ class Auction(models.Model):
         return Auction.objects.filter(product__donor=self.product.donor).exclude(pk=self.pk)[:count]
 
     def _do_finishing_process(self):
-        bid_queryset = self.bid_set.filter(status=BID_STATUS_ACTIVE)
+        bid_queryset = self.get_active_bid_queryset()
         if bid_queryset.count() == 0:
             self.status = AUCTION_STATUS_CANCELLED_DUE_TO_NO_BIDS
             self.save()
