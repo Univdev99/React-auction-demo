@@ -152,7 +152,7 @@ class Bid(models.Model):
     auction = models.ForeignKey(Auction, on_delete=models.CASCADE)
 
     def __str__(self):
-        return 'Bid by {} on {}'.format(self.user.username, str(self.auction))
+        return 'Bid by {} on {}'.format(self.user.email, str(self.auction))
 
 
 class Shipment(models.Model):

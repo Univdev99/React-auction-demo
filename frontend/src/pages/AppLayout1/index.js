@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
+import cx from 'classnames'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
@@ -13,6 +14,9 @@ import { getCurrentUser } from 'store/modules/auth'
 import { signOut } from 'store/modules/auth'
 import { authSelector } from 'store/selectors'
 
+
+const COMPONENT_CLASSNAME = 'app-layout1'
+const bem = (suffix) => `${COMPONENT_CLASSNAME}__${suffix}`
 
 class AppLayout1 extends PureComponent {
 
@@ -47,7 +51,11 @@ class AppLayout1 extends PureComponent {
 
   render() {
     const { auth, children } = this.props
-    const username = auth.getIn(['currentUser', 'username'], '')
+    const username = auth.getIn(
+      ['currentUser', 'first_name'],
+      auth.getIn(['currentUser', 'username'], '')
+    )
+
     const isStaff = auth.getIn(['currentUser', 'is_staff'], false)
 
     const { minContentHeight } = this.state
@@ -57,13 +65,13 @@ class AppLayout1 extends PureComponent {
       <AppHeaderGuest />
 
     return (
-      <div className="app-layout1" ref={element => this.layoutElement = element}>
+      <div className={COMPONENT_CLASSNAME} ref={element => this.layoutElement = element}>
         {header}
 
         <div
-          className="content"
+          className={cx('content', bem('content'))}
           ref={element => this.contentElement = element}
-          style={{ display: 'flex', minHeight: minContentHeight }}
+          style={{ minHeight: minContentHeight }}
         >
           <div style={{ flex: '1 1 auto' }}>
             {children}

@@ -29,7 +29,6 @@ class SignUpView(views.APIView):
         serializer = SignUpSerializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
         user = get_user_model().objects.create_user(
-            serializer.validated_data['username'],
             serializer.validated_data['email'],
             serializer.validated_data['password'],
             is_active=False,
@@ -97,7 +96,6 @@ class SignUpWithFacebookView(views.APIView):
             raise ParseError(detail='Invalid Facebook access token')
 
         user = get_user_model().objects.create_user(
-            serializer.validated_data['username'],
             data['email'],
             serializer.validated_data['password'],
             first_name=data['first_name'],

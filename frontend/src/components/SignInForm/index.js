@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
+import { Button } from 'reactstrap'
 import { compose } from 'redux'
 import { reduxForm } from 'redux-form/immutable'
-import PropTypes from 'prop-types'
 
 import FormField from 'components/FormField'
 import InputField from 'components/InputField'
@@ -11,27 +12,32 @@ class SignInForm extends PureComponent {
 
   static propTypes = {
     handleSubmit: PropTypes.func.isRequired,
+    forModal: PropTypes.bool
   }
 
   render() {
-    const { handleSubmit } = this.props
+    const { forModal, handleSubmit } = this.props
     return (
       <form onSubmit={handleSubmit}>
         <FormField
-          name="username"
-          type="text"
-          label="Username or Email:"
+          name="email"
+          type="email"
+          label={forModal ? undefined : 'Email:'}
+          placeholder={forModal ? 'Email' : undefined}
           component={InputField}
         />
         <FormField
           name="password"
           type="password"
-          label="Password:"
+          label={forModal ? undefined : 'Password:'}
+          placeholder={forModal ? 'Password' : undefined}
           component={InputField}
         />
-        <center>
-          <button type="submit" className="btn btn-primary">Sign In</button>
-        </center>
+        <div className="text-center">
+          <Button type="submit" color="primary" block={forModal}>
+            Sign In
+          </Button>
+        </div>
       </form>
     )
   }
@@ -40,8 +46,8 @@ class SignInForm extends PureComponent {
 const validate = (values) => {
   const errors = {}
 
-  if (!values.get('username')) {
-    errors.username = 'Username or email is required'
+  if (!values.get('email')) {
+    errors.username = 'Email is required'
   }
 
   if (!values.get('password')) {

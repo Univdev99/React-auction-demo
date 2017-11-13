@@ -110,12 +110,18 @@ class BidSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bid
         fields = ('price', 'status', 'placed_at', 'closed_at', 'user', 'auction')
-        read_only_fields = ('status', 'placed_at', 'closed_at', 'user')
+        read_only_fields = ('status', 'placed_at', 'closed_at', 'user', 'auction')
+
+    def validate_price(self, value):
+        auction = self.context.get('view').get_object()
+        if value <= auction.current_price:
+            raise serializers.ValidationError('Price should be higher than current price of this auction')
+
+        return value
 
     def validate(self, data):
         data = super(BidSerializer, self).validate(data)
-        auction = data['auction']
-        price = data['price']
+        auction = self.context.get('view').get_object()
 
         if auction.status != AUCTION_STATUS_OPEN:
             raise serializers.ValidationError('Bids can be placed to open auctions only')
@@ -123,21 +129,18 @@ class BidSerializer(serializers.ModelSerializer):
         if auction.open_until and auction.open_until < timezone.now():
             raise serializers.ValidationError('This auction is now waiting to close')
 
-        if price <= auction.current_price:
-            raise serializers.ValidationError('Price should be higher than current price of this auction')
-
         return data
 
     @transaction.atomic
     def create(self, validated_data):
         request = self.context.get('request')
-        auction = validated_data['auction']
+        auction = self.context.get('view').get_object()
         price = validated_data['price']
         placed_at = timezone.now()
 
         bid = Bid.objects.create(
             price=price,
-            placed_at=placed_at,
+            placed_at=placed_at,    
             user=request.user,
             auction=auction
         )

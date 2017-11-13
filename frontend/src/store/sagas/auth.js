@@ -1,6 +1,7 @@
-import { takeLatest } from 'redux-saga/effects'
+import { call, put, takeLatest } from 'redux-saga/effects'
 
 import apiCall from 'store/api/call'
+import { getCurrentUser as getCurrentUserAction } from 'store/modules/auth'
 import {
   AUTH_SIGNIN,
   AUTH_SIGNUP,
@@ -12,11 +13,15 @@ import {
 } from 'store/constants'
 
 
-const doSignIn = apiCall({
-  type: AUTH_SIGNIN,
-  method: 'post',
-  path: 'signin/',
-})
+const doSignIn = function* (action) {
+  yield call(apiCall({
+    type: AUTH_SIGNIN,
+    method: 'post',
+    path: 'signin/',
+  }), action)
+
+  yield put(getCurrentUserAction())
+}
 
 const doSignUp = apiCall({
   type: AUTH_SIGNUP,

@@ -1,0 +1,16 @@
+.auction-card {
+  &__image {
+    padding-top: 60%;
+    background: center/contain no-repeat;
+  }
+
+  &__title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__button {
+    border-radius: 999px;
+  }
+}

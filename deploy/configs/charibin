@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name ec2-34-238-84-14.compute-1.amazonaws.com;
+    server_name ec2-54-235-235-0.compute-1.amazonaws.com;
 
     location /staticfiles/ {
         root /var/www/charibin-tmp/backend;

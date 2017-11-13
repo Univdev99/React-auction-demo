@@ -1,6 +1,6 @@
 export const WS_BACKEND_URL = 'ws://localhost:8000'
 export const SERVER_URL = process.env.NODE_ENV === 'production' ?
-  'http://ec2-34-238-84-14.compute-1.amazonaws.com' :
+  'http://ec2-54-235-235-0.compute-1.amazonaws.com' :
   'http://localhost:8000'
 export const BASE_API_URL = `${SERVER_URL}/api/v1/`
 
