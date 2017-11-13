@@ -41,11 +41,13 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     # 3rd party apps
     'rest_framework',
     'corsheaders',
     'tagging',
     'channels',
+    'pinax.stripe',
     # Project apps
     'account',
     'auction',
@@ -120,6 +122,11 @@ USE_TZ = True
 
 STATIC_URL = '/staticfiles/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
+# Site id
+
+SITE_ID = 1
 
 
 # Django authentication done with email & password too
