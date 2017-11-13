@@ -50,7 +50,8 @@ class AppHeader extends PureComponent {
 
           <UncontrolledDropdown>
             <DropdownToggle tag="span" className="navbar-link cursor-pointer mr-2 text-muted">
-              <i className="fa fa-user-circle" />
+              <i className="fa fa-user-circle mr-2" />
+              {username}
             </DropdownToggle>
             <DropdownMenu right>
               {isStaff && <DropdownItem tag={Link} className="dropdown-item" to="/admin">Admin</DropdownItem>}
