@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import { Collapse, Navbar, NavbarToggler } from 'reactstrap'
+import {
+  Collapse, Navbar, NavbarToggler,
+  UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem,
+} from 'reactstrap'
 
 import AppHeaderMenu from 'components/AppHeaderMenu'
 import AppLogo from 'components/AppLogo'
-import './style.css'
 
 
 class AppHeader extends PureComponent {
@@ -18,25 +20,11 @@ class AppHeader extends PureComponent {
 
   state = {
     menuOpened: false,
-    accountMenuOpened: false
   }
 
   handleToggleMenu = () => {
     this.setState({
       menuOpened: !this.state.menuOpened
-    })
-  }
-
-  handleClickUsername = (e) => {
-    e.preventDefault()
-    this.setState({
-      accountMenuOpened: !this.state.accountMenuOpened
-    })
-  }
-
-  handleCloseAccountMenu = () => {
-    this.setState({
-      accountMenuOpened: false
     })
   }
 
@@ -51,12 +39,7 @@ class AppHeader extends PureComponent {
 
   render() {
     const { username, isStaff } = this.props
-    const { menuOpened, accountMenuOpened } = this.state
-    const accountMenuClasses = ['dropdown-menu', 'dropdown-menu-right', 'mx-3', 'my-1']
-
-    if (accountMenuOpened) {
-      accountMenuClasses.push('show')
-    }
+    const { menuOpened } = this.state
 
     return (
       <Navbar color="dark" dark expand="md">
@@ -65,16 +48,16 @@ class AppHeader extends PureComponent {
         <Collapse isOpen={menuOpened} navbar>
           <AppHeaderMenu />
 
-          <a href="/" className="navbar-text" onClick={this.handleClickUsername}>
-            <span className="mr-2"><i className="fa fa-user-circle" /></span>
-            {username}
-          </a>
-          <div className={accountMenuClasses.join(' ')}>
-            {isStaff && <Link className="dropdown-item" to="/admin">Admin</Link>}
-            <Link className="dropdown-item" to="/account">My Account</Link>
-            <a className="dropdown-item" href="/" onClick={this.handleSignOut}>Sign Out</a>
-          </div>
-          {accountMenuOpened && <div className="account-menu-bg" onClick={this.handleCloseAccountMenu} />}
+          <UncontrolledDropdown>
+            <DropdownToggle tag="span" className="navbar-link cursor-pointer mr-2 text-muted">
+              <i className="fa fa-user-circle" />
+            </DropdownToggle>
+            <DropdownMenu right>
+              {isStaff && <DropdownItem tag={Link} className="dropdown-item" to="/admin">Admin</DropdownItem>}
+              <DropdownItem tag={Link} className="dropdown-item" to="/account">My Account</DropdownItem>
+              <DropdownItem onClick={this.handleSignOut}>Sign Out</DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
         </Collapse>
       </Navbar>
     )
