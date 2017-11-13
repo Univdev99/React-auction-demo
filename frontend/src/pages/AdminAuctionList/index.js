@@ -206,7 +206,9 @@ class AdminAuctionList extends PureComponent {
                     <i className="fa fa-chevron-down" />
                   </DropdownToggle>
                   <DropdownMenu right>
-                    {columnList.map(column => (
+                    {columnList.filter(
+                      column => column.get('field') !== 'item_number'
+                    ).map(column => (
                       <DropdownItem
                         key={column.get('field')}
                         className="position-relative"
@@ -232,6 +234,7 @@ class AdminAuctionList extends PureComponent {
             <TabPane tabId={AUCTION_STATUS_OPEN}>
               <AuctionTable
                 loadingStatus={loadingStatus}
+                columnList={columnList}
                 auctionList={auctionList}
                 onFinish={this.handleFinish}
                 onCancel={this.handleCancel}
@@ -240,6 +243,7 @@ class AdminAuctionList extends PureComponent {
             <TabPane tabId={AUCTION_STATUS_PREVIEW}>
               <AuctionTable
                 loadingStatus={loadingStatus}
+                columnList={columnList}
                 auctionList={auctionList}
                 onFinish={this.handleFinish}
                 onCancel={this.handleCancel}
@@ -248,6 +252,7 @@ class AdminAuctionList extends PureComponent {
             <TabPane tabId={AUCTION_STATUS_FINISHED}>
               <AuctionTable
                 loadingStatus={loadingStatus}
+                columnList={columnList}
                 auctionList={auctionList}
                 onFinish={this.handleFinish}
                 onCancel={this.handleCancel}
@@ -256,6 +261,7 @@ class AdminAuctionList extends PureComponent {
             <TabPane tabId={AUCTION_STATUS_CANCELLED}>
               <AuctionTable
                 loadingStatus={loadingStatus}
+                columnList={columnList}
                 auctionList={auctionList}
                 onFinish={this.handleFinish}
                 onCancel={this.handleCancel}

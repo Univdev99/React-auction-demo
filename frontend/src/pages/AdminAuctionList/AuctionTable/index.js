@@ -17,10 +17,26 @@ import {
 class AuctionTable extends PureComponent {
 
   static propTypes = {
+    columnList: ImmutablePropTypes.list.isRequired,
     auctionList: ImmutablePropTypes.list.isRequired,
     loadingStatus: PropTypes.number.isRequired,
     onFinish: PropTypes.func,
     onCancel: PropTypes.func,
+  }
+
+  getCellValue = (auction, field) => {
+    if (field === 'item_number') {
+      return auction.get('pk')
+    } else if (field === 'item_donor') {
+      return auction.getIn(['product_details', 'donor_details', 'title'], '-')
+    } else if (field === 'time_remaining') {
+      const secondsRemaining = parseInt(auction.get(field), 10)
+      const hours = parseInt(secondsRemaining / 3600, 10)
+      const minutes = parseInt((secondsRemaining % 3600) / 60, 10)
+      const seconds = secondsRemaining % 60
+      return `${hours}h ${minutes}min ${seconds}sec`
+    }
+    return auction.get(field)
   }
 
   handleFinish = (id, event) => {
@@ -42,7 +58,7 @@ class AuctionTable extends PureComponent {
   }
 
   render() {
-    const { loadingStatus, auctionList } = this.props
+    const { loadingStatus, columnList, auctionList } = this.props
 
     return (
       <div className="pt-5">
@@ -52,27 +68,25 @@ class AuctionTable extends PureComponent {
           Failed to load data.
         </div>}
 
-        {loadingStatus === 10 && <Table className="mb-0">
+        {loadingStatus === 10 && <Table responsive className="data-table mb-0">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Title</th>
-              <th>Current Price</th>
-              <th>Status</th>
-              <th>Started At</th>
-              <th>Ended At</th>
+              {columnList.filter(
+                column => column.get('enabled')
+              ).map(column => (
+                <th key={column.get('field')}>{column.get('label')}</th>
+              ))}
               <th></th>
             </tr>
           </thead>
           <tbody>
             {auctionList.map(auction => (
               <tr key={auction.get('pk')}>
-                <th scope="row">{auction.get('pk')}</th>
-                <td>{auction.get('title')}</td>
-                <td>{auction.get('current_price')}</td>
-                <td>{auction.get('status')}</td>
-                <td>{auction.get('started_at')}</td>
-                <td>{auction.get('ended_at')}</td>
+                {columnList.filter(
+                  column => column.get('enabled')
+                ).map(column => (
+                  <td key={column.get('field')}>{this.getCellValue(auction, column.get('field'))}</td>
+                ))}
                 <td>
                   <UncontrolledDropdown>
                     <DropdownToggle size="sm" color="link" className="py-0">
