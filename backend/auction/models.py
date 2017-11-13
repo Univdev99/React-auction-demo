@@ -63,7 +63,7 @@ class Auction(models.Model):
         return result['min_price'] if result['min_price'] else 0
 
     @property
-    def highest_bidder(self):
+    def highest_bid(self):
         return self.get_active_bid_queryset() \
             .filter(price=self.max_bid) \
             .select_related('user') \
@@ -72,7 +72,7 @@ class Auction(models.Model):
     @property
     def time_remaining(self):
         if self.status == AUCTION_STATUS_OPEN:
-            return (self.open_until - self.started_at).total_seconds
+            return (self.open_until - self.started_at).total_seconds()
         else:
             return 0
 

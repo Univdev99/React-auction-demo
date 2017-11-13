@@ -4,7 +4,8 @@ from unittest.mock import patch
 
 from django.utils import timezone
 
-from common.test import APISerializerTestCase
+from common.test import SerializerTestCase
+from api.serializers.auctions import AuctionAdminSerializer
 from api.serializers.auctions import StartAuctionSerializer
 from api.serializers.auctions import BidSerializer
 from api.serializers.auctions import AuctionShipProductSerializer
@@ -12,11 +13,36 @@ from account.test.factories import UserFactory
 from auction.constants import AUCTION_STATUS_OPEN
 from auction.constants import AUCTION_STATUS_WAITING_FOR_PAYMENT
 from auction.constants import AUCTION_STATUS_WAITING_TO_SHIP
+from auction.models import Auction
 from auction.test.factories import AuctionFactory
+from auction.test.factories import BidFactory
+
+
+class AuctionAdminSerializerTests(SerializerTestCase):
+    serializer_class = AuctionAdminSerializer
+
+    def setUp(self):
+        super(AuctionAdminSerializerTests, self).setUp()
+
+        self.auction = AuctionFactory.create()
+        self.bids = [
+            BidFactory.create(auction=self.auction),
+            BidFactory.create(auction=self.auction),
+        ]
+        self.auction2 = AuctionFactory.create()
+
+    def test_get_single(self):
+        serializer = self.get_serializer(self.auction)
+        self.assertIn('pk', serializer.data)
+
+    def test_get_list(self):
+        auction_queryset = Auction.objects.all()
+        serializer = self.get_serializer(auction_queryset, many=True)
+        self.assertEqual(len(serializer.data), 2)
 
 
 @patch('django.utils.timezone.now', return_value=timezone.make_aware(datetime(2017, 11, 1)))
-class StartAuctionSerializerTests(APISerializerTestCase):
+class StartAuctionSerializerTests(SerializerTestCase):
     serializer_class = StartAuctionSerializer
 
     def test_validation_succeeds_with_open_until(self, mock_now):
@@ -56,7 +82,7 @@ class StartAuctionSerializerTests(APISerializerTestCase):
 
 
 @patch('django.utils.timezone.now', return_value=timezone.make_aware(datetime(2017, 11, 1)))
-class BidSerializerTests(APISerializerTestCase):
+class BidSerializerTests(SerializerTestCase):
     serializer_class = BidSerializer
 
     def setUp(self):
@@ -109,7 +135,7 @@ class BidSerializerTests(APISerializerTestCase):
         self.assertInvalid(serializer)
 
 
-class AuctionShipProductSerializerTests(APISerializerTestCase):
+class AuctionShipProductSerializerTests(SerializerTestCase):
     serializer_class = AuctionShipProductSerializer
 
     def setUp(self):

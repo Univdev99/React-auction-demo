@@ -39,6 +39,8 @@ class AuctionAdminSerializer(AuctionSerializer):
     """
     Serializer used for Admin AuctionListView and AuctionDetailView
     """
+    highest_bidder = serializers.SerializerMethodField()
+
     class Meta:
         model = Auction
         fields = AuctionSerializer.Meta.fields + (
@@ -47,6 +49,13 @@ class AuctionAdminSerializer(AuctionSerializer):
         read_only_fields = AuctionSerializer.Meta.fields + (
             'max_bid', 'min_bid', 'highest_bidder', 'number_of_bids', 'time_remaining'
         )
+
+    def get_highest_bidder(self, obj):
+        try:
+            user = obj.highest_bid.user
+            return user.email
+        except:
+            return None
 
 
 class AuctionDetailWithSimilarSerializer(serializers.ModelSerializer):
