@@ -1,8 +1,11 @@
 import React, { PureComponent } from 'react'
-import { Table } from 'reactstrap'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Link } from 'react-router-dom'
+import {
+  Table,
+  UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem,
+} from 'reactstrap'
 
 import Spinner from 'components/Spinner'
 import {
@@ -58,7 +61,7 @@ class AuctionTable extends PureComponent {
               <th>Status</th>
               <th>Started At</th>
               <th>Ended At</th>
-              <th>Actions</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -71,27 +74,41 @@ class AuctionTable extends PureComponent {
                 <td>{auction.get('started_at')}</td>
                 <td>{auction.get('ended_at')}</td>
                 <td>
-                  <Link className="text-secondary pr-3" to={`/admin/auctions/${auction.get('pk')}`}>Edit</Link>
-                  {auction.get('status') === AUCTION_STATUS_PREVIEW && <Link
-                    className="text-primary pr-3"
-                    to={`/admin/auctions/${auction.get('pk')}/start`}
-                  >
-                    Start
-                  </Link>}
-                  {auction.get('status') === AUCTION_STATUS_OPEN && <a
-                    className="text-primary pr-3"
-                    href="/"
-                    onClick={this.handleFinish.bind(this, auction.get('pk'))}
-                  >
-                    Finish
-                  </a>}
-                  {auction.get('status') === AUCTION_STATUS_OPEN && <a
-                    className="text-danger pr-3"
-                    href="/"
-                    onClick={this.handleCancel.bind(this, auction.get('pk'))}
-                  >
-                    Cancel
-                  </a>}
+                  <UncontrolledDropdown>
+                    <DropdownToggle size="sm" color="link" className="py-0">
+                      <i className="fa fa-chevron-down" />
+                    </DropdownToggle>
+                    <DropdownMenu right>
+                      <DropdownItem
+                        className="text-secondary"
+                        to={`/admin/auctions/${auction.get('pk')}`}
+                        tag={Link}
+                      >
+                        Edit
+                      </DropdownItem>
+                      {auction.get('status') === AUCTION_STATUS_PREVIEW && <DropdownItem
+                        className="text-primary"
+                        to={`/admin/auctions/${auction.get('pk')}/start`}
+                        tag={Link}
+                      >
+                        Start
+                      </DropdownItem>}
+                      {auction.get('status') === AUCTION_STATUS_OPEN && <DropdownItem
+                        className="text-primary"
+                        to="/"
+                        onClick={this.handleFinish.bind(this, auction.get('pk'))}
+                      >
+                        Finish
+                      </DropdownItem>}
+                      {auction.get('status') === AUCTION_STATUS_OPEN && <DropdownItem
+                        className="text-danger pr-3"
+                        to="/"
+                        onClick={this.handleCancel.bind(this, auction.get('pk'))}
+                      >
+                        Cancel
+                      </DropdownItem>}
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
                 </td>
               </tr>
             ))}

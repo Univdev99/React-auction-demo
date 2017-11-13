@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
+import Immutable from 'immutable'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Link } from 'react-router-dom'
@@ -9,6 +10,7 @@ import classnames from 'classnames'
 import {
   TabContent, TabPane,
   Nav, NavItem, NavLink,
+  Dropdown, DropdownToggle, DropdownMenu, DropdownItem,
 } from 'reactstrap'
 
 import {
@@ -35,20 +37,20 @@ class AdminAuctionList extends PureComponent {
     cancelAuction: PropTypes.func.isRequired,
   }
 
-  static columnList = [
-    { field: 'item_number', label: 'Item Number' },
-    { field: 'item_donor', label: 'Item Donor' },
-    { field: 'max_bid', label: 'Max Bid' },
-    { field: 'min_bid', label: 'Min Bid' },
-    { field: 'highest_bidder', label: 'Highest Bidder' },
-    { field: 'time_started', label: 'Time Started' },
-    { field: 'time_remaining', label: 'Time Remaining' },
-    { field: 'number_of_bids', label: 'Number of Bids' },
-  ]
-
   state = {
     loadingStatus: 1,
     statusFilter: AUCTION_STATUS_OPEN,
+    columnMenuOpen: false,
+    columnList: Immutable.fromJS([
+      { field: 'item_number', label: 'Item number', enabled: true },
+      { field: 'item_donor', label: 'Item donor', enabled: true },
+      { field: 'max_bid', label: 'Max bid', enabled: true },
+      { field: 'min_bid', label: 'Min bid', enabled: true },
+      { field: 'highest_bidder', label: 'Highest bidder', enabled: true },
+      { field: 'started_at', label: 'Time started', enabled: true },
+      { field: 'time_remaining', label: 'Time remaining', enabled: true },
+      { field: 'number_of_bids', label: 'Number of bids', enabled: true },
+    ])
   }
 
   loadData = () => {
@@ -68,6 +70,46 @@ class AdminAuctionList extends PureComponent {
     })
   }
 
+  getColumnIndex = (field) => {
+    const { columnList } = this.state
+    const count = columnList.size
+
+    for (let i = 0; i < count; i++) {
+      const _column = columnList.get(i)
+      if (_column.get('field') === field) {
+        return i
+      }
+    }
+    return -1
+  }
+
+  handleToggleColumnMenu = (e) => {
+    if (e.target.classList.contains('dropdown-item')) {
+      return
+    }
+
+    this.setState({
+      columnMenuOpen: !this.state.columnMenuOpen
+    })
+  }
+
+  handleToggleColumn = (field, event) => {
+    event.preventDefault()
+
+    const { columnList } = this.state
+    const columnIndex = this.getColumnIndex(field)
+
+    if (columnIndex >= 0) {
+      const path = [columnIndex, 'enabled']
+      this.setState({
+        columnList: columnList.setIn(
+          path,
+          !columnList.getIn(path)
+        )
+      })
+    }
+  }
+
   handleChangeTab = (statusFilter, e) => {
     e.preventDefault()
 
@@ -75,10 +117,6 @@ class AdminAuctionList extends PureComponent {
       statusFilter,
     })
     this.loadData()
-  }
-
-  handleToggleColumnSelection = (e) => {
-    e.preventDefault()
   }
 
   handleFinish = (id) => {
@@ -114,7 +152,7 @@ class AdminAuctionList extends PureComponent {
   render() {
     const { adminAuctions } = this.props
     const auctionList = adminAuctions.get('auctionList')
-    const { loadingStatus, statusFilter } = this.state
+    const { loadingStatus, statusFilter, columnMenuOpen, columnList } = this.state
 
     return (
       <div>
@@ -162,11 +200,30 @@ class AdminAuctionList extends PureComponent {
               </NavLink>
             </NavItem>
             <NavItem className="ml-auto">
-              <NavLink
-                href="/"
-                onClick={this.handleToggleColumnSelection}
-              >
-                Column Selection
+              <NavLink tag="span">
+                <Dropdown isOpen={columnMenuOpen} toggle={this.handleToggleColumnMenu}>
+                  <DropdownToggle size="sm" color="link" className="p-0">
+                    <i className="fa fa-chevron-down" />
+                  </DropdownToggle>
+                  <DropdownMenu right>
+                    {columnList.map(column => (
+                      <DropdownItem
+                        key={column.get('field')}
+                        className="position-relative"
+                        onClick={this.handleToggleColumn.bind(this, column.get('field'))}
+                      >
+                        <div className="menu-tick">
+                          {
+                            column.get('enabled') ?
+                            <i className="fa fa-dot-circle-o" /> :
+                            <i className="fa fa-circle-o" />
+                          }
+                        </div>
+                        {column.get('label')}
+                      </DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                </Dropdown>
               </NavLink>
             </NavItem>
           </Nav>

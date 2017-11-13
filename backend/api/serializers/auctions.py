@@ -19,9 +19,6 @@ from notification.models import Notification
 
 
 class AuctionSerializer(serializers.ModelSerializer):
-    """
-    Serializer used for AuctionListView and AuctionDetailView
-    """
     product_details = serializers.SerializerMethodField()
 
     class Meta:
@@ -36,6 +33,20 @@ class AuctionSerializer(serializers.ModelSerializer):
     def get_product_details(self, obj):
         serializer = ProductDetailSerializer(obj.product)
         return serializer.data
+
+
+class AuctionAdminSerializer(AuctionSerializer):
+    """
+    Serializer used for Admin AuctionListView and AuctionDetailView
+    """
+    class Meta:
+        model = Auction
+        fields = AuctionSerializer.Meta.fields + (
+            'max_bid', 'min_bid', 'highest_bidder', 'number_of_bids', 'time_remaining'
+        )
+        read_only_fields = AuctionSerializer.Meta.fields + (
+            'max_bid', 'min_bid', 'highest_bidder', 'number_of_bids', 'time_remaining'
+        )
 
 
 class AuctionDetailWithSimilarSerializer(serializers.ModelSerializer):
