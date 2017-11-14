@@ -27,6 +27,12 @@ class AuctionBidModal extends PureComponent {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.show !== nextProps.show) {
+      this.setState({ error: false })
+    }
+  }
+
   handleSubmit = (data) => {
     const { auctionId, handleHide, placeBid, showModal, stopSubmit } = this.props
     this.setState({ error: false })
