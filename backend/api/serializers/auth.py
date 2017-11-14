@@ -6,7 +6,6 @@ from rest_framework import serializers
 
 class PasswordVerificationMixin(object):
     def validate_password(self, value):
-        print('password: ', value)
         return make_password(value if value else get_user_model().objects.make_random_password())
 
 

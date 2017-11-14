@@ -57,7 +57,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     is_staff = models.BooleanField(_('Staff Status'), default=False)
 
-    is_active = models.BooleanField(_('Active'), default=True)
+    is_active = models.BooleanField(_('Active'), default=False)
 
     date_joined = models.DateTimeField(_('Date Joined'), auto_now_add=True)
 

@@ -63,6 +63,7 @@ class CurrentUserTests(APITestCase):
             'first_name': 'Test',
             'last_name': 'Tester',
             'password': 'abcde123',
+            'is_active': True
         }
 
     def setUp(self):

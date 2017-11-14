@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
                 ('username', models.CharField(max_length=255, unique=True, blank=True, null=True, verbose_name='Username')),
                 ('is_superuser', models.BooleanField(default=False, verbose_name='Superuser Status')),
                 ('is_staff', models.BooleanField(default=False, verbose_name='Staff Status')),
-                ('is_active', models.BooleanField(default=True, verbose_name='Active')),
+                ('is_active', models.BooleanField(default=False, verbose_name='Active')),
                 ('date_joined', models.DateTimeField(auto_now_add=True, verbose_name='Date Joined')),
                 ('phone_number', phonenumber_field.modelfields.PhoneNumberField(max_length=20, blank=True, null=True)),
                 ('address_line', models.CharField(blank=True, max_length=255, null=True, verbose_name='Address Line')),
