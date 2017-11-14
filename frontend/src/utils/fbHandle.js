@@ -59,7 +59,6 @@ export default (WrappedComponent, selectData) => {
 
     render() {
       const { fbReady } = this.state
-      console.log('fbhandle:true', fbReady)
 
       return (
         <WrappedComponent 

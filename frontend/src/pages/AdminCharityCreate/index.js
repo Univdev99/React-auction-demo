@@ -8,6 +8,7 @@ import Immutable from 'immutable'
 import RichTextEditor from 'react-rte'
 
 import CharityForm from 'components/CharityForm'
+import formSubmit from 'utils/formSubmit'
 import {
   createCharity,
 } from 'store/modules/admin/charities'
@@ -20,30 +21,20 @@ class AdminCharityCreate extends PureComponent {
     history: PropTypes.object.isRequired,
   }
 
-  state = {
-    creatingStatus: 0,
-  }
-
   handleSubmit = (data) => {
+    const { createCharity } = this.props
+
     const formData = data.set(
       'description',
       data.get('description').toString('html')
     )
 
-    this.setState({
-      creatingStatus: 1
-    })
-
-    this.props.createCharity({
+    return formSubmit(createCharity, {
+      id: this.props.match.params.id,
       data: formData,
       success: ({ data }) => {
         this.props.history.push({
           pathname: `/admin/charities/${data.pk}`
-        })
-      },
-      fail: () => {
-        this.setState({
-          creatingStatus: -1
         })
       }
     })
@@ -54,8 +45,6 @@ class AdminCharityCreate extends PureComponent {
   })
 
   render() {
-    const { creatingStatus } = this.state
-
     const _charityDetail = Immutable.Map({
       description: RichTextEditor.createEmptyValue()
     })
@@ -65,13 +54,8 @@ class AdminCharityCreate extends PureComponent {
         <div>
           <h3 className="mb-5">Create Charity</h3>
 
-          {creatingStatus === -1 && <div className="mb-2 text-danger">
-            Failed to create charity
-          </div>}
-
           <CharityForm
             initialValues={_charityDetail}
-            disabled={creatingStatus === 1}
             onSubmit={this.handleSubmit}
             onBack={this.handleBack}
           />

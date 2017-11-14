@@ -9,6 +9,7 @@ import { withRouter } from 'react-router'
 import RichTextEditor from 'react-rte'
 
 import DonorForm from 'components/DonorForm'
+import formSubmit from 'utils/formSubmit'
 import Spinner from 'components/Spinner'
 import { getCharityList } from 'store/modules/admin/charities'
 import { createDonor } from 'store/modules/admin/donors'
@@ -24,30 +25,18 @@ class AdminDonorCreate extends PureComponent {
     history: PropTypes.object.isRequired,
   }
 
-  state = {
-    creatingStatus: 0,
-  }
-
   handleSubmit = (data) => {
+    const { createDonor, history } = this.props
     const formData = data.set(
       'description',
       data.get('description').toString('html')
     )
 
-    this.setState({
-      creatingStatus: 1
-    })
-
-    this.props.createDonor({
+    return formSubmit(createDonor, {
       data: formData,
       success: ({ data }) => {
-        this.props.history.push({
+        history.push({
           pathname: `/admin/donors/${data.pk}`
-        })
-      },
-      fail: () => {
-        this.setState({
-          creatingStatus: -1
         })
       }
     })
@@ -69,7 +58,6 @@ class AdminDonorCreate extends PureComponent {
     const { adminCharities } = this.props
     const charityListLoaded = adminCharities.get('charityListLoaded')
     const charityList = adminCharities.get('charityList')
-    const { creatingStatus } = this.state
 
     const _donorDetail = Immutable.Map({
       description: RichTextEditor.createEmptyValue()
@@ -82,19 +70,14 @@ class AdminDonorCreate extends PureComponent {
 
           {!charityListLoaded && <Spinner />}
 
-          {charityListLoaded && <div>
-            {creatingStatus === -1 && <div className="mb-2 text-danger">
-              Failed to create donor
-            </div>}
-
+          {charityListLoaded &&
             <DonorForm
               initialValues={_donorDetail}
               charityList={charityList}
-              disabled={creatingStatus === 1}
               onSubmit={this.handleSubmit}
               onBack={this.handleBack}
             />
-          </div>}
+          }
         </div>
       </div>
     )

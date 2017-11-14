@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { compose } from 'redux'
-import { Col, Row } from 'reactstrap'
+import { Alert, Col, Row } from 'reactstrap'
 import { reduxForm } from 'redux-form/immutable'
 import PropTypes from 'prop-types'
 
@@ -11,22 +11,29 @@ import InputField from 'components/InputField'
 class SignUpForm extends PureComponent {
 
   static propTypes = {
+    error: PropTypes.any,
+    forModal: PropTypes.bool,
     handleSubmit: PropTypes.func.isRequired,
-    disabled: PropTypes.bool,
-    simple: PropTypes.bool
+    submitFailed: PropTypes.bool,
+    submitting: PropTypes.bool,
   }
 
   render() {
-    const { handleSubmit, disabled, simple } = this.props
+    const { error, handleSubmit, forModal, submitting, submitFailed } = this.props
+
     return (
       <form onSubmit={handleSubmit}>
+        {submitFailed && <Alert color="danger">
+          {error || 'Failed to sign up'}
+        </Alert>}
+
         <FormField
           name="email"
           type="email"
           label="Email:"
           component={InputField}
         />
-        {!simple && <Row>
+        {!forModal && <Row>
           <Col xs={12} md={6}>
             <FormField
               name="first_name"
@@ -56,9 +63,11 @@ class SignUpForm extends PureComponent {
           label="Password Confirmation:"
           component={InputField}
         />
-        <center>
-          <button type="submit" className="btn btn-primary" disabled={disabled}>Sign Up</button>
-        </center>
+        <div className="text-center">
+          <button type="submit" className="btn btn-primary" disabled={submitting}>
+            Sign Up
+          </button>
+        </div>
       </form>
     )
   }

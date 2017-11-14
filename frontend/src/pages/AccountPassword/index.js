@@ -3,10 +3,10 @@ import { Alert } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
-import { stopSubmit } from 'redux-form'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
+import formSubmit from 'utils/formSubmit'
 import PasswordForm from 'components/PasswordForm'
 import Spinner from 'components/Spinner'
 import { authSelector } from 'store/selectors'
@@ -17,7 +17,6 @@ class AccountPassword extends PureComponent {
 
   static propTypes = {
     auth: ImmutablePropTypes.map.isRequired,
-    stopSubmit: PropTypes.func.isRequired,
     updatePassword: PropTypes.func.isRequired,
   }
 
@@ -26,24 +25,16 @@ class AccountPassword extends PureComponent {
   }
 
   handleSubmit = (data) => {
-    const { stopSubmit } = this.props
+    const { updatePassword } = this.props
     this.setState({
       updateStatus: 1
     })
 
-    this.props.updatePassword({
+    return formSubmit(updatePassword, {
       data,
-      success: () => {
-        this.setState({
-          updateStatus: 10
-        })
-      },
-      fail: ({ data }) => {
-        this.setState({
-          updateStatus: -1
-        })
-        stopSubmit('changePasswordForm', data)
-      }
+      success: () => this.setState({
+        updateStatus: 10
+      })
     })
   }
 
@@ -59,12 +50,7 @@ class AccountPassword extends PureComponent {
 
     return (
       <div>
-
         <h3 className="mb-4">Change Password</h3>
-
-        {updateStatus === -1 && <Alert color="danger">
-          Failed to update your password
-        </Alert>}
 
         {updateStatus === 10 && <Alert color="success">
           Successfully updated password
@@ -85,7 +71,6 @@ const selector = createStructuredSelector({
 })
 
 const actions = {
-  stopSubmit,
   updatePassword,
 }
 

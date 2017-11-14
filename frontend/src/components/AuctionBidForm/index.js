@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Button } from 'reactstrap'
+import { Alert, Button } from 'reactstrap'
 import { compose } from 'redux'
 import { reduxForm } from 'redux-form/immutable'
 import PropTypes from 'prop-types'
@@ -12,14 +12,21 @@ const amountIsRequired = value => (value ? undefined : 'Amount is Required')
 class AuctionBidForm extends PureComponent {
 
   static propTypes = {
-    handleSubmit: PropTypes.func.isRequired
+    error: PropTypes.any,
+    handleSubmit: PropTypes.func.isRequired,
+    submitFailed: PropTypes.bool,
+    submitting: PropTypes.bool,
   }
 
   render() {
-    const { handleSubmit } = this.props
+    const { error, handleSubmit, submitFailed, submitting } = this.props
 
     return (
       <form onSubmit={handleSubmit}>
+        {submitFailed && <Alert color="danger">
+          {error || 'Failed to place your bid'}
+        </Alert>}
+
         <FormField
           name="price"
           type="number"
@@ -28,7 +35,7 @@ class AuctionBidForm extends PureComponent {
           required={[amountIsRequired]}
         />
         <div className="text-center">
-          <Button type="submit" color="primary">
+          <Button type="submit" color="primary" disabled={submitting}>
             Bid on this auction
           </Button>
         </div>

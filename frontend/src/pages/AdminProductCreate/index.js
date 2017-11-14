@@ -8,6 +8,7 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withRouter } from 'react-router'
 
+import formSubmit from 'utils/formSubmit'
 import ProductForm from 'components/ProductForm'
 import Spinner from 'components/Spinner'
 import { getDonorList } from 'store/modules/admin/donors'
@@ -24,29 +25,18 @@ class AdminProductCreate extends PureComponent {
     history: PropTypes.object.isRequired,
   }
 
-  state = {
-    creatingStatus: 0,
-  }
-
   handleSubmit = (data) => {
+    const { createProduct, history } = this.props
     const formData = data.set(
       'description',
       data.get('description').toString('html')
     )
 
-    this.setState({
-      creatingStatus: 1
-    })
-    this.props.createProduct({
+    return formSubmit(createProduct, {
       data: formData,
       success: ({ data }) => {
-        this.props.history.push({
+        history.push({
           pathname: `/admin/products/${data.pk}`
-        })
-      },
-      fail: () => {
-        this.setState({
-          creatingStatus: -1
         })
       }
     })
@@ -68,7 +58,6 @@ class AdminProductCreate extends PureComponent {
     const { adminDonors } = this.props
     const donorListLoaded = adminDonors.get('donorListLoaded')
     const donorList = adminDonors.get('donorList')
-    const { creatingStatus } = this.state
 
     const _productDetail = Immutable.Map({
       description: RichTextEditor.createEmptyValue()
@@ -81,19 +70,14 @@ class AdminProductCreate extends PureComponent {
 
           {!donorListLoaded && <Spinner />}
 
-          {donorListLoaded && <div>
-            {creatingStatus === -1 && <div className="mb-2 text-danger">
-              Failed to create product
-            </div>}
-
+          {donorListLoaded &&
             <ProductForm
               initialValues={_productDetail}
               donorList={donorList}
-              disabled={creatingStatus === 1}
               onSubmit={this.handleSubmit}
               onBack={this.handleBack}
             />
-          </div>}
+          }
         </div>
       </div>
     )
