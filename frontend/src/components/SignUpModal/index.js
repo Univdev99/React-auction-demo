@@ -6,15 +6,21 @@ import { connect } from 'react-redux'
 import { connectModal, show as showModal } from 'redux-modal'
 import { modalSelector } from 'store/selectors'
 
+import auctionBidFlow from 'utils/auctionBidFlow'
+import fbHandle from 'utils/fbHandle'
 import SignUpForm from 'components/SignUpForm'
 import { signUp } from 'store/modules/auth'
 
 class SignUpModal extends PureComponent {
   static propTypes = {
+    auctionId: PropTypes.number,
+    fbReady: PropTypes.bool,
     handleHide: PropTypes.func.isRequired,
     show: PropTypes.bool.isRequired,
     showModal: PropTypes.func.isRequired,
-    signUp: PropTypes.func.isRequired
+    signUp: PropTypes.func.isRequired,
+    signUpWithFacebook: PropTypes.func.isRequired,
+    startBidFlow: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -28,6 +34,25 @@ class SignUpModal extends PureComponent {
     const { handleHide, showModal } = this.props
     handleHide()
     showModal('signinModal')
+  }
+
+  handleSignUpWithFacebook = (event) => {
+    const { auctionId, handleHide, signUpWithFacebook, startBidFlow } = this.props
+    event.preventDefault()
+
+    this.setState({
+      signUpStatus: 1
+    })
+
+    signUpWithFacebook({
+      success: () => {
+        handleHide()
+        startBidFlow(auctionId)
+      },
+      fail: () => this.setState({
+        signUpStatus: -1
+      })
+    })
   }
 
   handleSubmit = (data) => {
@@ -45,7 +70,7 @@ class SignUpModal extends PureComponent {
   }
 
   render() {
-    const { handleHide, show } = this.props
+    const { fbReady, handleHide, show } = this.props
     const { signUpError } = this.state
 
     return (
@@ -56,7 +81,9 @@ class SignUpModal extends PureComponent {
         </div>}
         <ModalBody>
           <p>Please sign up to our website</p>
-          <Button color="secondary" block>Sign up using facebook</Button>
+          <Button color="secondary" block disabled={!fbReady} onClick={this.handleSignUpWithFacebook}>
+            Sign up using facebook
+          </Button>
           <hr />
           <SignUpForm forModal onSubmit={this.handleSubmit} simple />
           <div className="text-center">
@@ -81,5 +108,7 @@ export default compose(
     name: 'signupModal',
     destroyOnHide: false,
     getModalState: modalSelector
-  })
+  }),
+  auctionBidFlow,
+  fbHandle
 )(SignUpModal)

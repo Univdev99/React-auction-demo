@@ -14,9 +14,9 @@ class SignUpTests(APITestCase):
     def get_data(self):
         return {
             'email': 'tester1@test.com',
-            'username': 'tester1',
+            'first_name': 'tester1',
+            'last_name': 'test',
             'password': 'abcde123',
-            'password_confirm': 'abcde123',
         }
 
     def test_signup(self):

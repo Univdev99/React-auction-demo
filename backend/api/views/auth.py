@@ -3,8 +3,9 @@ from django.conf import settings
 from django.core import mail
 from django.db import transaction
 from django.utils.crypto import get_random_string
-
 from facebook import GraphAPI, GraphAPIError
+from rest_framework_jwt.serializers import JSONWebTokenSerializer
+
 from rest_framework import generics, views
 from rest_framework.exceptions import ParseError
 from rest_framework.permissions import IsAuthenticated
@@ -13,7 +14,6 @@ from rest_framework import status
 
 from api.serializers.auth import SignUpSerializer
 from api.serializers.auth import SignUpVerificationSerializer
-from api.serializers.auth import SignUpWithFacebookSerializer
 from api.serializers.auth import UserSerializer
 from api.serializers.auth import UpdatePasswordSerializer
 
@@ -28,11 +28,7 @@ class SignUpView(views.APIView):
     def post(self, *args, **kwargs):
         serializer = SignUpSerializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
-        user = get_user_model().objects.create_user(
-            serializer.validated_data['email'],
-            serializer.validated_data['password'],
-            is_active=False,
-        )
+        user = serializer.save()
         user_verification = UserVerification.objects.create(
             token=get_random_string(32),
             user=user
@@ -47,9 +43,7 @@ class SignUpView(views.APIView):
                 [serializer.validated_data['email']],
                 connection=connection,
             ).send()
-        return Response({
-            'token': user_verification.token,
-        }, status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class SignUpVerificationView(views.APIView):
@@ -85,26 +79,32 @@ class SignUpWithFacebookView(views.APIView):
     permission_classes = ()
 
     def post(self, *args, **kwargs):
-        serializer = SignUpWithFacebookSerializer(data=self.request.data)
-        serializer.is_valid(raise_exception=True)
-
-        access_token = serializer.validated_data['access_token']
         try:
-            graph = GraphAPI(access_token=access_token, version=settings.FACEBOOK_APP_VERSION)
-            data = graph.get_object(id='me', fields='email,first_name,last_name')
+            graph = GraphAPI(
+                access_token=self.request.data['access_token'],
+                version=settings.FACEBOOK_APP_VERSION
+            )
+            graph_data = graph.get_object(id='me', fields='email,first_name,last_name')
         except GraphAPIError:
             raise ParseError(detail='Invalid Facebook access token')
 
-        user = get_user_model().objects.create_user(
-            data['email'],
-            serializer.validated_data['password'],
-            first_name=data['first_name'],
-            last_name=data['last_name'],
-            is_active=True,
-        )
+        data = {
+            **graph_data,
+            'password': get_user_model().objects.make_random_password()
+        }
+
+        user, created = get_user_model().objects.get_or_create(email=data['email'])
+        signup_ser = SignUpSerializer(instance=user, data=data)
+        signup_ser.is_valid(raise_exception=True)
+
+        user = signup_ser.save(is_active=True)
+
+        token_ser = JSONWebTokenSerializer(data={'email': data['email'], 'password': data['password']})
+        token_ser.is_valid(raise_exception=True)
+
         return Response({
-            'success': True
-        }, status=status.HTTP_201_CREATED)
+            'token': token_ser.object.get('token')
+        }, status=status.HTTP_201_CREATED if created else status.HTTP_200_OK)
 
 
 class CurrentUserView(views.APIView):

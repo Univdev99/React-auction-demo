@@ -1,5 +1,3 @@
-/*global FB:true*/
-
 import React, { PureComponent } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
@@ -8,19 +6,19 @@ import PropTypes from 'prop-types'
 
 import AppContainerLayout from 'components/AppContainerLayout'
 import AppLayout1 from 'pages/AppLayout1'
+import fbHandle from 'utils/fbHandle'
 import SignUpForm from 'components/SignUpForm'
-import { FACEBOOK_APP_ID, FACEBOOK_API_VERSION } from 'config'
 import { signUp } from 'store/modules/auth'
-
 
 class SignUp extends PureComponent {
 
   static propTypes = {
+    fbReady: PropTypes.bool,
     signUp: PropTypes.func.isRequired,
+    signUpWithFacebook: PropTypes.func.isRequired
   }
 
   state = {
-    fbReady: false,
     signUpStatus: 0,
   }
 
@@ -40,50 +38,31 @@ class SignUp extends PureComponent {
     })
   }
 
-  signUpWithFacebook = (event) => {
+  handleSignUpWithFacebook = (event) => {
+    const { fbReady, signUpWithFacebook } = this.props
     event.preventDefault()
 
-    if (!this.state.fbReady) {
+    if (!fbReady) {
       return
     }
+    
+    this.setState({
+      signUpStatus: 1
+    })
 
-    FB.login((response) => {
-      if (response.status === 'connected') {
-        this.props.history.push({
-          pathname: `/signup-with-facebook/${response.authResponse.accessToken}`
-        })
-      }
-    }, {
-      scope: 'public_profile,email'
+    signUpWithFacebook({
+      success: () => this.setState({
+        signUpStatus: 10
+      }),
+      fail: () => this.setState({
+        signUpStatus: -1
+      })
     })
   }
 
-  componentDidMount() {
-    window.fbAsyncInit = () => {
-      FB.init({
-        appId : FACEBOOK_APP_ID,
-        cookie : true,
-        xfbml : true,
-        version : FACEBOOK_API_VERSION
-      })
-
-      this.setState({
-        fbReady: true
-      })
-    }
-
-    (function(d, s, id){
-      var js, fjs = d.getElementsByTagName(s)[0]
-      if (d.getElementById(id)) {return}
-      js = d.createElement(s)
-      js.id = id
-      js.src = "https://connect.facebook.net/en_US/sdk.js"
-      fjs.parentNode.insertBefore(js, fjs)
-    }(document, 'script', 'facebook-jssdk'))
-  }
-
   render() {
-    const { fbReady, signUpStatus } = this.state
+    const { fbReady } = this.props
+    const { signUpStatus } = this.state
 
     return (
       <AppLayout1>
@@ -105,9 +84,11 @@ class SignUp extends PureComponent {
 
                   <SignUpForm onSubmit={this.handleSubmit} disabled={signUpStatus === 1} />
 
-                  <center className="mt-2">
-                    <a className={fbReady ? '' : 'text-muted'} href="/" onClick={this.signUpWithFacebook}>Sign Up With Facebook</a>
-                  </center>
+                  <div className="text-center mt-2">
+                    <a className={fbReady ? '' : 'text-muted'} href="/" onClick={this.handleSignUpWithFacebook}>
+                      Sign Up With Facebook
+                    </a>
+                  </div>
 
                 </div>
               }
@@ -123,9 +104,10 @@ const selector = createStructuredSelector({
 })
 
 const actions = {
-  signUp,
+  signUp
 }
 
 export default compose(
+  fbHandle,
   connect(selector, actions)
 )(SignUp)

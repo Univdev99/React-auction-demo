@@ -1,34 +1,20 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
-
+from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
 
 class PasswordVerificationMixin(object):
-    def validate(self, data):
-        data = super(PasswordVerificationMixin, self).validate(data)
-        if data['password'] != data['password_confirm']:
-            raise serializers.ValidationError('Password confirmation does not match')
-        return data
+    def validate_password(self, value):
+        print('password: ', value)
+        return make_password(value if value else get_user_model().objects.make_random_password())
 
 
-class OptionalPasswordVerificationMixin(object):
-    def validate(self, data):
-        data = super(OptionalPasswordVerificationMixin, self).validate(data)
-        if 'password' in data and 'password_confirm' in data and data['password'] != data['password_confirm']:
-            raise serializers.ValidationError('Password confirmation does not match')
-        return data
-
-
-class SignUpSerializer(PasswordVerificationMixin, serializers.Serializer):
-    email = serializers.CharField()
+class SignUpSerializer(PasswordVerificationMixin, serializers.ModelSerializer):
     password = serializers.CharField(min_length=6, write_only=True)
-    password_confirm = serializers.CharField(min_length=6, write_only=True)
-
-
-class SignUpWithFacebookSerializer(PasswordVerificationMixin, serializers.Serializer):
-    password = serializers.CharField(min_length=6, write_only=True)
-    password_confirm = serializers.CharField(min_length=6, write_only=True)
-    access_token = serializers.CharField()
+    class Meta:
+        model = get_user_model()
+        fields = ('email', 'first_name', 'last_name', 'password',)
 
 
 class SignUpVerificationSerializer(serializers.Serializer):

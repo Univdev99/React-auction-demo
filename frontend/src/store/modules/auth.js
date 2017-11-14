@@ -42,21 +42,25 @@ export const verifySignUp = createAction(AUTH_VERIFY_SIGNUP)
 export const resetSignUpVerification = createAction(AUTH_VERIFY_SIGNUP_RESET)
 export const updatePassword = createAction(AUTH_PASSWORD_UPDATE)
 
+
+const setSignedIn = (state, { payload }) => state.withMutations(map => {
+  const { token } = payload
+  saveData({ token })
+  map.set('signedIn', true)
+})
 /* Reducer */
 
 export default handleActions({
 
   /* Sign in actions */
 
-  [requestSuccess(AUTH_SIGNIN)]: (state, { payload }) => state.withMutations(map => {
-    const { token } = payload
-    saveData({ token })
-    map.set('signedIn', true)
-  }),
+  [requestSuccess(AUTH_SIGNIN)]: setSignedIn,
 
   [requestFail(AUTH_SIGNIN)]: (state, { payload }) => state.withMutations(map => {
     map.set('signedIn', false)
   }),
+
+  [requestSuccess(AUTH_SIGNUP_WITH_FACEBOOK)]: setSignedIn,
 
   /* Get current user actions */
 
