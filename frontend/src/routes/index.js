@@ -68,7 +68,8 @@ import {
 
 // Layout components
 import AccountLayout from 'components/AccountLayout'
-
+import AppLayout1 from 'pages/AppLayout1'
+import AppContainerLayout from 'components/AppContainerLayout'
 
 const AdminRoutes = props => (
   <AdminLayout>
@@ -104,6 +105,32 @@ const AccountRoutes = props => (
   </AccountLayout>
 )
 
+const isHome = props => props.location.pathname === '/'
+
+const FrontendRoutes = props => !isHome(props) && (
+  <AppLayout1>
+    <AppContainerLayout>
+      <Route exact path="/signin" component={userIsNotAuthenticated(SignIn)} />
+      <Route exact path="/signup" component={userIsNotAuthenticated(SignUp)} />
+      <Route exact path="/verify-account/:token" component={SignUpVerification} />
+
+      <Route exact path="/auctions" component={Auctions} />
+      <Route exact path="/auctions/:id" component={AuctionDetail} />
+
+      <Route exact path="/donors" component={Donors} />
+      <Route exact path="/donors/:id" component={DonorDetail} />
+
+      <Route exact path="/careers" component={Careers} />
+      <Route exact path="/faqs" component={Faqs} />
+      <Route exact path="/jobs/:id" component={JobDetail} />
+      <Route exact path="/privacy-policy" component={PrivacyPolicy} />
+      <Route exact path="/shipping" component={Shipping} />
+      <Route exact path="/support" component={Support} />
+      <Route exact path="/terms-conditions" component={TermsConditions} />
+    </AppContainerLayout>
+  </AppLayout1>
+)
+
 const modals = (
   <div>
     <AuctionBidModal />
@@ -117,32 +144,13 @@ const modals = (
 const Routes = ({ history }) => (
   <ConnectedRouter history={history}>
     <div>
-      <Route exact path="/" component={Home} />
-      <Route exact path="/signin" component={userIsNotAuthenticated(SignIn)} />
-      <Route exact path="/signup" component={userIsNotAuthenticated(SignUp)} />
-      <Route exact path="/verify-account/:token" component={SignUpVerification} />
-
-      <Route exact path="/auctions" component={Auctions} />
-      <Route exact path="/auctions/:id" component={AuctionDetail} />
-
-      <Route exact path="/donors" component={Donors} />
-      <Route exact path="/donors/:id" component={DonorDetail} />
-
-      <Route exact path="/admin-authenticating" component={userIsAuthenticated(currentUserNotLoadedForAdmin(AdminAuthenticating))} />
       <Route path="/admin" component={userIsAdmin(AdminRoutes)} />
-
+      <Route exact path="/admin-authenticating" component={userIsAuthenticated(currentUserNotLoadedForAdmin(AdminAuthenticating))} />
       <Route path="/account/:slug?" component={userIsAuthenticated(AccountRoutes)} />
 
-      <Route exact path="/careers" component={Careers} />
-      <Route exact path="/faqs" component={Faqs} />
-      <Route exact path="/jobs/:id" component={JobDetail} />
-      <Route exact path="/privacy-policy" component={PrivacyPolicy} />
-      <Route exact path="/shipping" component={Shipping} />
-      <Route exact path="/support" component={Support} />
-      <Route exact path="/terms-conditions" component={TermsConditions} />
-
+      <Route exact path="/" component={Home} />
       <Route path="/" component={RealTimeNotificationManager} />
-
+      <Route path="/" component={FrontendRoutes} />
       {modals}
     </div>
   </ConnectedRouter>

@@ -4,8 +4,6 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 
-import AppContainerLayout from 'components/AppContainerLayout'
-import AppLayout1 from 'pages/AppLayout1'
 import fbHandle from 'utils/fbHandle'
 import SignUpForm from 'components/SignUpForm'
 import { signUp } from 'store/modules/auth'
@@ -65,37 +63,33 @@ class SignUp extends PureComponent {
     const { signUpStatus } = this.state
 
     return (
-      <AppLayout1>
-        <AppContainerLayout>
-          <div className="row justify-content-center">
-            <div className="col-12 col-md-8 col-lg-6">
-              {
-                signUpStatus === 10 ?
-                <center>
-                  You've successfully signed up a new account. Please check your email for account verification.
-                </center>
-                :
-                <div>
-                  <h3 className="mb-4 text-center">Sign Up</h3>
+      <div className="row justify-content-center">
+        <div className="col-12 col-md-8 col-lg-6">
+          {
+            signUpStatus === 10 ?
+            <center>
+              You've successfully signed up a new account. Please check your email for account verification.
+            </center>
+            :
+            <div>
+              <h3 className="mb-4 text-center">Sign Up</h3>
 
-                  {signUpStatus === -1 && <div className="mb-2 text-danger">
-                    Failed to sign up
-                  </div>}
+              {signUpStatus === -1 && <div className="mb-2 text-danger">
+                Failed to sign up
+              </div>}
 
-                  <SignUpForm onSubmit={this.handleSubmit} disabled={signUpStatus === 1} />
+              <SignUpForm onSubmit={this.handleSubmit} disabled={signUpStatus === 1} />
 
-                  <div className="text-center mt-2">
-                    <a className={fbReady ? '' : 'text-muted'} href="/" onClick={this.handleSignUpWithFacebook}>
-                      Sign Up With Facebook
-                    </a>
-                  </div>
+              <div className="text-center mt-2">
+                <a className={fbReady ? '' : 'text-muted'} href="/" onClick={this.handleSignUpWithFacebook}>
+                  Sign Up With Facebook
+                </a>
+              </div>
 
-                </div>
-              }
             </div>
-          </div>
-        </AppContainerLayout>
-      </AppLayout1>
+          }
+        </div>
+      </div>
     )
   }
 }

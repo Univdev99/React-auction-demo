@@ -7,8 +7,6 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import { reduxForm } from 'redux-form'
 
-import AppContainerLayout from 'components/AppContainerLayout'
-import AppLayout1 from 'pages/AppLayout1'
 import Breadcrumb from 'components/Breadcrumb'
 import FormField from 'components/FormField'
 import InputField from 'components/InputField'
@@ -82,66 +80,64 @@ class JobDetail extends PureComponent {
     const title = jobDetail ? jobDetail.get('title') : ''
 
     return (
-      <AppLayout1>
-        <AppContainerLayout>
-          <Breadcrumb className="mb-5" path={this.breadcrumbPath(title)} />
+      <div>
+        <Breadcrumb className="mb-5" path={this.breadcrumbPath(title)} />
 
-          {status === 0 && <Spinner />}
+        {status === 0 && <Spinner />}
 
-          {status === -1 && <Alert color="danger">Job not found</Alert>}
+        {status === -1 && <Alert color="danger">Job not found</Alert>}
 
-          {status === 1 && jobDetail && <div>
-            <h3 className="mb-5">{title}</h3>
+        {status === 1 && jobDetail && <div>
+          <h3 className="mb-5">{title}</h3>
 
-            <div className="mb-5">
-              {jobDetail.get('description')}
-            </div>
+          <div className="mb-5">
+            {jobDetail.get('description')}
+          </div>
 
-            <h3 className="mt-5 mb-3">Apply For This Job</h3>
-            <form onSubmit={handleSubmit(this.submitForm)}>
-              <Row>
-                <Col xs={12} md={6}>
-                  <FormField
-                    name="name"
-                    type="text"
-                    label="Name"
-                    validate={[isRequired]}
-                    component={InputField}
-                  />
-                </Col>
-                <Col xs={12} md={6}>
-                  <FormField
-                    name="email"
-                    type="email"
-                    label="Email"
-                    validate={[isRequired, isValidEmail]}
-                    component={InputField}
-                  />
-                </Col>
-              </Row>
-              <FormField
-                name="message"
-                label="Message"
-                validate={[isRequired]}
-                component={TextareaField}
-              />
-              <Row>
-                <Col xs={12} md={6}>
-                  <FormField
-                    name="resume"
-                    label="Attach your resume"
-                    type="file"
-                    component={InputField}
-                  />
-                </Col>
-                <Col xs={12} md={6} className="text-right">
-                  <Button type="submit" color="primary">Submit</Button>
-                </Col>
-              </Row>
-            </form>
-          </div>}
-        </AppContainerLayout>
-      </AppLayout1>
+          <h3 className="mt-5 mb-3">Apply For This Job</h3>
+          <form onSubmit={handleSubmit(this.submitForm)}>
+            <Row>
+              <Col xs={12} md={6}>
+                <FormField
+                  name="name"
+                  type="text"
+                  label="Name"
+                  validate={[isRequired]}
+                  component={InputField}
+                />
+              </Col>
+              <Col xs={12} md={6}>
+                <FormField
+                  name="email"
+                  type="email"
+                  label="Email"
+                  validate={[isRequired, isValidEmail]}
+                  component={InputField}
+                />
+              </Col>
+            </Row>
+            <FormField
+              name="message"
+              label="Message"
+              validate={[isRequired]}
+              component={TextareaField}
+            />
+            <Row>
+              <Col xs={12} md={6}>
+                <FormField
+                  name="resume"
+                  label="Attach your resume"
+                  type="file"
+                  component={InputField}
+                />
+              </Col>
+              <Col xs={12} md={6} className="text-right">
+                <Button type="submit" color="primary">Submit</Button>
+              </Col>
+            </Row>
+          </form>
+        </div>}
+      </div>
     )
   }
 }

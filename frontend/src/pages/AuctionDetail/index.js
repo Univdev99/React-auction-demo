@@ -6,16 +6,14 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Badge, Button, Col, Row } from 'reactstrap'
 
-import AppContainerLayout from 'components/AppContainerLayout'
-import Breadcrumb from 'components/Breadcrumb'
+import auctionBidFlow from 'utils/auctionBidFlow'
 import AuctionCard from 'components/AuctionCard'
+import Breadcrumb from 'components/Breadcrumb'
 import Slider from 'components/Slider'
 import Spinner from 'components/Spinner'
-import AppLayout1 from 'pages/AppLayout1'
 import TimeLeft from 'components/TimeLeft'
-import auctionBidFlow from 'utils/auctionBidFlow'
-import { getAuctionFrontDetail } from 'store/modules/auctions'
 import { auctionsSelector } from 'store/selectors'
+import { getAuctionFrontDetail } from 'store/modules/auctions'
 
 
 class AuctionDetail extends PureComponent {
@@ -84,70 +82,68 @@ class AuctionDetail extends PureComponent {
     const { status } = this.state
 
     return (
-      <AppLayout1>
-        <AppContainerLayout>
-          {status !== -1 && !auctionDetail && <Spinner />}
+      <div>
+        {status !== -1 && !auctionDetail && <Spinner />}
 
-          {status === -1 && <h3><center>Auction not found</center></h3>}
+        {status === -1 && <h3><center>Auction not found</center></h3>}
 
-          {status !== -1 && auctionDetail && <div>
-            <Breadcrumb className="mb-5" path={this.breadcrumbPath()} />
+        {status !== -1 && auctionDetail && <div>
+          <Breadcrumb className="mb-5" path={this.breadcrumbPath()} />
 
-            <Row className="mb-5">
-              <Col xs={12} md={6} className="mb-5">
-                <Slider media={auctionDetail.getIn(['product', 'media'])} />
-              </Col>
-              <Col xs={12} md={6} className="mb-5">
-                <div className="px-3">
-                  <h3>{auctionDetail.get('title')}</h3>
-                  <div className="pb-3 mb-4 mt-4">
-                    <div className="h4">
-                      <Badge color="light">
-                        <img
-                          src={auctionDetail.getIn(['product', 'donor_details', 'charity', 'logo'])}
-                          alt="Charity Logo" 
-                          style={{ maxHeight: 50, maxWidth: '100%' }}
-                        />
-                        {' '}
-                        {auctionDetail.getIn(['product', 'donor_details', 'charity', 'title'])}
-                      </Badge>
-                    </div>
-                    <p>{auctionDetail.getIn(['product', 'donor_details', 'charity', 'description'])}</p>
-                    <div className="h5 mb-4 mt-4">
-                      Time Left: <TimeLeft until={auctionDetail.get('open_until')} />
-                    </div>
-                    <Button color="primary" onClick={this.handleBid}>
-                      Place a bid
-                    </Button>
+          <Row className="mb-5">
+            <Col xs={12} md={6} className="mb-5">
+              <Slider media={auctionDetail.getIn(['product', 'media'])} />
+            </Col>
+            <Col xs={12} md={6} className="mb-5">
+              <div className="px-3">
+                <h3>{auctionDetail.get('title')}</h3>
+                <div className="pb-3 mb-4 mt-4">
+                  <div className="h4">
+                    <Badge color="light">
+                      <img
+                        src={auctionDetail.getIn(['product', 'donor_details', 'charity', 'logo'])}
+                        alt="Charity Logo" 
+                        style={{ maxHeight: 50, maxWidth: '100%' }}
+                      />
+                      {' '}
+                      {auctionDetail.getIn(['product', 'donor_details', 'charity', 'title'])}
+                    </Badge>
                   </div>
+                  <p>{auctionDetail.getIn(['product', 'donor_details', 'charity', 'description'])}</p>
+                  <div className="h5 mb-4 mt-4">
+                    Time Left: <TimeLeft until={auctionDetail.get('open_until')} />
+                  </div>
+                  <Button color="primary" onClick={this.handleBid}>
+                    Place a bid
+                  </Button>
                 </div>
+              </div>
+            </Col>
+          </Row>
+          <h3 className="mb-4">Details</h3>
+          <p>
+            {auctionDetail.getIn(['product', 'description'])}
+          </p>
+
+          <h3 className="mb-5">More from {auctionDetail.getIn(['product', 'donor_details', 'title'])}</h3>
+          <Row className="mb-5">
+            {auctionDetail.get('donor_auctions').map(auction => (
+              <Col key={auction.get('pk')} xs={12} md={6} lg={3} className="mb-3">
+                <AuctionCard auction={auction.toJS()} />
               </Col>
-            </Row>
-            <h3 className="mb-4">Details</h3>
-            <p>
-              {auctionDetail.getIn(['product', 'description'])}
-            </p>
+            ))}
+          </Row>
 
-            <h3 className="mb-5">More from {auctionDetail.getIn(['product', 'donor_details', 'title'])}</h3>
-            <Row className="mb-5">
-              {auctionDetail.get('donor_auctions').map(auction => (
-                <Col key={auction.get('pk')} xs={12} md={6} lg={3} className="mb-3">
-                  <AuctionCard auction={auction.toJS()} />
-                </Col>
-              ))}
-            </Row>
-
-            <h3 className="mb-5">Similar Auctions</h3>
-            <Row className="mb-5">
-              {auctionDetail.get('similar_auctions').map(auction => (
-                <Col key={auction.get('pk')} xs={12} md={6} lg={3} className="mb-3">
-                  <AuctionCard auction={auction.toJS()} />
-                </Col>
-              ))}
-            </Row>
-          </div>}
-        </AppContainerLayout>
-      </AppLayout1>
+          <h3 className="mb-5">Similar Auctions</h3>
+          <Row className="mb-5">
+            {auctionDetail.get('similar_auctions').map(auction => (
+              <Col key={auction.get('pk')} xs={12} md={6} lg={3} className="mb-3">
+                <AuctionCard auction={auction.toJS()} />
+              </Col>
+            ))}
+          </Row>
+        </div>}
+      </div>
     )
   }
 }

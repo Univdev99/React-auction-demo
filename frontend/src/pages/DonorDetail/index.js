@@ -6,12 +6,10 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Link } from 'react-router-dom'
 
-import AppContainerLayout from 'components/AppContainerLayout'
 import Breadcrumb from 'components/Breadcrumb'
 import DonorCard from 'components/DonorCard'
 import Slider from 'components/Slider'
 import Spinner from 'components/Spinner'
-import AppLayout1 from 'pages/AppLayout1'
 import { getDonorDetail } from 'store/modules/donors'
 import { donorsSelector } from 'store/selectors'
 
@@ -69,51 +67,49 @@ class DonorDetail extends PureComponent {
     const { status } = this.state
 
     return (
-      <AppLayout1>
-        <AppContainerLayout>
-          {status !== -1 && !donorDetail && <Spinner />}
+      <div>
+        {status !== -1 && !donorDetail && <Spinner />}
 
-          {status === -1 && <h3><center>Donor not found</center></h3>}
+        {status === -1 && <h3><center>Donor not found</center></h3>}
 
-          {status !== -1 && donorDetail && <div>
-            <Breadcrumb className="mb-5" path={this.breadcrumbPath()} />
+        {status !== -1 && donorDetail && <div>
+          <Breadcrumb className="mb-5" path={this.breadcrumbPath()} />
 
-            <div className="row mb-5">
-              <div className="col-md-6 mb-5">
-                <Slider media={donorDetail.get('media')} />
-              </div>
-              <div className="col-md-6 mb-5">
-                <div className="px-3">
-                  <h4 className="pb-3 mb-4">{donorDetail.get('title')}</h4>
-                  <div className="pb-3 mb-4">
-                    <img src={donorDetail.getIn(['charity', 'logo'])} alt="Charity Logo" style={{ maxHeight: 50 }} />
-                  </div>
-                  <p>
-                    {donorDetail.get('description')}
-                  </p>
+          <div className="row mb-5">
+            <div className="col-md-6 mb-5">
+              <Slider media={donorDetail.get('media')} />
+            </div>
+            <div className="col-md-6 mb-5">
+              <div className="px-3">
+                <h4 className="pb-3 mb-4">{donorDetail.get('title')}</h4>
+                <div className="pb-3 mb-4">
+                  <img src={donorDetail.getIn(['charity', 'logo'])} alt="Charity Logo" style={{ maxHeight: 50 }} />
                 </div>
+                <p>
+                  {donorDetail.get('description')}
+                </p>
               </div>
             </div>
+          </div>
 
-            <div className="clearfix mb-5">
-              <h3 className="pull-left">Similar Donors</h3>
-              <Link to="/donors" className="pull-right btn btn-sm btn-outline-secondary">All donors</Link>
-            </div>
+          <div className="clearfix mb-5">
+            <h3 className="pull-left">Similar Donors</h3>
+            <Link to="/donors" className="pull-right btn btn-sm btn-outline-secondary">All donors</Link>
+          </div>
 
-            <div className="row mb-5">
-              {donorDetail.get('similar_donors').map(donor => (
-                <div key={donor.get('pk')} className="col-lg-6 col-md-12 mb-3">
-                  <DonorCard
-                    id={donor.get('pk')}
-                    image={donor.getIn(['media', 0, 'url'], '')}
-                    title={donor.get('title')}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>}
-        </AppContainerLayout>
-      </AppLayout1>
+          <div className="row mb-5">
+            {donorDetail.get('similar_donors').map(donor => (
+              <div key={donor.get('pk')} className="col-lg-6 col-md-12 mb-3">
+                <DonorCard
+                  id={donor.get('pk')}
+                  image={donor.getIn(['media', 0, 'url'], '')}
+                  title={donor.get('title')}
+                />
+              </div>
+            ))}
+          </div>
+        </div>}
+      </div>
     )
   }
 }

@@ -6,12 +6,10 @@ import { Col, Row } from 'reactstrap'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
-import AppContainerLayout from 'components/AppContainerLayout'
-import Breadcrumb from 'components/Breadcrumb'
 import AuctionCard from 'components/AuctionCard'
-import AppLayout1 from 'pages/AppLayout1'
-import { getAuctionFrontList } from 'store/modules/auctions'
+import Breadcrumb from 'components/Breadcrumb'
 import { auctionsSelector } from 'store/selectors'
+import { getAuctionFrontList } from 'store/modules/auctions'
 
 
 class Auctions extends PureComponent {
@@ -40,21 +38,19 @@ class Auctions extends PureComponent {
     const auctionList = auctions.get('auctionList')
 
     return (
-      <AppLayout1>
-        <AppContainerLayout>
-          <Breadcrumb className="mb-5" path={this.breadcrumbPath()} />
+      <div>
+        <Breadcrumb className="mb-5" path={this.breadcrumbPath()} />
 
-          <h3 className="mb-5">Auctions</h3>
+        <h3 className="mb-5">Auctions</h3>
 
-          <Row>
-            {auctionList.map(auction => (
-              <Col xs={12} md={2} lg={3} key={auction.get('pk')} className="mb-3">
-                <AuctionCard auction={auction.toJS()} />
-              </Col>
-            ))}
-          </Row>
-        </AppContainerLayout>
-      </AppLayout1>
+        <Row>
+          {auctionList.map(auction => (
+            <Col xs={12} md={2} lg={3} key={auction.get('pk')} className="mb-3">
+              <AuctionCard auction={auction.toJS()} />
+            </Col>
+          ))}
+        </Row>
+      </div>
     )
   }
 }

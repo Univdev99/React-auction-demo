@@ -7,8 +7,6 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import { Link } from 'react-router-dom'
 
-import AppContainerLayout from 'components/AppContainerLayout'
-import AppLayout1 from 'pages/AppLayout1'
 import Breadcrumb from 'components/Breadcrumb'
 import moveToTopOnMount from 'utils/moveToTopOnMount'
 import Spinner from 'components/Spinner'
@@ -64,47 +62,44 @@ class Careers extends PureComponent {
     const { status } = this.state
 
     return (
-      <AppLayout1>
-        <AppContainerLayout>
-          <Breadcrumb className="mb-5" path={this.breadcrumbPath()} />
+      <div>
+        <Breadcrumb className="mb-5" path={this.breadcrumbPath()} />
 
-          <h3 className="mb-5">Careers</h3>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut nibh dictum, auctor libero ac,
-            varius sem. Aenean in augue sed enim pulvinar ultricies eget at nibh. Sed ac iaculis lorem. Donec
-            faucibus sodales risus, ac scelerisque urna tristique at. Etiam non nulla molestie mi pellentesque
-            rutrum. Fusce sodales tellus sit amet facilisis dictum. Sed sagittis vel dui condimentum dictum.
-            Cras ut purus in ligula fermentum convallis. Praesent non dolor imperdiet, rutrum mi in, rhoncus
-            neque. Maecenas sed gravida turpis. Proin commodo sem in arcu viverra lobortis. Morbi pulvinar at
-            ante sed vestibulum. Sed molestie mi nec odio pharetra finibus non non est. Vivamus cursus velit
-            leo, vel malesuada quam aliquam et.
-          </p>
+        <h3 className="mb-5">Careers</h3>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut nibh dictum, auctor libero ac,
+          varius sem. Aenean in augue sed enim pulvinar ultricies eget at nibh. Sed ac iaculis lorem. Donec
+          faucibus sodales risus, ac scelerisque urna tristique at. Etiam non nulla molestie mi pellentesque
+          rutrum. Fusce sodales tellus sit amet facilisis dictum. Sed sagittis vel dui condimentum dictum.
+          Cras ut purus in ligula fermentum convallis. Praesent non dolor imperdiet, rutrum mi in, rhoncus
+          neque. Maecenas sed gravida turpis. Proin commodo sem in arcu viverra lobortis. Morbi pulvinar at
+          ante sed vestibulum. Sed molestie mi nec odio pharetra finibus non non est. Vivamus cursus velit
+          leo, vel malesuada quam aliquam et.
+        </p>
 
-          <h3 className="mt-5 mb-3">Current Openings</h3>
+        <h3 className="mt-5 mb-3">Current Openings</h3>
 
-          {status === 0 && <Spinner />}
+        {status === 0 && <Spinner />}
 
-          {status === -1 && <Alert color="danger">
-            No Open Jobs!
-          </Alert>}
+        {status === -1 && <Alert color="danger">
+          No Open Jobs!
+        </Alert>}
 
-          {status === 1 && <ListGroup>
-            {jobList.map((item, index) => (
-              <ListGroupItem className="d-flex" key={index}>
-                <div className="col align-self-md-center">
-                  {item.get('title')}
-                </div>
-                <div className="text-right align-self-md-center">
-                  <Button color="primary" tag={Link} to={`/jobs/${item.get('pk')}`}>
-                    Apply
-                  </Button>
-                </div>
-              </ListGroupItem>
-            ))}
-          </ListGroup>}
-
-        </AppContainerLayout>
-      </AppLayout1>
+        {status === 1 && <ListGroup>
+          {jobList.map((item, index) => (
+            <ListGroupItem className="d-flex" key={index}>
+              <div className="col align-self-md-center">
+                {item.get('title')}
+              </div>
+              <div className="text-right align-self-md-center">
+                <Button color="primary" tag={Link} to={`/jobs/${item.get('pk')}`}>
+                  Apply
+                </Button>
+              </div>
+            </ListGroupItem>
+          ))}
+        </ListGroup>}
+      </div>
     )
   }
 }
