@@ -105,9 +105,10 @@ const AccountRoutes = props => (
   </AccountLayout>
 )
 
-const isHome = props => props.location.pathname === '/'
+const isFrontend = props =>
+  props.location.pathname !== '/' && !props.location.pathname.startsWith('/admin')
 
-const FrontendRoutes = props => !isHome(props) && (
+const FrontendRoutes = props => isFrontend(props) && (
   <AppLayout1>
     <AppContainerLayout>
       <Route exact path="/signin" component={userIsNotAuthenticated(SignIn)} />
