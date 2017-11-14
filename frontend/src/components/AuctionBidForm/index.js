@@ -28,7 +28,7 @@ class AuctionBidForm extends PureComponent {
           required={[amountIsRequired]}
         />
         <div className="text-center">
-          <Button type="submit" className="btn btn-primary">
+          <Button type="submit" color="primary">
             Bid on this auction
           </Button>
         </div>
