@@ -1,11 +1,14 @@
-export const WS_BACKEND_URL = 'ws://localhost:8000'
-export const SERVER_URL = process.env.NODE_ENV === 'production' ?
-  'http://ec2-54-235-235-0.compute-1.amazonaws.com' :
-  'http://localhost:8000'
-export const BASE_API_URL = `${SERVER_URL}/api/v1/`
+export const SERVER_URL = process.env.environment === 'production' ?
+  process.env.REACT_APP_SERVER_URL :
+  'localhost:8000'
+
+export const WS_BACKEND_URL = `ws://${SERVER_URL}`
+export const BASE_API_URL = `http://${SERVER_URL}/api/v1/`
 
 export const FACEBOOK_APP_ID = '147173285892300'
 export const FACEBOOK_API_VERSION = 'v2.10'
+
+export const STRIPE_PUBLIC_KEY = process.env.REACT_APP_STRIPE_PUBLIC_KEY
 
 export const PAGE_SIZE = 8
 export const MEDIUM_PAGE_SIZE = 12

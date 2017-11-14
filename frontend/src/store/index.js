@@ -21,8 +21,9 @@ import authMiddleware from 'store/middlewares/auth'
 import donors from 'store/modules/donors'
 import jobs from 'store/modules/jobs'
 import routerReducer from 'store/modules/route'
-import sagas from 'store/sagas'
+import payment from 'store/modules/payment'
 import settings from 'store/modules/settings'
+import sagas from 'store/sagas'
 
 
 // Create a history of your choosing (we're using a browser history in this case)
@@ -72,6 +73,7 @@ export const store = createStore(
     donors,
     jobs,
     modal,
+    payment,
     settings
   }),
   Immutable.Map(),

@@ -17,6 +17,8 @@ from api.views.auctions import AuctionDetailView
 from api.views.auctions import AuctionPlaceBidView
 from api.views.auctions import AccountBidListView
 from api.views.settings import CountriesView
+from api.views.payment import AccountPaymentView
+from api.views.payment import PaymentTestView
 # temporary endpoint for testing
 from api.views.test import TestView
 
@@ -42,7 +44,11 @@ urlpatterns = [
     url(r'^auctions/(?P<pk>[0-9]+)/bid/$', AuctionPlaceBidView.as_view(), name='auction-place-bid'),
 
     url(r'^account/bid-auctions/$', AccountBidListView.as_view(), name='account-bid-auctions-list'),
+    url(r'^account/payment/$', AccountPaymentView.as_view(), name='account-payment'),
+
+    url(r'^payment-test/$', PaymentTestView.as_view(), name='payment-test'),
+
+    url(r'^settings/countries$', CountriesView.as_view(), name='settings-countries'),
 
     url(r'^admin/', include('api.views.admin.urls', namespace='admin')),
-    url(r'^settings/countries$', CountriesView.as_view(), name='settings-countries'),
 ]
