@@ -58,7 +58,7 @@ class CardForm extends PureComponent {
   }
 
   render() {
-    const { onSubmit, disabled } = this.props
+    const { disabled } = this.props
     const { tokenCreating } = this.state
 
     return (
@@ -66,7 +66,7 @@ class CardForm extends PureComponent {
         <CardElement className="form-control" {...this.createOptions()} />
 
         <div className="text-center mt-4">
-          <Button color="primary" className="px-5" disabled={disabled || tokenCreating}>Pay</Button>
+          <Button color="primary" className="px-5" disabled={disabled || tokenCreating}>Save</Button>
         </div>
       </form>
     )

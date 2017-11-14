@@ -1,16 +1,16 @@
-from django.core.exceptions import ObjectDoesNotExist
-
 from pinax.stripe.actions import customers
 
 
 class StripeCustomerMixin(object):
-    def create_customer_if_not_exists(self, user, token):
-        try:
-            return user.customer
-        except ObjectDoesNotExist:
-            return customers.create(
-                user,
-                card=token,
-                plan=None,
-                charge_immediately=False
-            )
+    def create_customer(self, user, token):
+        return customers.create(
+            user,
+            card=token,
+            plan=None,
+            charge_immediately=False
+        )
+
+    def update_customer(self, user, token):
+        stripe_customer = user.customer.stripe_customer
+        stripe_customer.source = token
+        stripe_customer.save()

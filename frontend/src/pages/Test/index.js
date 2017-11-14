@@ -2,14 +2,13 @@ import React, { PureComponent } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
-import { Container, Button } from 'reactstrap'
+import { Button } from 'reactstrap'
 import { Elements } from 'react-stripe-elements'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
-import AppLayout1 from 'pages/AppLayout1'
 import CardForm from 'components/CardForm'
-import { testPayment } from 'store/modules/payment'
+import { setPayment, testPayment } from 'store/modules/payment'
 import { authSelector } from 'store/selectors'
 
 
@@ -17,10 +16,33 @@ class TestPage extends PureComponent {
 
   static propTypes = {
     auth: ImmutablePropTypes.map.isRequired,
+    setPayment: PropTypes.func.isRequired,
     testPayment: PropTypes.func.isRequired,
   }
 
+  state = {
+    savingPayment: false
+  }
+
   handleSubmit = (payload) => {
+    this.setState({
+      savingPayment: true
+    })
+
+    this.props.setPayment({
+      data: {
+        token: payload.token.id
+      },
+      success: () => this.setState({
+        savingPayment: false
+      }),
+      fail: () => this.setState({
+        savingPayment: false
+      })
+    })
+  }
+
+  handleTestPayment = (payload) => {
     this.props.testPayment({
       data: {
         amount: 100,
@@ -31,19 +53,18 @@ class TestPage extends PureComponent {
   render() {
     const { auth } = this.props
     const email = auth.getIn(['currentUser', 'email'], '')
+    const { savingPayment } = this.state
 
     return (
-      <AppLayout1>
-        <Container className="my-5">
-          <div className="mb-4">
-            {email}
-          </div>
-          <Elements>
-            <CardForm email={email} onSubmit={this.handleSubmit} />
-          </Elements>
-          <Button color="primary" onClick={this.handleSubmit}>Test</Button>
-        </Container>
-      </AppLayout1>
+      <div>
+        <div className="mb-4">
+          {email}
+        </div>
+        <Elements>
+          <CardForm email={email} onSubmit={this.handleSubmit} disabled={savingPayment} />
+        </Elements>
+        <Button color="primary" onClick={this.handleTestPayment}>Test</Button>
+      </div>
     )
   }
 }
@@ -53,6 +74,7 @@ const selector = createStructuredSelector({
 })
 
 const actions = {
+  setPayment,
   testPayment
 }
 

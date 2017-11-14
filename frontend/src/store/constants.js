@@ -66,4 +66,5 @@ export const JOB_GET_DETAIL = 'charibin/jobs/get-detail'
 
 export const SETTINGS_GET_COUNTRIES = 'charibin/settings/countries'
 
+export const ACCOUNT_SET_PAYMENT = 'charibin/account/set-payment'
 export const PAYMENT_TEST = 'charibin/payment/test'
