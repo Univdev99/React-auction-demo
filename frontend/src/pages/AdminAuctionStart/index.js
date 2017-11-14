@@ -6,8 +6,9 @@ import Immutable from 'immutable'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
-import Spinner from 'components/Spinner'
 import AuctionStartForm from 'components/AuctionStartForm'
+import formSubmit from 'utils/formSubmit'
+import Spinner from 'components/Spinner'
 import {
   getAuctionDetail,
   startAuction,
@@ -26,22 +27,15 @@ class AdminAuctionDetail extends PureComponent {
 
   state = {
     loadingStatus: 1,
-    startingStatus: 0,
     initialValues: null,
   }
 
   handleSubmit = (data) => {
-    this.setState({
-      startingStatus: 1
-    })
-
-    this.props.startAuction({
-      id: this.props.match.params.id,
+    const { startAuction, match } = this.props
+    return formSubmit(startAuction, {
+      id: match.params.id,
       data,
       success: this.handleBack,
-      fail: () => this.setState({
-        startingStatus: -1
-      }),
     })
   }
 
@@ -72,7 +66,7 @@ class AdminAuctionDetail extends PureComponent {
   render() {
     const { adminAuctions } = this.props
     const auctionDetail = adminAuctions.get('auctionDetail')
-    const { loadingStatus, startingStatus, initialValues } = this.state
+    const { loadingStatus, initialValues } = this.state
 
     if (loadingStatus === -1) {
       return (
@@ -92,13 +86,8 @@ class AdminAuctionDetail extends PureComponent {
 
             <div className="mb-4">Please enter either ending date or duration of the auction.</div>
 
-            {startingStatus === -1 && <div className="mb-2 text-danger">
-              Failed to start auction
-            </div>}
-
             <AuctionStartForm
               initialValues={initialValues}
-              disabled={startingStatus === 1}
               onSubmit={this.handleSubmit}
               onBack={this.handleBack}
             />

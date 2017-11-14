@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import { Alert } from 'reactstrap'
 import { compose } from 'redux'
 import { reduxForm } from 'redux-form/immutable'
 import PropTypes from 'prop-types'
@@ -12,11 +13,13 @@ import SelectField from 'components/SelectField'
 class AuctionForm extends PureComponent {
 
   static propTypes = {
-    initialValues: ImmutablePropTypes.map,
-    disabled: PropTypes.bool,
-    productList: ImmutablePropTypes.list.isRequired,
+    error: PropTypes.any,
     handleSubmit: PropTypes.func.isRequired,
+    initialValues: ImmutablePropTypes.map,
     onBack: PropTypes.func,
+    productList: ImmutablePropTypes.list.isRequired,
+    submitFailed: PropTypes.bool,
+    submitting: PropTypes.bool,
   }
 
   handleClickBack = (e) => {
@@ -29,10 +32,14 @@ class AuctionForm extends PureComponent {
   }
 
   render() {
-    const { initialValues, productList, disabled, handleSubmit, onBack } = this.props
+    const { error, handleSubmit, initialValues, onBack, productList, submitFailed, submitting } = this.props
 
     return (
       <form onSubmit={handleSubmit}>
+        {submitFailed && <Alert color="danger">
+          {error || 'Failed to create an auction'}
+        </Alert>}
+
         <FormField
           name="title"
           type="text"
@@ -58,7 +65,7 @@ class AuctionForm extends PureComponent {
           {onBack && <button className="btn mr-3" onClick={this.handleClickBack}>
             Back
           </button>}
-          <button type="submit" className="btn btn-primary" disabled={disabled}>
+          <button type="submit" className="btn btn-primary" disabled={submitting}>
             {initialValues ? 'Update' : 'Create'}
           </button>
         </center>

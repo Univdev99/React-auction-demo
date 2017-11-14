@@ -5,9 +5,9 @@ import { Alert } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
-import { stopSubmit } from 'redux-form'
 
 import AccountForm from 'components/AccountForm'
+import formSubmit from 'utils/formSubmit'
 import Spinner from 'components/Spinner'
 import { authSelector, countriesSelector } from 'store/selectors'
 import { getCountries } from 'store/modules/settings'
@@ -20,7 +20,6 @@ class AccountInfo extends PureComponent {
     auth: ImmutablePropTypes.map.isRequired,
     countries: PropTypes.array.isRequired,
     getCountries: PropTypes.func.isRequired,
-    stopSubmit: PropTypes.func.isRequired,
     updateCurrentUser: PropTypes.func.isRequired,
   }
 
@@ -37,22 +36,16 @@ class AccountInfo extends PureComponent {
   }
 
   handleSubmit = (data) => {
-    const { stopSubmit } = this.props
+    const { updateCurrentUser } = this.props
     this.setState({
       updateStatus: 1
     })
 
-    this.props.updateCurrentUser({
+    return formSubmit(updateCurrentUser, {
       data,
       success: () => this.setState({
         updateStatus: 10
-      }),
-      fail: ({ data }) => {
-        this.setState({
-          updateStatus: -1
-        })
-        stopSubmit('accountForm', data)
-      },
+      })
     })
   }
 
@@ -68,12 +61,7 @@ class AccountInfo extends PureComponent {
 
     return (
       <div>
-
         <h3 className="mb-4">Account Information</h3>
-
-        {updateStatus === -1 && <Alert color="danger">
-          Failed to update your account settings
-        </Alert>}
 
         {updateStatus === 10 && <Alert color="success">
           Successfully saved
@@ -82,7 +70,6 @@ class AccountInfo extends PureComponent {
         <AccountForm
           countries={countries}
           initialValues={currentUser}
-          disabled={updateStatus === 1}
           onSubmit={this.handleSubmit}
         />
 
@@ -98,7 +85,6 @@ const selector = createStructuredSelector({
 
 const actions = {
   getCountries,
-  stopSubmit,
   updateCurrentUser
 }
 

@@ -8,6 +8,7 @@ import { modalSelector } from 'store/selectors'
 
 import auctionBidFlow from 'utils/auctionBidFlow'
 import fbHandle from 'utils/fbHandle'
+import formSubmit from 'utils/formSubmit'
 import SignInForm from 'components/SignInForm'
 import { signIn } from 'store/modules/auth'
 
@@ -29,8 +30,9 @@ class SignInModal extends PureComponent {
     }
   }
 
-  handleSignup = () => {
+  handleSignup = (e) => {
     const { auctionId, handleHide, showModal } = this.props
+    e.preventDefault()
     handleHide()
     showModal('signupModal', { auctionId })
   }
@@ -59,29 +61,22 @@ class SignInModal extends PureComponent {
 
   handleSubmit = (data) => {
     const { auctionId, handleHide, startBidFlow, signIn } = this.props
-    signIn({
+    return formSubmit(signIn, {
       data,
       success: () => {
         handleHide()
         startBidFlow(auctionId)
-      },
-      fail: () => this.setState({
-        signInError: true
-      })
+      }
     })
   }
 
   render() {
     const { fbReady, handleHide, show } = this.props
-    const { signInError } = this.state
 
     return (
       <div>
         <Modal isOpen={show} toggle={handleHide} size="sm">
           <ModalHeader toggle={handleHide}>Hello there</ModalHeader>
-          {signInError && <div className="mb-2 text-danger">
-            Login failed, please enter correct email and password
-          </div>}
           <ModalBody>
             <p>Please sign in to your account</p>
             <Button color="secondary" block disabled={!fbReady} onClick={this.handleSignUpWithFacebook}>

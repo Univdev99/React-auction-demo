@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Alert, Modal, ModalHeader, ModalBody } from 'reactstrap'
+import { Modal, ModalHeader, ModalBody } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { connectModal, show as showModal } from 'redux-modal'
-import { stopSubmit } from 'redux-form'
-
 import { modalSelector } from 'store/selectors'
+
 import AuctionBidForm from 'components/AuctionBidForm'
+import formSubmit from 'utils/formSubmit'
 import { placeBid } from 'store/modules/auctions'
 
 class AuctionBidModal extends PureComponent {
@@ -16,27 +16,13 @@ class AuctionBidModal extends PureComponent {
     handleHide: PropTypes.func.isRequired,
     placeBid: PropTypes.func.isRequired,
     show: PropTypes.bool.isRequired,
-    showModal: PropTypes.func.isRequired,
-    stopSubmit: PropTypes.func.isRequired
-  }
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      error: false
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.show !== nextProps.show) {
-      this.setState({ error: false })
-    }
+    showModal: PropTypes.func.isRequired
   }
 
   handleSubmit = (data) => {
-    const { auctionId, handleHide, placeBid, showModal, stopSubmit } = this.props
-    this.setState({ error: false })
-    placeBid({
+    const { auctionId, handleHide, placeBid, showModal } = this.props
+
+    return formSubmit(placeBid, {
       id: auctionId,
       data: {
         price: parseInt(data.get('price'), 10)
@@ -44,25 +30,17 @@ class AuctionBidModal extends PureComponent {
       success: () => {
         handleHide()
         showModal('auctionBidPlacedModal')
-      },
-      fail: ({ data }) => {
-        this.setState({
-          error: data.non_field_errors || 'Failed to place a bid'
-        })
-        stopSubmit('auctionBidForm', data)
       }
     })
   }
 
   render() {
     const { handleHide, show } = this.props
-    const { error } = this.state
 
     return (
       <div>
         <Modal isOpen={show} toggle={handleHide} size="sm">
           <ModalHeader toggle={handleHide}>Are you sure?</ModalHeader>
-          {error && <Alert color="danger">{error}</Alert>}
           <ModalBody>
             <p>Your credit card won't be charged now. Only if you win the auction</p>
             <AuctionBidForm onSubmit={this.handleSubmit} />
@@ -75,8 +53,7 @@ class AuctionBidModal extends PureComponent {
 
 const actions = {
   placeBid,
-  showModal,
-  stopSubmit
+  showModal
 }
 
 export default compose(

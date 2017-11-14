@@ -25,7 +25,9 @@ export default ({
     success: successCallback,
     fail: failCallback,
     onUploadProgress,
-    onDownloadProgress
+    onDownloadProgress,
+    resolve,
+    reject
   } = payload
 
   try {
@@ -49,23 +51,33 @@ export default ({
       onDownloadProgress,
     })
 
+    const payload = payloadOnSuccess ? payloadOnSuccess(res.data, action) : res.data
     yield put({
       type: requestSuccess(type),
-      payload: payloadOnSuccess ? payloadOnSuccess(res.data, action) : res.data
+      payload
     })
+
+    if (resolve) { // Promise parameter
+      yield resolve(payload);
+    }
 
     successCallback && successCallback(res)
     success && success(res, action)
 
   } catch (err) {
     const errRes = get(err, 'response', err)
-
+    const payload = payloadOnFail ? payloadOnFail(errRes, action) : errRes
     yield put({
       type: requestFail(type),
-      payload: payloadOnFail ? payloadOnFail(errRes, action) : errRes
+      payload
     })
+
+    if (reject) { // Promise parameter
+      yield reject(payload);
+    }
 
     failCallback && failCallback(errRes)
     fail && fail(errRes)
+
   }
 }

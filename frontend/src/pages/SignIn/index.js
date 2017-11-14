@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 
+import formSubmit from 'utils/formSubmit'
 import SignInForm from 'components/SignInForm'
 import { signIn } from 'store/modules/auth'
 
@@ -13,35 +14,20 @@ import { signIn } from 'store/modules/auth'
 class SignIn extends PureComponent {
 
   static propTypes = {
-    signIn: PropTypes.func.isRequired,
-    history: PropTypes.object.isRequired,
-  }
-
-  state = {
-    signInError: false,
+    signIn: PropTypes.func.isRequired
   }
 
   handleSubmit = (data) => {
-    this.props.signIn({
-      data,
-      fail: () => this.setState({
-        signInError: true
-      })
-    })
+    const { signIn } = this.props
+    return formSubmit(signIn, { data })
   }
 
   render() {
-    const { signInError } = this.state
-
     return (
       <div className="row justify-content-center">
         <div className="col-12 col-md-8 col-lg-6">
 
           <h3 className="mb-4 text-center">Sign In</h3>
-
-          {signInError && <div className="mb-2 text-danger">
-            Login failed, please enter correct email and password
-          </div>}
 
           <SignInForm onSubmit={this.handleSubmit} />
 

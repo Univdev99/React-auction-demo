@@ -8,6 +8,7 @@ import { modalSelector } from 'store/selectors'
 
 import auctionBidFlow from 'utils/auctionBidFlow'
 import fbHandle from 'utils/fbHandle'
+import formSubmit from 'utils/formSubmit'
 import SignUpForm from 'components/SignUpForm'
 import { signUp } from 'store/modules/auth'
 
@@ -40,32 +41,23 @@ class SignUpModal extends PureComponent {
     const { auctionId, handleHide, signUpWithFacebook, startBidFlow } = this.props
     event.preventDefault()
 
-    this.setState({
-      signUpStatus: 1
-    })
-
     signUpWithFacebook({
       success: () => {
         handleHide()
         startBidFlow(auctionId)
-      },
-      fail: () => this.setState({
-        signUpStatus: -1
-      })
+      }
     })
   }
 
   handleSubmit = (data) => {
     const { handleHide, showModal, signUp } = this.props
-    signUp({
+
+    return formSubmit(signUp, {
       data,
       success: () => {
         handleHide()
         showModal('accountCreatedModal')
-      },
-      fail: () => this.setState({
-        signUpError: true
-      })
+      }
     })
   }
 
@@ -85,7 +77,7 @@ class SignUpModal extends PureComponent {
             Sign up using facebook
           </Button>
           <hr />
-          <SignUpForm forModal onSubmit={this.handleSubmit} simple />
+          <SignUpForm forModal onSubmit={this.handleSubmit} />
           <div className="text-center">
             <Button tag="a" href="#" color="link" onClick={this.handleSignIn}>
               I already have an account
