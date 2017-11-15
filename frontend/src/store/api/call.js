@@ -64,6 +64,8 @@ export default ({
     successCallback && successCallback(res)
     success && success(res, action)
 
+    return true
+
   } catch (err) {
     const errRes = get(err, 'response', err)
     const payload = payloadOnFail ? payloadOnFail(errRes, action) : errRes
@@ -79,5 +81,6 @@ export default ({
     failCallback && failCallback(errRes)
     fail && fail(errRes)
 
+    return false
   }
 }

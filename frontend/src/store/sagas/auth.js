@@ -14,13 +14,13 @@ import {
 
 
 const doSignIn = function* (action) {
-  yield call(apiCall({
+  const status = yield call(apiCall({
     type: AUTH_SIGNIN,
     method: 'post',
     path: 'signin/',
   }), action)
 
-  yield put(getCurrentUserAction())
+  status && (yield put(getCurrentUserAction()))
 }
 
 const doSignUp = apiCall({
@@ -30,13 +30,13 @@ const doSignUp = apiCall({
 })
 
 const doSignUpWithFacebook = function* (action) {
-  yield call(apiCall({
+  const status = yield call(apiCall({
     type: AUTH_SIGNUP_WITH_FACEBOOK,
     method: 'post',
     path: 'signup-with-facebook/',
   }), action)
 
-  yield put(getCurrentUserAction())
+  status && (yield put(getCurrentUserAction()))
 }
 
 const doVerifySignUp = apiCall({
