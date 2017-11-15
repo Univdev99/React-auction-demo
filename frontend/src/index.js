@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
+import { StripeProvider } from 'react-stripe-elements'
 import axios from 'axios'
 
 import { store, history } from 'store'
@@ -8,6 +9,7 @@ import Routes from 'routes'
 
 import 'utils/localstorage-polyfill'
 import { loadData } from 'utils/storage'
+import { STRIPE_PUBLIC_KEY } from 'config'
 import registerServiceWorker from './registerServiceWorker'
 
 import './index.css'
@@ -26,7 +28,9 @@ axios.interceptors.request.use((config) => {
 
 ReactDOM.render(
   <Provider store={store}>
-    <Routes history={history} />
+    <StripeProvider apiKey={STRIPE_PUBLIC_KEY}>
+      <Routes history={history} />
+    </StripeProvider>
   </Provider>,
   document.getElementById('root')
 )

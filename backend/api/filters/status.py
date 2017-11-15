@@ -6,9 +6,11 @@ class StatusFilterBackend(filters.BaseFilterBackend):
     Filters queryset with status parameter applied on model status field
     """
     def filter_queryset(self, request, queryset, view):
-        status = request.query_params.get('status')
-        if status:
-            queryset = queryset.filter(status=status)
+        status_param = request.query_params.get('status')
+        if status_param:
+            status_list = status_param.split(',')
+            status_list = [status.strip() for status in status_list]
+            queryset = queryset.filter(status__in=status_list)
         return queryset
 
 
@@ -17,7 +19,9 @@ class AuctionBidStatusFilterBackend(filters.BaseFilterBackend):
     Filters queryset with status parameter applied on its related bid model status field
     """
     def filter_queryset(self, request, queryset, view):
-        status = request.query_params.get('status')
-        if status:
-            queryset = queryset.filter(bid__status=status)
+        status_param = request.query_params.get('status')
+        if status_param:
+            status_list = status_param.split(',')
+            status_list = [status.strip() for status in status_list]
+            queryset = queryset.filter(bid__status__in=status)
         return queryset

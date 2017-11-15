@@ -19,4 +19,5 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^django-admin/', include(admin.site.urls)),
     url(r'^api/v1/', include('api.urls', namespace='api')),
+    url(r'^payments/', include('pinax.stripe.urls', namespace='pinax')),
 ]

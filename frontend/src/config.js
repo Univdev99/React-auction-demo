@@ -1,11 +1,14 @@
-export const WS_BACKEND_URL = 'ws://localhost:8000'
-export const SERVER_URL = process.env.NODE_ENV === 'production' ?
-  'http://ec2-54-235-235-0.compute-1.amazonaws.com' :
-  'http://localhost:8000'
-export const BASE_API_URL = `${SERVER_URL}/api/v1/`
+export const SERVER_URL = process.env.environment === 'production' ?
+  process.env.REACT_APP_SERVER_URL :
+  'localhost:8000'
+
+export const WS_BACKEND_URL = `ws://${SERVER_URL}`
+export const BASE_API_URL = `http://${SERVER_URL}/api/v1/`
 
 export const FACEBOOK_APP_ID = '147173285892300'
 export const FACEBOOK_API_VERSION = 'v2.10'
+
+export const STRIPE_PUBLIC_KEY = process.env.REACT_APP_STRIPE_PUBLIC_KEY
 
 export const PAGE_SIZE = 8
 export const MEDIUM_PAGE_SIZE = 12
@@ -24,8 +27,27 @@ export const DONOR_TYPES = [
 
 export const AUCTION_STATUS_PREVIEW = 'preview'
 export const AUCTION_STATUS_OPEN = 'open'
-export const AUCTION_STATUS_FINISHED = 'finished'
 export const AUCTION_STATUS_CANCELLED = 'cancelled'
+export const AUCTION_STATUS_CANCELLED_DUE_TO_NO_BIDS = 'cancelled-no-bids'
+export const AUCTION_STATUS_WAITING_FOR_PAYMENT = 'waiting-for-payment'
+export const AUCTION_STATUS_WAITING_TO_SHIP = 'waiting-to-ship'
+export const AUCTION_STATUS_SHIPPED = 'shipped'
+export const AUCTION_STATUS_FINISHED = 'finished'
+export const AUCTION_STATUS_TEXTS = {
+  [AUCTION_STATUS_PREVIEW]: 'Preview',
+  [AUCTION_STATUS_OPEN]: 'Open',
+  [AUCTION_STATUS_CANCELLED]: 'Cancelled',
+  [AUCTION_STATUS_CANCELLED_DUE_TO_NO_BIDS]: 'Cancelled due to no bids',
+  [AUCTION_STATUS_WAITING_FOR_PAYMENT]: 'Waiting for payment',
+  [AUCTION_STATUS_WAITING_TO_SHIP]: 'Waiting to ship',
+  [AUCTION_STATUS_SHIPPED]: 'Shipped',
+  [AUCTION_STATUS_FINISHED]: 'Finished',
+}
+
+export const AUCTION_TABLE_FILTER_UPCOMING = 'upcoming'
+export const AUCTION_TABLE_FILTER_IN_PROGRESS = 'inprogress'
+export const AUCTION_TABLE_FILTER_FINISHED = 'finished'
+export const AUCTION_TABLE_FILTER_CANCELLED = 'cancelled'
 
 /* Bid constants */
 

@@ -22,8 +22,16 @@ import { adminAuctionsSelector } from 'store/selectors'
 import {
   AUCTION_STATUS_PREVIEW,
   AUCTION_STATUS_OPEN,
-  AUCTION_STATUS_FINISHED,
   AUCTION_STATUS_CANCELLED,
+  AUCTION_STATUS_CANCELLED_DUE_TO_NO_BIDS,
+  AUCTION_STATUS_WAITING_FOR_PAYMENT,
+  AUCTION_STATUS_WAITING_TO_SHIP,
+  AUCTION_STATUS_SHIPPED,
+  AUCTION_STATUS_FINISHED,
+  AUCTION_TABLE_FILTER_UPCOMING,
+  AUCTION_TABLE_FILTER_IN_PROGRESS,
+  AUCTION_TABLE_FILTER_FINISHED,
+  AUCTION_TABLE_FILTER_CANCELLED,
 } from 'config'
 import AuctionTable from './AuctionTable'
 
@@ -39,11 +47,12 @@ class AdminAuctionList extends PureComponent {
 
   state = {
     loadingStatus: 1,
-    statusFilter: AUCTION_STATUS_OPEN,
+    statusFilter: AUCTION_TABLE_FILTER_IN_PROGRESS,
     columnMenuOpen: false,
     columnList: Immutable.fromJS([
       { field: 'item_number', label: 'Item number', enabled: true },
       { field: 'item_donor', label: 'Item donor', enabled: true },
+      { field: 'status', label: 'Status', enabled: true },
       { field: 'max_bid', label: 'Max bid', enabled: true },
       { field: 'min_bid', label: 'Min bid', enabled: true },
       { field: 'highest_bidder', label: 'Highest bidder', enabled: true },
@@ -53,13 +62,35 @@ class AdminAuctionList extends PureComponent {
     ])
   }
 
+  getStatusFilter = (status) => {
+    if (status === AUCTION_TABLE_FILTER_IN_PROGRESS) {
+      return [
+        AUCTION_STATUS_OPEN,
+        AUCTION_STATUS_WAITING_FOR_PAYMENT,
+        AUCTION_STATUS_WAITING_TO_SHIP
+      ].join(',')
+    } else if (status === AUCTION_TABLE_FILTER_FINISHED) {
+      return [
+        AUCTION_STATUS_SHIPPED,
+        AUCTION_STATUS_FINISHED,
+      ].join(',')
+    } else if (status === AUCTION_TABLE_FILTER_CANCELLED) {
+      return [
+        AUCTION_STATUS_CANCELLED,
+        AUCTION_STATUS_CANCELLED_DUE_TO_NO_BIDS,
+      ].join(',')
+    } else {
+      return AUCTION_STATUS_PREVIEW
+    }
+  }
+
   loadData = () => {
     this.setState({
       loadingStatus: 1
     }, () => {
       const { statusFilter } = this.state
       this.props.getAuctionList({
-        status: statusFilter,
+        status: this.getStatusFilter(statusFilter),
         success: () => this.setState({
           loadingStatus: 10
         }),
@@ -166,8 +197,8 @@ class AdminAuctionList extends PureComponent {
             <NavItem>
               <NavLink
                 href="/"
-                className={classnames({ active: statusFilter === AUCTION_STATUS_OPEN })}
-                onClick={this.handleChangeTab.bind(this, AUCTION_STATUS_OPEN)}
+                className={classnames({ active: statusFilter === AUCTION_TABLE_FILTER_IN_PROGRESS })}
+                onClick={this.handleChangeTab.bind(this, AUCTION_TABLE_FILTER_IN_PROGRESS)}
               >
                 In Progress
               </NavLink>
@@ -175,8 +206,8 @@ class AdminAuctionList extends PureComponent {
             <NavItem>
               <NavLink
                 href="/"
-                className={classnames({ active: statusFilter === AUCTION_STATUS_PREVIEW })}
-                onClick={this.handleChangeTab.bind(this, AUCTION_STATUS_PREVIEW)}
+                className={classnames({ active: statusFilter === AUCTION_TABLE_FILTER_UPCOMING })}
+                onClick={this.handleChangeTab.bind(this, AUCTION_TABLE_FILTER_UPCOMING)}
               >
                 Upcoming
               </NavLink>
@@ -184,8 +215,8 @@ class AdminAuctionList extends PureComponent {
             <NavItem>
               <NavLink
                 href="/"
-                className={classnames({ active: statusFilter === AUCTION_STATUS_FINISHED })}
-                onClick={this.handleChangeTab.bind(this, AUCTION_STATUS_FINISHED)}
+                className={classnames({ active: statusFilter === AUCTION_TABLE_FILTER_FINISHED })}
+                onClick={this.handleChangeTab.bind(this, AUCTION_TABLE_FILTER_FINISHED)}
               >
                 Finished
               </NavLink>
@@ -193,8 +224,8 @@ class AdminAuctionList extends PureComponent {
             <NavItem>
               <NavLink
                 href="/"
-                className={classnames({ active: statusFilter === AUCTION_STATUS_CANCELLED })}
-                onClick={this.handleChangeTab.bind(this, AUCTION_STATUS_CANCELLED)}
+                className={classnames({ active: statusFilter === AUCTION_TABLE_FILTER_CANCELLED })}
+                onClick={this.handleChangeTab.bind(this, AUCTION_TABLE_FILTER_CANCELLED)}
               >
                 Cancelled
               </NavLink>
@@ -231,7 +262,7 @@ class AdminAuctionList extends PureComponent {
           </Nav>
 
           <TabContent activeTab={statusFilter}>
-            <TabPane tabId={AUCTION_STATUS_OPEN}>
+            <TabPane tabId={AUCTION_TABLE_FILTER_IN_PROGRESS}>
               <AuctionTable
                 loadingStatus={loadingStatus}
                 columnList={columnList}
@@ -240,7 +271,7 @@ class AdminAuctionList extends PureComponent {
                 onCancel={this.handleCancel}
               />
             </TabPane>
-            <TabPane tabId={AUCTION_STATUS_PREVIEW}>
+            <TabPane tabId={AUCTION_TABLE_FILTER_UPCOMING}>
               <AuctionTable
                 loadingStatus={loadingStatus}
                 columnList={columnList}
@@ -249,7 +280,7 @@ class AdminAuctionList extends PureComponent {
                 onCancel={this.handleCancel}
               />
             </TabPane>
-            <TabPane tabId={AUCTION_STATUS_FINISHED}>
+            <TabPane tabId={AUCTION_TABLE_FILTER_FINISHED}>
               <AuctionTable
                 loadingStatus={loadingStatus}
                 columnList={columnList}
@@ -258,7 +289,7 @@ class AdminAuctionList extends PureComponent {
                 onCancel={this.handleCancel}
               />
             </TabPane>
-            <TabPane tabId={AUCTION_STATUS_CANCELLED}>
+            <TabPane tabId={AUCTION_TABLE_FILTER_CANCELLED}>
               <AuctionTable
                 loadingStatus={loadingStatus}
                 columnList={columnList}

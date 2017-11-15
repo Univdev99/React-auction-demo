@@ -1,6 +1,9 @@
+from decimal import Decimal
+
 from django.utils import timezone
 
 import factory
+from pinax.stripe.models import Customer
 
 from account.test.factories import UserFactory
 from auction.constants import AUCTION_STATUS_PREVIEW
@@ -34,3 +37,15 @@ class BidFactory(factory.DjangoModelFactory):
 
     user = factory.SubFactory(UserFactory)
     auction = factory.SubFactory(AuctionFactory)
+
+
+class CustomerFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = Customer
+
+    stripe_id = factory.Sequence(
+        lambda n: 'cu_{}'.format(1000000 + n)
+    )
+    created_at = timezone.now()
+    user = factory.SubFactory(UserFactory)
+    account_balance = Decimal(20000.0)

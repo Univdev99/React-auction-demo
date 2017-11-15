@@ -12,6 +12,7 @@ import account from './account'
 import auctions from './auctions'
 import donors from './donors'
 import jobs from './jobs'
+import payment from './payment'
 import settings from './settings'
 
 
@@ -29,6 +30,7 @@ export default function* rootSaga() {
     auctions(),
     donors(),
     jobs(),
+    payment(),
     settings()
   ])
 }
