@@ -9,14 +9,14 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import AuctionCard from 'components/AuctionCard'
 import Breadcrumb from 'components/Breadcrumb'
 import { auctionsSelector } from 'store/selectors'
-import { getAuctionFrontList } from 'store/modules/auctions'
+import { getAuctionList } from 'store/modules/auctions'
 
 
 class Auctions extends PureComponent {
 
   static propTypes = {
     auctions: ImmutablePropTypes.map.isRequired,
-    getAuctionFrontList: PropTypes.func.isRequired,
+    getAuctionList: PropTypes.func.isRequired,
   }
 
   breadcrumbPath() {
@@ -27,9 +27,9 @@ class Auctions extends PureComponent {
   }
 
   componentWillMount() {
-    const { auctions, getAuctionFrontList } = this.props
+    const { auctions, getAuctionList } = this.props
     if (!auctions.get('auctionListLoaded')) {
-      getAuctionFrontList()
+      getAuctionList()
     }
   }
 
@@ -60,7 +60,7 @@ const selector = createStructuredSelector({
 })
 
 const actions = {
-  getAuctionFrontList,
+  getAuctionList,
 }
 
 export default compose(

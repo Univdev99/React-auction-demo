@@ -1,36 +1,45 @@
 import React, { PureComponent } from 'react'
+import ImmutablePropTypes from 'react-immutable-proptypes'
+import PropTypes from 'prop-types'
+import { Button, Col, Row } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
-import PropTypes from 'prop-types'
-import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Link } from 'react-router-dom'
 
 import AppContainerLayout from 'components/AppContainerLayout'
 import AppLayout1 from 'pages/AppLayout1'
+import AuctionCard from 'components/AuctionCard'
 import DonateBar from 'components/DonateBar'
 import DonorCard from 'components/DonorCard'
 import HomeBanner from 'components/HomeBanner'
+import { auctionsSelector, donorsSelector } from 'store/selectors'
 import { getDonorFrontList } from 'store/modules/donors'
-import { donorsSelector } from 'store/selectors'
+import { getTrendingAuctionList } from 'store/modules/auctions'
 
 
 class Home extends PureComponent {
 
   static propTypes = {
+    auctions:  ImmutablePropTypes.map.isRequired,
     donors: ImmutablePropTypes.map.isRequired,
+    getTrendingAuctionList: PropTypes.func.isRequired,
     getDonorFrontList: PropTypes.func.isRequired,
   }
 
   componentWillMount() {
-    const { donors, getDonorFrontList } = this.props
+    const { auctions, donors, getDonorFrontList, getTrendingAuctionList } = this.props
+    if (!auctions.get('auctionTrendingListLoaded')) {
+      getTrendingAuctionList()
+    }
     if (!donors.get('donorListLoaded')) {
       getDonorFrontList()
     }
   }
 
   render() {
-    const { donors } = this.props
+    const { auctions, donors } = this.props
+    const trendingAuctionsList = auctions.get('auctionTrendingList')
     const donorFrontList = donors.get('donorFrontList')
 
     return (
@@ -40,7 +49,9 @@ class Home extends PureComponent {
         <AppContainerLayout>
           <div className="clearfix mb-5">
             <h3 className="pull-left">Donors</h3>
-            <Link to="/donors" className="pull-right btn btn-sm btn-outline-secondary">All donors</Link>
+            <Button color="primary" outline tag={Link} to="/donors" className="pull-right">
+              All donors
+            </Button>
           </div>
 
           <div className="row">
@@ -56,17 +67,35 @@ class Home extends PureComponent {
           </div>
         </AppContainerLayout>
         <DonateBar />
+        <AppContainerLayout>
+          <div className="clearfix mb-5">
+            <h3 className="pull-left">Trending Auctions</h3>
+            <Button color="primary" outline tag={Link} to="/auctions" className="pull-right">
+              All auctions
+            </Button>
+          </div>
+
+          <Row>
+            {trendingAuctionsList.map(auction => (
+              <Col xs={12} md={2} lg={3} key={auction.get('pk')} className="mb-3">
+                <AuctionCard auction={auction.toJS()} />
+              </Col>
+            ))}
+          </Row>
+        </AppContainerLayout>
       </AppLayout1>
     )
   }
 }
 
 const selector = createStructuredSelector({
-  donors: donorsSelector,
+  auctions: auctionsSelector,
+  donors: donorsSelector
 })
 
 const actions = {
-  getDonorFrontList,
+  getTrendingAuctionList,
+  getDonorFrontList
 }
 
 export default compose(
