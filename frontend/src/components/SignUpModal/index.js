@@ -24,15 +24,9 @@ class SignUpModal extends PureComponent {
     startBidFlow: PropTypes.func.isRequired
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      signUpError: false
-    }
-  }
-
-  handleSignIn = () => {
+  handleSignIn = (event) => {
     const { handleHide, showModal } = this.props
+    event.preventDefault()
     handleHide()
     showModal('signinModal')
   }
@@ -63,14 +57,10 @@ class SignUpModal extends PureComponent {
 
   render() {
     const { fbReady, handleHide, show } = this.props
-    const { signUpError } = this.state
 
     return (
       <Modal isOpen={show} toggle={handleHide} size="sm">
         <ModalHeader toggle={handleHide}>Hello there</ModalHeader>
-        {signUpError && <div className="mb-2 text-danger">
-          Failed to sign up
-        </div>}
         <ModalBody>
           <p>Please sign up to our website</p>
           <Button color="secondary" block disabled={!fbReady} onClick={this.handleSignUpWithFacebook}>

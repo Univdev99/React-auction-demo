@@ -23,13 +23,6 @@ class SignInModal extends PureComponent {
     startBidFlow: PropTypes.func.isRequired
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      signInError: false
-    }
-  }
-
   handleSignup = (e) => {
     const { auctionId, handleHide, showModal } = this.props
     e.preventDefault()
