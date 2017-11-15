@@ -158,7 +158,7 @@ class AdminAuctionBidList extends PureComponent {
                   <td>{bid.get('status')}</td>
                   <td>{bid.get('placed_at')}</td>
                   <td>{bid.get('closed_at')}</td>
-                  <td>{bid.getIn(['user_detail', 'first_name'])} {bid.getIn(['user_detail', 'last_name'])} ({bid.getIn(['user_detail', 'email'])}</td>
+                  <td>{bid.getIn(['user_detail', 'first_name'])} {bid.getIn(['user_detail', 'last_name'])} ({bid.getIn(['user_detail', 'email'])})</td>
                   <td>
                     {bid.get('status') === BID_STATUS_REJECTED && <a
                       href="/"

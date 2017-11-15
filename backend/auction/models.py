@@ -1,8 +1,15 @@
+from decimal import Decimal
+
 from django.conf import settings
 from django.db import models
+from django.db import transaction
 from django.db.models import Max, Min
-from rest_framework.exceptions import ParseError
 from django.utils import timezone
+
+from rest_framework.exceptions import ParseError
+from pinax.stripe.actions import charges
+from pinax.stripe.actions import refunds
+from pinax.stripe.models import Charge
 
 from auction.constants import AUCTION_STATUS_CHOICES
 from auction.constants import AUCTION_STATUS_PREVIEW
@@ -14,8 +21,14 @@ from auction.constants import AUCTION_STATUS_CANCELLED
 from auction.constants import AUCTION_STATUS_CANCELLED_DUE_TO_NO_BIDS
 from auction.constants import BID_STATUS_CHOICES
 from auction.constants import BID_STATUS_ACTIVE
-from auction.constants import SHIPMENT_STATUS_CHOICES
-from auction.constants import SHIPMENT_STATUS_SHIPPING
+from auction.constants import BID_STATUS_WON
+from auction.constants import BID_STATUS_LOST
+from auction.constants import BID_STATUS_REJECTED
+from auction.constants import BID_STATUS_CANCELLED
+from auction.constants import SALE_STATUS_CHOICES
+from auction.constants import SALE_STATUS_WAITING_FOR_PAYMENT
+from auction.constants import SALE_STATUS_RECEIVED_PAYMENT
+from auction.constants import SALE_STATUS_CANCELLED
 from entity.models import Product
 
 
@@ -83,6 +96,9 @@ class Auction(models.Model):
     def get_active_bid_queryset(self):
         return self.bid_set.filter(status=BID_STATUS_ACTIVE)
 
+    def get_unrejected_bid_queryset(self):
+        return self.bid_set.exclude(status=BID_STATUS_REJECTED)
+
     def get_similar_auctions(self, count):
         product = self.product
         similar_products = self.product.get_similar_products(count, auction__isnull=False)
@@ -98,38 +114,80 @@ class Auction(models.Model):
             self.save()
             return
 
-        highest_bid = bid_queryset.objects.get(price=self.current_price)
+        highest_bid = bid_queryset.get(price=self.current_price)
+        highest_bid.status = BID_STATUS_WON
+        highest_bid.save()
 
-        raise NotImplementedError('Payment process not implemented yet')
+        bid_queryset.exclude(price=highest_bid.price).update(status=BID_STATUS_LOST)
 
-    def _send_payment_to_charity(self):
-        raise NotImplementedError('Payment process not implemented yet')
+        charge = charges.create(
+            amount=Decimal(highest_bid.price),
+            customer=highest_bid.user.customer.stripe_id,
+        )
 
-    def start(self):
+        sale = Sale(
+            price=highest_bid.price,
+            status=SALE_STATUS_WAITING_FOR_PAYMENT,
+            auction=self,
+            product=self.product,
+            user=highest_bid.user,
+            stripe_charge_id=charge.stripe_id,
+        )
+        if charge.paid:
+            sale.status = SALE_STATUS_RECEIVED_PAYMENT
+            sale.payment_received = timezone.now()
+        sale.save()
+
+        if charge.paid:
+            self.status = AUCTION_STATUS_WAITING_TO_SHIP
+        else:
+            self.status = AUCTION_STATUS_WAITING_FOR_PAYMENT
+        self.ended_at = timezone.now()
+        self.save()
+
+    def start(self, open_until):
         if self.status != AUCTION_STATUS_PREVIEW:
             raise ParseError('Only auctions in preview status can be started')
 
         self.status = AUCTION_STATUS_OPEN
         self.started_at = timezone.now()
+        self.open_until = open_until
         self.save()
 
+    @transaction.atomic
     def finish(self):
         if self.status != AUCTION_STATUS_OPEN:
             raise ParseError('Only open auctions can be finished')
 
         self._do_finishing_process()
 
-        self.status = AUCTION_STATUS_WAITING_FOR_PAYMENT
-        self.ended_at = timezone.now()
-        self.save()
-
+    @transaction.atomic
     def cancel(self):
-        if self.status != AUCTION_STATUS_OPEN:
-            raise ParseError('Only open auctions can be cancelled')
+        if self.status not in (
+            AUCTION_STATUS_OPEN,
+            AUCTION_STATUS_WAITING_TO_SHIP,
+            AUCTION_STATUS_WAITING_FOR_PAYMENT
+        ):
+            raise ParseError('Only auctions in progress can be cancelled')
 
         self.status = AUCTION_STATUS_CANCELLED
         self.ended_at = timezone.now()
         self.save()
+
+        self.get_unrejected_bid_queryset().update(status=BID_STATUS_CANCELLED)
+
+        try:
+            self.sale.status = SALE_STATUS_CANCELLED
+            self.sale.save()
+        except:
+            pass
+
+        try:
+            charge = self.sale.charge
+            if charge and charge.paid:
+                refunds.create(charge)
+        except Sale.DoesNotExist:
+            pass
 
     def _received_payment(self):
         raise NotImplementedError('Payment receive logic not implemented yet')
@@ -155,18 +213,29 @@ class Bid(models.Model):
         return 'Bid by {} on {}'.format(self.user.email, str(self.auction))
 
 
-class Shipment(models.Model):
-    sent_at = models.DateTimeField()
-    arrived_at = models.DateTimeField(null=True, blank=True, default=None)
-    tracking_number = models.CharField(max_length=100)
+class Sale(models.Model):
+    payment_received = models.DateTimeField(null=True, blank=True, default=None)
+    item_sent = models.DateTimeField(null=True, blank=True, default=None)
+    tracking_number = models.CharField(max_length=100, default='')
     status = models.CharField(
         max_length=50,
-        choices=SHIPMENT_STATUS_CHOICES,
-        default=SHIPMENT_STATUS_SHIPPING
+        choices=SALE_STATUS_CHOICES,
+        default=SALE_STATUS_WAITING_FOR_PAYMENT
     )
+    note = models.TextField(default='')
+    price = models.FloatField()
+    stripe_charge_id = models.CharField(max_length=100)
 
-    auction = models.ForeignKey(Auction, null=True, blank=True, on_delete=models.SET_NULL)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    auction = models.OneToOneField(Auction, null=True, blank=True, on_delete=models.SET_NULL)
+    product = models.ForeignKey(Product, null=True, blank=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
-        return 'Shipment {}'.format(self.tracking_number)
+        return 'Sale {}'.format(self.tracking_number)
+
+    @property
+    def charge(self):
+        try:
+            return Charge.objects.get(stripe_id=self.stripe_charge_id)
+        except Charge.DoesNotExist:
+            return None

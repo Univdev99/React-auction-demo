@@ -8,7 +8,6 @@ from common.test import SerializerTestCase
 from api.serializers.auctions import AuctionAdminSerializer
 from api.serializers.auctions import StartAuctionSerializer
 from api.serializers.auctions import BidSerializer
-from api.serializers.auctions import AuctionShipProductSerializer
 from account.test.factories import UserFactory
 from auction.constants import AUCTION_STATUS_OPEN
 from auction.constants import AUCTION_STATUS_WAITING_FOR_PAYMENT
@@ -133,27 +132,3 @@ class BidSerializerTests(SerializerTestCase):
 
         serializer = self.get_serializer(data=self.get_data(), context=self.get_context())
         self.assertInvalid(serializer)
-
-
-class AuctionShipProductSerializerTests(SerializerTestCase):
-    serializer_class = AuctionShipProductSerializer
-
-    def setUp(self):
-        super(AuctionShipProductSerializerTests, self).setUp()
-        self.auction = AuctionFactory.create(status=AUCTION_STATUS_WAITING_TO_SHIP)
-
-    def get_data(self):
-        return {
-            'sent_at': timezone.now(),
-            'tracking_number': 'some_tracking_number'
-        }
-
-    def test_shipment_created(self):
-        serializer = self.get_serializer(
-            data=self.get_data(),
-            model_object=self.auction,
-        )
-        self.assertValid(serializer)
-
-        shipment = serializer.create(serializer.validated_data)
-        self.assertIsNotNone(shipment)

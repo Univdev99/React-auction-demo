@@ -9,7 +9,6 @@ from auction.constants import BID_STATUS_ACTIVE
 from auction.constants import BID_STATUS_REJECTED
 from auction.models import Auction
 from auction.models import Bid
-from auction.models import Shipment
 from api.serializers.auth import UserSerializer
 from api.serializers.entities import ProductSerializer
 from api.serializers.entities import ProductDetailSerializer
@@ -46,7 +45,7 @@ class AuctionAdminSerializer(AuctionSerializer):
         fields = AuctionSerializer.Meta.fields + (
             'max_bid', 'min_bid', 'highest_bidder', 'number_of_bids', 'time_remaining'
         )
-        read_only_fields = AuctionSerializer.Meta.fields + (
+        read_only_fields = AuctionSerializer.Meta.read_only_fields + (
             'max_bid', 'min_bid', 'highest_bidder', 'number_of_bids', 'time_remaining'
         )
 
@@ -81,20 +80,20 @@ class AuctionDetailWithSimilarSerializer(serializers.ModelSerializer):
 class StartAuctionSerializer(serializers.Serializer):
     open_until = serializers.DateTimeField(required=False)
     duration_days = serializers.IntegerField(required=False, min_value=0)
+    duration_hours = serializers.IntegerField(required=False, min_value=0)
     duration_minutes = serializers.IntegerField(required=False, min_value=0)
-    duration_seconds = serializers.IntegerField(required=False, min_value=0)
 
     def validate(self, data):
         data = super(StartAuctionSerializer, self).validate(data)
 
         if ('open_until' not in data and
                 'duration_days' not in data and
-                'duration_minutes' not in data and
-                'duration_seconds' not in data):
+                'duration_hours' not in data and
+                'duration_minutes' not in data):
             raise serializers.ValidationError('open_until field or at least one of duration fields should be provided')
 
         if ('open_until' in data and
-                ('duration_days' in data or 'duration_minutes' in data or 'duration_seconds' in data)):
+                ('duration_days' in data or 'duration_hours' in data or 'duration_minutes' in data)):
             raise serializers.ValidationError(
                 'open_until field and duration fields should not be provided at the same time'
             )
@@ -106,8 +105,8 @@ class StartAuctionSerializer(serializers.Serializer):
 
         if ('open_until' not in data and
                 ('duration_days' not in data or int(data['duration_days']) == 0) and
-                ('duration_minutes' not in data or int(data['duration_minutes']) == 0) and
-                ('duration_seconds' not in data or int(data['duration_seconds']) == 0)):
+                ('duration_hours' not in data or int(data['duration_hours']) == 0) and
+                ('duration_minutes' not in data or int(data['duration_minutes']) == 0)):
             raise serializers.ValidationError(
                 'At least of one of duration fields should be larger than zero'
             )
@@ -204,22 +203,3 @@ class BidStatusChangeSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
-
-
-class AuctionShipProductSerializer(serializers.Serializer):
-    sent_at = serializers.DateTimeField()
-    tracking_number = serializers.CharField()
-
-    @transaction.atomic
-    def create(self, validated_data):
-        view = self.context.get('view')
-        auction = view.get_object()
-
-        shipment = Shipment.objects.create(
-            sent_at=validated_data['sent_at'],
-            tracking_number=validated_data['tracking_number'],
-            auction=auction,
-            product=auction.product,
-        )
-
-        return shipment

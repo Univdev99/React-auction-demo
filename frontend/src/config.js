@@ -27,8 +27,27 @@ export const DONOR_TYPES = [
 
 export const AUCTION_STATUS_PREVIEW = 'preview'
 export const AUCTION_STATUS_OPEN = 'open'
-export const AUCTION_STATUS_FINISHED = 'finished'
 export const AUCTION_STATUS_CANCELLED = 'cancelled'
+export const AUCTION_STATUS_CANCELLED_DUE_TO_NO_BIDS = 'cancelled-no-bids'
+export const AUCTION_STATUS_WAITING_FOR_PAYMENT = 'waiting-for-payment'
+export const AUCTION_STATUS_WAITING_TO_SHIP = 'waiting-to-ship'
+export const AUCTION_STATUS_SHIPPED = 'shipped'
+export const AUCTION_STATUS_FINISHED = 'finished'
+export const AUCTION_STATUS_TEXTS = {
+  [AUCTION_STATUS_PREVIEW]: 'Preview',
+  [AUCTION_STATUS_OPEN]: 'Open',
+  [AUCTION_STATUS_CANCELLED]: 'Cancelled',
+  [AUCTION_STATUS_CANCELLED_DUE_TO_NO_BIDS]: 'Cancelled due to no bids',
+  [AUCTION_STATUS_WAITING_FOR_PAYMENT]: 'Waiting for payment',
+  [AUCTION_STATUS_WAITING_TO_SHIP]: 'Waiting to ship',
+  [AUCTION_STATUS_SHIPPED]: 'Shipped',
+  [AUCTION_STATUS_FINISHED]: 'Finished',
+}
+
+export const AUCTION_TABLE_FILTER_UPCOMING = 'upcoming'
+export const AUCTION_TABLE_FILTER_IN_PROGRESS = 'inprogress'
+export const AUCTION_TABLE_FILTER_FINISHED = 'finished'
+export const AUCTION_TABLE_FILTER_CANCELLED = 'cancelled'
 
 /* Bid constants */
 

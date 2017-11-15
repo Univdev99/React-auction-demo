@@ -1,4 +1,5 @@
 import random
+from datetime import timedelta
 
 from django.db import transaction
 from django.shortcuts import get_object_or_404
@@ -12,7 +13,7 @@ from rest_framework.response import Response
 from api.filters.status import StatusFilterBackend
 from api.serializers.auctions import AuctionSerializer
 from api.serializers.auctions import AuctionAdminSerializer
-from api.serializers.auctions import AuctionShipProductSerializer
+from api.serializers.auctions import StartAuctionSerializer
 from api.serializers.auctions import BidWithUserDetailSerializer
 from api.serializers.auctions import BidStatusChangeSerializer
 from api.serializers.storage import UploadMediumSerializer
@@ -54,8 +55,19 @@ class AuctionStartView(generics.GenericAPIView):
     queryset = Auction.objects.select_related('product')
 
     def post(self, *args, **kwargs):
+        serializer = StartAuctionSerializer(data=self.request.data)
+        serializer.is_valid(raise_exception=True)
+        if serializer.validated_data['open_until']:
+            open_until = serializer.validated_data['open_until']
+        else:
+            open_until = timezone.now() + timedelta(
+                days=serializer.validated_data['duration_days'],
+                hours=serializer.validated_data['duration_hours'],
+                minutes=serializer.validated_data['duration_minutes'],
+            )
+
         auction = self.get_object()
-        auction.start()
+        auction.start(open_until)
 
         serializer = self.get_serializer(auction)
         return Response(serializer.data)
@@ -87,14 +99,6 @@ class AuctionCancelView(generics.GenericAPIView):
 
         serializer = self.get_serializer(auction)
         return Response(serializer.data)
-
-
-class AuctionShipProductView(generics.CreateAPIView):
-    permission_classes = (IsAuthenticated, IsAdmin,)
-    serializer_class = AuctionShipProductSerializer
-    lookup_url_kwarg = 'pk'
-    queryset = Auction.objects.filter(status=AUCTION_STATUS_WAITING_TO_SHIP) \
-        .select_related('product')
 
 
 class AuctionBidListView(generics.ListAPIView):

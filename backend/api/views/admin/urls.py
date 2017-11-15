@@ -6,7 +6,6 @@ from api.views.admin.auctions import AuctionDetailView
 from api.views.admin.auctions import AuctionStartView
 from api.views.admin.auctions import AuctionFinishView
 from api.views.admin.auctions import AuctionCancelView
-from api.views.admin.auctions import AuctionShipProductView
 from api.views.admin.auctions import AuctionBidListView
 from api.views.admin.auctions import AuctionBidStatusChangeView
 from api.views.admin.charities import CharityListView
@@ -58,7 +57,6 @@ urlpatterns = [
     url(r'^auctions/(?P<pk>[0-9]+)/start/$', AuctionStartView.as_view(), name='auction-start'),
     url(r'^auctions/(?P<pk>[0-9]+)/finish/$', AuctionFinishView.as_view(), name='auction-finish'),
     url(r'^auctions/(?P<pk>[0-9]+)/cancel/$', AuctionCancelView.as_view(), name='auction-cancel'),
-    url(r'^auctions/(?P<pk>[0-9]+)/ship/$', AuctionShipProductView.as_view(), name='auction-ship'),
     url(r'^auctions/(?P<pk>[0-9]+)/bids/$', AuctionBidListView.as_view(), name='auction-bids'),
     url(r'^auctions/(?P<pk>[0-9]+)/bids/(?P<bid_pk>[0-9]+)/change-status/$',
         AuctionBidStatusChangeView.as_view(), name='auction-bid-status-change'),

@@ -1,7 +1,7 @@
 import Immutable from 'immutable'
 import { createAction, handleActions } from 'redux-actions'
 
-import { requestSuccess, requestFail } from 'store/api/request'
+// import { requestSuccess, requestFail } from 'store/api/request'
 import {
   ACCOUNT_SET_PAYMENT,
   PAYMENT_TEST,
