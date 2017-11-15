@@ -7,9 +7,10 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Link } from 'react-router-dom'
 
 import AppContainerLayout from 'components/AppContainerLayout'
+import AppLayout1 from 'pages/AppLayout1'
+import DonateBar from 'components/DonateBar'
 import DonorCard from 'components/DonorCard'
 import HomeBanner from 'components/HomeBanner'
-import AppLayout1 from 'pages/AppLayout1'
 import { getDonorFrontList } from 'store/modules/donors'
 import { donorsSelector } from 'store/selectors'
 
@@ -54,6 +55,7 @@ class Home extends PureComponent {
             ))}
           </div>
         </AppContainerLayout>
+        <DonateBar />
       </AppLayout1>
     )
   }
