@@ -1,14 +1,14 @@
 import React, { PureComponent } from 'react'
-
+import { Container } from 'reactstrap'
 
 class AppContainerLayout extends PureComponent {
   render() {
     const { children } = this.props
 
     return (
-      <div className="container pb-5 my-5">
+      <Container className="my-5">
         {children}
-      </div>
+      </Container>
     )
   }
 }

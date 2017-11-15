@@ -2,20 +2,21 @@ import { takeLatest } from 'redux-saga/effects'
 
 import apiCall from 'store/api/call'
 import {
-  AUCTION_GET_FRONT_LIST,
-  AUCTION_GET_FRONT_DETAIL,
+  AUCTION_GET_LIST,
+  AUCTION_GET_DETAIL,
+  AUCTION_GET_TRENDING_LIST,
   AUCTION_PLACE_BID
 } from 'store/constants'
 
 
-const getAuctionFrontList = apiCall({
-  type: AUCTION_GET_FRONT_LIST,
+const getAuctionList = apiCall({
+  type: AUCTION_GET_LIST,
   method: 'get',
   path: 'auctions/',
 })
 
-const getAuctionFrontDetail = apiCall({
-  type: AUCTION_GET_FRONT_DETAIL,
+const getAuctionDetail = apiCall({
+  type: AUCTION_GET_DETAIL,
   method: 'get',
   path: ({ payload }) => `auctions/${payload.id}/`,
 })
@@ -26,8 +27,15 @@ const placeBid = apiCall({
   path: ({ payload }) => `auctions/${payload.id}/bid/`,
 })
 
+const getTrendingAuctionList = apiCall({
+  type: AUCTION_GET_TRENDING_LIST,
+  method: 'get',
+  path: 'auctions/front/',
+})
+
 export default function* rootSaga () {
-  yield takeLatest(AUCTION_GET_FRONT_LIST, getAuctionFrontList)
-  yield takeLatest(AUCTION_GET_FRONT_DETAIL, getAuctionFrontDetail)
+  yield takeLatest(AUCTION_GET_LIST, getAuctionList)
+  yield takeLatest(AUCTION_GET_DETAIL, getAuctionDetail)
+  yield takeLatest(AUCTION_GET_TRENDING_LIST, getTrendingAuctionList)
   yield takeLatest(AUCTION_PLACE_BID, placeBid)
 }
