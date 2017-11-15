@@ -6,6 +6,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import { Link } from 'react-router-dom'
+import { show } from 'redux-modal'
 
 import AppContainerLayout from 'components/AppContainerLayout'
 import AppLayout1 from 'pages/AppLayout1'
@@ -17,6 +18,7 @@ import { auctionsSelector, donorsSelector } from 'store/selectors'
 import { getDonorFrontList } from 'store/modules/donors'
 import { getTrendingAuctionList } from 'store/modules/auctions'
 
+const SUBSCRIBE_MODAL_POPUP_DELAY = 3000
 
 class Home extends PureComponent {
 
@@ -25,6 +27,15 @@ class Home extends PureComponent {
     donors: ImmutablePropTypes.map.isRequired,
     getTrendingAuctionList: PropTypes.func.isRequired,
     getDonorFrontList: PropTypes.func.isRequired,
+    show: PropTypes.func.isRequired
+  }
+
+  componentDidMount() {
+    const { show } = this.props
+    this.smTimerId = setTimeout(() => {
+      this.smTimerId = null
+      show('subscribeModal')
+    }, SUBSCRIBE_MODAL_POPUP_DELAY)
   }
 
   componentWillMount() {
@@ -35,6 +46,10 @@ class Home extends PureComponent {
     if (!donors.get('donorListLoaded')) {
       getDonorFrontList()
     }
+  }
+
+  componentWillUnmount() {
+    this.smTimerId && clearTimeout(this.smTimerId)
   }
 
   render() {
@@ -95,7 +110,8 @@ const selector = createStructuredSelector({
 
 const actions = {
   getTrendingAuctionList,
-  getDonorFrontList
+  getDonorFrontList,
+  show
 }
 
 export default compose(
