@@ -23,5 +23,5 @@ class AuctionBidStatusFilterBackend(filters.BaseFilterBackend):
         if status_param:
             status_list = status_param.split(',')
             status_list = [status.strip() for status in status_list]
-            queryset = queryset.filter(bid__status__in=status)
+            queryset = queryset.filter(bid__status__in=status_list)
         return queryset
