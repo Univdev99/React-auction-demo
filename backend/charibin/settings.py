@@ -55,8 +55,7 @@ INSTALLED_APPS = (
     'entity',
     'storage',
     'job',
-    'notification',
-    'payment'
+    'notification'
 )
 
 MIDDLEWARE_CLASSES = (

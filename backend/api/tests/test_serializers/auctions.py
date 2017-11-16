@@ -12,6 +12,7 @@ from account.test.factories import UserFactory
 from auction.constants import AUCTION_STATUS_OPEN
 from auction.constants import AUCTION_STATUS_WAITING_FOR_PAYMENT
 from auction.constants import AUCTION_STATUS_WAITING_TO_SHIP
+from auction.constants import AUCTION_STATUS_FINISHED
 from auction.models import Auction
 from auction.test.factories import AuctionFactory
 from auction.test.factories import BidFactory
@@ -87,8 +88,9 @@ class BidSerializerTests(SerializerTestCase):
     def setUp(self):
         super(BidSerializerTests, self).setUp()
         self.user = UserFactory.create()
-        self.auction = AuctionFactory.create(open_until=timezone.now() + timedelta(days=3))
-        self.auction.start()
+        self.auction = AuctionFactory.create()
+        open_until = timezone.now() + timedelta(days=3)
+        self.auction.start(open_until)
 
     def get_data(self):
         return {
@@ -126,9 +128,9 @@ class BidSerializerTests(SerializerTestCase):
         serializer = self.get_serializer(data=self.get_data(), context=self.get_context())
         self.assertInvalid(serializer)
 
-    @patch('auction.models.Auction._do_finishing_process')
-    def test_bid_on_finished_auction_fails(self, mock_finish, mock_now):
-        self.auction.finish()
+    def test_bid_on_finished_auction_fails(self, mock_now):
+        self.auction.status = AUCTION_STATUS_FINISHED
+        self.auction.save()
 
         serializer = self.get_serializer(data=self.get_data(), context=self.get_context())
         self.assertInvalid(serializer)

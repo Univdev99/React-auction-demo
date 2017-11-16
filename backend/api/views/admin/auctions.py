@@ -23,6 +23,7 @@ from auction.constants import AUCTION_STATUS_PREVIEW
 from auction.constants import AUCTION_STATUS_WAITING_TO_SHIP
 from auction.models import Auction
 from auction.models import Bid
+from common.exceptions import PaymentRequired
 
 
 class AuctionListView(generics.ListCreateAPIView):

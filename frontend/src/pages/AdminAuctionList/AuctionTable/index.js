@@ -112,6 +112,12 @@ class AuctionTable extends PureComponent {
                         >
                           <strong>Start</strong>
                         </DropdownItem>}
+                        {auctionStatus !== AUCTION_STATUS_PREVIEW && <DropdownItem
+                          to={`/admin/auctions/${auction.get('pk')}/bids`}
+                          tag={Link}
+                        >
+                          Bids
+                        </DropdownItem>}
                         {auctionStatus === AUCTION_STATUS_OPEN && <DropdownItem
                           to="/"
                           onClick={this.handleFinish.bind(this, auction.get('pk'))}

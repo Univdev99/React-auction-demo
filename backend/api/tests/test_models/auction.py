@@ -91,15 +91,11 @@ class FinishAuctionTests(MockChargeMixin, TestCase):
         mock_charge.paid = False
         mock_charge_create.return_value = mock_charge
 
-        self.auction.finish()
-
-        self.assertEqual(self.auction.status, AUCTION_STATUS_WAITING_FOR_PAYMENT)
-        self.assertEqual(self.auction.sale.price, 13000)
-        self.assertEqual(self.auction.sale.status, SALE_STATUS_WAITING_FOR_PAYMENT)
-        self.assertIs(self.auction.sale.payment_received, None)
-
-        self.assertTrue(mock_charge_create.called)
-        self.assertEqual(mock_charge_create.call_args[1]['amount'], 13000)
+        try:
+            self.auction.finish()
+            self.fail('Failed payment should raise Payment Required exception')
+        except:
+            pass
 
     def test_finish_auction_cancels_due_to_no_bids(self):
         self.bid1.status = BID_STATUS_REJECTED

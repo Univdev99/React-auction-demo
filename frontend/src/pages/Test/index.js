@@ -43,6 +43,18 @@ class TestPage extends PureComponent {
   }
 
   handleTestPayment = (payload) => {
+    this.props.setPayment({
+      data: {
+        token: 'tok_chargeCustomerFail'
+      },
+      success: () => this.setState({
+        savingPayment: false
+      }),
+      fail: () => this.setState({
+        savingPayment: false
+      })
+    })
+    return//////////
     this.props.testPayment({
       data: {
         amount: 100,

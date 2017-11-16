@@ -29,6 +29,7 @@ from auction.constants import SALE_STATUS_CHOICES
 from auction.constants import SALE_STATUS_WAITING_FOR_PAYMENT
 from auction.constants import SALE_STATUS_RECEIVED_PAYMENT
 from auction.constants import SALE_STATUS_CANCELLED
+from common.exceptions import PaymentRequired
 from entity.models import Product
 
 
@@ -120,10 +121,19 @@ class Auction(models.Model):
 
         bid_queryset.exclude(price=highest_bid.price).update(status=BID_STATUS_LOST)
 
-        charge = charges.create(
-            amount=Decimal(highest_bid.price),
-            customer=highest_bid.user.customer.stripe_id,
-        )
+        try:
+            charge = charges.create(
+                amount=Decimal(highest_bid.price),
+                customer=highest_bid.user.customer.stripe_id,
+            )
+        except:
+            raise PaymentRequired
+
+        if not charge.paid:
+            """
+            This will make logic below to set status to `waiting for payment` unneeded
+            """
+            raise PaymentRequired
 
         sale = Sale(
             price=highest_bid.price,
@@ -145,6 +155,8 @@ class Auction(models.Model):
         self.ended_at = timezone.now()
         self.save()
 
+        return charge.paid
+
     def start(self, open_until):
         if self.status != AUCTION_STATUS_PREVIEW:
             raise ParseError('Only auctions in preview status can be started')
@@ -159,7 +171,7 @@ class Auction(models.Model):
         if self.status != AUCTION_STATUS_OPEN:
             raise ParseError('Only open auctions can be finished')
 
-        self._do_finishing_process()
+        return self._do_finishing_process()
 
     @transaction.atomic
     def cancel(self):

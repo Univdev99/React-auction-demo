@@ -148,7 +148,7 @@ class BidSerializer(serializers.ModelSerializer):
 
         bid = Bid.objects.create(
             price=price,
-            placed_at=placed_at,    
+            placed_at=placed_at,
             user=request.user,
             auction=auction
         )
