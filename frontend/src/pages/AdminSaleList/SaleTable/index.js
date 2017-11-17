@@ -55,6 +55,9 @@ class SaleTable extends PureComponent {
   handleSaveNote = (id) => {
     const { note } = this.state
 
+    this.setState({
+      notePopoverOpen: false
+    })
     this.props.onUpdateNote(id, note)
   }
 

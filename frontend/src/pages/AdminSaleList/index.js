@@ -110,7 +110,7 @@ class AdminSaleList extends PureComponent {
         note,
       },
       fail: () => {
-        alert('Failed to finish sale')
+        alert('Failed to update note')
       },
     })
   }
