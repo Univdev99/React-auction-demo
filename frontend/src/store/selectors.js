@@ -22,6 +22,9 @@ export const adminUsersSelector = state =>
 export const adminMediaSelector = state =>
   state.get('adminMedia')
 
+export const adminSalesSelector = state =>
+  state.get('adminSales')
+
 export const accountSelector = state =>
   state.get('account')
 

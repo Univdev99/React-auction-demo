@@ -11,6 +11,7 @@ class PasswordVerificationMixin(object):
 
 class SignUpSerializer(PasswordVerificationMixin, serializers.ModelSerializer):
     password = serializers.CharField(min_length=6, write_only=True)
+
     class Meta:
         model = get_user_model()
         fields = ('email', 'first_name', 'last_name', 'password',)
@@ -22,6 +23,7 @@ class SignUpVerificationSerializer(serializers.Serializer):
 
 class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=False)
+
     class Meta:
         model = get_user_model()
         fields = (

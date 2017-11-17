@@ -46,6 +46,7 @@ import AdminAuctionStart from 'pages/AdminAuctionStart'
 import AdminAuctionBidList from 'pages/AdminAuctionBidList'
 import AdminUserList from 'pages/AdminUserList'
 import AdminMediumList from 'pages/AdminMediumList'
+import AdminSaleList from 'pages/AdminSaleList'
 
 // Managers (currently implemented as invisible page components)
 import RealTimeNotificationManager from 'managers/RealTimeNotificationManager'
@@ -71,9 +72,6 @@ import AccountLayout from 'components/AccountLayout'
 import AppLayout1 from 'pages/AppLayout1'
 import AppContainerLayout from 'components/AppContainerLayout'
 
-/// Test page
-import Test from 'pages/Test'
-
 const AdminRoutes = props => (
   <AdminLayout>
     <Route exact path="/admin" component={AdminIndex} />
@@ -92,6 +90,7 @@ const AdminRoutes = props => (
     <Route exact path="/admin/auctions/:id(\d+)" component={AdminAuctionDetail} />
     <Route exact path="/admin/auctions/:id(\d+)/start" component={AdminAuctionStart} />
     <Route exact path="/admin/auctions/:id(\d+)/bids" component={AdminAuctionBidList} />
+    <Route exact path="/admin/sales" component={AdminSaleList} />
     <Route exact path="/admin/users" component={AdminUserList} />
     <Route exact path="/admin/media" component={AdminMediumList} />
   </AdminLayout>
@@ -131,7 +130,6 @@ const FrontendRoutes = props => isFrontend(props) && (
       <Route exact path="/shipping" component={Shipping} />
       <Route exact path="/support" component={Support} />
       <Route exact path="/terms-conditions" component={TermsConditions} />
-      <Route exact path="/test" component={Test} />
     </AppContainerLayout>
   </AppLayout1>
 )

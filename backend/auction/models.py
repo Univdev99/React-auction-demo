@@ -31,6 +31,9 @@ from auction.constants import SALE_STATUS_RECEIVED_PAYMENT
 from auction.constants import SALE_STATUS_CANCELLED
 from common.exceptions import PaymentRequired
 from entity.models import Product
+from notification.constants import NOTIFICATION_AUCTION_CLOSE
+from notification.constants import NOTIFICATION_AUCTION_NEW
+from notification.models import Notification
 
 
 class Auction(models.Model):
@@ -155,6 +158,18 @@ class Auction(models.Model):
         self.ended_at = timezone.now()
         self.save()
 
+        try:
+            Notification.create_notification(
+                None,
+                self,
+                NOTIFICATION_AUCTION_CLOSE,
+                {
+                    'winner_user_id': highest_bid.user.pk,
+                }
+            )
+        except:
+            pass
+
         return charge.paid
 
     def start(self, open_until):
@@ -166,12 +181,18 @@ class Auction(models.Model):
         self.open_until = open_until
         self.save()
 
+        Notification.create_notification(
+            None,
+            self,
+            NOTIFICATION_AUCTION_NEW,
+        )
+
     @transaction.atomic
     def finish(self):
         if self.status != AUCTION_STATUS_OPEN:
             raise ParseError('Only open auctions can be finished')
 
-        return self._do_finishing_process()
+        self._do_finishing_process()
 
     @transaction.atomic
     def cancel(self):
@@ -251,3 +272,7 @@ class Sale(models.Model):
             return Charge.objects.get(stripe_id=self.stripe_charge_id)
         except Charge.DoesNotExist:
             return None
+
+    @property
+    def charity(self):
+        return self.product.donor.charity

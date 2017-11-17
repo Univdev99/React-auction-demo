@@ -17,7 +17,7 @@ import {
 const getAuctionList = apiCall({
   type: ADMIN_GET_AUCTION_LIST,
   method: 'get',
-  path: ({ payload }) => `admin/auctions/?status=${payload.status}`,
+  path: ({ payload }) => `admin/auctions/?page=${payload.page}&status=${payload.status}`,
 })
 
 const createAuction = apiCall({

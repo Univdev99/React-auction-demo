@@ -16,6 +16,7 @@ from api.serializers.auctions import AuctionAdminSerializer
 from api.serializers.auctions import StartAuctionSerializer
 from api.serializers.auctions import BidWithUserDetailSerializer
 from api.serializers.auctions import BidStatusChangeSerializer
+from api.serializers.auctions import SaleSerializer
 from api.serializers.storage import UploadMediumSerializer
 from api.paginations import TenPerPagePagination
 from api.permissions import IsAdmin
@@ -23,6 +24,7 @@ from auction.constants import AUCTION_STATUS_PREVIEW
 from auction.constants import AUCTION_STATUS_WAITING_TO_SHIP
 from auction.models import Auction
 from auction.models import Bid
+from auction.models import Sale
 from common.exceptions import PaymentRequired
 
 
@@ -33,6 +35,7 @@ class AuctionListView(generics.ListCreateAPIView):
         .select_related('product__donor') \
         .prefetch_related('product__media')
     serializer_class = AuctionAdminSerializer
+    pagination_class = TenPerPagePagination
     filter_backends = (StatusFilterBackend, )
 
 
@@ -121,3 +124,19 @@ class AuctionBidStatusChangeView(generics.UpdateAPIView):
     def get_queryset(self):
         auction_pk = self.kwargs.get('pk', None)
         return Bid.objects.filter(auction=auction_pk)
+
+
+class SaleListView(generics.ListAPIView):
+    permission_classes = (IsAuthenticated, IsAdmin,)
+    queryset = Sale.objects.order_by('pk') \
+        .select_related('product__donor__charity') \
+        .select_related('user')
+    serializer_class = SaleSerializer
+    pagination_class = TenPerPagePagination
+
+
+class SaleDetailView(generics.RetrieveUpdateAPIView):
+    permission_classes = (IsAuthenticated, IsAdmin,)
+    serializer_class = SaleSerializer
+    lookup_url_kwarg = 'pk'
+    queryset = Sale.objects.order_by('pk')

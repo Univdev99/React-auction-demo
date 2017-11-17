@@ -8,6 +8,7 @@ import adminAuctions from './admin/auctions'
 import adminTags from './admin/tags'
 import adminUsers from './admin/users'
 import adminMedia from './admin/media'
+import adminSales from './admin/sales'
 import account from './account'
 import auctions from './auctions'
 import donors from './donors'
@@ -26,6 +27,7 @@ export default function* rootSaga() {
     adminTags(),
     adminUsers(),
     adminMedia(),
+    adminSales(),
     account(),
     auctions(),
     donors(),

@@ -9,6 +9,7 @@ from auction.constants import BID_STATUS_ACTIVE
 from auction.constants import BID_STATUS_REJECTED
 from auction.models import Auction
 from auction.models import Bid
+from auction.models import Sale
 from api.serializers.auth import UserSerializer
 from api.serializers.entities import ProductSerializer
 from api.serializers.entities import ProductDetailSerializer
@@ -203,3 +204,19 @@ class BidStatusChangeSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+
+
+class SaleSerializer(serializers.ModelSerializer):
+    winner = serializers.SerializerMethodField()
+    charity = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Sale
+        fields = ('pk', 'winner', 'price', 'charity', 'item_sent', 'tracking_number', 'status', 'note')
+        read_only_fields = ('pk', 'winner', 'price', 'charity', 'item_sent', 'tracking_number', 'status')
+
+    def get_winner(self, obj):
+        return '{} {}'.format(obj.user.first_name, obj.user.last_name)
+
+    def get_charity(self, obj):
+        return obj.product.donor.charity.title

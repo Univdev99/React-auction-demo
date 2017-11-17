@@ -56,7 +56,6 @@ class AppHeader extends PureComponent {
             <DropdownMenu right>
               {isStaff && <DropdownItem tag={Link} className="dropdown-item" to="/admin">Admin</DropdownItem>}
               <DropdownItem tag={Link} className="dropdown-item" to="/account">My Account</DropdownItem>
-              <DropdownItem tag={Link} className="dropdown-item" to="/test">Test</DropdownItem>
               <DropdownItem onClick={this.handleSignOut}>Sign Out</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
