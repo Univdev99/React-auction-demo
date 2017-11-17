@@ -53,6 +53,7 @@ import RealTimeNotificationManager from 'managers/RealTimeNotificationManager'
 
 // Modals
 import AccountCreatedModal from 'components/AccountCreatedModal'
+import AuctionAddCardModal from 'components/AuctionAddCardModal'
 import AuctionBidModal from 'components/AuctionBidModal'
 import AuctionBidPlacedModal from 'components/AuctionBidPlacedModal'
 import SignInModal from 'components/SignInModal'
@@ -138,6 +139,7 @@ const FrontendRoutes = props => isFrontend(props) && (
 const modals = (
   <div>
     <AccountCreatedModal />
+    <AuctionAddCardModal />
     <AuctionBidModal />
     <AuctionBidPlacedModal />
     <SignInModal />
