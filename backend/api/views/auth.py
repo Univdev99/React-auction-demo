@@ -110,6 +110,9 @@ class SignUpWithFacebookView(views.APIView):
 class CurrentUserView(views.APIView):
     permission_classes = (IsAuthenticated, )
 
+    def get_queryset(self):
+        return super(CurrentUserView, self).get_queryset().select_related('customer').prefetch_related('customer__card_set')
+
     def get(self, *args, **kwargs):
         serializer = UserSerializer(self.request.user)
         return Response(serializer.data)

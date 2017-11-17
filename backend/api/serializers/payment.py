@@ -1,10 +1,10 @@
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.db.models import Q
 from rest_framework import serializers
 from pinax.stripe.actions import charges
 from pinax.stripe.actions import customers
 from pinax.stripe.actions import invoices
-
+from pinax.stripe.models import Customer
 from common.exceptions import PaymentRequired
 
 
@@ -34,6 +34,7 @@ class SetPaymentSerializer(StripeCustomerMixin, serializers.Serializer):
             self.update_customer(user, token)
         except ObjectDoesNotExist:
             self.create_customer(user, token)
+        return user.customer
 
 
 class PaymentSerializer(serializers.Serializer):
@@ -49,3 +50,25 @@ class PaymentSerializer(serializers.Serializer):
             )
         except:
             raise PaymentRequired
+
+
+class PaymentInfoSerializer(serializers.ModelSerializer):
+    last4 = serializers.SerializerMethodField()
+    brand = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Customer
+        fields = ('last4', 'brand',)
+
+    def get_card(self, obj):
+        try:
+            card = obj.card_set.get(stripe_id=obj.default_source)
+        except ObjectDoesNotExist:
+            card = obj.card_set.order_by('-id')[0]
+        return card
+
+    def get_brand(self, obj):
+        return self.get_card(obj).brand
+
+    def get_last4(self, obj):
+        return self.get_card(obj).last4

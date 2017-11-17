@@ -2,9 +2,9 @@ from rest_framework import views
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from api.serializers.payment import SetPaymentSerializer
+from api.serializers.payment import PaymentInfoSerializer
 from api.serializers.payment import PaymentSerializer
-
+from api.serializers.payment import SetPaymentSerializer
 
 class AccountPaymentView(views.APIView):
     permission_classes = (IsAuthenticated, )
@@ -20,8 +20,9 @@ class AccountPaymentView(views.APIView):
             context=self.get_serializer_context(),
         )
         serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response({'success': True})
+        customer = serializer.save()
+        response_ser = PaymentInfoSerializer(instance=customer)
+        return Response(response_ser.data)
 
 
 class PaymentTestView(views.APIView):

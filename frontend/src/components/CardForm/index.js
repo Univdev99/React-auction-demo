@@ -1,17 +1,18 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
-import { Button } from 'reactstrap'
-import { CardElement, injectStripe } from 'react-stripe-elements'
+import { Button, Col, FormGroup, Label, Row } from 'reactstrap'
+import { CardCVCElement, CardExpiryElement, CardNumberElement, injectStripe } from 'react-stripe-elements'
 
 
 class CardForm extends PureComponent {
 
   static propTypes = {
-    email: PropTypes.string.isRequired,
-    stripe: PropTypes.object.isRequired,
-    onSubmit: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
+    email: PropTypes.string.isRequired,
+    forModal: PropTypes.bool,
+    onSubmit: PropTypes.func.isRequired,
+    stripe: PropTypes.object.isRequired,
   }
 
   state = {
@@ -36,7 +37,7 @@ class CardForm extends PureComponent {
   }
 
   handleSubmit = (event) => {
-    event.preventDefault()
+    event.preventDefault() 
 
     this.setState({
       tokenCreating: true
@@ -44,29 +45,47 @@ class CardForm extends PureComponent {
 
     const { email, stripe, onSubmit } = this.props
     stripe.createToken({ email })
-    .then(payload => {
-      this.setState({
-        tokenCreating: false
+      .then(payload => {
+        this.setState({
+          tokenCreating: false
+        })
+        onSubmit(payload)
       })
-      onSubmit(payload)
-    })
-    .catch(() => {
-      this.setState({
-        tokenCreating: false
+      .catch(() => {
+        this.setState({
+          tokenCreating: false
+        })
       })
-    })
   }
 
   render() {
-    const { disabled } = this.props
+    const { disabled, forModal } = this.props
     const { tokenCreating } = this.state
 
     return (
       <form onSubmit={this.handleSubmit}>
-        <CardElement className="form-control" {...this.createOptions()} />
-
-        <div className="text-center mt-4">
-          <Button color="primary" className="px-5" disabled={disabled || tokenCreating}>Save</Button>
+        <FormGroup>
+          <Label>Card Number</Label>
+          <CardNumberElement className="form-control" {...this.createOptions()} />
+        </FormGroup>
+        <Row>
+          <Col xs={8}>
+            <FormGroup>
+              <Label>Expiration</Label>
+              <CardExpiryElement className="form-control" {...this.createOptions()} />
+            </FormGroup>
+          </Col>
+          <Col xs={4}>
+            <FormGroup>
+              <Label>CVC</Label>
+              <CardCVCElement className="form-control" {...this.createOptions()} />
+            </FormGroup>
+          </Col>
+        </Row>
+        <div className="text-center mt-2">
+          <Button color="primary" block={forModal} className="px-5" disabled={disabled || tokenCreating}>
+            Add this card
+          </Button>
         </div>
       </form>
     )
