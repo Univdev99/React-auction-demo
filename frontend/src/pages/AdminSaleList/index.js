@@ -5,7 +5,6 @@ import { createStructuredSelector } from 'reselect'
 import Immutable from 'immutable'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import { Link } from 'react-router-dom'
 import {
   Nav, NavItem, NavLink,
   Dropdown, DropdownToggle, DropdownMenu, DropdownItem,
@@ -14,7 +13,7 @@ import {
 import Pagination from 'components/Pagination'
 import {
   getSaleList,
-  updateSale,
+  setSaleNote,
 } from 'store/modules/admin/sales'
 import { adminSalesSelector } from 'store/selectors'
 import {
@@ -28,7 +27,7 @@ class AdminSaleList extends PureComponent {
   static propTypes = {
     adminSales: ImmutablePropTypes.map.isRequired,
     getSaleList: PropTypes.func.isRequired,
-    updateSale: PropTypes.func.isRequired,
+    setSaleNote: PropTypes.func.isRequired,
   }
 
   state = {
@@ -104,11 +103,11 @@ class AdminSaleList extends PureComponent {
     }
   }
 
-  handleUpdate = (id) => {
-    this.props.updateSale({
+  handleUpdateNote = (id, note) => {
+    this.props.setSaleNote({
       id,
       data: {
-        note: 'some note here' ///
+        note,
       },
       fail: () => {
         alert('Failed to finish sale')
@@ -129,10 +128,7 @@ class AdminSaleList extends PureComponent {
 
     return (
       <div>
-        <div className="mb-5 clearfix">
-          <h2 className="pull-left">Sales</h2>
-          <Link className="btn btn-primary pull-right" to="/admin/sales/create">Create</Link>
-        </div>
+        <h2 className="mb-5 clearfix">Sales</h2>
 
         <div>
           <Nav pills>
@@ -171,7 +167,7 @@ class AdminSaleList extends PureComponent {
             loadingStatus={loadingStatus}
             columnList={columnList}
             saleList={saleListPage}
-            onUpdate={this.handleUpdate}
+            onUpdateNote={this.handleUpdateNote}
           />
           <div className="mt-5 text-center">
             <Pagination
@@ -193,7 +189,7 @@ const selector = createStructuredSelector({
 
 const actions = {
   getSaleList,
-  updateSale,
+  setSaleNote,
 }
 
 export default compose(

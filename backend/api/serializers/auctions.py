@@ -213,10 +213,17 @@ class SaleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sale
         fields = ('pk', 'winner', 'price', 'charity', 'item_sent', 'tracking_number', 'status', 'note')
-        read_only_fields = ('pk', 'winner', 'price', 'charity', 'item_sent', 'tracking_number', 'status')
+        read_only_fields = ('pk', 'winner', 'price', 'charity', 'note')
 
     def get_winner(self, obj):
         return '{} {}'.format(obj.user.first_name, obj.user.last_name)
 
     def get_charity(self, obj):
         return obj.product.donor.charity.title
+
+
+class SaleNoteSerializer(SaleSerializer):
+    class Meta:
+        model = Sale
+        fields = SaleSerializer.Meta.fields
+        read_only_fields = ('pk', 'winner', 'price', 'charity', 'item_sent', 'tracking_number', 'status')

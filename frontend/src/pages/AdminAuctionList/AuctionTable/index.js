@@ -16,6 +16,7 @@ import {
   AUCTION_STATUS_WAITING_TO_SHIP,
 } from 'config'
 
+
 class AuctionTable extends PureComponent {
 
   static propTypes = {

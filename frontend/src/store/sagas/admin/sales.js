@@ -4,6 +4,7 @@ import apiCall from 'store/api/call'
 import {
   ADMIN_GET_SALE_LIST,
   ADMIN_UPDATE_SALE,
+  ADMIN_SET_SALE_NOTE,
 } from 'store/constants'
 
 
@@ -19,7 +20,14 @@ const updateSale = apiCall({
   path: ({ payload }) => `admin/sales/${payload.id}/`,
 })
 
+const setSaleNote = apiCall({
+  type: ADMIN_SET_SALE_NOTE,
+  method: 'put',
+  path: ({ payload }) => `admin/sales/${payload.id}/note/`,
+})
+
 export default function* rootSaga () {
   yield takeLatest(ADMIN_GET_SALE_LIST, getSaleList)
   yield takeLatest(ADMIN_UPDATE_SALE, updateSale)
+  yield takeLatest(ADMIN_SET_SALE_NOTE, setSaleNote)
 }

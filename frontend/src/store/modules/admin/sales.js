@@ -5,6 +5,7 @@ import { requestSuccess, requestFail } from 'store/api/request'
 import {
   ADMIN_GET_SALE_LIST,
   ADMIN_UPDATE_SALE,
+  ADMIN_SET_SALE_NOTE,
 } from 'store/constants'
 import { replaceListItem } from 'utils/list'
 
@@ -23,6 +24,7 @@ const initialState = Immutable.fromJS({
 
 export const getSaleList = createAction(ADMIN_GET_SALE_LIST)
 export const updateSale = createAction(ADMIN_UPDATE_SALE)
+export const setSaleNote = createAction(ADMIN_SET_SALE_NOTE)
 
 /* Reducer */
 
@@ -46,9 +48,15 @@ export default handleActions({
     map.set('saleListPageLoaded', false)
   }),
 
-  /* Get sale list actions */
+  /* Update sale actions */
 
   [requestSuccess(ADMIN_UPDATE_SALE)]: (state, { payload }) => state.withMutations(map => {
+    replaceListItem(payload, map, 'saleListPage')
+  }),
+
+  /* Set sale note actions */
+
+  [requestSuccess(ADMIN_SET_SALE_NOTE)]: (state, { payload }) => state.withMutations(map => {
     replaceListItem(payload, map, 'saleListPage')
   }),
 

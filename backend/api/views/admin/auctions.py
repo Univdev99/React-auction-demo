@@ -17,6 +17,7 @@ from api.serializers.auctions import StartAuctionSerializer
 from api.serializers.auctions import BidWithUserDetailSerializer
 from api.serializers.auctions import BidStatusChangeSerializer
 from api.serializers.auctions import SaleSerializer
+from api.serializers.auctions import SaleNoteSerializer
 from api.serializers.storage import UploadMediumSerializer
 from api.paginations import TenPerPagePagination
 from api.permissions import IsAdmin
@@ -139,4 +140,11 @@ class SaleDetailView(generics.RetrieveUpdateAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
     serializer_class = SaleSerializer
     lookup_url_kwarg = 'pk'
-    queryset = Sale.objects.order_by('pk')
+    queryset = Sale.objects.all()
+
+
+class SaleNoteView(generics.UpdateAPIView):
+    permission_classes = (IsAuthenticated, IsAdmin,)
+    serializer_class = SaleNoteSerializer
+    lookup_url_kwarg = 'pk'
+    queryset = Sale.objects.all()

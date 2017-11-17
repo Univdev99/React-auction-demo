@@ -2,11 +2,12 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {
-  Table,
-  UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem,
+  Table, Button, Input,
+  Popover, PopoverBody,
 } from 'reactstrap'
 
 import Spinner from 'components/Spinner'
+
 
 class SaleTable extends PureComponent {
 
@@ -14,18 +15,12 @@ class SaleTable extends PureComponent {
     columnList: ImmutablePropTypes.list.isRequired,
     saleList: ImmutablePropTypes.list.isRequired,
     loadingStatus: PropTypes.number.isRequired,
-    onUpdate: PropTypes.func,
+    onUpdateNote: PropTypes.func,
   }
 
   state = {
     note: '',
-    notePopupOpen: false
-  }
-
-  handleClickEdit = (id, event) => {
-    event.preventDefault()
-
-    ///
+    notePopoverOpen: false
   }
 
   cellValue = (sale, field) => {
@@ -37,8 +32,35 @@ class SaleTable extends PureComponent {
     return value
   }
 
+  handleToggleNotePopover = (note) => {
+    const { notePopoverOpen } = this.state
+
+    if (!notePopoverOpen) {
+      this.setState({
+        note
+      })
+    }
+
+    this.setState({
+      notePopoverOpen: !notePopoverOpen
+    })
+  }
+
+  handleChangeNote = (ev) => {
+    this.setState({
+      note: ev.target.value
+    })
+  }
+
+  handleSaveNote = (id) => {
+    const { note } = this.state
+
+    this.props.onUpdateNote(id, note)
+  }
+
   render() {
     const { loadingStatus, columnList, saleList } = this.props
+    const { note, notePopoverOpen } = this.state
 
     return (
       <div className="mt-2">
@@ -61,6 +83,8 @@ class SaleTable extends PureComponent {
           </thead>
           <tbody>
             {saleList.map(sale => {
+              const id = sale.get('pk')
+
               return (
                 <tr key={sale.get('pk')}>
                   {columnList.filter(
@@ -69,19 +93,29 @@ class SaleTable extends PureComponent {
                     <td key={column.get('field')}>{this.cellValue(sale, column.get('field'))}</td>
                   ))}
                   <td>
-                    <UncontrolledDropdown>
-                      <DropdownToggle size="sm" color="link" className="py-0">
-                        <i className="fa fa-pencil" />
-                      </DropdownToggle>
-                      <DropdownMenu right>
-                        <DropdownItem
-                          to="/"
-                          onClick={this.handleClickEdit.bind(this, sale.get('pk'))}
-                        >
-                          <strong>Edit</strong>
-                        </DropdownItem>
-                      </DropdownMenu>
-                    </UncontrolledDropdown>
+                    <Button id={`sale${id}`} size="sm" color="link" className="py-0"
+                      onClick={this.handleToggleNotePopover.bind(this, sale.get('note'))}
+                    >
+                      <i className="fa fa-pencil" />
+                    </Button>
+                    <Popover placement="bottom" isOpen={notePopoverOpen} target={`sale${id}`}
+                      toggle={this.handleToggleNotePopover.bind(this, sale.get('note'))}
+                    >
+                      <PopoverBody className="pt-3 pb-2">
+                        <Input
+                          type="textarea"
+                          value={note}
+                          onChange={this.handleChangeNote}
+                        />
+                        <div className="text-center mt-2">
+                          <Button size="sm" color="primary" outline className="px-3 border-0"
+                            onClick={this.handleSaveNote.bind(this, id)}
+                          >
+                            Save
+                          </Button>
+                        </div>
+                      </PopoverBody>
+                    </Popover>
                   </td>
                 </tr>
               )
