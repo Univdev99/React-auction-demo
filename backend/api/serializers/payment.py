@@ -34,6 +34,7 @@ class SetPaymentSerializer(StripeCustomerMixin, serializers.Serializer):
             self.update_customer(user, token)
         except ObjectDoesNotExist:
             self.create_customer(user, token)
+        return user.customer
 
 
 class PaymentSerializer(serializers.Serializer):
