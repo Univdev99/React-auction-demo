@@ -7,9 +7,10 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import Immutable from 'immutable'
 import RichTextEditor from 'react-rte'
 
+import CharityForm from 'components/CharityForm'
+import formSubmit from 'utils/formSubmit'
 import Spinner from 'components/Spinner'
 import Uploader from 'components/Uploader'
-import CharityForm from 'components/CharityForm'
 import {
   getCharityDetail,
   updateCharityDetail,
@@ -30,26 +31,19 @@ class AdminCharityDetail extends PureComponent {
 
   state = {
     loadingStatus: 1,
-    updatingStatus: 0,
   }
 
   handleSubmit = (data) => {
+    const { updateCharityDetail } = this.props
     const formData = data.set(
       'description',
       data.get('description').toString('html')
     )
 
-    this.setState({
-      updatingStatus: 1
-    })
-
-    this.props.updateCharityDetail({
+    return formSubmit(updateCharityDetail, {
       id: this.props.match.params.id,
       data: formData,
       success: this.handleBack,
-      fail: () => this.setState({
-        updatingStatus: -1
-      }),
     })
   }
 
@@ -92,7 +86,7 @@ class AdminCharityDetail extends PureComponent {
   render() {
     const { adminCharities } = this.props
     const charityDetail = adminCharities.get('charityDetail')
-    const { loadingStatus, updatingStatus } = this.state
+    const { loadingStatus } = this.state
 
     if (loadingStatus === -1) {
       return (
@@ -122,19 +116,14 @@ class AdminCharityDetail extends PureComponent {
 
           {(loadingStatus === 1 || !charityDetail) && <Spinner />}
 
-          {loadingStatus === 10 && charityDetail && <div>
-            {updatingStatus === -1 && <div className="mb-2 text-danger">
-              Failed to update charity
-            </div>}
-
+          {loadingStatus === 10 && charityDetail &&
             <CharityForm
               initialValues={_charityDetail}
-              disabled={updatingStatus === 1}
               renderMediaDropzone={this.renderMediaDropzone}
               onSubmit={this.handleSubmit}
               onBack={this.handleBack}
             />
-          </div>}
+          }
         </div>
       </div>
     )

@@ -7,10 +7,11 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withRouter } from 'react-router'
 
 import AuctionForm from 'components/AuctionForm'
+import formSubmit from 'utils/formSubmit'
 import Spinner from 'components/Spinner'
-import { getProductList } from 'store/modules/admin/products'
-import { createAuction } from 'store/modules/admin/auctions'
 import { adminProductsSelector } from 'store/selectors'
+import { createAuction } from 'store/modules/admin/auctions'
+import { getProductList } from 'store/modules/admin/products'
 
 
 class AdminAuctionCreate extends PureComponent {
@@ -22,24 +23,13 @@ class AdminAuctionCreate extends PureComponent {
     history: PropTypes.object.isRequired,
   }
 
-  state = {
-    creatingStatus: 0,
-  }
-
   handleSubmit = (data) => {
-    this.setState({
-      creatingStatus: 1
-    })
-    this.props.createAuction({
+    const { createAuction, history } = this.props
+    return formSubmit(createAuction, {
       data,
       success: ({ data }) => {
-        this.props.history.push({
+        history.push({
           pathname: `/admin/auctions/${data.pk}`
-        })
-      },
-      fail: () => {
-        this.setState({
-          creatingStatus: -1
         })
       }
     })
@@ -61,7 +51,6 @@ class AdminAuctionCreate extends PureComponent {
     const { adminProducts } = this.props
     const productListLoaded = adminProducts.get('productListLoaded')
     const productList = adminProducts.get('productList')
-    const { creatingStatus } = this.state
 
     return (
       <div>
@@ -70,18 +59,13 @@ class AdminAuctionCreate extends PureComponent {
 
           {!productListLoaded && <Spinner />}
 
-          {productListLoaded && <div>
-            {creatingStatus === -1 && <div className="mb-2 text-danger">
-              Failed to create auction
-            </div>}
-
+          {productListLoaded &&
             <AuctionForm
               productList={productList}
-              disabled={creatingStatus === 1}
               onSubmit={this.handleSubmit}
               onBack={this.handleBack}
             />
-          </div>}
+          }
         </div>
       </div>
     )

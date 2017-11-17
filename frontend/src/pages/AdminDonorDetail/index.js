@@ -8,10 +8,11 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Link } from 'react-router-dom'
 
+import DonorForm from 'components/DonorForm'
+import formSubmit from 'utils/formSubmit'
+import SortableMediaList from 'components/SortableMediaList'
 import Spinner from 'components/Spinner'
 import Uploader from 'components/Uploader'
-import DonorForm from 'components/DonorForm'
-import SortableMediaList from 'components/SortableMediaList'
 import { getCharityList } from 'store/modules/admin/charities'
 import {
   getDonorDetail,
@@ -39,26 +40,19 @@ class AdminDonorDetail extends PureComponent {
 
   state = {
     loadingStatus: 1,
-    updatingStatus: 0,
   }
 
   handleSubmit = (data) => {
+    const { match, updateDonorDetail } = this.props
     const formData = data.set(
       'description',
       data.get('description').toString('html')
     )
 
-    this.setState({
-      updatingStatus: 1
-    })
-
-    this.props.updateDonorDetail({
-      id: this.props.match.params.id,
+    return formSubmit(updateDonorDetail, {
+      id: match.params.id,
       data: formData,
-      success: this.handleBack,
-      fail: () => this.setState({
-        updatingStatus: -1
-      }),
+      success: this.handleBack
     })
   }
 
@@ -155,7 +149,7 @@ class AdminDonorDetail extends PureComponent {
     const charityList = adminCharities.get('charityList')
     const { adminDonors } = this.props
     const donorDetail = adminDonors.get('donorDetail')
-    const { loadingStatus, updatingStatus } = this.state
+    const { loadingStatus } = this.state
 
     if (loadingStatus === -1) {
       return (
@@ -200,20 +194,15 @@ class AdminDonorDetail extends PureComponent {
 
           {(loadingStatus === 1 || !donorDetail || !charityListLoaded) && <Spinner />}
 
-          {loadingStatus === 10 && donorDetail && charityListLoaded && <div>
-            {updatingStatus === -1 && <div className="mb-2 text-danger">
-              Failed to update donor
-            </div>}
-
+          {loadingStatus === 10 && donorDetail && charityListLoaded &&
             <DonorForm
               initialValues={_donorDetail}
               charityList={charityList}
-              disabled={updatingStatus === 1}
               renderMediaDropzone={this.renderMediaDropzone}
               onSubmit={this.handleSubmit}
               onBack={this.handleBack}
             />
-          </div>}
+          }
         </div>
       </div>
     )

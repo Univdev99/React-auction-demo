@@ -8,6 +8,7 @@ import { modalSelector } from 'store/selectors'
 
 import auctionBidFlow from 'utils/auctionBidFlow'
 import fbHandle from 'utils/fbHandle'
+import formSubmit from 'utils/formSubmit'
 import SignUpForm from 'components/SignUpForm'
 import { signUp } from 'store/modules/auth'
 
@@ -23,15 +24,9 @@ class SignUpModal extends PureComponent {
     startBidFlow: PropTypes.func.isRequired
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      signUpError: false
-    }
-  }
-
-  handleSignIn = () => {
+  handleSignIn = (event) => {
     const { handleHide, showModal } = this.props
+    event.preventDefault()
     handleHide()
     showModal('signinModal')
   }
@@ -40,52 +35,39 @@ class SignUpModal extends PureComponent {
     const { auctionId, handleHide, signUpWithFacebook, startBidFlow } = this.props
     event.preventDefault()
 
-    this.setState({
-      signUpStatus: 1
-    })
-
     signUpWithFacebook({
       success: () => {
         handleHide()
         startBidFlow(auctionId)
-      },
-      fail: () => this.setState({
-        signUpStatus: -1
-      })
+      }
     })
   }
 
   handleSubmit = (data) => {
     const { handleHide, showModal, signUp } = this.props
-    signUp({
+
+    return formSubmit(signUp, {
       data,
       success: () => {
         handleHide()
         showModal('accountCreatedModal')
-      },
-      fail: () => this.setState({
-        signUpError: true
-      })
+      }
     })
   }
 
   render() {
     const { fbReady, handleHide, show } = this.props
-    const { signUpError } = this.state
 
     return (
       <Modal isOpen={show} toggle={handleHide} size="sm">
         <ModalHeader toggle={handleHide}>Hello there</ModalHeader>
-        {signUpError && <div className="mb-2 text-danger">
-          Failed to sign up
-        </div>}
         <ModalBody>
           <p>Please sign up to our website</p>
           <Button color="secondary" block disabled={!fbReady} onClick={this.handleSignUpWithFacebook}>
             Sign up using facebook
           </Button>
           <hr />
-          <SignUpForm forModal onSubmit={this.handleSubmit} simple />
+          <SignUpForm forModal onSubmit={this.handleSubmit} />
           <div className="text-center">
             <Button tag="a" href="#" color="link" onClick={this.handleSignIn}>
               I already have an account

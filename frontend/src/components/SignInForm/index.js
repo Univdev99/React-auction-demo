@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Button } from 'reactstrap'
+import { Alert, Button } from 'reactstrap'
 import { compose } from 'redux'
 import { reduxForm } from 'redux-form/immutable'
 
@@ -11,14 +11,21 @@ import InputField from 'components/InputField'
 class SignInForm extends PureComponent {
 
   static propTypes = {
+    error: PropTypes.any,
+    forModal: PropTypes.bool,
     handleSubmit: PropTypes.func.isRequired,
-    forModal: PropTypes.bool
+    submitFailed: PropTypes.bool,
+    submitting: PropTypes.bool,
   }
 
   render() {
-    const { forModal, handleSubmit } = this.props
+    const { error, forModal, handleSubmit, submitting, submitFailed } = this.props
     return (
       <form onSubmit={handleSubmit}>
+        {submitFailed && <Alert color="danger">
+          {error || 'Login failed, please enter correct email and password'}
+        </Alert>}
+
         <FormField
           name="email"
           type="email"
@@ -34,7 +41,7 @@ class SignInForm extends PureComponent {
           component={InputField}
         />
         <div className="text-center">
-          <Button type="submit" color="primary" block={forModal}>
+          <Button type="submit" color="primary" block={forModal} disabled={submitting}>
             Sign In
           </Button>
         </div>

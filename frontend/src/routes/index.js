@@ -57,6 +57,7 @@ import AuctionBidModal from 'components/AuctionBidModal'
 import AuctionBidPlacedModal from 'components/AuctionBidPlacedModal'
 import SignInModal from 'components/SignInModal'
 import SignUpModal from 'components/SignUpModal'
+import SubscribeModal from 'components/SubscribeModal'
 
 // Auth wrappers
 import {
@@ -136,11 +137,12 @@ const FrontendRoutes = props => isFrontend(props) && (
 
 const modals = (
   <div>
+    <AccountCreatedModal />
     <AuctionBidModal />
     <AuctionBidPlacedModal />
     <SignInModal />
     <SignUpModal />
-    <AccountCreatedModal />
+    <SubscribeModal />
   </div>
 )
 

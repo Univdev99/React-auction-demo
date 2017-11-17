@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import { compose } from 'redux'
+import { Alert, Button } from 'reactstrap'
 import { reduxForm } from 'redux-form/immutable'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
@@ -12,11 +13,13 @@ import RichEditorField from 'components/RichEditorField'
 class CharityForm extends PureComponent {
 
   static propTypes = {
-    initialValues: ImmutablePropTypes.map,
-    disabled: PropTypes.bool,
-    renderMediaDropzone: PropTypes.func,
+    error: PropTypes.any,
     handleSubmit: PropTypes.func.isRequired,
+    initialValues: ImmutablePropTypes.map,
     onBack: PropTypes.func,
+    renderMediaDropzone: PropTypes.func,
+    submitFailed: PropTypes.bool,
+    submitting: PropTypes.bool,
   }
 
   handleClickBack = (e) => {
@@ -29,10 +32,14 @@ class CharityForm extends PureComponent {
   }
 
   render() {
-    const { initialValues, disabled, renderMediaDropzone, handleSubmit, onBack } = this.props
+    const { error, handleSubmit, initialValues, onBack, renderMediaDropzone, submitFailed, submitting } = this.props
 
     return (
       <form onSubmit={handleSubmit}>
+        {submitFailed && <Alert color="danger">
+          {error || `Failed to ${initialValues.get('title') ? 'update the' : 'create a'} charity`}
+        </Alert>}
+
         <FormField
           name="title"
           type="text"
@@ -48,12 +55,12 @@ class CharityForm extends PureComponent {
           {renderMediaDropzone && renderMediaDropzone()}
         </div>
         <div className="text-right">
-          {onBack && <button className="btn mr-3 px-4" onClick={this.handleClickBack}>
+          {onBack && <Button className="mr-3 px-4" onClick={this.handleClickBack}>
             Back
-          </button>}
-          <button type="submit" className="btn btn-primary px-4" disabled={disabled}>
+          </Button>}
+          <Button type="submit" color="primary" className="px-4" disabled={submitting}>
             {initialValues.get('title') ? 'Update' : 'Create'}
-          </button>
+          </Button>
         </div>
       </form>
     )

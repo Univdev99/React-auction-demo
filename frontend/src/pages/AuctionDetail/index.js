@@ -13,14 +13,14 @@ import Slider from 'components/Slider'
 import Spinner from 'components/Spinner'
 import TimeLeft from 'components/TimeLeft'
 import { auctionsSelector } from 'store/selectors'
-import { getAuctionFrontDetail } from 'store/modules/auctions'
+import { getAuctionDetail } from 'store/modules/auctions'
 
 
 class AuctionDetail extends PureComponent {
 
   static propTypes = {
     auctions: ImmutablePropTypes.map.isRequired,
-    getAuctionFrontDetail: PropTypes.func.isRequired,
+    getAuctionDetail: PropTypes.func.isRequired,
     startBidFlow: PropTypes.func.isRequired
   }
 
@@ -43,13 +43,13 @@ class AuctionDetail extends PureComponent {
   }
 
   getDetail = (id) => {
-    const { getAuctionFrontDetail } = this.props
+    const { getAuctionDetail } = this.props
 
     this.setState({
       status: 0
     })
 
-    getAuctionFrontDetail({
+    getAuctionDetail({
       id,
       success: () => this.setState({
         status: 1
@@ -153,7 +153,7 @@ const selector = createStructuredSelector({
 })
 
 const actions = {
-  getAuctionFrontDetail,
+  getAuctionDetail,
 }
 
 export default compose(

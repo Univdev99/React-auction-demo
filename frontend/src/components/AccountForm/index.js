@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Col, Row } from 'reactstrap'
+import { Alert, Button, Col, Row } from 'reactstrap'
 import { compose } from 'redux'
 import { reduxForm } from 'redux-form/immutable'
 
@@ -12,14 +12,20 @@ class AccountForm extends PureComponent {
 
   static propTypes = {
     countries: PropTypes.array.isRequired,
+    error: PropTypes.any,
     handleSubmit: PropTypes.func.isRequired,
-    disabled: PropTypes.bool,
+    submitFailed: PropTypes.bool,
+    submitting: PropTypes.bool,
   }
 
   render() {
-    const { countries, handleSubmit, disabled } = this.props
+    const { error, countries, handleSubmit, submitting, submitFailed } = this.props
     return (
       <form onSubmit={handleSubmit}>
+        {submitFailed && <Alert color="danger">
+          {error || 'Failed to update your account settings'}
+        </Alert>}
+
         <Row>
           <Col xs={12} sm={6}>
             <FormField
@@ -93,7 +99,7 @@ class AccountForm extends PureComponent {
           component={InputField}
         />
         <div className="text-right">
-          <button type="submit" className="btn btn-primary" disabled={disabled}>Update</button>
+          <Button color="primary" type="submit" disabled={submitting}>Update</Button>
         </div>
       </form>
     )

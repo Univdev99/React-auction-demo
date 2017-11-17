@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import { compose } from 'redux'
+import { Alert } from 'reactstrap'
 import { reduxForm } from 'redux-form/immutable'
 import PropTypes from 'prop-types'
 
@@ -11,9 +12,11 @@ import DateTimeField from 'components/DateTimeField'
 class AuctionStartForm extends PureComponent {
 
   static propTypes = {
-    disabled: PropTypes.bool,
+    error: PropTypes.any,
     handleSubmit: PropTypes.func.isRequired,
     onBack: PropTypes.func,
+    submitFailed: PropTypes.bool,
+    submitting: PropTypes.bool,
   }
 
   handleClickBack = (e) => {
@@ -26,10 +29,14 @@ class AuctionStartForm extends PureComponent {
   }
 
   render() {
-    const { disabled, handleSubmit, onBack } = this.props
+    const { error, handleSubmit, onBack, submitFailed, submitting } = this.props
 
     return (
       <form onSubmit={handleSubmit}>
+        {submitFailed && <Alert color="danger">
+          {error || 'Failed to start the auction'}
+        </Alert>}
+
         <FormField
           name="open_until"
           label="Auction Open Until:"
@@ -57,7 +64,7 @@ class AuctionStartForm extends PureComponent {
           {onBack && <button className="btn mr-3" onClick={this.handleClickBack}>
             Cancel
           </button>}
-          <button type="submit" className="btn btn-primary" disabled={disabled}>
+          <button type="submit" className="btn btn-primary" disabled={submitting}>
             Start Auction
           </button>
         </center>

@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import { compose } from 'redux'
+import { Alert, Button } from 'reactstrap'
 import { reduxForm } from 'redux-form/immutable'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
@@ -16,12 +17,14 @@ import { DONOR_TYPES } from 'config'
 class DonorForm extends PureComponent {
 
   static propTypes = {
-    initialValues: ImmutablePropTypes.map,
-    disabled: PropTypes.bool,
     charityList: ImmutablePropTypes.list.isRequired,
-    renderMediaDropzone: PropTypes.func,
+    error: PropTypes.any,
     handleSubmit: PropTypes.func.isRequired,
+    initialValues: ImmutablePropTypes.map,
     onBack: PropTypes.func,
+    renderMediaDropzone: PropTypes.func,
+    submitFailed: PropTypes.bool,
+    submitting: PropTypes.bool,
   }
 
   handleClickBack = (e) => {
@@ -34,10 +37,15 @@ class DonorForm extends PureComponent {
   }
 
   render() {
-    const { initialValues, charityList, disabled, renderMediaDropzone, handleSubmit, onBack } = this.props
+    const { error, charityList, handleSubmit, initialValues, onBack, renderMediaDropzone,
+      submitFailed, submitting } = this.props
 
     return (
       <form onSubmit={handleSubmit}>
+        {submitFailed && <Alert color="danger">
+          {error || `Failed to ${initialValues.get('title') ? 'update the' : 'create a'} donor`}
+        </Alert>}
+
         <Row>
           <Col md="8" sm="12" className="mb-4">
             <FormField
@@ -83,12 +91,12 @@ class DonorForm extends PureComponent {
         </Row>
 
         <div className="text-right">
-          {onBack && <button className="btn mr-3 px-4" onClick={this.handleClickBack}>
+          {onBack && <Button className="mr-3 px-4" onClick={this.handleClickBack}>
             Back
-          </button>}
-          <button type="submit" className="btn btn-primary px-4" disabled={disabled}>
+          </Button>}
+          <Button type="submit" color="primary" className="px-4" disabled={submitting}>
             {initialValues.get('title') ? 'Update' : 'Create'}
-          </button>
+          </Button>
         </div>
       </form>
     )

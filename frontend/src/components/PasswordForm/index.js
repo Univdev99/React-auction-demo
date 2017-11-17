@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import { Alert, Button } from 'reactstrap'
 import { compose } from 'redux'
 import { reduxForm } from 'redux-form/immutable'
 
@@ -10,14 +11,20 @@ import InputField from 'components/InputField'
 class PasswordForm extends PureComponent {
 
   static propTypes = {
+    error: PropTypes.any,
     handleSubmit: PropTypes.func.isRequired,
-    disabled: PropTypes.bool,
+    submitFailed: PropTypes.bool,
+    submitting: PropTypes.bool,
   }
 
   render() {
-    const { handleSubmit, disabled } = this.props
+    const { error, handleSubmit, submitFailed, submitting } = this.props
     return (
       <form onSubmit={handleSubmit}>
+        {submitFailed && <Alert color="danger">
+          {error || 'Failed to update your password'}
+        </Alert>}
+
         <FormField
           name="old_password"
           type="password"
@@ -42,7 +49,7 @@ class PasswordForm extends PureComponent {
           component={InputField}
         />
         <div className="text-right">
-          <button type="submit" className="btn btn-primary" disabled={disabled}>Update</button>
+          <Button type="submit" color="primary" disabled={submitting}>Update</Button>
         </div>
       </form>
     )

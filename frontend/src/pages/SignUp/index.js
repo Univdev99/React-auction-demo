@@ -5,6 +5,7 @@ import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 
 import fbHandle from 'utils/fbHandle'
+import formSubmit from 'utils/formSubmit'
 import SignUpForm from 'components/SignUpForm'
 import { signUp } from 'store/modules/auth'
 
@@ -21,17 +22,16 @@ class SignUp extends PureComponent {
   }
 
   handleSubmit = (data) => {
+    const { signUp } = this.props
+
     this.setState({
       signUpStatus: 1
     })
 
-    this.props.signUp({
+    return formSubmit(signUp, {
       data,
       success: () => this.setState({
         signUpStatus: 10
-      }),
-      fail: () => this.setState({
-        signUpStatus: -1
       }),
     })
   }
@@ -74,11 +74,7 @@ class SignUp extends PureComponent {
             <div>
               <h3 className="mb-4 text-center">Sign Up</h3>
 
-              {signUpStatus === -1 && <div className="mb-2 text-danger">
-                Failed to sign up
-              </div>}
-
-              <SignUpForm onSubmit={this.handleSubmit} disabled={signUpStatus === 1} />
+              <SignUpForm onSubmit={this.handleSubmit} />
 
               <div className="text-center mt-2">
                 <a className={fbReady ? '' : 'text-muted'} href="/" onClick={this.handleSignUpWithFacebook}>
