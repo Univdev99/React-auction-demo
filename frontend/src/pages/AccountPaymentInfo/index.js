@@ -1,28 +1,57 @@
 import React, { PureComponent } from 'react'
-// import PropTypes from 'prop-types'
-// import ImmutablePropTypes from 'react-immutable-proptypes'
+import ImmutablePropTypes from 'react-immutable-proptypes'
+import PropTypes from 'prop-types'
+import { compose } from 'redux'
+import { connect } from 'react-redux'
+import { createStructuredSelector } from 'reselect'
 
-import PaymentInfoForm from 'components/PaymentInfoForm'
+import CardInfo from './CardInfo'
+import PaymentForm from './PaymentForm'
+import { authSelector } from 'store/selectors'
+import { setPayment } from 'store/modules/payment'
 
 
 class AccountPaymentInfo extends PureComponent {
-  handleSubmit = (values) => {
+  static propTypes = {
+    auth: ImmutablePropTypes.map.isRequired,
+    setPayment: PropTypes.func.isRequried
+  }
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      editMode: false
+    }
+  }
+
+  handleSetEditMode = (editMode) => {
+    this.setState({ editMode });
   }
 
   render() {
+    const { props } = this
+    const { editMode } = this.state
+
     return (
       <div>
-
         <h3 className="mb-4">Payment Information</h3>
-
-        <PaymentInfoForm
-          onSubmit={this.handleSubmit}
-        />
-
+        {editMode
+          ? <PaymentForm {...props} setEditMode={this.handleSetEditMode} />
+          : <CardInfo {...props} setEditMode={this.handleSetEditMode} />
+        }
       </div>
     )
   }
 }
 
-export default AccountPaymentInfo
+const selector = createStructuredSelector({
+  auth: authSelector
+})
+
+const actions = {
+  setPayment
+}
+
+export default compose(
+  connect(selector, actions)
+)(AccountPaymentInfo)

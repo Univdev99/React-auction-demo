@@ -82,7 +82,7 @@ class CardForm extends PureComponent {
             </FormGroup>
           </Col>
         </Row>
-        <div className="text-center mt-2">
+        <div className="text-right mt-2">
           <Button color="primary" block={forModal} className="px-5" disabled={disabled || tokenCreating}>
             Add this card
           </Button>
