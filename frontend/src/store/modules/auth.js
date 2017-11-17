@@ -12,6 +12,7 @@ import {
   AUTH_CURRENT_USER,
   AUTH_PASSWORD_UPDATE,
   AUTH_CURRENT_USER_UPDATE,
+  ACCOUNT_SET_PAYMENT
 } from 'store/constants'
 
 import { loadData, saveData } from 'utils/storage'
@@ -76,6 +77,12 @@ export default handleActions({
 
   [requestSuccess(AUTH_CURRENT_USER_UPDATE)]: (state, { payload }) => state.withMutations(map => {
     map.set('currentUser', Immutable.fromJS(payload))
+  }),
+
+  /* Update payment info of current user action */
+
+  [requestSuccess(ACCOUNT_SET_PAYMENT)]: (state, { payload }) => state.withMutations(map => {
+    map.setIn(['currentUser', 'payment_info'], Immutable.fromJS(payload))
   }),
 
   /* Sign out actions */
