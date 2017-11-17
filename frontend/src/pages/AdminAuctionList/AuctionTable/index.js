@@ -16,6 +16,7 @@ import {
   AUCTION_STATUS_WAITING_TO_SHIP,
 } from 'config'
 
+
 class AuctionTable extends PureComponent {
 
   static propTypes = {
@@ -111,6 +112,12 @@ class AuctionTable extends PureComponent {
                           tag={Link}
                         >
                           <strong>Start</strong>
+                        </DropdownItem>}
+                        {auctionStatus !== AUCTION_STATUS_PREVIEW && <DropdownItem
+                          to={`/admin/auctions/${auction.get('pk')}/bids`}
+                          tag={Link}
+                        >
+                          Bids
                         </DropdownItem>}
                         {auctionStatus === AUCTION_STATUS_OPEN && <DropdownItem
                           to="/"

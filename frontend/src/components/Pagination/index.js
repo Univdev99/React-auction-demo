@@ -60,7 +60,7 @@ class Pagination extends PureComponent {
     const { currentPage } = this.props
 
     return (
-      <ReactstrapPagination>
+      <ReactstrapPagination className="justify-content-center">
         <PaginationItem>
           <PaginationLink previous onClick={this.handleClickPageLink.bind(this, 1)} />
         </PaginationItem>

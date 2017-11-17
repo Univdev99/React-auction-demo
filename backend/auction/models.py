@@ -29,7 +29,11 @@ from auction.constants import SALE_STATUS_CHOICES
 from auction.constants import SALE_STATUS_WAITING_FOR_PAYMENT
 from auction.constants import SALE_STATUS_RECEIVED_PAYMENT
 from auction.constants import SALE_STATUS_CANCELLED
+from common.exceptions import PaymentRequired
 from entity.models import Product
+from notification.constants import NOTIFICATION_AUCTION_CLOSE
+from notification.constants import NOTIFICATION_AUCTION_NEW
+from notification.models import Notification
 
 
 class Auction(models.Model):
@@ -120,10 +124,19 @@ class Auction(models.Model):
 
         bid_queryset.exclude(price=highest_bid.price).update(status=BID_STATUS_LOST)
 
-        charge = charges.create(
-            amount=Decimal(highest_bid.price),
-            customer=highest_bid.user.customer.stripe_id,
-        )
+        try:
+            charge = charges.create(
+                amount=Decimal(highest_bid.price),
+                customer=highest_bid.user.customer.stripe_id,
+            )
+        except:
+            raise PaymentRequired
+
+        if not charge.paid:
+            """
+            This will make logic below to set status to `waiting for payment` unneeded
+            """
+            raise PaymentRequired
 
         sale = Sale(
             price=highest_bid.price,
@@ -145,6 +158,20 @@ class Auction(models.Model):
         self.ended_at = timezone.now()
         self.save()
 
+        try:
+            Notification.create_notification(
+                None,
+                self,
+                NOTIFICATION_AUCTION_CLOSE,
+                {
+                    'winner_user_id': highest_bid.user.pk,
+                }
+            )
+        except:
+            pass
+
+        return charge.paid
+
     def start(self, open_until):
         if self.status != AUCTION_STATUS_PREVIEW:
             raise ParseError('Only auctions in preview status can be started')
@@ -153,6 +180,12 @@ class Auction(models.Model):
         self.started_at = timezone.now()
         self.open_until = open_until
         self.save()
+
+        Notification.create_notification(
+            None,
+            self,
+            NOTIFICATION_AUCTION_NEW,
+        )
 
     @transaction.atomic
     def finish(self):
@@ -239,3 +272,7 @@ class Sale(models.Model):
             return Charge.objects.get(stripe_id=self.stripe_charge_id)
         except Charge.DoesNotExist:
             return None
+
+    @property
+    def charity(self):
+        return self.product.donor.charity

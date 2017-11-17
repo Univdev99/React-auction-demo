@@ -1,8 +1,9 @@
 import json
 from unittest.mock import MagicMock, patch
+from datetime import timedelta
 
-from common.test import AdminAPITestCase
 from django.urls import reverse
+from django.utils import timezone
 
 from rest_framework import status
 
@@ -16,6 +17,7 @@ from auction.constants import BID_STATUS_REJECTED
 from auction.models import Auction
 from auction.test.factories import AuctionFactory
 from auction.test.factories import BidFactory
+from common.test import AdminAPITestCase
 
 
 class AuctionDetailViewTests(AdminAPITestCase):
@@ -35,6 +37,9 @@ class AuctionDetailViewTests(AdminAPITestCase):
 
 
 class AuctionStatusChangeTestMixin(object):
+    def _get_posting_data(self):
+        return {}
+
     def _test_response_data(self, response):
         data = json.loads(response.content)
         self.assertIn('pk', data)
@@ -43,9 +48,10 @@ class AuctionStatusChangeTestMixin(object):
 
     def _test_should_change_status(self):
         response = self.client.post(
-            reverse(self.api_url_name, kwargs=dict(pk=self.auction.pk))
+            reverse(self.api_url_name, kwargs=dict(pk=self.auction.pk)),
+            self._get_posting_data()
         )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.content)
         self._test_response_data(response)
 
         self.auction.refresh_from_db()
@@ -71,6 +77,11 @@ class AuctionStartViewTests(AuctionStatusChangeTestMixin, AdminAPITestCase):
         self.api_url_name = 'api:admin:auction-start'
         self.after_status = AUCTION_STATUS_OPEN
 
+    def _get_posting_data(self):
+        return {
+            'open_until': timezone.now() + timedelta(days=3)
+        }
+
     def test_start_auction(self):
         self._test_should_change_status()
         self.assertNotEqual(self.auction.started_at, None)
@@ -92,18 +103,13 @@ class AuctionFinishViewTests(AuctionStatusChangeTestMixin, AdminAPITestCase):
         self.api_url_name = 'api:admin:auction-finish'
         self.after_status = AUCTION_STATUS_WAITING_FOR_PAYMENT
 
-    @patch('auction.models.Auction._do_finishing_process')
-    def test_finish_auction(self, mock):
-        self._test_should_change_status()
-        self.assertNotEqual(self.auction.ended_at, None)
-
-    def test_should_not_start_from_preview_status(self):
+    def test_should_not_finish_from_preview_status(self):
         self._test_should_not_change_from_this_status(AUCTION_STATUS_PREVIEW)
 
-    def test_should_not_start_from_finished_status(self):
+    def test_should_not_finish_from_finished_status(self):
         self._test_should_not_change_from_this_status(AUCTION_STATUS_WAITING_FOR_PAYMENT)
 
-    def test_should_not_start_from_cancelled_status(self):
+    def test_should_not_finish_from_cancelled_status(self):
         self._test_should_not_change_from_this_status(AUCTION_STATUS_CANCELLED)
 
 
@@ -118,13 +124,10 @@ class AuctionCancelViewTests(AuctionStatusChangeTestMixin, AdminAPITestCase):
         self._test_should_change_status()
         self.assertNotEqual(self.auction.ended_at, None)
 
-    def test_should_not_start_from_preview_status(self):
+    def test_should_not_cancel_from_preview_status(self):
         self._test_should_not_change_from_this_status(AUCTION_STATUS_PREVIEW)
 
-    def test_should_not_start_from_finished_status(self):
-        self._test_should_not_change_from_this_status(AUCTION_STATUS_WAITING_FOR_PAYMENT)
-
-    def test_should_not_start_from_cancelled_status(self):
+    def test_should_not_cancel_from_cancelled_status(self):
         self._test_should_not_change_from_this_status(AUCTION_STATUS_CANCELLED)
 
 

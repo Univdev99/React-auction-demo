@@ -13,6 +13,7 @@ import {
   Dropdown, DropdownToggle, DropdownMenu, DropdownItem,
 } from 'reactstrap'
 
+import Pagination from 'components/Pagination'
 import {
   getAuctionList,
   finishAuction,
@@ -32,6 +33,7 @@ import {
   AUCTION_TABLE_FILTER_IN_PROGRESS,
   AUCTION_TABLE_FILTER_FINISHED,
   AUCTION_TABLE_FILTER_CANCELLED,
+  ADMIN_TABLE_PAGE_SIZE,
 } from 'config'
 import AuctionTable from './AuctionTable'
 
@@ -84,13 +86,17 @@ class AdminAuctionList extends PureComponent {
     }
   }
 
-  loadData = () => {
+  loadData = (page = 0) => {
+    const { adminAuctions } = this.props
+    const auctionListPageNumber = adminAuctions.get('auctionListPageNumber')
+
     this.setState({
       loadingStatus: 1
     }, () => {
       const { statusFilter } = this.state
       this.props.getAuctionList({
         status: this.getStatusFilter(statusFilter),
+        page: page ? page : auctionListPageNumber,
         success: () => this.setState({
           loadingStatus: 10
         }),
@@ -177,13 +183,26 @@ class AdminAuctionList extends PureComponent {
   }
 
   componentWillMount() {
-    this.loadData()
+    this.loadData(1)
   }
 
   render() {
     const { adminAuctions } = this.props
-    const auctionList = adminAuctions.get('auctionList')
+    const auctionListPage = adminAuctions.get('auctionListPage')
+    const auctionListPageNumber = adminAuctions.get('auctionListPageNumber')
+    const auctionCount = adminAuctions.get('auctionCount')
     const { loadingStatus, statusFilter, columnMenuOpen, columnList } = this.state
+
+    const pagination = (
+      <div className="mt-5 text-center">
+        <Pagination
+          currentPage={auctionListPageNumber}
+          totalCount={auctionCount}
+          pageSize={ADMIN_TABLE_PAGE_SIZE}
+          onPage={this.loadData}
+        />
+      </div>
+    )
 
     return (
       <div>
@@ -233,8 +252,8 @@ class AdminAuctionList extends PureComponent {
             <NavItem className="ml-auto">
               <NavLink tag="span">
                 <Dropdown isOpen={columnMenuOpen} toggle={this.handleToggleColumnMenu}>
-                  <DropdownToggle size="sm" color="link" className="p-0">
-                    <i className="fa fa-chevron-down" />
+                  <DropdownToggle size="sm" color="link" className="p-0 decoration-none">
+                    Column Selection <i className="fa fa-chevron-down" />
                   </DropdownToggle>
                   <DropdownMenu right>
                     {columnList.filter(
@@ -266,37 +285,41 @@ class AdminAuctionList extends PureComponent {
               <AuctionTable
                 loadingStatus={loadingStatus}
                 columnList={columnList}
-                auctionList={auctionList}
+                auctionList={auctionListPage}
                 onFinish={this.handleFinish}
                 onCancel={this.handleCancel}
               />
+              {pagination}
             </TabPane>
             <TabPane tabId={AUCTION_TABLE_FILTER_UPCOMING}>
               <AuctionTable
                 loadingStatus={loadingStatus}
                 columnList={columnList}
-                auctionList={auctionList}
+                auctionList={auctionListPage}
                 onFinish={this.handleFinish}
                 onCancel={this.handleCancel}
               />
+              {pagination}
             </TabPane>
             <TabPane tabId={AUCTION_TABLE_FILTER_FINISHED}>
               <AuctionTable
                 loadingStatus={loadingStatus}
                 columnList={columnList}
-                auctionList={auctionList}
+                auctionList={auctionListPage}
                 onFinish={this.handleFinish}
                 onCancel={this.handleCancel}
               />
+              {pagination}
             </TabPane>
             <TabPane tabId={AUCTION_TABLE_FILTER_CANCELLED}>
               <AuctionTable
                 loadingStatus={loadingStatus}
                 columnList={columnList}
-                auctionList={auctionList}
+                auctionList={auctionListPage}
                 onFinish={this.handleFinish}
                 onCancel={this.handleCancel}
               />
+              {pagination}
             </TabPane>
           </TabContent>
         </div>

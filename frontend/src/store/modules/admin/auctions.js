@@ -20,8 +20,10 @@ import { replaceListItem } from 'utils/list'
 
 const initialState = Immutable.fromJS({
   /* Auction */
-  auctionList: [],
-  auctionListLoaded: false,
+  auctionListPage: [],
+  auctionListPageLoaded: false,
+  auctionCount: 0,
+  auctionListPageNumber: 1,
   auctionDetail: null,
   auctionProductList: [],
   auctionProductListLoaded: false,
@@ -50,14 +52,20 @@ export default handleActions({
 
   /* Get auction list actions */
 
+  [ADMIN_GET_AUCTION_LIST]: (state, { payload }) => state.withMutations(map => {
+    map.set('auctionListPageNumber', payload.page)
+  }),
+
   [requestSuccess(ADMIN_GET_AUCTION_LIST)]: (state, { payload }) => state.withMutations(map => {
-    map.set('auctionList', Immutable.fromJS(payload))
-    map.set('auctionListLoaded', true)
+    map.set('auctionListPage', Immutable.fromJS(payload.results))
+    map.set('auctionCount', payload.count)
+    map.set('auctionListPageLoaded', true)
   }),
 
   [requestFail(ADMIN_GET_AUCTION_LIST)]: (state, { payload }) => state.withMutations(map => {
-    map.set('auctionList', Immutable.List())
-    map.set('auctionListLoaded', false)
+    map.set('auctionListPage', Immutable.List())
+    map.set('auctionCount', 0)
+    map.set('auctionListPageLoaded', false)
   }),
 
   /* Get auction detail actions */
@@ -79,19 +87,19 @@ export default handleActions({
   /* Start auction actions */
 
   [requestSuccess(ADMIN_START_AUCTION)]: (state, { payload }) => state.withMutations(map => {
-    replaceListItem(payload, map, 'auctionList')
+    replaceListItem(payload, map, 'auctionListPage')
   }),
 
   /* Finish auction actions */
 
   [requestSuccess(ADMIN_FINISH_AUCTION)]: (state, { payload }) => state.withMutations(map => {
-    replaceListItem(payload, map, 'auctionList')
+    replaceListItem(payload, map, 'auctionListPage')
   }),
 
   /* Cancel auction actions */
 
   [requestSuccess(ADMIN_CANCEL_AUCTION)]: (state, { payload }) => state.withMutations(map => {
-    replaceListItem(payload, map, 'auctionList')
+    replaceListItem(payload, map, 'auctionListPage')
   }),
 
   /* Get auction bid list page actions */
