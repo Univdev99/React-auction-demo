@@ -4,7 +4,9 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {
   Table, Button, Input,
   Popover, PopoverBody,
+  UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem,
 } from 'reactstrap'
+import { Link } from 'react-router-dom'
 
 import Spinner from 'components/Spinner'
 
@@ -95,7 +97,7 @@ class SaleTable extends PureComponent {
                   ).map(column => (
                     <td key={column.get('field')}>{this.cellValue(sale, column.get('field'))}</td>
                   ))}
-                  <td>
+                  <td style={{ whiteSpace: 'nowrap' }}>
                     <Button id={`sale${id}`} size="sm" color="link" className="py-0"
                       onClick={this.handleToggleNotePopover.bind(this, sale.get('note'))}
                     >
@@ -109,6 +111,7 @@ class SaleTable extends PureComponent {
                           type="textarea"
                           value={note}
                           onChange={this.handleChangeNote}
+                          rows={4}
                         />
                         <div className="text-center mt-2">
                           <Button size="sm" color="primary" outline className="px-3 border-0"
@@ -119,6 +122,19 @@ class SaleTable extends PureComponent {
                         </div>
                       </PopoverBody>
                     </Popover>
+                    <UncontrolledDropdown tag="span">
+                      <DropdownToggle size="sm" color="link" className="py-0">
+                        <i className="fa fa-chevron-down" />
+                      </DropdownToggle>
+                      <DropdownMenu right>
+                        <DropdownItem
+                          to={`/admin/sales/${sale.get('pk')}`}
+                          tag={Link}
+                        >
+                          Edit
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </UncontrolledDropdown>
                   </td>
                 </tr>
               )

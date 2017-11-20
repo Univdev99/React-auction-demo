@@ -45,6 +45,7 @@ export const ADMIN_GET_AUCTION_BID_LIST_PAGE = 'charibin/admin/get-auction-bid-l
 export const ADMIN_AUCTION_CHANGE_BID_STATUS = 'charibin/admin/auction-change-bid-status'
 
 export const ADMIN_GET_SALE_LIST = 'charibin/admin/get-sale-list'
+export const ADMIN_GET_SALE_DETAIL = 'charibin/admin/get-sale-detail'
 export const ADMIN_UPDATE_SALE = 'charibin/admin/update-sale'
 export const ADMIN_SET_SALE_NOTE = 'charibin/admin/set-sale-note'
 
