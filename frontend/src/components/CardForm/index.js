@@ -11,6 +11,7 @@ class CardForm extends PureComponent {
     disabled: PropTypes.bool,
     email: PropTypes.string.isRequired,
     forModal: PropTypes.bool,
+    onCancel: PropTypes.func,
     onSubmit: PropTypes.func.isRequired,
     stripe: PropTypes.object.isRequired,
   }
@@ -59,7 +60,7 @@ class CardForm extends PureComponent {
   }
 
   render() {
-    const { disabled, forModal } = this.props
+    const { disabled, forModal, onCancel } = this.props
     const { tokenCreating } = this.state
 
     return (
@@ -83,7 +84,12 @@ class CardForm extends PureComponent {
           </Col>
         </Row>
         <div className="text-right mt-2">
-          <Button color="primary" block={forModal} className="px-5" disabled={disabled || tokenCreating}>
+          {!forModal &&
+            <Button color="secondary" type="button" block={forModal} onClick={onCancel} className="mr-2">
+              Cancel
+            </Button>
+          }
+          <Button type="submit" color="primary" block={forModal} disabled={disabled || tokenCreating}>
             Add this card
           </Button>
         </div>

@@ -112,7 +112,9 @@ const AccountRoutes = props => (
 )
 
 const isFrontend = props =>
-  props.location.pathname !== '/' && !props.location.pathname.startsWith('/admin')
+  props.location.pathname !== '/' &&
+  !props.location.pathname.startsWith('/account') &&
+  !props.location.pathname.startsWith('/admin')
 
 const FrontendRoutes = props => isFrontend(props) && (
   <AppLayout1>

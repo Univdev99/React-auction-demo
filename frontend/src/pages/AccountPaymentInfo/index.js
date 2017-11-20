@@ -14,7 +14,7 @@ import { setPayment } from 'store/modules/payment'
 class AccountPaymentInfo extends PureComponent {
   static propTypes = {
     auth: ImmutablePropTypes.map.isRequired,
-    setPayment: PropTypes.func.isRequried
+    setPayment: PropTypes.func.isRequired
   }
 
   constructor(props) {

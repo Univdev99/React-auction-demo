@@ -10,7 +10,7 @@ class PaymentForm extends PureComponent {
   static propTypes = {
     auth: ImmutablePropTypes.map.isRequired,
     setEditMode: PropTypes.func.isRequired,
-    setPayment: PropTypes.func.isRequried
+    setPayment: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -45,6 +45,11 @@ class PaymentForm extends PureComponent {
     })
   }
 
+  handleCancel = () => {
+    const { setEditMode } = this.props
+    setEditMode(false)
+  }
+
   render() {
     const { auth } = this.props
     const { savingPayment } = this.state
@@ -53,7 +58,8 @@ class PaymentForm extends PureComponent {
     return (
       <div className="mt-4">
         <Elements>
-          <CardForm email={email} disabled={savingPayment} onSubmit={this.handleSubmit} />
+          <CardForm email={email} disabled={savingPayment}
+            onSubmit={this.handleSubmit} onCancel={this.handleCancel} />
         </Elements>
       </div>
     )
