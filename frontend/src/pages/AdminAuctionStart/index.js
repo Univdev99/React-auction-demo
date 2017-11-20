@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import AuctionStartForm from 'components/AuctionStartForm'
-import formSubmit from 'utils/formSubmit'
+import { formSubmit } from 'utils/form'
 import Spinner from 'components/Spinner'
 import {
   getAuctionDetail,

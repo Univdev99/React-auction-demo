@@ -5,7 +5,7 @@ import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 
 import fbHandle from 'utils/fbHandle'
-import formSubmit from 'utils/formSubmit'
+import { formSubmit } from 'utils/form'
 import SignUpForm from 'components/SignUpForm'
 import { signUp } from 'store/modules/auth'
 

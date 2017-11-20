@@ -7,7 +7,7 @@ import { connectModal, show as showModal } from 'redux-modal'
 import { modalSelector } from 'store/selectors'
 
 import AuctionBidForm from 'components/AuctionBidForm'
-import formSubmit from 'utils/formSubmit'
+import { formSubmit } from 'utils/form'
 import { placeBid } from 'store/modules/auctions'
 
 class AuctionBidModal extends PureComponent {

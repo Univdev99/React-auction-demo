@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Label, Input, FormFeedback, FormGroup, FormText } from 'reactstrap'
+import { sanitizeFormError } from 'utils/form'
 
 
 class TextareaField extends PureComponent {
@@ -29,7 +30,7 @@ class TextareaField extends PureComponent {
       <FormGroup>
         {label && <Label htmlFor={name}>{label}</Label>}
         <Input type="textarea" {...input} placeholder={placeholder} valid={fieldError ? false : undefined} rows={5} />
-        {fieldError && <FormFeedback>{error}</FormFeedback>}
+        {fieldError && <FormFeedback>{sanitizeFormError(error)}</FormFeedback>}
         {helpText && !fieldError && <FormText>{helpText}</FormText>}
       </FormGroup>
     )

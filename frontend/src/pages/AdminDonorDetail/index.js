@@ -9,7 +9,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Link } from 'react-router-dom'
 
 import DonorForm from 'components/DonorForm'
-import formSubmit from 'utils/formSubmit'
+import { formSubmit } from 'utils/form'
 import SortableMediaList from 'components/SortableMediaList'
 import Spinner from 'components/Spinner'
 import Uploader from 'components/Uploader'

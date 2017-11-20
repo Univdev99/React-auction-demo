@@ -9,7 +9,7 @@ import { withRouter } from 'react-router'
 import RichTextEditor from 'react-rte'
 
 import DonorForm from 'components/DonorForm'
-import formSubmit from 'utils/formSubmit'
+import { formSubmit } from 'utils/form'
 import Spinner from 'components/Spinner'
 import { getCharityList } from 'store/modules/admin/charities'
 import { createDonor } from 'store/modules/admin/donors'

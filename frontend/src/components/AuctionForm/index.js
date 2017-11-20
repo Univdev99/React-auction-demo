@@ -7,7 +7,6 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import FormField from 'components/FormField'
 import InputField from 'components/InputField'
-import SelectField from 'components/SelectField'
 
 
 class AuctionForm extends PureComponent {
@@ -55,7 +54,8 @@ class AuctionForm extends PureComponent {
         <FormField
           name="product"
           label="Product:"
-          component={SelectField}
+          type="select"
+          component={InputField}
           options={productList.map(product => ({
             key: product.get('pk'),
             value: product.get('title'),

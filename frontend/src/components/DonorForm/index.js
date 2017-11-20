@@ -10,7 +10,6 @@ import FormField from 'components/FormField'
 import InputField from 'components/InputField'
 import TagsInputField from 'components/TagsInputField'
 import RichEditorField from 'components/RichEditorField'
-import SelectField from 'components/SelectField'
 import { DONOR_TYPES } from 'config'
 
 
@@ -64,13 +63,15 @@ class DonorForm extends PureComponent {
             <FormField
               name="type"
               label="Type:"
-              component={SelectField}
+              type="select"
+              component={InputField}
               options={DONOR_TYPES}
             />
             <FormField
               name="charity"
               label="Charity:"
-              component={SelectField}
+              type="select"
+              component={InputField}
               options={charityList.map(charity => ({
                 key: charity.get('pk'),
                 value: charity.get('title'),

@@ -50,8 +50,8 @@ class SignInForm extends PureComponent {
   }
 }
 
-const validate = (values) => {
-  const errors = {}
+const validate = (values, { error }) => {
+  const errors = { _error: error }
 
   if (!values.get('email')) {
     errors.username = 'Email is required'

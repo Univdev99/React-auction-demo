@@ -8,7 +8,6 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import FormField from 'components/FormField'
 import DateTimeField from 'components/DateTimeField'
 import InputField from 'components/InputField'
-import SelectField from 'components/SelectField'
 import { SALE_STATUS_CHOICES } from 'config'
 
 
@@ -54,7 +53,8 @@ class SaleForm extends PureComponent {
         <FormField
           name="status"
           label="Status:"
-          component={SelectField}
+          type="select"
+          component={InputField}
           options={SALE_STATUS_CHOICES}
         />
         <div className="text-right">

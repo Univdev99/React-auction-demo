@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withRouter } from 'react-router'
 
-import formSubmit from 'utils/formSubmit'
+import { formSubmit } from 'utils/form'
 import ProductForm from 'components/ProductForm'
 import Spinner from 'components/Spinner'
 import { getDonorList } from 'store/modules/admin/donors'

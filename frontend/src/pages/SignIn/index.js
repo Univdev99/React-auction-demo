@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 
-import formSubmit from 'utils/formSubmit'
+import { formSubmit } from 'utils/form'
 import SignInForm from 'components/SignInForm'
 import { signIn } from 'store/modules/auth'
 

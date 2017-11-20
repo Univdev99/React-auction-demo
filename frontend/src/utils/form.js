@@ -1,6 +1,9 @@
-import { SubmissionError } from 'redux-form/immutable';
+import { List } from 'immutable'
+import { SubmissionError } from 'redux-form/immutable'
+import { ucFirst } from './pureFunctions'
 
-export default (actionCreator, payload) => {
+
+export const formSubmit = (actionCreator, payload) => {
   return (new Promise((resolve, reject) => {
     actionCreator({ ...payload, resolve, reject })
   })).catch(res => {
@@ -17,3 +20,10 @@ export default (actionCreator, payload) => {
     }
   })
 }
+
+export const sanitizeFormError = (error) =>
+  error && (
+    error.constructor === Array || List.isList(error)
+      ? error.map((item) => ucFirst(item))
+      : ucFirst(error)
+  )

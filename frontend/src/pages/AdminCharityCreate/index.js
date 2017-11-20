@@ -8,7 +8,7 @@ import Immutable from 'immutable'
 import RichTextEditor from 'react-rte'
 
 import CharityForm from 'components/CharityForm'
-import formSubmit from 'utils/formSubmit'
+import { formSubmit } from 'utils/form'
 import {
   createCharity,
 } from 'store/modules/admin/charities'
