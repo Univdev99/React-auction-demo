@@ -9,7 +9,6 @@ import FormField from 'components/FormField'
 import InputField from 'components/InputField'
 import TagsInputField from 'components/TagsInputField'
 import RichEditorField from 'components/RichEditorField'
-import SelectField from 'components/SelectField'
 import InputGroupFormField from 'components/InputGroupFormField'
 import { PRODUCT_WEIGHT_UNIT_CHOICES } from 'config'
 
@@ -88,7 +87,8 @@ class ProductForm extends PureComponent {
             <FormField
               name="donor"
               label="Donor:"
-              component={SelectField}
+              type="select"
+              component={InputField}
               options={donorList.map(donor => ({
                 key: donor.get('pk'),
                 value: donor.get('title'),

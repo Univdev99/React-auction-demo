@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Label, Input, FormFeedback, FormGroup, FormText } from 'reactstrap'
+import { sanitizeFormError } from 'utils/form'
 
 
 class InputField extends PureComponent {
@@ -26,6 +27,7 @@ class InputField extends PureComponent {
       input,
       label,
       meta: { error, touched },
+      options,
       placeholder,
       type
     } = this.props
@@ -40,7 +42,7 @@ class InputField extends PureComponent {
               valid={fieldError ? false : undefined} children={children} />
             {label}
           </Label>
-          {fieldError && <FormFeedback>{error}</FormFeedback>}
+          {fieldError && <FormFeedback>{sanitizeFormError(error)}</FormFeedback>}
           {helpText && !fieldError && <FormText>{helpText}</FormText>}
         </FormGroup>
       )
@@ -49,8 +51,16 @@ class InputField extends PureComponent {
         <FormGroup>
           {label && <Label htmlFor={name}>{label}</Label>}
           <Input type={type} {...input} placeholder={placeholder}
-            valid={fieldError ? false : undefined} children={children} />
-          {fieldError && <FormFeedback>{error}</FormFeedback>}
+            valid={fieldError ? false : undefined} children={children}
+          >
+            {type === 'select' && options ? [
+              <option value={''} key={''}>-- Please select an option --</option>,
+              ...options.map(option => (
+                <option key={option.key} value={option.key}>{option.value}</option>
+              ))
+            ] : undefined}
+          </Input>
+          {fieldError && <FormFeedback>{sanitizeFormError(error)}</FormFeedback>}
           {helpText && !fieldError && <FormText>{helpText}</FormText>}
         </FormGroup>
       )

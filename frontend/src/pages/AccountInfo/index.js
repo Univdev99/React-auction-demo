@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
 import AccountForm from 'components/AccountForm'
-import formSubmit from 'utils/formSubmit'
+import { formSubmit } from 'utils/form'
 import Spinner from 'components/Spinner'
 import { authSelector, countriesSelector } from 'store/selectors'
 import { getCountries } from 'store/modules/settings'

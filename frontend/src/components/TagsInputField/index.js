@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { FormFeedback, FormText } from 'reactstrap'
+import cx from 'classnames'
 import PropTypes from 'prop-types'
 import Immutable from 'immutable'
 import TagsInput from 'react-tagsinput'
@@ -92,34 +94,31 @@ class TagsInputField extends PureComponent {
   render() {
     const {
       input,
-      meta,
+      meta: { error, touched, submitFailed },
       label,
       helpText,
     } = this.props
     const { name } = input
-    const fieldError = meta.invalid
-    const errorClasses = ['form-text']
-    if (meta.pristine) {
-      errorClasses.push('text-muted')
-    } else {
-      errorClasses.push('text-danger')
-    }
+    const fieldError = error && (touched || submitFailed)
+    const inputClass = cx({
+      'react-tagsinput': true,
+      'form-control': true,
+      'is-invalid': fieldError
+    })
 
+    console.log(this.props.meta)
     return (
       <div className="form-group">
         {label && <label htmlFor={name}>{label}</label>}
         <TagsInput
+          className={inputClass}
           name={name}
           onChange={this.handleChange}
           value={this.value()}
           renderInput={this.autosuggestRenderInput}
         />
-        {fieldError && <small className={errorClasses.join(' ')}>
-          {meta.error}
-        </small>}
-        {helpText && !fieldError && <small className="form-text text-muted">
-          {helpText}
-        </small>}
+        {fieldError && <FormFeedback>{error}</FormFeedback>}
+        {helpText && !fieldError && <FormText>{helpText}</FormText>}
       </div>
     )
   }

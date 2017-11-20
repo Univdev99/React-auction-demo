@@ -7,7 +7,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withRouter } from 'react-router'
 
 import AuctionForm from 'components/AuctionForm'
-import formSubmit from 'utils/formSubmit'
+import { formSubmit } from 'utils/form'
 import Spinner from 'components/Spinner'
 import { adminProductsSelector } from 'store/selectors'
 import { createAuction } from 'store/modules/admin/auctions'

@@ -6,7 +6,7 @@ import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
-import formSubmit from 'utils/formSubmit'
+import { formSubmit } from 'utils/form'
 import PasswordForm from 'components/PasswordForm'
 import Spinner from 'components/Spinner'
 import { authSelector } from 'store/selectors'

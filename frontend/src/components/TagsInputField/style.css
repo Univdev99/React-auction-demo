@@ -12,3 +12,8 @@
 .react-autosuggest__suggestions-container--open {
   position: absolute;
 }
+
+.react-tagsinput.form-control {
+  padding: 5px;
+  padding-bottom: 0;
+}

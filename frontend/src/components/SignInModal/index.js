@@ -8,7 +8,7 @@ import { modalSelector } from 'store/selectors'
 
 import auctionBidFlow from 'utils/auctionBidFlow'
 import fbHandle from 'utils/fbHandle'
-import formSubmit from 'utils/formSubmit'
+import { formSubmit } from 'utils/form'
 import SignInForm from 'components/SignInForm'
 import { signIn } from 'store/modules/auth'
 
