@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import { Col, Row } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
@@ -6,8 +7,8 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Link } from 'react-router-dom'
 
-import Breadcrumb from 'components/Breadcrumb'
 import DonorCard from 'components/DonorCard'
+import FrontContainerLayout from 'layouts/FrontContainerLayout'
 import Slider from 'components/Slider'
 import Spinner from 'components/Spinner'
 import { getDonorDetail } from 'store/modules/donors'
@@ -31,7 +32,7 @@ class DonorDetail extends PureComponent {
     return [
       { route: '/', text: 'Home' },
       { route: '/donors', text: 'Donors' },
-      { text: donorDetail.get('title') },
+      { text: donorDetail ? donorDetail.get('title') : '' },
     ]
   }
 
@@ -67,19 +68,17 @@ class DonorDetail extends PureComponent {
     const { status } = this.state
 
     return (
-      <div>
+      <FrontContainerLayout breadcrumbPath={this.breadcrumbPath()} subscribe>
         {status !== -1 && !donorDetail && <Spinner />}
 
         {status === -1 && <h3><center>Donor not found</center></h3>}
 
         {status !== -1 && donorDetail && <div>
-          <Breadcrumb className="mb-5" path={this.breadcrumbPath()} />
-
-          <div className="row mb-5">
-            <div className="col-md-6 mb-5">
+          <Row className="mb-5">
+            <Col xs={12} md={6} className="mb-5">
               <Slider media={donorDetail.get('media')} />
-            </div>
-            <div className="col-md-6 mb-5">
+            </Col>
+            <Col xs={12} md={6} className="mb-5">
               <div className="px-3">
                 <h4 className="pb-3 mb-4">{donorDetail.get('title')}</h4>
                 <div className="pb-3 mb-4">
@@ -89,27 +88,27 @@ class DonorDetail extends PureComponent {
                   {donorDetail.get('description')}
                 </p>
               </div>
-            </div>
-          </div>
+            </Col>
+          </Row>
 
           <div className="clearfix mb-5">
             <h3 className="pull-left">Similar Donors</h3>
             <Link to="/donors" className="pull-right btn btn-sm btn-outline-secondary">All donors</Link>
           </div>
 
-          <div className="row mb-5">
+          <Row className="mb-5">
             {donorDetail.get('similar_donors').map(donor => (
-              <div key={donor.get('pk')} className="col-lg-6 col-md-12 mb-3">
+              <Col key={donor.get('pk')} xs={12} lg={6} className="mb-3">
                 <DonorCard
                   id={donor.get('pk')}
                   image={donor.getIn(['media', 0, 'url'], '')}
                   title={donor.get('title')}
                 />
-              </div>
+              </Col>
             ))}
-          </div>
+          </Row>
         </div>}
-      </div>
+      </FrontContainerLayout>
     )
   }
 }

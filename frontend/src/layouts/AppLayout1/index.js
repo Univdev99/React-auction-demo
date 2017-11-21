@@ -23,6 +23,7 @@ class AppLayout1 extends PureComponent {
   static propTypes = {
     auth: ImmutablePropTypes.map.isRequired,
     getCurrentUser: PropTypes.func.isRequired,
+    subscribe: PropTypes.bool
   }
 
   state = {
@@ -48,7 +49,7 @@ class AppLayout1 extends PureComponent {
   }
 
   render() {
-    const { auth, children } = this.props
+    const { auth, children, subscribe } = this.props
 
     if (!children) return false
 
@@ -75,8 +76,7 @@ class AppLayout1 extends PureComponent {
             {children}
           </div>
         </div>
-
-        <SubscribeBar />
+        {subscribe && <SubscribeBar />}
         <AppFooter />
       </div>
     )

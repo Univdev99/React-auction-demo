@@ -1,12 +1,14 @@
 import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
+import { Col, Row } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
-import PropTypes from 'prop-types'
 
 import fbHandle from 'utils/fbHandle'
-import { formSubmit } from 'utils/form'
+import FrontContainerLayout from 'layouts/FrontContainerLayout'
 import SignUpForm from 'components/SignUpForm'
+import { formSubmit } from 'utils/form'
 import { signUp } from 'store/modules/auth'
 
 class SignUp extends PureComponent {
@@ -63,29 +65,31 @@ class SignUp extends PureComponent {
     const { signUpStatus } = this.state
 
     return (
-      <div className="row justify-content-center">
-        <div className="col-12 col-md-8 col-lg-6">
-          {
-            signUpStatus === 10 ?
-            <center>
-              You've successfully signed up a new account. Please check your email for account verification.
-            </center>
-            :
-            <div>
-              <h3 className="mb-4 text-center">Sign Up</h3>
+      <FrontContainerLayout subscribe>
+        <Row className="justify-content-center">
+          <Col xs={12} md={8} lg={6}>
+            {
+              signUpStatus === 10 ?
+              <center>
+                You've successfully signed up a new account. Please check your email for account verification.
+              </center>
+              :
+              <div>
+                <h3 className="mb-4 text-center">Sign Up</h3>
 
-              <SignUpForm onSubmit={this.handleSubmit} />
+                <SignUpForm onSubmit={this.handleSubmit} />
 
-              <div className="text-center mt-2">
-                <a className={fbReady ? '' : 'text-muted'} href="/" onClick={this.handleSignUpWithFacebook}>
-                  Sign Up With Facebook
-                </a>
+                <div className="text-center mt-2">
+                  <a className={fbReady ? '' : 'text-muted'} href="/" onClick={this.handleSignUpWithFacebook}>
+                    Sign Up With Facebook
+                  </a>
+                </div>
+
               </div>
-
-            </div>
-          }
-        </div>
-      </div>
+            }
+          </Col>
+        </Row>
+      </FrontContainerLayout>
     )
   }
 }

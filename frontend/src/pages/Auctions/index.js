@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import AuctionCard from 'components/AuctionCard'
-import Breadcrumb from 'components/Breadcrumb'
+import FrontContainerLayout from 'layouts/FrontContainerLayout'
 import { auctionsSelector } from 'store/selectors'
 import { getAuctionList } from 'store/modules/auctions'
 
@@ -38,11 +38,11 @@ class Auctions extends PureComponent {
     const auctionList = auctions.get('auctionList')
 
     return (
-      <div>
-        <Breadcrumb className="mb-5" path={this.breadcrumbPath()} />
-
-        <h3 className="mb-5">Auctions</h3>
-
+      <FrontContainerLayout
+        breadcrumbPath={this.breadcrumbPath()}
+        title="Auctions"
+        subscribe
+      >
         <Row>
           {auctionList.map(auction => (
             <Col xs={12} md={2} lg={3} key={auction.get('pk')} className="mb-3">
@@ -50,7 +50,7 @@ class Auctions extends PureComponent {
             </Col>
           ))}
         </Row>
-      </div>
+      </FrontContainerLayout>
     )
   }
 }

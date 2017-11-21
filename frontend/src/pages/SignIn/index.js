@@ -3,11 +3,13 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
-import { withRouter } from 'react-router'
+import { Col, Row } from 'reactstrap'
 import { Link } from 'react-router-dom'
+import { withRouter } from 'react-router'
 
-import { formSubmit } from 'utils/form'
+import FrontContainerLayout from 'layouts/FrontContainerLayout'
 import SignInForm from 'components/SignInForm'
+import { formSubmit } from 'utils/form'
 import { signIn } from 'store/modules/auth'
 
 
@@ -24,19 +26,21 @@ class SignIn extends PureComponent {
 
   render() {
     return (
-      <div className="row justify-content-center">
-        <div className="col-12 col-md-8 col-lg-6">
+      <FrontContainerLayout subscribe>
+        <Row className="justify-content-center">
+          <Col xs={12} md={8} lg={6}>
 
-          <h3 className="mb-4 text-center">Sign In</h3>
+            <h3 className="mb-4 text-center">Sign In</h3>
 
-          <SignInForm onSubmit={this.handleSubmit} />
+            <SignInForm onSubmit={this.handleSubmit} />
 
-          <center className="mt-2">
-            <Link to={{ pathname: 'signup' }}>Sign Up</Link>
-          </center>
+            <div className="text-center mt-2">
+              <Link to={{ pathname: 'signup' }}>Sign Up</Link>
+            </div>
 
-        </div>
-      </div>
+          </Col>
+        </Row>
+      </FrontContainerLayout>
     )
   }
 }

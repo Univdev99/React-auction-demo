@@ -8,7 +8,7 @@ import { Badge, Button, Col, Row } from 'reactstrap'
 
 import auctionBidFlow from 'utils/auctionBidFlow'
 import AuctionCard from 'components/AuctionCard'
-import Breadcrumb from 'components/Breadcrumb'
+import FrontContainerLayout from 'layouts/FrontContainerLayout'
 import Slider from 'components/Slider'
 import Spinner from 'components/Spinner'
 import TimeLeft from 'components/TimeLeft'
@@ -38,7 +38,7 @@ class AuctionDetail extends PureComponent {
     return [
       { route: '/', text: 'Home' },
       { route: '/auctions', text: 'Auctions' },
-      { text: auctionDetail.get('title') },
+      { text: auctionDetail ? auctionDetail.get('title') : '' },
     ]
   }
 
@@ -82,14 +82,12 @@ class AuctionDetail extends PureComponent {
     const { status } = this.state
 
     return (
-      <div>
+      <FrontContainerLayout breadcrumbPath={this.breadcrumbPath()} subscribe>
         {status !== -1 && !auctionDetail && <Spinner />}
 
         {status === -1 && <h3><center>Auction not found</center></h3>}
 
         {status !== -1 && auctionDetail && <div>
-          <Breadcrumb className="mb-5" path={this.breadcrumbPath()} />
-
           <Row className="mb-5">
             <Col xs={12} md={6} className="mb-5">
               <Slider media={auctionDetail.getIn(['product', 'media'])} />
@@ -143,7 +141,7 @@ class AuctionDetail extends PureComponent {
             ))}
           </Row>
         </div>}
-      </div>
+      </FrontContainerLayout>
     )
   }
 }

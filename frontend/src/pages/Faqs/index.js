@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react'
 
-import Breadcrumb from 'components/Breadcrumb'
 import FaqItem from './FaqItem'
 import faqList from './faqList'
+import FrontContainerLayout from 'layouts/FrontContainerLayout'
 
 export default class Faqs extends PureComponent {
   breadcrumbPath() {
@@ -14,15 +14,15 @@ export default class Faqs extends PureComponent {
 
   render() {
     return (
-      <div>
-        <Breadcrumb className="mb-5" path={this.breadcrumbPath()} />
-
-        <h3 className="mb-5">FAQs</h3>
-
+      <FrontContainerLayout
+        breadcrumbPath={this.breadcrumbPath()}
+        title="FAQs"
+        subscribe
+      >
         {faqList.map((item, index) => (
           <FaqItem {...item} key={index} />
         ))}
-      </div>
+      </FrontContainerLayout>
     )
   }
 }

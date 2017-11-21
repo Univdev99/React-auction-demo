@@ -72,8 +72,6 @@ import {
 // Layout components
 import AccountLayout from 'layouts/AccountLayout'
 import AdminLayout from 'layouts/AdminLayout'
-import AppContainerLayout from 'layouts/AppContainerLayout'
-import AppLayout1 from 'layouts/AppLayout1'
 
 import ScrollToTop from 'components/ScrollToTop'
 
@@ -119,27 +117,25 @@ const isFrontend = props =>
   !props.location.pathname.startsWith('/admin')
 
 const FrontendRoutes = props => isFrontend(props) && (
-  <AppLayout1>
-    <AppContainerLayout>
-      <Route exact path="/signin" component={userIsNotAuthenticated(SignIn)} />
-      <Route exact path="/signup" component={userIsNotAuthenticated(SignUp)} />
-      <Route exact path="/verify-account/:token" component={SignUpVerification} />
+  <div>
+    <Route exact path="/signin" component={userIsNotAuthenticated(SignIn)} />
+    <Route exact path="/signup" component={userIsNotAuthenticated(SignUp)} />
+    <Route exact path="/verify-account/:token" component={SignUpVerification} />
 
-      <Route exact path="/auctions" component={Auctions} />
-      <Route exact path="/auctions/:id" component={AuctionDetail} />
+    <Route exact path="/auctions" component={Auctions} />
+    <Route exact path="/auctions/:id" component={AuctionDetail} />
 
-      <Route exact path="/donors" component={Donors} />
-      <Route exact path="/donors/:id" component={DonorDetail} />
+    <Route exact path="/donors" component={Donors} />
+    <Route exact path="/donors/:id" component={DonorDetail} />
 
-      <Route exact path="/careers" component={Careers} />
-      <Route exact path="/faqs" component={Faqs} />
-      <Route exact path="/jobs/:id" component={JobDetail} />
-      <Route exact path="/privacy-policy" component={PrivacyPolicy} />
-      <Route exact path="/shipping" component={Shipping} />
-      <Route exact path="/support" component={Support} />
-      <Route exact path="/terms-conditions" component={TermsConditions} />
-    </AppContainerLayout>
-  </AppLayout1>
+    <Route exact path="/careers" component={Careers} />
+    <Route exact path="/faqs" component={Faqs} />
+    <Route exact path="/jobs/:id" component={JobDetail} />
+    <Route exact path="/privacy-policy" component={PrivacyPolicy} />
+    <Route exact path="/shipping" component={Shipping} />
+    <Route exact path="/support" component={Support} />
+    <Route exact path="/terms-conditions" component={TermsConditions} />
+  </div>
 )
 
 const modals = (

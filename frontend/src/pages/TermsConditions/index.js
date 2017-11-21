@@ -1,7 +1,7 @@
 import React from 'react'
 
-import Breadcrumb from 'components/Breadcrumb'
 import ContactTextLink from 'components/ContactTextLink'
+import FrontContainerLayout from 'layouts/FrontContainerLayout'
 
 const breadcrumbPath = [
   { route: '/', text: 'Home' },
@@ -9,10 +9,11 @@ const breadcrumbPath = [
 ]
 
 const TermsConditions = () => (
-  <div>
-    <Breadcrumb className="mb-5" path={breadcrumbPath} />
-
-    <h3 className="mb-5">Terms & Conditions</h3>
+  <FrontContainerLayout
+    breadcrumbPath={breadcrumbPath}
+    title="Terms & Conditions"
+    subscribe
+  >
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut nibh dictum, auctor libero ac,
       varius sem. Aenean in augue sed enim pulvinar ultricies eget at nibh. Sed ac iaculis lorem. Donec
@@ -43,7 +44,7 @@ const TermsConditions = () => (
     </p>
 
     <ContactTextLink />
-  </div>
+  </FrontContainerLayout>
 )
 
 export default TermsConditions

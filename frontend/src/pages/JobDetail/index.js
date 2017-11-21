@@ -7,8 +7,8 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import { reduxForm } from 'redux-form'
 
-import Breadcrumb from 'components/Breadcrumb'
 import FormField from 'components/FormField'
+import FrontContainerLayout from 'layouts/FrontContainerLayout'
 import InputField from 'components/InputField'
 import Spinner from 'components/Spinner'
 import TextareaField from 'components/TextareaField'
@@ -79,9 +79,10 @@ class JobDetail extends PureComponent {
     const title = jobDetail ? jobDetail.get('title') : ''
 
     return (
-      <div>
-        <Breadcrumb className="mb-5" path={this.breadcrumbPath(title)} />
-
+      <FrontContainerLayout
+        breadcrumbPath={this.breadcrumbPath(title)}
+        subscribe
+      >
         {status === 0 && <Spinner />}
 
         {status === -1 && <Alert color="danger">Job not found</Alert>}
@@ -136,7 +137,7 @@ class JobDetail extends PureComponent {
             </Row>
           </form>
         </div>}
-      </div>
+      </FrontContainerLayout>
     )
   }
 }

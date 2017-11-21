@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import { Link } from 'react-router-dom'
 
-import Breadcrumb from 'components/Breadcrumb'
+import FrontContainerLayout from 'layouts/FrontContainerLayout'
 import Spinner from 'components/Spinner'
 import { getJobList } from 'store/modules/jobs'
 import { jobsSelector } from 'store/selectors'
@@ -61,10 +61,11 @@ class Careers extends PureComponent {
     const { status } = this.state
 
     return (
-      <div>
-        <Breadcrumb className="mb-5" path={this.breadcrumbPath()} />
-
-        <h3 className="mb-5">Careers</h3>
+      <FrontContainerLayout
+        breadcrumbPath={this.breadcrumbPath()}
+        title="Careers"
+        subscribe
+      >
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut nibh dictum, auctor libero ac,
           varius sem. Aenean in augue sed enim pulvinar ultricies eget at nibh. Sed ac iaculis lorem. Donec
@@ -98,7 +99,7 @@ class Careers extends PureComponent {
             </ListGroupItem>
           ))}
         </ListGroup>}
-      </div>
+      </FrontContainerLayout>
     )
   }
 }

@@ -4,8 +4,8 @@ import { compose } from 'redux'
 import { reduxForm } from 'redux-form/immutable'
 import { Button, Col, Row } from 'reactstrap'
 
-import Breadcrumb from 'components/Breadcrumb'
 import FormField from 'components/FormField'
+import FrontContainerLayout from 'layouts/FrontContainerLayout'
 import IconListItem from 'components/IconListItem'
 import InputField from 'components/InputField'
 import TextareaField from 'components/TextareaField'
@@ -34,10 +34,11 @@ class Support extends PureComponent {
     const { handleSubmit } = this.props
 
     return (
-      <div>
-        <Breadcrumb className="mb-5" path={breadcrumbPath} />
-
-        <h3 className="mb-5">Support</h3>
+      <FrontContainerLayout
+        breadcrumbPath={breadcrumbPath}
+        title="Support"
+        subscribe
+      >
         <Row className="mb-5">
           <Col xs={12} md={6}>
             <p>
@@ -97,7 +98,7 @@ class Support extends PureComponent {
             <Button type="submit" color="primary">Submit</Button>
           </div>
         </form>
-      </div>
+      </FrontContainerLayout>
     )
   }
 }
