@@ -1,5 +1,5 @@
 import React from 'react'
-import { Redirect, Route } from 'react-router-dom'
+import { Redirect, Route, Switch } from 'react-router-dom'
 import { ConnectedRouter } from 'react-router-redux'
 
 // Front pages
@@ -20,6 +20,7 @@ import Donors from 'pages/Donors'
 import DonorDetail from 'pages/DonorDetail'
 import Faqs from 'pages/Faqs'
 import JobDetail from 'pages/JobDetail'
+import Mission from 'pages/Mission'
 import PrivacyPolicy from 'pages/PrivacyPolicy'
 import Shipping from 'pages/Shipping'
 import Support from 'pages/Support'
@@ -111,13 +112,10 @@ const AccountRoutes = props => (
   </AccountLayout>
 )
 
-const isFrontend = props =>
-  props.location.pathname !== '/' &&
-  !props.location.pathname.startsWith('/account') &&
-  !props.location.pathname.startsWith('/admin')
-
-const FrontendRoutes = props => isFrontend(props) && (
+const FrontendRoutes = props => (
   <div>
+    <Route exact path="/" component={Home} />
+
     <Route exact path="/signin" component={userIsNotAuthenticated(SignIn)} />
     <Route exact path="/signup" component={userIsNotAuthenticated(SignUp)} />
     <Route exact path="/verify-account/:token" component={SignUpVerification} />
@@ -131,6 +129,7 @@ const FrontendRoutes = props => isFrontend(props) && (
     <Route exact path="/careers" component={Careers} />
     <Route exact path="/faqs" component={Faqs} />
     <Route exact path="/jobs/:id" component={JobDetail} />
+    <Route exact path="/mission" component={Mission} />
     <Route exact path="/privacy-policy" component={PrivacyPolicy} />
     <Route exact path="/shipping" component={Shipping} />
     <Route exact path="/support" component={Support} />
@@ -153,14 +152,14 @@ const modals = (
 const Routes = ({ history }) => (
   <ConnectedRouter history={history}>
     <ScrollToTop>
-      <Route path="/admin" component={userIsAdmin(AdminRoutes)} />
-      <Route exact path="/admin-authenticating" component={userIsAuthenticated(currentUserNotLoadedForAdmin(AdminAuthenticating))} />
-      <Route path="/account/:slug?" component={userIsAuthenticated(AccountRoutes)} />
-
-      <Route exact path="/" component={Home} />
-      <Route path="/" component={RealTimeNotificationManager} />
-      <Route path="/" component={FrontendRoutes} />
+      <Switch>
+        <Route path="/admin" component={userIsAdmin(AdminRoutes)} />
+        <Route exact path="/admin-authenticating" component={userIsAuthenticated(currentUserNotLoadedForAdmin(AdminAuthenticating))} />
+        <Route path="/account/:slug?" component={userIsAuthenticated(AccountRoutes)} />
+        <Route path="/" component={FrontendRoutes} />
+      </Switch>
       {modals}
+      <RealTimeNotificationManager />
     </ScrollToTop>
   </ConnectedRouter>
 )
