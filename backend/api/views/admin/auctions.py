@@ -18,7 +18,6 @@ from api.serializers.auctions import BidWithUserDetailSerializer
 from api.serializers.auctions import BidStatusChangeSerializer
 from api.serializers.auctions import SaleSerializer
 from api.serializers.auctions import SaleNoteSerializer
-from api.serializers.storage import UploadMediumSerializer
 from api.paginations import TenPerPagePagination
 from api.permissions import IsAdmin
 from auction.constants import AUCTION_STATUS_PREVIEW

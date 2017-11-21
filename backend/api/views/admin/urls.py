@@ -11,6 +11,8 @@ from api.views.admin.auctions import AuctionBidStatusChangeView
 from api.views.admin.auctions import SaleListView
 from api.views.admin.auctions import SaleDetailView
 from api.views.admin.auctions import SaleNoteView
+from api.views.admin.blog import PostListView
+from api.views.admin.blog import PostDetailView
 from api.views.admin.charities import CharityListView
 from api.views.admin.charities import CharityDetailView
 from api.views.admin.charities import CharityLogoUploadView
@@ -78,4 +80,8 @@ urlpatterns = [
     url(r'^sales/$', SaleListView.as_view(), name='sale-list'),
     url(r'^sales/(?P<pk>[0-9]+)/$', SaleDetailView.as_view(), name='sale-detail'),
     url(r'^sales/(?P<pk>[0-9]+)/note/$', SaleNoteView.as_view(), name='sale-note'),
+
+    # posts endpoints
+    url(r'^posts/$', PostListView.as_view(), name='post-list'),
+    url(r'^posts/(?P<pk>[0-9]+)/$', PostDetailView.as_view(), name='post-detail'),
 ]

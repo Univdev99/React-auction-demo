@@ -75,7 +75,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
 
     objects = UserManager()
-    
+
     def get_short_name(self):
         return self.first_name
 

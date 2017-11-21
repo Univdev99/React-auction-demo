@@ -6,6 +6,7 @@ from api.serializers.payment import PaymentInfoSerializer
 from api.serializers.payment import PaymentSerializer
 from api.serializers.payment import SetPaymentSerializer
 
+
 class AccountPaymentView(views.APIView):
     permission_classes = (IsAuthenticated, )
 

@@ -49,6 +49,11 @@ export const ADMIN_GET_SALE_DETAIL = 'charibin/admin/get-sale-detail'
 export const ADMIN_UPDATE_SALE = 'charibin/admin/update-sale'
 export const ADMIN_SET_SALE_NOTE = 'charibin/admin/set-sale-note'
 
+export const ADMIN_GET_POST_LIST = 'charibin/admin/get-post-list'
+export const ADMIN_GET_POST_DETAIL = 'charibin/admin/get-post-detail'
+export const ADMIN_CREATE_POST = 'charibin/admin/create-post'
+export const ADMIN_UPDATE_POST = 'charibin/admin/update-post'
+
 export const ADMIN_GET_TAG_SUGGESTIONS = 'charibin/admin/get-tag-suggestions'
 
 export const ADMIN_GET_USER_LIST = 'charibin/admin/get-user-list'

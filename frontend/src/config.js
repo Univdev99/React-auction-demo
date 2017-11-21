@@ -88,7 +88,6 @@ export const PRODUCT_WEIGHT_UNIT_CHOICES = [
 
 /* Sale constants */
 
-
 export const SALE_STATUS_WAITING_FOR_PAYMENT = 'waiting-for-payment'
 export const SALE_STATUS_RECEIVED_PAYMENT = 'received-payment'
 export const SALE_STATUS_ITEM_SHIPPED = 'item-shipped'
@@ -100,3 +99,13 @@ export const SALE_STATUS_CHOICES = [
   { key: SALE_STATUS_ITEM_SHIPPED, value: 'Item shipped' },
   { key: SALE_STATUS_CANCELLED, value: 'Cancelled' },
 ]
+
+/* Blog constants */
+
+export const POST_VISIBILITY_PUBLIC = 'public'
+export const POST_VISIBILITY_PROTECTED = 'protected'
+export const POST_VISIBILITY_PRIVATE = 'private'
+
+export const COMMENT_STATUS_PUBLIC = 'public'
+export const COMMENT_STATUS_REVIEW = 'review'
+export const COMMENT_STATUS_FLAGGED = 'flagged'

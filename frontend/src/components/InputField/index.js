@@ -13,7 +13,8 @@ class InputField extends PureComponent {
     label: PropTypes.string,
     meta: PropTypes.object.isRequired,
     placeholder: PropTypes.string,
-    type: PropTypes.string
+    type: PropTypes.string,
+    radioValue: PropTypes.string
   }
 
   static defaultProps = {
@@ -29,17 +30,35 @@ class InputField extends PureComponent {
       meta: { error, touched },
       options,
       placeholder,
-      type
+      type,
+      radioValue
     } = this.props
-    const { name } = input
     const fieldError = touched && error
 
     if (type === 'checkbox') {
+      const checkedExtra = {}
+      if (input.value && !input.checked) {
+        checkedExtra.checked = true
+      }
       return (
         <FormGroup>
-          <Label check htmlFor={name}>
+          <Label check>
             <Input type={type} {...input} placeholder={placeholder}
-              valid={fieldError ? false : undefined} children={children} />
+              valid={fieldError ? false : undefined} children={children} {...checkedExtra} />
+            {label}
+          </Label>
+          {fieldError && <FormFeedback>{sanitizeFormError(error)}</FormFeedback>}
+          {helpText && !fieldError && <FormText>{helpText}</FormText>}
+        </FormGroup>
+      )
+    } else if (type === 'radio') {
+      const { value, onChange, ..._input } = input
+      return (
+        <FormGroup>
+          <Label check>
+            <Input onChange={onChange} checked={radioValue === value}
+              type={type} {..._input} placeholder={placeholder}
+              valid={fieldError ? false : undefined} children={children} value={radioValue} />
             {label}
           </Label>
           {fieldError && <FormFeedback>{sanitizeFormError(error)}</FormFeedback>}
@@ -49,7 +68,7 @@ class InputField extends PureComponent {
     } else {
       return (
         <FormGroup>
-          {label && <Label htmlFor={name}>{label}</Label>}
+          {label && <Label>{label}</Label>}
           <Input type={type} {...input} placeholder={placeholder}
             valid={fieldError ? false : undefined} children={children}
           >

@@ -106,7 +106,6 @@ class TagsInputField extends PureComponent {
       'is-invalid': fieldError
     })
 
-    console.log(this.props.meta)
     return (
       <div className="form-group">
         {label && <label htmlFor={name}>{label}</label>}

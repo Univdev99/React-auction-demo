@@ -7,6 +7,8 @@
   .dropzone-wrapper {
     float: left;
     position: relative;
+    background-size: cover;
+    background-position: center;
 
     $plus-icon-width: 4px;
     $plus-icon-length: 40px;
