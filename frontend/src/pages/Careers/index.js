@@ -8,7 +8,6 @@ import { createStructuredSelector } from 'reselect'
 import { Link } from 'react-router-dom'
 
 import Breadcrumb from 'components/Breadcrumb'
-import moveToTopOnMount from 'utils/moveToTopOnMount'
 import Spinner from 'components/Spinner'
 import { getJobList } from 'store/modules/jobs'
 import { jobsSelector } from 'store/selectors'
@@ -113,6 +112,5 @@ const actions = {
 }
 
 export default compose(
-  connect(selector, actions),
-  moveToTopOnMount
+  connect(selector, actions)
 )(Careers)

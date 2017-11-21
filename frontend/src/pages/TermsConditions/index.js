@@ -2,7 +2,6 @@ import React from 'react'
 
 import Breadcrumb from 'components/Breadcrumb'
 import ContactTextLink from 'components/ContactTextLink'
-import moveToTopOnMount from 'utils/moveToTopOnMount'
 
 const breadcrumbPath = [
   { route: '/', text: 'Home' },
@@ -47,4 +46,4 @@ const TermsConditions = () => (
   </div>
 )
 
-export default moveToTopOnMount(TermsConditions)
+export default TermsConditions

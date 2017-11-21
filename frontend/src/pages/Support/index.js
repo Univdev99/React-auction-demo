@@ -8,7 +8,6 @@ import Breadcrumb from 'components/Breadcrumb'
 import FormField from 'components/FormField'
 import IconListItem from 'components/IconListItem'
 import InputField from 'components/InputField'
-import moveToTopOnMount from 'utils/moveToTopOnMount'
 import TextareaField from 'components/TextareaField'
 
 const isRequired = value => (value ? undefined : 'This Field is Required')
@@ -104,7 +103,6 @@ class Support extends PureComponent {
 }
 
 export default compose(
-  moveToTopOnMount,
   reduxForm({
     form: 'contactForm'
   })
