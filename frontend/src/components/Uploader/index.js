@@ -7,20 +7,24 @@ import { Progress } from 'reactstrap'
 class Uploader extends PureComponent {
 
   static propTypes = {
-    uploadAction: PropTypes.func.isRequired,
+    uploadAction: PropTypes.func,
+    onChange: PropTypes.func,
     uploadActionParams: PropTypes.object,
     disabled: PropTypes.bool,
     defaultImageURL: PropTypes.string,
+    preview: PropTypes.bool,
   }
 
   static defaultProps = {
     disabled: false,
     defaultImageURL: null,
+    preview: false,
   }
 
   state = {
     uploading: false,
     progress: 0,
+    previewImageData: null,
   }
 
   handleDrop = (acceptedFiles) => {
@@ -30,32 +34,47 @@ class Uploader extends PureComponent {
     }
 
     const file = acceptedFiles[0]
-    const data = new FormData()
-    data.append('file', file)
+    const { preview, onChange, uploadAction, uploadActionParams } = this.props
 
-    this.setState({
-      uploading: true,
-      progress: 0,
-    })
+    if (uploadAction) {
+      const data = new FormData()
+      data.append('file', file)
 
-    const { uploadAction, uploadActionParams } = this.props
-    uploadAction({
-      ...uploadActionParams,
-      data,
-      onUploadProgress: (progressEvent) => {
-        const { loaded, total } = progressEvent
-        const progress = parseInt(parseFloat(loaded) / parseFloat(total) * 100, 10)
-        this.setState({
-          progress
-        })
-      },
-      success: () => this.setState({
-        uploading: false
-      }),
-      fail: () => this.setState({
-        uploading: false
-      }),
-    })
+      this.setState({
+        uploading: true,
+        progress: 0,
+      })
+
+      uploadAction({
+        ...uploadActionParams,
+        data,
+        onUploadProgress: (progressEvent) => {
+          const { loaded, total } = progressEvent
+          const progress = parseInt(parseFloat(loaded) / parseFloat(total) * 100, 10)
+          this.setState({
+            progress
+          })
+        },
+        success: () => this.setState({
+          uploading: false
+        }),
+        fail: () => this.setState({
+          uploading: false
+        }),
+      })
+    }
+
+    if (onChange) {
+      onChange(file)
+    }
+
+    if (preview) {
+      const reader = new FileReader()
+      reader.addEventListener('load', () => this.setState({
+        previewImageData: reader.result
+      }))
+      reader.readAsDataURL(file)
+    }
   }
 
   uploaderStyle = () => {
@@ -88,12 +107,17 @@ class Uploader extends PureComponent {
 
   render() {
     const { disabled } = this.props
-    const { uploading, progress } = this.state
+    const { uploading, progress, previewImageData } = this.state
+
+    const wrapperStyle = {}
+    if (previewImageData) {
+      wrapperStyle.backgroundImage = `url(${previewImageData})`
+    }
 
     return (
       <div className="uploader">
         <div className="clearfix">
-          <div className="dropzone-wrapper">
+          <div className="dropzone-wrapper" style={wrapperStyle}>
             <Dropzone
               style={this.uploaderStyle()}
               acceptStyle={this.acceptStyle()}

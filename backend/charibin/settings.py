@@ -52,6 +52,7 @@ INSTALLED_APPS = (
     'account',
     'auction',
     'api',
+    'blog',
     'entity',
     'storage',
     'job',

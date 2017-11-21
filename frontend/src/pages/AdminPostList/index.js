@@ -9,50 +9,47 @@ import {
   Nav, NavItem, NavLink,
   Dropdown, DropdownToggle, DropdownMenu, DropdownItem,
 } from 'reactstrap'
+import { Link } from 'react-router-dom'
 
 import Pagination from 'components/Pagination'
 import {
-  getSaleList,
-  setSaleNote,
-} from 'store/modules/admin/sales'
-import { adminSalesSelector } from 'store/selectors'
+  getPostList,
+} from 'store/modules/admin/blog'
+import { adminBlogSelector } from 'store/selectors'
 import {
   ADMIN_TABLE_PAGE_SIZE,
 } from 'config'
-import SaleTable from './SaleTable'
+import PostTable from './PostTable'
 
 
-class AdminSaleList extends PureComponent {
+class AdminPostList extends PureComponent {
 
   static propTypes = {
-    adminSales: ImmutablePropTypes.map.isRequired,
-    getSaleList: PropTypes.func.isRequired,
-    setSaleNote: PropTypes.func.isRequired,
+    adminBlog: ImmutablePropTypes.map.isRequired,
+    getPostList: PropTypes.func.isRequired,
   }
 
   state = {
     loadingStatus: 1,
     columnMenuOpen: false,
     columnList: Immutable.fromJS([
-      { field: 'winner', label: 'Winner', enabled: true },
-      { field: 'price', label: 'Final bid', enabled: true },
-      { field: 'charity', label: 'Charity', enabled: true },
-      { field: 'item_sent', label: 'Item sent', enabled: true },
-      { field: 'tracking_number', label: 'Tracking number', enabled: true },
+      { field: 'title', label: 'Title', enabled: true },
+      { field: 'author_name', label: 'Author', enabled: true },
+      { field: 'tagnames', label: 'Tags', enabled: true },
       { field: 'status', label: 'Status', enabled: true },
-      { field: 'note', label: 'Note', enabled: true },
+      { field: 'created_at', label: 'Created', enabled: true },
     ])
   }
 
   loadData = (page = 0) => {
-    const { adminSales } = this.props
-    const saleListPageNumber = adminSales.get('saleListPageNumber')
+    const { adminBlog } = this.props
+    const postListPageNumber = adminBlog.get('postListPageNumber')
 
     this.setState({
       loadingStatus: 1
     }, () => {
-      this.props.getSaleList({
-        page: page ? page : saleListPageNumber,
+      this.props.getPostList({
+        page: page ? page : postListPageNumber,
         success: () => this.setState({
           loadingStatus: 10
         }),
@@ -103,16 +100,8 @@ class AdminSaleList extends PureComponent {
     }
   }
 
-  handleUpdateNote = (id, note) => {
-    this.props.setSaleNote({
-      id,
-      data: {
-        note,
-      },
-      fail: () => {
-        alert('Failed to update note')
-      },
-    })
+  handleMoveToTrash = () => {
+    // 
   }
 
   componentWillMount() {
@@ -120,15 +109,18 @@ class AdminSaleList extends PureComponent {
   }
 
   render() {
-    const { adminSales } = this.props
-    const saleListPage = adminSales.get('saleListPage')
-    const saleListPageNumber = adminSales.get('saleListPageNumber')
-    const saleCount = adminSales.get('saleCount')
+    const { adminBlog } = this.props
+    const postListPage = adminBlog.get('postListPage')
+    const postListPageNumber = adminBlog.get('postListPageNumber')
+    const postCount = adminBlog.get('postCount')
     const { loadingStatus, columnMenuOpen, columnList } = this.state
 
     return (
       <div>
-        <h2 className="mb-4 clearfix">Sales</h2>
+        <div className="mb-4 clearfix">
+          <h2 className="pull-left">Blog Posts</h2>
+          <Link className="btn btn-primary pull-right" to="/admin/posts/create">Create</Link>
+        </div>
 
         <div>
           <Nav pills>
@@ -163,16 +155,16 @@ class AdminSaleList extends PureComponent {
             </NavItem>
           </Nav>
 
-          <SaleTable
+          <PostTable
             loadingStatus={loadingStatus}
             columnList={columnList}
-            saleList={saleListPage}
-            onUpdateNote={this.handleUpdateNote}
+            postList={postListPage}
+            onMoveToTrash={this.handleMoveToTrash}
           />
           <div className="mt-5 text-center">
             <Pagination
-              currentPage={saleListPageNumber}
-              totalCount={saleCount}
+              currentPage={postListPageNumber}
+              totalCount={postCount}
               pageSize={ADMIN_TABLE_PAGE_SIZE}
               onPage={this.loadData}
             />
@@ -184,14 +176,13 @@ class AdminSaleList extends PureComponent {
 }
 
 const selector = createStructuredSelector({
-  adminSales: adminSalesSelector,
+  adminBlog: adminBlogSelector,
 })
 
 const actions = {
-  getSaleList,
-  setSaleNote,
+  getPostList,
 }
 
 export default compose(
   connect(selector, actions)
-)(AdminSaleList)
+)(AdminPostList)

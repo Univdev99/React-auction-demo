@@ -58,11 +58,14 @@ class CharityLogoUploadView(MediumUploadMixin, generics.GenericAPIView):
             content_object=charity
         )
 
-        with transaction.atomic():
+        try:
             if charity.logo:
                 self.delete_medium(charity.logo)
-            charity.logo = logo_medium
-            charity.save()
+        except:
+            pass
+
+        charity.logo = logo_medium
+        charity.save()
 
         serializer = self.get_serializer(charity)
         return Response(serializer.data)

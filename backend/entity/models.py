@@ -7,6 +7,7 @@ from tagging.models import Tag
 from tagging.models import TaggedItem
 from tagging.registry import register
 
+from common.mixins import ModelTagnamesMixin
 from entity.constants import DONOR_TYPE_CHOICES
 from entity.constants import PRODUCT_WEIGHT_UNIT_CHOICES
 from entity.constants import PRODUCT_WEIGHT_UNIT_KG
@@ -26,7 +27,7 @@ class Charity(models.Model):
         return 'Charity <{}>'.format(self.title)
 
 
-class Donor(models.Model):
+class Donor(ModelTagnamesMixin, models.Model):
     title = models.CharField(unique=True, max_length=200)
     description = models.TextField()
     type = models.CharField(choices=DONOR_TYPE_CHOICES, max_length=50)
@@ -42,17 +43,13 @@ class Donor(models.Model):
     def similar_donors(self):
         return self.get_similar_donors(2)
 
-    @property
-    def tagnames(self):
-        return [tag.name for tag in self.tags]
-
     def get_similar_donors(self, count):
         return TaggedItem.objects.get_related(self, Donor.objects.prefetch_related('media'), count)
 
 register(Donor)
 
 
-class Product(models.Model):
+class Product(ModelTagnamesMixin, models.Model):
     title = models.CharField(unique=True, max_length=200)
     description = models.TextField()
     charge_tax = models.BooleanField(default=False)
@@ -70,10 +67,6 @@ class Product(models.Model):
 
     def __str__(self):
         return 'Product <{}>'.format(self.title)
-
-    @property
-    def tagnames(self):
-        return [tag.name for tag in self.tags]
 
     def get_similar_products(self, count, **kwargs):
         qs = Product.objects.select_related('auction').prefetch_related('media')

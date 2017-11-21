@@ -48,6 +48,9 @@ import AdminUserList from 'pages/AdminUserList'
 import AdminMediumList from 'pages/AdminMediumList'
 import AdminSaleList from 'pages/AdminSaleList'
 import AdminSaleDetail from 'pages/AdminSaleDetail'
+import AdminPostList from 'pages/AdminPostList'
+import AdminPostCreate from 'pages/AdminPostCreate'
+import AdminPostDetail from 'pages/AdminPostDetail'
 
 // Managers (currently implemented as invisible page components)
 import RealTimeNotificationManager from 'managers/RealTimeNotificationManager'
@@ -96,6 +99,9 @@ const AdminRoutes = props => (
     <Route exact path="/admin/auctions/:id(\d+)/bids" component={AdminAuctionBidList} />
     <Route exact path="/admin/sales" component={AdminSaleList} />
     <Route exact path="/admin/sales/:id(\d+)" component={AdminSaleDetail} />
+    <Route exact path="/admin/posts" component={AdminPostList} />
+    <Route exact path="/admin/posts/create" component={AdminPostCreate} />
+    <Route exact path="/admin/posts/:id(\d+)" component={AdminPostDetail} />
     <Route exact path="/admin/users" component={AdminUserList} />
     <Route exact path="/admin/media" component={AdminMediumList} />
   </AdminLayout>
