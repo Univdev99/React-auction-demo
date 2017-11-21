@@ -10,7 +10,6 @@ import { reduxForm } from 'redux-form'
 import Breadcrumb from 'components/Breadcrumb'
 import FormField from 'components/FormField'
 import InputField from 'components/InputField'
-import moveToTopOnMount from 'utils/moveToTopOnMount'
 import Spinner from 'components/Spinner'
 import TextareaField from 'components/TextareaField'
 import { getJobDetail } from 'store/modules/jobs'
@@ -154,6 +153,5 @@ export default compose(
   connect(selector, actions),
   reduxForm({
     form: 'jobApplicationForm'
-  }),
-  moveToTopOnMount
+  })
 )(JobDetail)

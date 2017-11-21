@@ -26,7 +26,6 @@ import Support from 'pages/Support'
 import TermsConditions from 'pages/TermsConditions'
 
 // Admin pages
-import AdminLayout from 'pages/AdminLayout'
 import AdminAuthenticating from 'pages/AdminAuthenticating'
 import AdminIndex from 'pages/AdminIndex'
 import AdminCharityList from 'pages/AdminCharityList'
@@ -71,9 +70,12 @@ import {
 
 
 // Layout components
-import AccountLayout from 'components/AccountLayout'
-import AppLayout1 from 'pages/AppLayout1'
-import AppContainerLayout from 'components/AppContainerLayout'
+import AccountLayout from 'layouts/AccountLayout'
+import AdminLayout from 'layouts/AdminLayout'
+import AppContainerLayout from 'layouts/AppContainerLayout'
+import AppLayout1 from 'layouts/AppLayout1'
+
+import ScrollToTop from 'components/ScrollToTop'
 
 const AdminRoutes = props => (
   <AdminLayout>
@@ -154,7 +156,7 @@ const modals = (
 
 const Routes = ({ history }) => (
   <ConnectedRouter history={history}>
-    <div>
+    <ScrollToTop>
       <Route path="/admin" component={userIsAdmin(AdminRoutes)} />
       <Route exact path="/admin-authenticating" component={userIsAuthenticated(currentUserNotLoadedForAdmin(AdminAuthenticating))} />
       <Route path="/account/:slug?" component={userIsAuthenticated(AccountRoutes)} />
@@ -163,7 +165,7 @@ const Routes = ({ history }) => (
       <Route path="/" component={RealTimeNotificationManager} />
       <Route path="/" component={FrontendRoutes} />
       {modals}
-    </div>
+    </ScrollToTop>
   </ConnectedRouter>
 )
 

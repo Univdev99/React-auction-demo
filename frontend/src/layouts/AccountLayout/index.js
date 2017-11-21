@@ -2,8 +2,8 @@ import React from 'react'
 import { Col, Nav, NavLink, NavItem, Row } from 'reactstrap'
 import { NavLink as RouterNavLink } from 'react-router-dom'
 
-import AppContainerLayout from 'components/AppContainerLayout'
-import AppLayout1 from 'pages/AppLayout1'
+import AppContainerLayout from '../AppContainerLayout'
+import AppLayout1 from '../AppLayout1'
 
 
 const navs = [

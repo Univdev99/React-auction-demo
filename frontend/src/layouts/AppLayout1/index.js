@@ -38,6 +38,8 @@ class AppLayout1 extends PureComponent {
   }
 
   componentDidMount() {
+    const { children } = this.props
+    if (!children) return
     let headerFooterHeight = this.layoutElement.clientHeight - this.contentElement.clientHeight
     let minContentHeight = window.innerHeight - headerFooterHeight
     this.setState({
@@ -47,6 +49,9 @@ class AppLayout1 extends PureComponent {
 
   render() {
     const { auth, children } = this.props
+
+    if (!children) return false
+
     const username = auth.getIn(['currentUser', 'email'], '')
 
     const isStaff = auth.getIn(['currentUser', 'is_staff'], false)
