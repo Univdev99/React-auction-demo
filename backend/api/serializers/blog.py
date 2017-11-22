@@ -93,3 +93,32 @@ class PostSerializer(MediumUploadMixin, TagnamesSerializerMixin, serializers.Mod
 
         post.save()
         return post
+
+
+class PostDetailSerializer(serializers.ModelSerializer):
+    featured_image = serializers.SerializerMethodField()
+    author_name = serializers.SerializerMethodField()
+    similar_posts = PostSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Post
+        fields = (
+            'pk', 'title', 'content', 'excerpt', 'visibility',
+            'featured_image', 'is_draft', 'is_sticky', 'author', 'author_name',
+            'created_at', 'updated_at', 'deleted_at', 'similar_posts'
+        )
+        read_only_fields = (
+            'pk', 'created_at', 'updated_at', 'deleted_at', 'author_name', 'similar_posts'
+        )
+
+    def get_featured_image(self, obj):
+        try:
+            return obj.featured_image.url
+        except:
+            return None
+
+    def get_author_name(self, obj):
+        try:
+            return obj.author.get_full_name()
+        except:
+            return None

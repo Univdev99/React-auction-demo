@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 
+from tagging.models import TaggedItem
 from tagging.registry import register
 
 from blog.constants import POST_VISIBILITY_CHOICES
@@ -33,6 +34,16 @@ class Post(ModelTagnamesMixin, models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
     deleted_at = models.DateTimeField(null=True, blank=True, default=None)
+
+    def get_similar_posts(self, count, **kwargs):
+        qs = Post.objects.select_related('featured_image').select_related('author')
+        if bool(kwargs):
+            qs = qs.filter(**kwargs)
+        return TaggedItem.objects.get_related(self, qs, count)
+
+    @property
+    def similar_posts(self):
+        return self.get_similar_posts(2)
 
     def __str__(self):
         return 'Post <{}>'.format(self.title)
