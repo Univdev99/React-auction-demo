@@ -34,6 +34,12 @@ export const accountSelector = state =>
 export const auctionsSelector = state =>
   state.get('auctions')
 
+export const blogSelector = state =>
+  state.get('blog')
+
+export const postsSelector = state =>
+  state.get('posts')
+
 export const donorsSelector = state =>
   state.get('donors')
 

@@ -12,6 +12,7 @@ import adminSales from './admin/sales'
 import adminBlog from './admin/blog'
 import account from './account'
 import auctions from './auctions'
+import blog from './blog'
 import donors from './donors'
 import jobs from './jobs'
 import payment from './payment'
@@ -32,6 +33,7 @@ export default function* rootSaga() {
     adminBlog(),
     account(),
     auctions(),
+    blog(),
     donors(),
     jobs(),
     payment(),

@@ -20,6 +20,7 @@ import adminBlog from 'store/modules/admin/blog'
 import auctions from 'store/modules/auctions'
 import auth from 'store/modules/auth'
 import authMiddleware from 'store/middlewares/auth'
+import blog from 'store/modules/blog'
 import donors from 'store/modules/donors'
 import jobs from 'store/modules/jobs'
 import routerReducer from 'store/modules/route'
@@ -74,6 +75,7 @@ export const store = createStore(
     adminBlog,
     account,
     auctions,
+    blog,
     donors,
     jobs,
     modal,
