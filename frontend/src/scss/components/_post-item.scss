@@ -1,0 +1,16 @@
+.post-item {
+  &__image {
+    padding-top: 56.25%;
+    background: center/contain no-repeat;
+  }
+
+  &__title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__button {
+    border-radius: 999px;
+  }
+}

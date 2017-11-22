@@ -21,6 +21,7 @@ import DonorDetail from 'pages/DonorDetail'
 import Faqs from 'pages/Faqs'
 import JobDetail from 'pages/JobDetail'
 import Mission from 'pages/Mission'
+import Posts from 'pages/Posts'
 import PrivacyPolicy from 'pages/PrivacyPolicy'
 import Shipping from 'pages/Shipping'
 import Support from 'pages/Support'
@@ -133,6 +134,8 @@ const FrontendRoutes = props => (
 
     <Route exact path="/donors" component={Donors} />
     <Route exact path="/donors/:id" component={DonorDetail} />
+
+    <Route exact path="/blog" component={Posts} />
 
     <Route exact path="/careers" component={Careers} />
     <Route exact path="/faqs" component={Faqs} />

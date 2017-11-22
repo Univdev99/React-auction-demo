@@ -73,7 +73,7 @@ class PostCommentListView(generics.ListCreateAPIView):
 
     def list(self, request, *args, **kwargs):
         serializer = PostCommentSerializer(
-            self.get_object().comment_set.select_related('user'),
+            self.get_object().comment_set.order_by('-created_at').select_related('user'),
             many=True
         )
         return Response(serializer.data)

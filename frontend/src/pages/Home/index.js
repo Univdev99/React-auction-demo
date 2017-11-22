@@ -14,8 +14,10 @@ import AuctionCard from 'components/AuctionCard'
 import DonateBar from 'components/DonateBar'
 import DonorCard from 'components/DonorCard'
 import HomeBanner from 'components/HomeBanner'
-import { auctionsSelector, donorsSelector } from 'store/selectors'
+import PostItem from 'components/PostItem'
+import { auctionsSelector, blogSelector, donorsSelector } from 'store/selectors'
 import { getDonorFrontList } from 'store/modules/donors'
+import { getPostFrontList } from 'store/modules/blog'
 import { getTrendingAuctionList } from 'store/modules/auctions'
 
 const SUBSCRIBE_MODAL_POPUP_DELAY = 3000
@@ -25,6 +27,7 @@ class Home extends PureComponent {
   static propTypes = {
     auctions:  ImmutablePropTypes.map.isRequired,
     donors: ImmutablePropTypes.map.isRequired,
+    blog: ImmutablePropTypes.map.isRequired,
     getTrendingAuctionList: PropTypes.func.isRequired,
     getDonorFrontList: PropTypes.func.isRequired,
     show: PropTypes.func.isRequired
@@ -39,12 +42,15 @@ class Home extends PureComponent {
   }
 
   componentWillMount() {
-    const { auctions, donors, getDonorFrontList, getTrendingAuctionList } = this.props
+    const { auctions, donors, blog, getDonorFrontList, getPostFrontList, getTrendingAuctionList } = this.props
     if (!auctions.get('auctionTrendingListLoaded')) {
       getTrendingAuctionList()
     }
     if (!donors.get('donorListLoaded')) {
       getDonorFrontList()
+    }
+    if (!blog.get('postFrontListLoaded')) {
+      getPostFrontList()
     }
   }
 
@@ -53,12 +59,13 @@ class Home extends PureComponent {
   }
 
   render() {
-    const { auctions, donors } = this.props
+    const { auctions, donors, blog } = this.props
     const trendingAuctionsList = auctions.get('auctionTrendingList')
     const donorFrontList = donors.get('donorFrontList')
+    const postsList = blog.get('postFrontList')
 
     return (
-      <AppLayout1>
+      <AppLayout1 subscribe>
         <HomeBanner />
 
         <AppContainerLayout>
@@ -97,6 +104,21 @@ class Home extends PureComponent {
               </Col>
             ))}
           </Row>
+
+          <div className="clearfix my-5">
+            <h3 className="pull-left">Our Blog</h3>
+            <Button color="primary" outline tag={Link} to="/blog" className="pull-right">
+              All articles
+            </Button>
+          </div>
+
+          <Row>
+            {postsList.map(post => (
+              <Col key={post.get('pk')} xs={12} md={6} className="mb-3">
+                <PostItem post={post.toJS()} />
+              </Col>
+            ))}
+          </Row>
         </AppContainerLayout>
       </AppLayout1>
     )
@@ -105,12 +127,14 @@ class Home extends PureComponent {
 
 const selector = createStructuredSelector({
   auctions: auctionsSelector,
-  donors: donorsSelector
+  donors: donorsSelector,
+  blog: blogSelector,
 })
 
 const actions = {
   getTrendingAuctionList,
   getDonorFrontList,
+  getPostFrontList,
   show
 }
 
