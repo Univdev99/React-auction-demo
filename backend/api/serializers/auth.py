@@ -25,7 +25,7 @@ class SignUpVerificationSerializer(serializers.Serializer):
 
 class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=False)
-    payment_info = PaymentInfoSerializer(source='customer')
+    payment_info = PaymentInfoSerializer(source='customer', required=False)
 
     class Meta:
         model = get_user_model()

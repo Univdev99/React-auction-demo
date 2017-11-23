@@ -1,9 +1,11 @@
 import random
 
 from django.db import transaction
+from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 
 from rest_framework import serializers
+from rest_framework.exceptions import PermissionDenied
 
 from api.serializers.mixins import TagnamesSerializerMixin
 from blog.constants import POST_VISIBILITY_PUBLIC
@@ -95,16 +97,23 @@ class PostSerializer(MediumUploadMixin, TagnamesSerializerMixin, serializers.Mod
         return post
 
 
+class BlogUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ('pk', 'first_name', 'last_name', 'full_name')
+        read_only_fields = ('pk', 'first_name', 'last_name', 'full_name')
+
+
 class PostDetailSerializer(serializers.ModelSerializer):
     featured_image = serializers.SerializerMethodField()
-    author_name = serializers.SerializerMethodField()
+    author_detail = BlogUserSerializer(read_only=True)
     similar_posts = PostSerializer(many=True, read_only=True)
 
     class Meta:
         model = Post
         fields = (
             'pk', 'title', 'content', 'excerpt', 'visibility',
-            'featured_image', 'is_draft', 'is_sticky', 'author', 'author_name',
+            'featured_image', 'is_draft', 'is_sticky', 'author', 'author_detail',
             'created_at', 'updated_at', 'deleted_at', 'similar_posts'
         )
         read_only_fields = (
@@ -117,8 +126,23 @@ class PostDetailSerializer(serializers.ModelSerializer):
         except:
             return None
 
-    def get_author_name(self, obj):
-        try:
-            return obj.author.get_full_name()
-        except:
-            return None
+
+class PostCommentSerializer(serializers.ModelSerializer):
+    user = BlogUserSerializer(read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = (
+            'content', 'created_at', 'deleted_at', 'status', 'post', 'user'
+        )
+
+        read_only_fields = (
+            'pk', 'created_at', 'deleted_at', 'post', 'user', 'status'
+        )
+
+    def validate(self, data):
+        user = self.context.get('request').user
+        data['user'] = user
+        post = self.context.get('view').get_object()
+        data['post'] = post
+        return data

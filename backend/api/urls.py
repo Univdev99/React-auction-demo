@@ -19,6 +19,7 @@ from api.views.auctions import AccountBidListView
 from api.views.blog import PostFrontListView
 from api.views.blog import PostListView
 from api.views.blog import PostDetailView
+from api.views.blog import PostCommentListView
 from api.views.settings import CountriesView
 from api.views.payment import AccountPaymentView
 from api.views.payment import PaymentTestView
@@ -49,6 +50,7 @@ urlpatterns = [
     url(r'^posts/front/$', PostFrontListView.as_view(), name='posts-front-list'),
     url(r'^posts/$', PostListView.as_view(), name='post-list'),
     url(r'^posts/(?P<pk>[0-9]+)/$', PostDetailView.as_view(), name='post-detail'),
+    url(r'^posts/(?P<pk>[0-9]+)/comments/$', PostCommentListView.as_view(), name='post-comments'),
 
     url(r'^account/bid-auctions/$', AccountBidListView.as_view(), name='account-bid-auctions-list'),
     url(r'^account/payment/$', AccountPaymentView.as_view(), name='account-payment'),
