@@ -18,6 +18,7 @@ from api.serializers.auctions import BidWithUserDetailSerializer
 from api.serializers.auctions import BidStatusChangeSerializer
 from api.serializers.auctions import SaleSerializer
 from api.serializers.auctions import SaleNoteSerializer
+from api.serializers.auctions import AuctionBacklogSerializer
 from api.paginations import TenPerPagePagination
 from api.permissions import IsAdmin
 from auction.constants import AUCTION_STATUS_PREVIEW
@@ -147,3 +148,16 @@ class SaleNoteView(generics.UpdateAPIView):
     serializer_class = SaleNoteSerializer
     lookup_url_kwarg = 'pk'
     queryset = Sale.objects.all()
+
+
+class AuctionBacklogListView(generics.ListAPIView):
+    permission_classes = (IsAuthenticated, IsAdmin,)
+    queryset = Auction.objects.order_by('pk') \
+        .select_related('sale') \
+        .select_related('product') \
+        .select_related('product__donor') \
+        .select_related('product__donor__charity') \
+        .prefetch_related('product__media')
+    serializer_class = AuctionBacklogSerializer
+    pagination_class = TenPerPagePagination
+    filter_backends = (StatusFilterBackend, )

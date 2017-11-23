@@ -37,8 +37,10 @@ class AdminSaleList extends PureComponent {
       { field: 'winner', label: 'Winner', enabled: true },
       { field: 'price', label: 'Final bid', enabled: true },
       { field: 'charity', label: 'Charity', enabled: true },
-      { field: 'item_sent', label: 'Item sent', enabled: true },
+      { field: 'item_sent', label: 'Item sent at', enabled: true },
       { field: 'tracking_number', label: 'Tracking number', enabled: true },
+      { field: 'cheque_sent_at', label: 'Cheque sent to charity at', enabled: true },
+      { field: 'receipt_received_at', label: 'Receipt received from charity at', enabled: true },
       { field: 'status', label: 'Status', enabled: true },
       { field: 'note', label: 'Note', enabled: true },
     ])

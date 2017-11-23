@@ -96,7 +96,7 @@ class CurrentUserTests(APITestCase):
             'zipcode': '10011'
         }
         response = self.client.put(reverse('api:current-user'), new_data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.content)
         self.user.refresh_from_db()
         self.assertEqual(self.user.email, new_data['email'])
         self.assertEqual(self.user.username, new_data['username'])

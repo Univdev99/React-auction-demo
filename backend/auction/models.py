@@ -255,6 +255,8 @@ class Sale(models.Model):
         choices=SALE_STATUS_CHOICES,
         default=SALE_STATUS_WAITING_FOR_PAYMENT
     )
+    cheque_sent_at = models.DateTimeField(null=True, blank=True, default=None)
+    receipt_received_at = models.DateTimeField(null=True, blank=True, default=None)
     note = models.TextField(default='')
     price = models.FloatField()
     stripe_charge_id = models.CharField(max_length=100)

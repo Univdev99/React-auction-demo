@@ -15,6 +15,7 @@ import {
   AUCTION_STATUS_WAITING_FOR_PAYMENT,
   AUCTION_STATUS_WAITING_TO_SHIP,
 } from 'config'
+import { formatDateTime } from 'utils/formatter'
 
 
 class AuctionTable extends PureComponent {
@@ -40,6 +41,8 @@ class AuctionTable extends PureComponent {
       return `${hours}h ${minutes}min ${seconds}sec`
     } else if (field === 'status') {
       return AUCTION_STATUS_TEXTS[auction.get('status')]
+    } else if (field === 'started_at') {
+      return formatDateTime(auction.get(field))
     }
     return auction.get(field)
   }
@@ -73,77 +76,79 @@ class AuctionTable extends PureComponent {
           Failed to load data.
         </div>}
 
-        {loadingStatus === 10 && <Table responsive className="data-table mb-0">
-          <thead>
-            <tr>
-              {columnList.filter(
-                column => column.get('enabled')
-              ).map(column => (
-                <th key={column.get('field')}>{column.get('label')}</th>
-              ))}
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {auctionList.map(auction => {
-              const auctionStatus = auction.get('status')
+        {loadingStatus === 10 && <div className="responsive-table-wrapper">
+          <Table className="data-table mb-0">
+            <thead>
+              <tr>
+                {columnList.filter(
+                  column => column.get('enabled')
+                ).map(column => (
+                  <th key={column.get('field')}>{column.get('label')}</th>
+                ))}
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {auctionList.map(auction => {
+                const auctionStatus = auction.get('status')
 
-              return (
-                <tr key={auction.get('pk')}>
-                  {columnList.filter(
-                    column => column.get('enabled')
-                  ).map(column => (
-                    <td key={column.get('field')}>{this.getCellValue(auction, column.get('field'))}</td>
-                  ))}
-                  <td>
-                    <UncontrolledDropdown>
-                      <DropdownToggle size="sm" color="link" className="py-0">
-                        <i className="fa fa-chevron-down" />
-                      </DropdownToggle>
-                      <DropdownMenu right>
-                        <DropdownItem
-                          to={`/admin/auctions/${auction.get('pk')}`}
-                          tag={Link}
-                        >
-                          Edit
-                        </DropdownItem>
-                        {auctionStatus === AUCTION_STATUS_PREVIEW && <DropdownItem
-                          to={`/admin/auctions/${auction.get('pk')}/start`}
-                          tag={Link}
-                        >
-                          <strong>Start</strong>
-                        </DropdownItem>}
-                        {auctionStatus !== AUCTION_STATUS_PREVIEW && <DropdownItem
-                          to={`/admin/auctions/${auction.get('pk')}/bids`}
-                          tag={Link}
-                        >
-                          Bids
-                        </DropdownItem>}
-                        {auctionStatus === AUCTION_STATUS_OPEN && <DropdownItem
-                          to="/"
-                          onClick={this.handleFinish.bind(this, auction.get('pk'))}
-                        >
-                          <strong>Finish</strong>
-                        </DropdownItem>}
-                        {(
-                          auctionStatus === AUCTION_STATUS_OPEN ||
-                          auctionStatus === AUCTION_STATUS_WAITING_FOR_PAYMENT ||
-                          auctionStatus === AUCTION_STATUS_WAITING_TO_SHIP
-                        ) && <DropdownItem
-                          className="text-danger pr-3"
-                          to="/"
-                          onClick={this.handleCancel.bind(this, auction.get('pk'))}
-                        >
-                          Cancel
-                        </DropdownItem>}
-                      </DropdownMenu>
-                    </UncontrolledDropdown>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </Table>}
+                return (
+                  <tr key={auction.get('pk')}>
+                    {columnList.filter(
+                      column => column.get('enabled')
+                    ).map(column => (
+                      <td key={column.get('field')}>{this.getCellValue(auction, column.get('field'))}</td>
+                    ))}
+                    <td>
+                      <UncontrolledDropdown>
+                        <DropdownToggle size="sm" color="link" className="py-0">
+                          <i className="fa fa-chevron-down" />
+                        </DropdownToggle>
+                        <DropdownMenu right>
+                          <DropdownItem
+                            to={`/admin/auctions/${auction.get('pk')}`}
+                            tag={Link}
+                          >
+                            Edit
+                          </DropdownItem>
+                          {auctionStatus === AUCTION_STATUS_PREVIEW && <DropdownItem
+                            to={`/admin/auctions/${auction.get('pk')}/start`}
+                            tag={Link}
+                          >
+                            <strong>Start</strong>
+                          </DropdownItem>}
+                          {auctionStatus !== AUCTION_STATUS_PREVIEW && <DropdownItem
+                            to={`/admin/auctions/${auction.get('pk')}/bids`}
+                            tag={Link}
+                          >
+                            Bids
+                          </DropdownItem>}
+                          {auctionStatus === AUCTION_STATUS_OPEN && <DropdownItem
+                            to="/"
+                            onClick={this.handleFinish.bind(this, auction.get('pk'))}
+                          >
+                            <strong>Finish</strong>
+                          </DropdownItem>}
+                          {(
+                            auctionStatus === AUCTION_STATUS_OPEN ||
+                            auctionStatus === AUCTION_STATUS_WAITING_FOR_PAYMENT ||
+                            auctionStatus === AUCTION_STATUS_WAITING_TO_SHIP
+                          ) && <DropdownItem
+                            className="text-danger pr-3"
+                            to="/"
+                            onClick={this.handleCancel.bind(this, auction.get('pk'))}
+                          >
+                            Cancel
+                          </DropdownItem>}
+                        </DropdownMenu>
+                      </UncontrolledDropdown>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </Table>
+        </div>}
       </div>
     )
   }
