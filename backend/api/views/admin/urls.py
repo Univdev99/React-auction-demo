@@ -11,6 +11,7 @@ from api.views.admin.auctions import AuctionBidStatusChangeView
 from api.views.admin.auctions import SaleListView
 from api.views.admin.auctions import SaleDetailView
 from api.views.admin.auctions import SaleNoteView
+from api.views.admin.auctions import AuctionBacklogListView
 from api.views.admin.blog import PostListView
 from api.views.admin.blog import PostDetailView
 from api.views.admin.charities import CharityListView
@@ -84,4 +85,7 @@ urlpatterns = [
     # posts endpoints
     url(r'^posts/$', PostListView.as_view(), name='post-list'),
     url(r'^posts/(?P<pk>[0-9]+)/$', PostDetailView.as_view(), name='post-detail'),
+
+    # backlog endpoints
+    url(r'^backlog/$', AuctionBacklogListView.as_view(), name='backlog')
 ]

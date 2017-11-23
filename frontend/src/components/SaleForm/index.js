@@ -51,6 +51,16 @@ class SaleForm extends PureComponent {
           component={InputField}
         />
         <FormField
+          name="cheque_sent_at"
+          label="Cheque sent to charity at:"
+          component={DateTimeField}
+        />
+        <FormField
+          name="receipt_received_at"
+          label="Receipt received from charity at:"
+          component={DateTimeField}
+        />
+        <FormField
           name="status"
           label="Status:"
           type="select"

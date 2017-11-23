@@ -12,6 +12,7 @@ import {
   ADMIN_CANCEL_AUCTION,
   ADMIN_GET_AUCTION_BID_LIST_PAGE,
   ADMIN_AUCTION_CHANGE_BID_STATUS,
+  ADMIN_GET_AUCTION_BACKLOG,
 } from 'store/constants'
 import { replaceListItem } from 'utils/list'
 
@@ -32,6 +33,11 @@ const initialState = Immutable.fromJS({
   bidCount: 0,
   bidListPageLoaded: false,
   bidListPageNumber: 1,
+  /* Backlog */
+  backlogPage: [],
+  backlogPageLoaded: false,
+  backlogItemCount: 0,
+  backlogPageNumber: 1,
 })
 
 /* Action creators */
@@ -45,6 +51,7 @@ export const finishAuction = createAction(ADMIN_FINISH_AUCTION)
 export const cancelAuction = createAction(ADMIN_CANCEL_AUCTION)
 export const getAuctionBidListPage = createAction(ADMIN_GET_AUCTION_BID_LIST_PAGE)
 export const changeBidStatus = createAction(ADMIN_AUCTION_CHANGE_BID_STATUS)
+export const getAuctionBacklog = createAction(ADMIN_GET_AUCTION_BACKLOG)
 
 /* Reducer */
 
@@ -124,6 +131,24 @@ export default handleActions({
 
   [requestSuccess(ADMIN_AUCTION_CHANGE_BID_STATUS)]: (state, { payload }) => state.withMutations(map => {
     replaceListItem(payload, map, 'bidListPage')
+  }),
+
+  /* Get backlog actions */
+
+  [ADMIN_GET_AUCTION_BACKLOG]: (state, { payload }) => state.withMutations(map => {
+    map.set('backlogPageNumber', payload.page)
+  }),
+
+  [requestSuccess(ADMIN_GET_AUCTION_BACKLOG)]: (state, { payload }) => state.withMutations(map => {
+    map.set('backlogPage', Immutable.fromJS(payload.results))
+    map.set('backlogItemCount', payload.count)
+    map.set('backlogPageLoaded', true)
+  }),
+
+  [requestFail(ADMIN_GET_AUCTION_BACKLOG)]: (state, { payload }) => state.withMutations(map => {
+    map.set('backlogPage', Immutable.List())
+    map.set('backlogItemCount', 0)
+    map.set('backlogPageLoaded', false)
   }),
 
 }, initialState)

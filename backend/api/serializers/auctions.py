@@ -212,7 +212,11 @@ class SaleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sale
-        fields = ('pk', 'winner', 'price', 'charity', 'item_sent', 'tracking_number', 'status', 'note')
+        fields = (
+            'pk', 'winner', 'price', 'charity',
+            'item_sent', 'tracking_number', 'cheque_sent_at', 'receipt_received_at',
+            'status', 'note'
+        )
         read_only_fields = ('pk', 'winner', 'price', 'charity', 'note')
 
     def get_winner(self, obj):
@@ -227,3 +231,14 @@ class SaleNoteSerializer(SaleSerializer):
         model = Sale
         fields = SaleSerializer.Meta.fields
         read_only_fields = ('pk', 'winner', 'price', 'charity', 'item_sent', 'tracking_number', 'status')
+
+
+class AuctionBacklogSerializer(serializers.ModelSerializer):
+    highest_bid = BidWithUserDetailSerializer()
+    product = ProductDetailSerializer()
+    sale = SaleSerializer()
+
+    class Meta:
+        model = Auction
+        fields = ('pk', 'title', 'status', 'highest_bid', 'product', 'sale')
+        read_only_fields = ('pk', 'title', 'status', 'highest_bid', 'product', 'sale')
