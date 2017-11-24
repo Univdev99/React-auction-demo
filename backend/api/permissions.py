@@ -7,3 +7,10 @@ class IsAdmin(BasePermission):
             return request.user.is_staff
         except:
             return False
+
+class CommentPermission(BasePermission):
+    def has_permission(self, request, view):
+        if request.method == 'POST' and not request.user.is_authenticated():
+            return False
+        else:
+            return True

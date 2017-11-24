@@ -73,6 +73,12 @@ export const DONOR_GET_FRONT_LIST = 'charibin/donors/get-front-list'
 export const DONOR_GET_LIST_PAGE = 'charibin/donors/get-list-page'
 export const DONOR_GET_DETAIL = 'charibin/donors/get-detail'
 
+export const BLOG_GET_POST_FRONT_LIST = 'charibin/blog/get-post-front-list'
+export const BLOG_GET_POST_LIST_PAGE = 'charibin/blog/get-post-list-page'
+export const BLOG_GET_POST_DETAIL = 'charibin/blog/get-post-detail'
+export const BLOG_GET_POST_COMMENT_LIST = 'charibin/blog/get-post-comment-list'
+export const BLOG_CREATE_POST_COMMENT = 'charibin/blog/create-post-comment'
+
 export const JOB_GET_LIST = 'charibin/jobs/get-list'
 export const JOB_GET_DETAIL = 'charibin/jobs/get-detail'
 

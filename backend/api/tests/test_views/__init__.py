@@ -5,3 +5,4 @@ from .admin_auctions import *
 from .admin_users import *
 from .auth import *
 from .auctions import *
+from .blog import *

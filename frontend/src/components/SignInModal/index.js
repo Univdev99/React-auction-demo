@@ -44,7 +44,7 @@ class SignInModal extends PureComponent {
     signUpWithFacebook({
       success: () => {
         handleHide()
-        startBidFlow(auctionId)
+        auctionId && startBidFlow(auctionId)
       },
       fail: () => this.setState({
         signUpStatus: -1
@@ -58,7 +58,7 @@ class SignInModal extends PureComponent {
       data,
       success: () => {
         handleHide()
-        startBidFlow(auctionId)
+        auctionId && startBidFlow(auctionId)
       }
     })
   }
