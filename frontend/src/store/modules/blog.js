@@ -6,6 +6,7 @@ import {
   BLOG_GET_POST_FRONT_LIST,
   BLOG_GET_POST_LIST_PAGE,
   BLOG_GET_POST_DETAIL,
+  BLOG_CREATE_POST_COMMENT,
   BLOG_GET_POST_COMMENT_LIST
 } from 'store/constants'
 
@@ -29,6 +30,7 @@ export const getPostFrontList = createAction(BLOG_GET_POST_FRONT_LIST)
 export const getPostListPage = createAction(BLOG_GET_POST_LIST_PAGE)
 export const getPostDetail = createAction(BLOG_GET_POST_DETAIL)
 export const getPostCommentList = createAction(BLOG_GET_POST_COMMENT_LIST)
+export const createPostComment = createAction(BLOG_CREATE_POST_COMMENT)
 
 /* Reducer */
 
@@ -78,6 +80,12 @@ export default handleActions({
 
   [requestFail(BLOG_GET_POST_COMMENT_LIST)]: (state, { payload }) => state.withMutations(map => {
     map.set('commentList', Immutable.List())
+  }),
+
+  /* Create post comment action */
+
+  [requestSuccess(BLOG_CREATE_POST_COMMENT)]: (state, { payload }) => state.withMutations(map => {
+    map.set('commentList', state.get('commentList').unshift(payload))
   }),
 
 }, initialState)

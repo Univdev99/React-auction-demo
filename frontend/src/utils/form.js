@@ -9,8 +9,12 @@ export const formSubmit = (actionCreator, payload) => {
   })).catch(res => {
     const fieldErrors = res.data || res.error
     if (typeof fieldErrors === 'object') {
+      const globalErrors = [
+        ...fieldErrors.non_field_errors,
+        ...fieldErrors.detail || []
+      ];
       throw new SubmissionError({
-        _error: fieldErrors.non_field_errors,
+        _error: globalErrors.length ? globalErrors : undefined,
         ...fieldErrors
       })
     } else {

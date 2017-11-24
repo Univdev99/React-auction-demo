@@ -2,22 +2,27 @@ import React, { PureComponent } from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import moment from 'moment'
 import PropTypes from 'prop-types'
-import { Col, Row } from 'reactstrap'
+import { Alert, Col, Row } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
+import { Link } from 'react-router-dom'
+import { show } from 'redux-modal'
 
-import PostItem from 'components/PostItem'
+import CommentForm from 'components/CommentForm'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
+import PostItem from 'components/PostItem'
 import Spinner from 'components/Spinner'
-import { blogSelector } from 'store/selectors'
-import { getPostCommentList, getPostDetail } from 'store/modules/blog'
+import { authSelector, blogSelector } from 'store/selectors'
+import { createPostComment, getPostCommentList, getPostDetail } from 'store/modules/blog'
 
 
 class PostDetail extends PureComponent {
 
   static propTypes = {
+    auth: ImmutablePropTypes.map.isRequired,
     blog: ImmutablePropTypes.map.isRequired,
+    createPostComment: PropTypes.func.isRequired,
     getPostCommentList: PropTypes.func.isRequired,
     getPostDetail: PropTypes.func.isRequired
   }
@@ -70,12 +75,24 @@ class PostDetail extends PureComponent {
     }
   }
 
+  handlePostComment = (data) => {
+    const { createPostComment, match: { params: { id } } } = this.props
+    createPostComment({ id, data })
+  }
+
+  handleSignIn = (e) => {
+    const { show } = this.props
+    e.preventDefault()
+    show('signinModal')
+  }
+
   render() {
-    const { blog } = this.props
+    const { auth, blog } = this.props
     const postDetail = blog.get('postDetail')
     const post = postDetail && postDetail.toJS()
     const comments = blog.get('commentList').toJS()
     const { status } = this.state
+    const user = auth.get('currentUser')
 
     return (
       <FrontContainerLayout breadcrumbPath={this.breadcrumbPath()} subscribe>
@@ -99,6 +116,12 @@ class PostDetail extends PureComponent {
                 </Row>
               </div>
             ))}
+            {user
+              ? <CommentForm onSubmit={this.handlePostComment} user={user} />
+              : <Alert color="dark">
+                Please <Link to="/signin" className="alert-link" onClick={this.handleSignIn}>sign in</Link> to leave comment
+              </Alert>
+            }
           </div>
 
           <h3 className="mb-5">Similar Posts</h3>
@@ -116,12 +139,15 @@ class PostDetail extends PureComponent {
 }
 
 const selector = createStructuredSelector({
+  auth: authSelector,
   blog: blogSelector,
 })
 
 const actions = {
+  createPostComment,
   getPostDetail,
-  getPostCommentList
+  getPostCommentList,
+  show
 }
 
 export default compose(
