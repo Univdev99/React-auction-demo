@@ -1,6 +1,4 @@
-export const SERVER_URL = process.env.environment === 'production' ?
-  process.env.REACT_APP_SERVER_URL :
-  'localhost:8000'
+export const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
 export const WS_BACKEND_URL = `ws://${SERVER_URL}`
 export const BASE_API_URL = `http://${SERVER_URL}/api/v1/`
