@@ -7,12 +7,16 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Link } from 'react-router-dom'
 
+import AuctionCard from 'components/AuctionCard'
 import DonorCard from 'components/DonorCard'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
+import Pagination from 'components/Pagination'
 import Slider from 'components/Slider'
 import Spinner from 'components/Spinner'
+import { ACCOUNT_BID_AUCTIONS_PAGE_SIZE } from 'config'
+import { auctionsSelector, donorsSelector } from 'store/selectors'
+import { getAuctionList } from 'store/modules/auctions'
 import { getDonorDetail } from 'store/modules/donors'
-import { donorsSelector } from 'store/selectors'
 
 
 class DonorDetail extends PureComponent {
@@ -37,11 +41,13 @@ class DonorDetail extends PureComponent {
   }
 
   getDetail = (id) => {
+    const { getDonorDetail } = this.props
+
     this.setState({
       status: 0
     })
 
-    this.props.getDonorDetail({
+    getDonorDetail({
       id,
       success: () => this.setState({
         status: 1
@@ -50,21 +56,39 @@ class DonorDetail extends PureComponent {
         status: -1
       }),
     })
+
+    this.getAuctionListPage(1)
   }
 
-  componentWillMount() {
+  getAuctionListPage = (page) => {
+    const { getAuctionList, match: { params } } = this.props
+    getAuctionList({
+      params: {
+        donor: params.id,
+        page
+      }
+    })
+  }
+
+  componentDidMount() {
     this.getDetail(this.props.match.params.id)
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.match.params.id !== nextProps.match.params.id) {
-      this.getDetail(nextProps.match.params.id)
+  componentDidUpdate(prevProps) {
+    const { match: { params } } = this.props
+    if (params.id !== prevProps.match.params.id) {
+      this.getDetail(params.id)
     }
   }
 
   render() {
-    const { donors } = this.props
+    const { auctions, donors } = this.props
     const donorDetail = donors.get('donorDetail')
+
+    const auctionList = auctions.get('auctionList')
+    const auctionListPageNumber = auctions.get('auctionListPageNumber')
+    const auctionListCount = auctions.get('auctionListCount')
+
     const { status } = this.state
 
     return (
@@ -92,6 +116,25 @@ class DonorDetail extends PureComponent {
           </Row>
 
           <div className="clearfix mb-5">
+            <h3 className="pull-left">Auctions</h3>
+          </div>
+          <Row className="mb-5">
+            {auctionList.map(auction => (
+              <Col xs={12} md={2} lg={3} key={auction.get('pk')} className="mb-3">
+                <AuctionCard auction={auction.toJS()} />
+              </Col>
+            ))}
+          </Row>
+          <div className="my-5 text-center">
+            <Pagination
+              currentPage={auctionListPageNumber}
+              totalCount={auctionListCount}
+              pageSize={ACCOUNT_BID_AUCTIONS_PAGE_SIZE}
+              onPage={this.getAuctionListPage}
+            />
+          </div>
+
+          <div className="clearfix mb-5">
             <h3 className="pull-left">Similar Donors</h3>
             <Link to="/donors" className="pull-right btn btn-sm btn-outline-secondary">All donors</Link>
           </div>
@@ -107,6 +150,7 @@ class DonorDetail extends PureComponent {
               </Col>
             ))}
           </Row>
+
         </div>}
       </FrontContainerLayout>
     )
@@ -114,10 +158,12 @@ class DonorDetail extends PureComponent {
 }
 
 const selector = createStructuredSelector({
+  auctions: auctionsSelector,
   donors: donorsSelector,
 })
 
 const actions = {
+  getAuctionList,
   getDonorDetail,
 }
 
