@@ -4,6 +4,7 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
 from api.filters.category import AuctionCategoryFilterBackend
+from api.filters.donor import AuctionDonorFilterBackend
 from api.filters.status import StatusFilterBackend
 from api.filters.status import AuctionBidStatusFilterBackend
 from api.serializers.auctions import AuctionSerializer
@@ -31,7 +32,7 @@ class AuctionFrontListView(generics.ListAPIView):
 class AuctionListView(generics.ListAPIView):
     serializer_class = AuctionSerializer
     pagination_class = TwelvePerPagePagination
-    filter_backends = (AuctionCategoryFilterBackend, )
+    filter_backends = (AuctionCategoryFilterBackend, AuctionDonorFilterBackend)
     queryset = Auction.objects.order_by('-started_at') \
         .select_related('product') \
         .select_related('product__donor') \
