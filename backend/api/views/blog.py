@@ -20,6 +20,7 @@ from blog.models import Comment
 
 class PostFrontListView(generics.ListAPIView):
     queryset = Post.objects \
+        .filter(is_in_trash=False) \
         .order_by('-created_at') \
         .order_by('-is_sticky') \
         .select_related('featured_image')[:2]
@@ -34,6 +35,7 @@ class PostFrontListView(generics.ListAPIView):
 
 class PostListView(generics.ListAPIView):
     queryset = Post.objects \
+        .filter(is_in_trash=False) \
         .order_by('-created_at') \
         .order_by('-is_sticky') \
         .select_related('featured_image')
