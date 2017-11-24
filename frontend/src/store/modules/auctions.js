@@ -15,7 +15,9 @@ import {
 const initialState = Immutable.fromJS({
   /* Auction */
   auctionList: [],
+  auctionListCount: 0,
   auctionListLoaded: false,
+  auctionListPageNumber: 1,
   auctionTrendingList: [],
   auctionTrendingListLoaded: false,
   auctionDetail: null
@@ -32,15 +34,21 @@ export const placeBid = createAction(AUCTION_PLACE_BID)
 
 export default handleActions({
 
+  [AUCTION_GET_LIST]: (state, { payload }) => state.withMutations(map => {
+    payload && payload.params && map.set('auctionListPageNumber', payload.params.page || 1)
+  }),
+
   /* Get auction list actions */
 
   [requestSuccess(AUCTION_GET_LIST)]: (state, { payload }) => state.withMutations(map => {
     map.set('auctionList', Immutable.fromJS(payload.results))
+    map.set('auctionListCount', payload.count)
     map.set('auctionListLoaded', true)
   }),
 
   [requestFail(AUCTION_GET_LIST)]: (state, { payload }) => state.withMutations(map => {
     map.set('auctionList', Immutable.List())
+    map.set('auctionListCount', 0)
     map.set('auctionListLoaded', false)
   }),
 

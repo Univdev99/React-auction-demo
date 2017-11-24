@@ -8,6 +8,8 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import AuctionCard from 'components/AuctionCard'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
+import Pagination from 'components/Pagination'
+import { ACCOUNT_BID_AUCTIONS_PAGE_SIZE } from 'config'
 import { auctionsSelector } from 'store/selectors'
 import { getAuctionList } from 'store/modules/auctions'
 
@@ -26,16 +28,22 @@ class Auctions extends PureComponent {
     ]
   }
 
-  componentWillMount() {
-    const { auctions, getAuctionList } = this.props
-    if (!auctions.get('auctionListLoaded')) {
-      getAuctionList()
-    }
+  componentDidMount() {
+    this.getAuctionListPage(1)
+  }
+
+  getAuctionListPage = (page) => {
+    const { getAuctionList } = this.props
+    getAuctionList({
+      params: { page }
+    })
   }
 
   render() {
     const { auctions } = this.props
     const auctionList = auctions.get('auctionList')
+    const auctionListPageNumber = auctions.get('auctionListPageNumber')
+    const auctionListCount = auctions.get('auctionListCount')
 
     return (
       <FrontContainerLayout
@@ -50,6 +58,14 @@ class Auctions extends PureComponent {
             </Col>
           ))}
         </Row>
+        <div className="my-5 text-center">
+          <Pagination
+            currentPage={auctionListPageNumber}
+            totalCount={auctionListCount}
+            pageSize={ACCOUNT_BID_AUCTIONS_PAGE_SIZE}
+            onPage={this.getAuctionListPage}
+          />
+        </div>
       </FrontContainerLayout>
     )
   }
