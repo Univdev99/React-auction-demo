@@ -8,6 +8,7 @@ import {
 
 import AppHeaderMenu from 'components/AppHeaderMenu'
 import AppLogo from 'components/AppLogo'
+import IconUser from 'icons/IconUser'
 
 
 class AppHeader extends PureComponent {
@@ -42,7 +43,7 @@ class AppHeader extends PureComponent {
     const { menuOpened } = this.state
 
     return (
-      <Navbar color="dark" dark expand="md">
+      <Navbar color="faded" light expand="md" className="app-header">
         <AppLogo />
         <NavbarToggler onClick={this.handleToggleMenu} />
         <Collapse isOpen={menuOpened} navbar>
@@ -50,7 +51,7 @@ class AppHeader extends PureComponent {
 
           <UncontrolledDropdown>
             <DropdownToggle tag="span" className="navbar-link cursor-pointer mr-2 text-muted">
-              <i className="fa fa-user-circle mr-2" />
+              <IconUser className="text-primary mr-2" />
               {username}
             </DropdownToggle>
             <DropdownMenu right>
