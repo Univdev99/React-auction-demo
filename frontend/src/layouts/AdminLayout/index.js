@@ -6,11 +6,12 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
-import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
 
+import AdminHeader from 'components/AdminHeader'
 import Spinner from 'components/Spinner'
 import { signOut } from 'store/modules/auth'
-import { authSelector } from 'store/selectors'
+import { getNotificationListOnMenu, addNotification, resetNotificationUnreadCount } from 'store/modules/admin/notifications'
+import { authSelector, adminNotificationsSelector } from 'store/selectors'
 import userAvatarImage from 'images/avatar-placeholder.png'
 import './style.css'
 
@@ -19,7 +20,12 @@ class AdminLayout extends PureComponent {
 
   static propTypes = {
     auth: ImmutablePropTypes.map.isRequired,
+    adminNotifications: ImmutablePropTypes.map.isRequired,
     history: PropTypes.object.isRequired,
+    signOut: PropTypes.func,
+    getNotificationListOnMenu: PropTypes.func,
+    addNotification: PropTypes.func,
+    resetNotificationUnreadCount: PropTypes.func,
   }
 
   state = {
@@ -43,9 +49,16 @@ class AdminLayout extends PureComponent {
     })
   }
 
+  componentWillMount() {
+    this.props.getNotificationListOnMenu()
+  }
+
   render() {
-    const { auth, children } = this.props
+    const { auth, adminNotifications, children, resetNotificationUnreadCount } = this.props
     const currentUser = auth.get('currentUser')
+    const notificationListOnMenu = adminNotifications.get('notificationListOnMenu')
+    const notificationListOnMenuLoaded = adminNotifications.get('notificationListOnMenuLoaded')
+    const notificationUnreadCount = adminNotifications.get('notificationUnreadCount')
 
     if (!currentUser) {
       return <Spinner />
@@ -74,6 +87,9 @@ class AdminLayout extends PureComponent {
           <div className="container-fluid py-2">
             <ul className="nav flex-column">
               <li className="nav-item">
+                <Link className="nav-link" to="/admin/auctions">Auctions</Link>
+              </li>
+              <li className="nav-item">
                 <Link className="nav-link" to="/admin/donors">Donors</Link>
               </li>
               <li className="nav-item">
@@ -81,9 +97,6 @@ class AdminLayout extends PureComponent {
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/admin/charities">Charities</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/admin/auctions">Auctions</Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/admin/sales">Sales</Link>
@@ -106,42 +119,15 @@ class AdminLayout extends PureComponent {
         <div className={menuBgClasses.join(' ')} onClick={this.handleCloseMenu} />
 
         <div className="admin-content">
-          <div className="admin-header shadow">
-            <div className="px-4 content text-right">
-              <UncontrolledDropdown className="mr-3" style={{ display: 'inline-block' }}>
-                <DropdownToggle
-                  tag="a"
-                  className="p-2 text-muted"
-                  style={{ cursor: 'pointer' }}
-                >
-                  <i className="fa fa-bell" />
-                </DropdownToggle>
-                <DropdownMenu right style={{ left: 'auto' }}>
-                  <DropdownItem>Notification 1</DropdownItem>
-                  <DropdownItem>Notification 2</DropdownItem>
-                  <DropdownItem>Notification 3</DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-
-              <UncontrolledDropdown style={{ display: 'inline-block' }}>
-                <DropdownToggle
-                  tag="a"
-                  className="text-muted"
-                  style={{ display: 'inline-block', cursor: 'pointer' }}
-                >
-                  <img className="user-avatar mr-3" src={userAvatarImage} alt="User Avatar" />
-                  {username}
-                  <i className="ml-2 fa fa-angle-down" />
-                </DropdownToggle>
-                <DropdownMenu right style={{ width: 200 }}>
-                  <DropdownItem tag={Link} to="/">View Site</DropdownItem>
-                  <DropdownItem tag={Link} to="/account">Account Settings</DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem onClick={this.handleSignOut}>Sign Out</DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-            </div>
-          </div>
+          <AdminHeader
+            username={username}
+            userAvatarImage={userAvatarImage}
+            notificationListOnMenu={notificationListOnMenu}
+            notificationListOnMenuLoaded={notificationListOnMenuLoaded}
+            notificationUnreadCount={notificationUnreadCount}
+            onSignOut={this.handleSignOut}
+            resetNotificationUnreadCount={resetNotificationUnreadCount}
+          />
 
           <div className="container-fluid p-4" style={{ maxWidth: 1200, marginLeft: 0 }}>
             {children}
@@ -154,10 +140,14 @@ class AdminLayout extends PureComponent {
 
 const selector = createStructuredSelector({
   auth: authSelector,
+  adminNotifications: adminNotificationsSelector,
 })
 
 const actions = {
   signOut,
+  getNotificationListOnMenu,
+  addNotification,
+  resetNotificationUnreadCount,
 }
 
 export default compose(

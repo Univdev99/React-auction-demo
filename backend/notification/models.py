@@ -16,6 +16,27 @@ class NotificationEntity(models.Model):
         verbose_name_plural = 'NotificationEntities'
 
 
+class NotificationManager(models.Manager):
+    def create_notification(self, subject, target, action, extra=None):
+        if subject:
+            subject_notification_entity = NotificationEntity()
+            subject_notification_entity.content_object = subject
+            subject_notification_entity.save()
+        else:
+            subject_notification_entity = None
+
+        target_notification_entity = NotificationEntity()
+        target_notification_entity.content_object = target
+        target_notification_entity.save()
+
+        return self.create(
+            subject=subject_notification_entity,
+            target=target_notification_entity,
+            action=action,
+            extra=extra
+        )
+
+
 class Notification(models.Model):
     subject = models.ForeignKey(
         NotificationEntity,
@@ -30,32 +51,15 @@ class Notification(models.Model):
         choices=NOTIFICATION_CONTENT_CHOICES,
     )
     extra = JSONField(encoder=DjangoJSONEncoder, null=True, blank=True, default=None)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = NotificationManager()
 
     def __str__(self):
         model_str = 'Notification <{}> on {}'.format(self.action, str(self.target.content_object))
         if self.subject:
             model_str += ' by {}'.format(self.subject.content_object)
         return model_str
-
-    @classmethod
-    def create_notification(cls, subject, target, action, extra=None):
-        if subject:
-            subject_notification_entity = NotificationEntity()
-            subject_notification_entity.content_object = subject
-            subject_notification_entity.save()
-        else:
-            subject_notification_entity = None
-
-        target_notification_entity = NotificationEntity()
-        target_notification_entity.content_object = target
-        target_notification_entity.save()
-
-        return cls.objects.create(
-            subject=subject_notification_entity,
-            target=target_notification_entity,
-            action=action,
-            extra=extra
-        )
 
     @property
     def action_type(self):

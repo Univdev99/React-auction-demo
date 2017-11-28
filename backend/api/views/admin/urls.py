@@ -24,6 +24,8 @@ from api.views.admin.donors import DonorMediumUploadView
 from api.views.admin.donors import DonorMediumDeleteView
 from api.views.admin.donors import DonorMediaReorderView
 from api.views.admin.media import MediumListView
+from api.views.admin.notifications import NotificationListForMenuView
+from api.views.admin.notifications import NotificationListView
 from api.views.admin.products import ProductDetailView
 from api.views.admin.products import ProductMediumUploadView
 from api.views.admin.products import ProductMediumDeleteView
@@ -87,5 +89,9 @@ urlpatterns = [
     url(r'^posts/(?P<pk>[0-9]+)/$', PostDetailView.as_view(), name='post-detail'),
 
     # backlog endpoints
-    url(r'^backlog/$', AuctionBacklogListView.as_view(), name='backlog')
+    url(r'^backlog/$', AuctionBacklogListView.as_view(), name='backlog'),
+
+    # notification endpoints
+    url(r'^notifications/menu/$', NotificationListForMenuView.as_view(), name='notification-list-for-menu'),
+    url(r'^notifications/$', NotificationListView.as_view(), name='notification-list'),
 ]

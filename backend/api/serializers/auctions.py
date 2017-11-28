@@ -154,7 +154,7 @@ class BidSerializer(serializers.ModelSerializer):
             auction=auction
         )
 
-        Notification.create_notification(
+        Notification.objects.create_notification(
             request.user,
             auction,
             NOTIFICATION_AUCTION_NEW_BID,

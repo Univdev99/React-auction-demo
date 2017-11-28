@@ -1,0 +1,13 @@
+$notification-count-badge-size:   17px;
+
+.notification-count {
+  position: absolute;
+  right: 0;
+  top: 2px;
+  width: $notification-count-badge-size;
+  height: $notification-count-badge-size;
+  line-height: $notification-count-badge-size;
+  text-align: center;
+  border-radius: 999px;
+  font-size: 10px;
+}

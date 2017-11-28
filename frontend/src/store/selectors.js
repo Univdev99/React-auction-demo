@@ -28,6 +28,9 @@ export const adminSalesSelector = state =>
 export const adminBlogSelector = state =>
   state.get('adminBlog')
 
+export const adminNotificationsSelector = state =>
+  state.get('adminNotifications')
+
 export const accountSelector = state =>
   state.get('account')
 

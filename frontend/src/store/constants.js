@@ -62,6 +62,11 @@ export const ADMIN_BLOCK_UNBLOCK_USER = 'charibin/admin/block-unblock-user'
 
 export const ADMIN_GET_MEDIUM_LIST_PAGE = 'charibin/admin/get-medium-list'
 
+export const ADMIN_ADD_NOTIFICATION = 'charibin/admin/add-notification'
+export const ADMIN_RESET_NOTIFICATION_UNREAD_COUNT = 'charibin/admin/reset-notification-unread-count'
+export const ADMIN_GET_NOTIFICATION_LIST_ON_MENU = 'charibin/admin/get-notification-list-on-menu'
+export const ADMIN_GET_NOTIFICATION_PAGE = 'charibin/admin/get-notification-page'
+
 export const ACCOUNT_GET_MY_BID_AUCTIONS = 'charibin/account/get-my-bid-auctions'
 
 export const AUCTION_GET_LIST = 'charibin/auctions/get-list'
