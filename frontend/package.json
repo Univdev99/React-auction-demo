@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.16.2",
-    "bootstrap": "4.0.0-beta",
+    "bootstrap": "4.0.0-beta.2",
     "classnames": "^2.2.5",
     "draft-js": "^0.10.4",
     "history": "^4.7.2",
@@ -32,9 +32,9 @@
     "redux": "^3.7.2",
     "redux-actions": "^2.2.1",
     "redux-auth-wrapper": "^2.0.2",
-    "redux-form": "^7.1.1",
+    "redux-form": "7.2.0",
     "redux-immutable": "^4.0.0",
-    "redux-modal": "^1.6.0",
+    "redux-modal": "^1.7.0",
     "redux-saga": "^0.15.6",
     "reselect": "^3.0.1"
   },
@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "cross-env": "^5.1.1",
-    "node-sass": "^4.6.0",
+    "node-sass": "^4.7.2",
     "npm-run-all": "^4.1.1"
   }
 }
