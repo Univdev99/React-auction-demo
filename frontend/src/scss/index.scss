@@ -1,8 +1,15 @@
+@import "variables";
+
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
-@import "components/_app-layout1";
-@import "components/_auction-card";
-@import "components/_post-item";
-@import "components/_richeditor";
+
+@import "bs-overrides/all";
+
+@import "components/app-layout1";
+@import "components/app-header";
+@import "components/app-header-menu";
+@import "components/auction-card";
+@import "components/post-item";
+@import "components/richeditor";
 @import "components/sortable-medium-list";
 @import "components/uploader";
 @import "components/tab";

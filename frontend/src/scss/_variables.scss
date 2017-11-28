@@ -1,0 +1,17 @@
+// Overrides Bootstrap Variables
+
+$primary: #fdb600;
+
+$font-family-base: 'Barlow Semi Condensed', Roboto, "Helvetica Neue", Arial, sans-serif;
+$headings-font-family: 'DIN Offc', Roboto, "Helvetica Neue", Arial, sans-serif;
+
+$navbar-brand-font-size: 2rem;
+$navbar-padding-y: 1rem;
+
+$navbar-dark-color: #ffffff;
+$navbar-dark-hover-color: $primary;
+$navbar-dark-active-color: $primary;
+
+$navbar-light-color: #000000;
+$navbar-light-hover-color: $primary;
+$navbar-light-active-color: $primary;

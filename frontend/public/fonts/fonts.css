@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'Barlow Semi Condensed';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Barlow Semi Condensed'), url(BarlowSemiCondensed-Light.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'DIN Offc';
+  font-style: normal;
+  font-weight: 400;
+  src: local('DIN Offc'), url(DINOffc-CondBold.ttf) format('truetype');
+}
