@@ -1,4 +1,5 @@
 @import "variables";
+@import "mixins";
 
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
@@ -9,6 +10,7 @@
 @import "components/app-header-menu";
 @import "components/app-layout1";
 @import "components/auction-card";
+@import "components/home-banner";
 @import "components/post-item";
 @import "components/richeditor";
 @import "components/social-icon";

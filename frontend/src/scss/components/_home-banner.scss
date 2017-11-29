@@ -1,0 +1,53 @@
+.home-banner {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  @extend .align-items-center;
+  @extend .justify-content-center;
+
+  &__video {
+    position: absolute;
+    min-width: 100%;
+    min-height: 100%;
+    @include vhcenter;
+  }
+
+  &__overlay {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .5);
+  }
+
+  &__content {
+    color: #ffffff;
+    position: relative;
+    font-size: 1.375rem;
+  }
+
+  &__title {
+    letter-spacing: 1.42px;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+    @include media-breakpoint-down('sm') {
+      text-align: center;
+    }
+    @include media-breakpoint-up('md') {
+      font-size: 4rem;
+    }
+  }
+
+  &__description {
+    margin-bottom: 1.875rem;
+    letter-spacing: 0.7px;
+  }
+
+  &__link {
+    text-transform: uppercase;
+    font-family: $headings-font-family;
+    letter-spacing: 1px;
+  }
+}
