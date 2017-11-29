@@ -10,6 +10,7 @@ import adminUsers from './admin/users'
 import adminMedia from './admin/media'
 import adminSales from './admin/sales'
 import adminBlog from './admin/blog'
+import adminNotifications from './admin/notifications'
 import account from './account'
 import auctions from './auctions'
 import blog from './blog'
@@ -31,6 +32,7 @@ export default function* rootSaga() {
     adminMedia(),
     adminSales(),
     adminBlog(),
+    adminNotifications(),
     account(),
     auctions(),
     blog(),

@@ -159,7 +159,7 @@ class Auction(models.Model):
         self.save()
 
         try:
-            Notification.create_notification(
+            Notification.objects.create_notification(
                 None,
                 self,
                 NOTIFICATION_AUCTION_CLOSE,
@@ -181,7 +181,7 @@ class Auction(models.Model):
         self.open_until = open_until
         self.save()
 
-        Notification.create_notification(
+        Notification.objects.create_notification(
             None,
             self,
             NOTIFICATION_AUCTION_NEW,

@@ -17,6 +17,7 @@ import adminTags from 'store/modules/admin/tags'
 import adminUsers from 'store/modules/admin/users'
 import adminSales from 'store/modules/admin/sales'
 import adminBlog from 'store/modules/admin/blog'
+import adminNotifications from 'store/modules/admin/notifications'
 import auctions from 'store/modules/auctions'
 import auth from 'store/modules/auth'
 import authMiddleware from 'store/middlewares/auth'
@@ -73,6 +74,7 @@ export const store = createStore(
     adminMedia,
     adminSales,
     adminBlog,
+    adminNotifications,
     account,
     auctions,
     blog,

@@ -75,7 +75,7 @@ class RealTimeNotificationManager extends Component {
       console.error('Received invalid websocket message')
     }
     notificationHandlerMap.map(handlerConfig => {
-      if (handlerConfig.get('action') === data.action) {
+      if (!handlerConfig.get('action') || handlerConfig.get('action') === data.action) {
         handlerConfig.get('handler')(data)
       }
       return handlerConfig
