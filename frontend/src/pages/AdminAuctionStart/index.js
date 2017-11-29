@@ -9,6 +9,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import AuctionStartForm from 'components/AuctionStartForm'
 import { formSubmit } from 'utils/form'
 import Spinner from 'components/Spinner'
+import SectionTitle from 'components/SectionTitle'
 import {
   getAuctionDetail,
   startAuction,
@@ -71,7 +72,7 @@ class AdminAuctionDetail extends PureComponent {
     if (loadingStatus === -1) {
       return (
         <div>
-          <h2>Auction not found</h2>
+          <SectionTitle>Auction not found</SectionTitle>
         </div>
       )
     }
@@ -82,7 +83,7 @@ class AdminAuctionDetail extends PureComponent {
           {(loadingStatus === 1 || !auctionDetail) && <Spinner />}
 
           {loadingStatus === 10 && auctionDetail && <div>
-            <h3 className="mb-5">Start Auction For: {auctionDetail.getIn(['product_details', 'title'])}</h3>
+            <SectionTitle className="mb-5">Start Auction For: {auctionDetail.getIn(['product_details', 'title'])}</SectionTitle>
 
             <div className="mb-4">Please enter either ending date or duration of the auction.</div>
 

@@ -9,6 +9,7 @@ import { Badge, Button, Col, Row } from 'reactstrap'
 import auctionBidFlow from 'utils/auctionBidFlow'
 import AuctionCard from 'components/AuctionCard'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
+import SectionTitle from 'components/SectionTitle'
 import Slider from 'components/Slider'
 import Spinner from 'components/Spinner'
 import TimeLeft from 'components/TimeLeft'
@@ -85,7 +86,7 @@ class AuctionDetail extends PureComponent {
       <FrontContainerLayout breadcrumbPath={this.breadcrumbPath()} subscribe>
         {status !== -1 && !auctionDetail && <Spinner />}
 
-        {status === -1 && <h3><center>Auction not found</center></h3>}
+        {status === -1 && <SectionTitle><center>Auction not found</center></SectionTitle>}
 
         {status !== -1 && auctionDetail && <div>
           <Row className="mb-5">
@@ -94,7 +95,7 @@ class AuctionDetail extends PureComponent {
             </Col>
             <Col xs={12} md={6} className="mb-5">
               <div className="px-3">
-                <h3>{auctionDetail.get('title')}</h3>
+                <SectionTitle>{auctionDetail.get('title')}</SectionTitle>
                 <div className="pb-3 mb-4 mt-4">
                   <div className="h4">
                     <Badge color="light">
@@ -118,12 +119,12 @@ class AuctionDetail extends PureComponent {
               </div>
             </Col>
           </Row>
-          <h3 className="mb-4">Details</h3>
+          <SectionTitle className="mb-4">Details</SectionTitle>
           <p>
             {auctionDetail.getIn(['product', 'description'])}
           </p>
 
-          <h3 className="mb-5">More from {auctionDetail.getIn(['product', 'donor_details', 'title'])}</h3>
+          <SectionTitle className="mb-5">More from {auctionDetail.getIn(['product', 'donor_details', 'title'])}</SectionTitle>
           <Row className="mb-5">
             {auctionDetail.get('donor_auctions').map(auction => (
               <Col key={auction.get('pk')} xs={12} md={6} lg={3} className="mb-3">
@@ -132,7 +133,7 @@ class AuctionDetail extends PureComponent {
             ))}
           </Row>
 
-          <h3 className="mb-5">Similar Auctions</h3>
+          <SectionTitle className="mb-5">Similar Auctions</SectionTitle>
           <Row className="mb-5">
             {auctionDetail.get('similar_auctions').map(auction => (
               <Col key={auction.get('pk')} xs={12} md={6} lg={3} className="mb-3">

@@ -8,6 +8,7 @@ import Immutable from 'immutable'
 import RichTextEditor from 'react-rte'
 
 import CharityForm from 'components/CharityForm'
+import SectionTitle from 'components/SectionTitle'
 import { formSubmit } from 'utils/form'
 import {
   createCharity,
@@ -52,7 +53,7 @@ class AdminCharityCreate extends PureComponent {
     return (
       <div>
         <div>
-          <h3 className="mb-5">Create Charity</h3>
+          <SectionTitle className="mb-5">Create Charity</SectionTitle>
 
           <CharityForm
             initialValues={_charityDetail}

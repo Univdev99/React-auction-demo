@@ -8,11 +8,12 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withRouter } from 'react-router'
 
-import { formSubmit } from 'utils/form'
 import ProductForm from 'components/ProductForm'
+import SectionTitle from 'components/SectionTitle'
 import Spinner from 'components/Spinner'
-import { getDonorList } from 'store/modules/admin/donors'
 import { createProduct } from 'store/modules/admin/products'
+import { formSubmit } from 'utils/form'
+import { getDonorList } from 'store/modules/admin/donors'
 import { adminDonorsSelector } from 'store/selectors'
 
 
@@ -66,7 +67,7 @@ class AdminProductCreate extends PureComponent {
     return (
       <div>
         <div>
-          <h3 className="mb-5">Create Product</h3>
+          <SectionTitle className="mb-5">Create Product</SectionTitle>
 
           {!donorListLoaded && <Spinner />}
 

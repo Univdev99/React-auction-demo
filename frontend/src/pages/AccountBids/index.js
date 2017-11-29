@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
 import Pagination from 'components/Pagination'
+import SectionTitle from 'components/SectionTitle'
 import Spinner from 'components/Spinner'
 import TimeLeft from 'components/TimeLeft'
 import { ACCOUNT_BID_AUCTIONS_PAGE_SIZE } from 'config'
@@ -58,7 +59,7 @@ class AccountBids extends PureComponent {
 
     return (
       <div>
-        <h3 className="mb-4">My Bids</h3>
+        <SectionTitle className="mb-4">My Bids</SectionTitle>
 
         {loadingStatus === 1 && <Spinner />}
 

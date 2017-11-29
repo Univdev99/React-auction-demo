@@ -11,6 +11,7 @@ import {
 } from 'reactstrap'
 
 import Pagination from 'components/Pagination'
+import SectionTitle from 'components/SectionTitle'
 import {
   getSaleList,
   setSaleNote,
@@ -130,7 +131,7 @@ class AdminSaleList extends PureComponent {
 
     return (
       <div>
-        <h2 className="mb-4 clearfix">Sales</h2>
+        <SectionTitle className="mb-4 clearfix">Sales</SectionTitle>
 
         <div>
           <Nav pills>

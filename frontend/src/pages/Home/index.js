@@ -15,6 +15,7 @@ import DonateBar from 'components/DonateBar'
 import DonorCard from 'components/DonorCard'
 import HomeBanner from 'components/HomeBanner'
 import PostItem from 'components/PostItem'
+import SectionTitle from 'components/SectionTitle'
 import { auctionsSelector, blogSelector, donorsSelector } from 'store/selectors'
 import { getDonorFrontList } from 'store/modules/donors'
 import { getPostFrontList } from 'store/modules/blog'
@@ -70,7 +71,7 @@ class Home extends PureComponent {
 
         <AppContainerLayout>
           <div className="clearfix mb-5">
-            <h3 className="pull-left">Donors</h3>
+            <SectionTitle className="pull-left">Donors</SectionTitle>
             <Button color="primary" outline tag={Link} to="/donors" className="pull-right">
               All donors
             </Button>
@@ -91,7 +92,7 @@ class Home extends PureComponent {
         <DonateBar />
         <AppContainerLayout>
           <div className="clearfix mb-5">
-            <h3 className="pull-left">Trending Auctions</h3>
+            <SectionTitle className="pull-left">Trending Auctions</SectionTitle>
             <Button color="primary" outline tag={Link} to="/auctions" className="pull-right">
               All auctions
             </Button>
@@ -106,7 +107,7 @@ class Home extends PureComponent {
           </Row>
 
           <div className="clearfix my-5">
-            <h3 className="pull-left">Our Blog</h3>
+            <SectionTitle className="pull-left">Our Blog</SectionTitle>
             <Button color="primary" outline tag={Link} to="/blog" className="pull-right">
               All articles
             </Button>

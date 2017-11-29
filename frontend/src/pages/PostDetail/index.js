@@ -12,6 +12,7 @@ import { show } from 'redux-modal'
 import CommentForm from 'components/CommentForm'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
 import PostItem from 'components/PostItem'
+import SectionTitle from 'components/SectionTitle'
 import Spinner from 'components/Spinner'
 import { authSelector, blogSelector } from 'store/selectors'
 import { createPostComment, getPostCommentList, getPostDetail } from 'store/modules/blog'
@@ -98,14 +99,14 @@ class PostDetail extends PureComponent {
       <FrontContainerLayout breadcrumbPath={this.breadcrumbPath()} subscribe>
         {status !== -1 && !postDetail && <Spinner />}
 
-        {status === -1 && <h3><center>Post not found</center></h3>}
+        {status === -1 && <SectionTitle><center>Post not found</center></SectionTitle>}
 
         {status !== -1 && postDetail && <div>
-          <h3 className="mb-4">{post.title}</h3>
+          <SectionTitle className="mb-4">{post.title}</SectionTitle>
           <p><img src={post.featured_image} alt={post.title} className="w-100"/></p>
           <div className="my-5" dangerouslySetInnerHTML={{ __html: post.content }} />
 
-          <h3 className="mb-5">Comments ({comments ? comments.length : 0})</h3>
+          <SectionTitle className="mb-5">Comments ({comments ? comments.length : 0})</SectionTitle>
           <div className="mb-5">
             {comments && !!comments.length && comments.map((comment, index) => (
               <div className="mb-4" key={index}>
@@ -124,7 +125,7 @@ class PostDetail extends PureComponent {
             }
           </div>
 
-          <h3 className="mb-5">Similar Posts</h3>
+          <SectionTitle className="mb-5">Similar Posts</SectionTitle>
           <Row className="mb-5">
             {post.similar_posts.map(post => (
               <Col key={post.pk} xs={12} md={6} className="mb-3">

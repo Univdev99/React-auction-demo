@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
+import SectionTitle from 'components/SectionTitle'
 import SignInForm from 'components/SignInForm'
 import { formSubmit } from 'utils/form'
 import { signIn } from 'store/modules/auth'
@@ -30,7 +31,7 @@ class SignIn extends PureComponent {
         <Row className="justify-content-center">
           <Col xs={12} md={8} lg={6}>
 
-            <h3 className="mb-4 text-center">Sign In</h3>
+            <SectionTitle className="mb-4 text-center">Sign In</SectionTitle>
 
             <SignInForm onSubmit={this.handleSubmit} />
 

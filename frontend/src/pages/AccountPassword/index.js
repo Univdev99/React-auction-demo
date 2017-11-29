@@ -8,6 +8,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import { formSubmit } from 'utils/form'
 import PasswordForm from 'components/PasswordForm'
+import SectionTitle from 'components/SectionTitle'
 import Spinner from 'components/Spinner'
 import { authSelector } from 'store/selectors'
 import { updatePassword } from 'store/modules/auth'
@@ -50,7 +51,7 @@ class AccountPassword extends PureComponent {
 
     return (
       <div>
-        <h3 className="mb-4">Change Password</h3>
+        <SectionTitle className="mb-4">Change Password</SectionTitle>
 
         {updateStatus === 10 && <Alert color="success">
           Successfully updated password

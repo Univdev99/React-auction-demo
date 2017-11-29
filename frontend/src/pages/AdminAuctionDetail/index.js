@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 
 import Spinner from 'components/Spinner'
 import AuctionForm from 'components/AuctionForm'
+import SectionTitle from 'components/SectionTitle'
 import { getProductList } from 'store/modules/admin/products'
 import {
   getAuctionDetail,
@@ -84,7 +85,7 @@ class AdminAuctionDetail extends PureComponent {
     if (loadingStatus === -1) {
       return (
         <div>
-          <h2>Auction not found</h2>
+          <SectionTitle>Auction not found</SectionTitle>
         </div>
       )
     }
@@ -93,7 +94,7 @@ class AdminAuctionDetail extends PureComponent {
       <div>
         <div>
           <div className="mb-5 clearfix">
-            <h2 className="pull-left">Edit Auction</h2>
+            <SectionTitle className="pull-left">Edit Auction</SectionTitle>
             <Link className="btn btn-primary pull-right" to={`/admin/auctions/${match.params.id}/bids`}>Bids</Link>
           </div>
 

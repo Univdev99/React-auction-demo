@@ -11,6 +11,7 @@ import AuctionCard from 'components/AuctionCard'
 import DonorCard from 'components/DonorCard'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
 import Pagination from 'components/Pagination'
+import SectionTitle from 'components/SectionTitle'
 import Slider from 'components/Slider'
 import Spinner from 'components/Spinner'
 import { ACCOUNT_BID_AUCTIONS_PAGE_SIZE } from 'config'
@@ -95,7 +96,7 @@ class DonorDetail extends PureComponent {
       <FrontContainerLayout breadcrumbPath={this.breadcrumbPath()} subscribe>
         {status !== -1 && !donorDetail && <Spinner />}
 
-        {status === -1 && <h3><center>Donor not found</center></h3>}
+        {status === -1 && <SectionTitle><center>Donor not found</center></SectionTitle>}
 
         {status !== -1 && donorDetail && <div>
           <Row className="mb-5">
@@ -116,7 +117,7 @@ class DonorDetail extends PureComponent {
           </Row>
 
           <div className="clearfix mb-5">
-            <h3 className="pull-left">Auctions</h3>
+            <SectionTitle className="pull-left">Auctions</SectionTitle>
           </div>
           <Row className="mb-5">
             {auctionList.map(auction => (
@@ -135,7 +136,7 @@ class DonorDetail extends PureComponent {
           </div>
 
           <div className="clearfix mb-5">
-            <h3 className="pull-left">Similar Donors</h3>
+            <SectionTitle className="pull-left">Similar Donors</SectionTitle>
             <Link to="/donors" className="pull-right btn btn-sm btn-outline-secondary">All donors</Link>
           </div>
 

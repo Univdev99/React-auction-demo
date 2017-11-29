@@ -9,8 +9,9 @@ import { withRouter } from 'react-router'
 import RichTextEditor from 'react-rte'
 
 import DonorForm from 'components/DonorForm'
-import { formSubmit } from 'utils/form'
+import SectionTitle from 'components/SectionTitle'
 import Spinner from 'components/Spinner'
+import { formSubmit } from 'utils/form'
 import { getCharityList } from 'store/modules/admin/charities'
 import { createDonor } from 'store/modules/admin/donors'
 import { adminCharitiesSelector } from 'store/selectors'
@@ -66,7 +67,7 @@ class AdminDonorCreate extends PureComponent {
     return (
       <div>
         <div>
-          <h3 className="mb-5">Create Donor</h3>
+          <SectionTitle className="mb-5">Create Donor</SectionTitle>
 
           {!charityListLoaded && <Spinner />}
 

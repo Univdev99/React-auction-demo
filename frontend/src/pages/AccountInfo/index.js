@@ -7,9 +7,10 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
 import AccountForm from 'components/AccountForm'
-import { formSubmit } from 'utils/form'
+import SectionTitle from 'components/SectionTitle'
 import Spinner from 'components/Spinner'
 import { authSelector, countriesSelector } from 'store/selectors'
+import { formSubmit } from 'utils/form'
 import { getCountries } from 'store/modules/settings'
 import { updateCurrentUser } from 'store/modules/auth'
 
@@ -61,7 +62,7 @@ class AccountInfo extends PureComponent {
 
     return (
       <div>
-        <h3 className="mb-4">Account Information</h3>
+        <SectionTitle className="mb-4">Account Information</SectionTitle>
 
         {updateStatus === 10 && <Alert color="success">
           Successfully saved

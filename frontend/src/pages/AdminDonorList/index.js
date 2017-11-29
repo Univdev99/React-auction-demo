@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Link } from 'react-router-dom'
 
+import SectionTitle from 'components/SectionTitle'
 import Spinner from 'components/Spinner'
 import {
   getDonorList,
@@ -67,7 +68,7 @@ class AdminDonorList extends PureComponent {
     return (
       <div>
         <div className="mb-5 clearfix">
-          <h2 className="pull-left">Donors</h2>
+          <SectionTitle className="pull-left">Donors</SectionTitle>
           <Link className="btn btn-primary pull-right" to="/admin/donors/create">Create</Link>
         </div>
 

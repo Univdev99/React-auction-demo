@@ -5,6 +5,7 @@ import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import Immutable from 'immutable'
 
+import SectionTitle from 'components/SectionTitle'
 import Spinner from 'components/Spinner'
 import SaleForm from 'components/SaleForm'
 import {
@@ -75,7 +76,7 @@ class AdminSaleDetail extends PureComponent {
     if (loadingStatus === -1) {
       return (
         <div>
-          <h2>Sale not found</h2>
+          <SectionTitle>Sale not found</SectionTitle>
         </div>
       )
     }
@@ -83,7 +84,7 @@ class AdminSaleDetail extends PureComponent {
     return (
       <div>
         <div>
-          <h2 className="mb-5">Edit Sale</h2>
+          <SectionTitle className="mb-5">Edit Sale</SectionTitle>
 
           {(loadingStatus === 1 || !saleDetail) && <Spinner />}
 

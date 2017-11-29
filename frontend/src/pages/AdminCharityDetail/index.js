@@ -9,6 +9,7 @@ import RichTextEditor from 'react-rte'
 
 import CharityForm from 'components/CharityForm'
 import { formSubmit } from 'utils/form'
+import SectionTitle from 'components/SectionTitle'
 import Spinner from 'components/Spinner'
 import Uploader from 'components/Uploader'
 import {
@@ -91,7 +92,7 @@ class AdminCharityDetail extends PureComponent {
     if (loadingStatus === -1) {
       return (
         <div>
-          <h2>Charity not found</h2>
+          <SectionTitle>Charity not found</SectionTitle>
         </div>
       )
     }
@@ -112,7 +113,7 @@ class AdminCharityDetail extends PureComponent {
     return (
       <div>
         <div>
-          <h3 className="mb-5">Edit Charity</h3>
+          <SectionTitle className="mb-5">Edit Charity</SectionTitle>
 
           {(loadingStatus === 1 || !charityDetail) && <Spinner />}
 
