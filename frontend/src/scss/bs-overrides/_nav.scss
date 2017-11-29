@@ -1,4 +1,9 @@
-.navbar-expand-md .navbar-nav .nav-link {
-  padding-left: 1rem;
-  padding-right: 1rem;
+.navbar-expand {
+  &-md, &-lg {
+    .navbar-nav .nav-link {
+      padding-left: 1rem;
+      padding-right: 1rem;
+      text-transform: uppercase;
+    }
+  }
 }
