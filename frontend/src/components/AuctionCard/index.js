@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
-import { Card, CardBody, CardSubtitle, Button } from 'reactstrap'
+import { Button, Card, CardBody, CardText, CardTitle, Col } from 'reactstrap'
 import { Link } from 'react-router-dom'
 
 import auctionBidFlow from 'utils/auctionBidFlow'
+import TimeLeft from 'components/TimeLeft'
 
 
 const COMPONENT_CLASS = 'auction-card'
@@ -23,22 +24,27 @@ class AuctionCard extends PureComponent {
   }
 
   render() {
-    const { auction: { pk, title, product_details: product } } = this.props
+    const { auction: { pk, title, product_details: product, open_until: openUntil } } = this.props
 
     return (
-      <Card className={COMPONENT_CLASS}>
-        <Link to={`/auctions/${pk}`}>
-          <div className={cx(bem('image'), 'card-img-top')} style={{ backgroundImage: `url(${product.media[0].url})`}} />
-        </Link>
-        <CardBody>
-          <CardSubtitle className={bem('title')} title={title}>{title}</CardSubtitle>
-          <div className="mt-3">
-            <Button outline block color='primary' onClick={this.handleBid} className={bem('button')}>
-              Make a bid
-            </Button>
-          </div>
-        </CardBody>
-      </Card>
+      <Col xs={12} md={6} lg={3} className="gb">
+        <Card className={COMPONENT_CLASS}>
+          <Link to={`/auctions/${pk}`}>
+            <div className={cx(bem('image'), 'card-img-top')} style={{ backgroundImage: `url(${product.media[0].url})`}} />
+          </Link>
+          <CardBody>
+            <CardTitle className={bem('title')}>
+              {title}
+            </CardTitle>
+            <CardText><TimeLeft until={openUntil} /></CardText>
+            <div className="mt-3">
+              <Button block color='primary' onClick={this.handleBid} className={bem('button')}>
+                Make a bid
+              </Button>
+            </div>
+          </CardBody>
+        </Card>
+      </Col>
     )
   }
 }

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Col, Row } from 'reactstrap'
+import { Row } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
@@ -45,9 +45,7 @@ class Posts extends PureComponent {
       >  
         <Row>
           {postListPage.map(post => (
-            <Col key={post.get('pk')} xs={12} md={6} className="mb-3">
-              <PostItem post={post.toJS()} />
-            </Col>
+            <PostItem key={post.get('pk')} post={post.toJS()} />
           ))}
         </Row>
       </FrontContainerLayout>

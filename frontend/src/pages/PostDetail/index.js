@@ -128,9 +128,7 @@ class PostDetail extends PureComponent {
           <SectionTitle className="mb-5">Similar Posts</SectionTitle>
           <Row className="mb-5">
             {post.similar_posts.map(post => (
-              <Col key={post.pk} xs={12} md={6} className="mb-3">
-                <PostItem post={post} />
-              </Col>
+              <PostItem key={post.pk} post={post} />
             ))}
           </Row>
         </div>}

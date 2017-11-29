@@ -121,9 +121,7 @@ class DonorDetail extends PureComponent {
           </div>
           <Row className="mb-5">
             {auctionList.map(auction => (
-              <Col xs={12} md={2} lg={3} key={auction.get('pk')} className="mb-3">
-                <AuctionCard auction={auction.toJS()} />
-              </Col>
+              <AuctionCard key={auction.get('pk')} auction={auction.toJS()} />
             ))}
           </Row>
           <div className="my-5 text-center">
@@ -142,13 +140,13 @@ class DonorDetail extends PureComponent {
 
           <Row className="mb-5">
             {donorDetail.get('similar_donors').map(donor => (
-              <Col key={donor.get('pk')} xs={12} lg={6} className="mb-3">
-                <DonorCard
-                  id={donor.get('pk')}
-                  image={donor.getIn(['media', 0, 'url'], '')}
-                  title={donor.get('title')}
-                />
-              </Col>
+              <DonorCard
+                key={donor.get('pk')} 
+                id={donor.get('pk')}
+                image={donor.getIn(['media', 0, 'url'], '')}
+                title={donor.get('title')}
+                description={donor.get('description')}
+              />
             ))}
           </Row>
 

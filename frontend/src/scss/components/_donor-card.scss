@@ -1,0 +1,18 @@
+.donor-card {
+  &__title {
+    flex: 1;
+  }
+
+  &__image {
+    padding-top: 60%;
+    background: center/contain no-repeat;
+  }
+
+  &__description {
+    margin-bottom: 0;
+    @include media-breakpoint-up('lg') {
+      height: $line-height-base * $font-size-base * 2;
+      overflow: hidden;
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import PropTypes from 'prop-types'
-import { Button, Col, Row } from 'reactstrap'
+import { Button, Row } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
@@ -77,17 +77,17 @@ class Home extends PureComponent {
             </Button>
           </div>
 
-          <div className="row">
+          <Row>
             {donorFrontList.map(donor => (
-              <div key={donor.get('pk')} className="col-lg-6 col-md-12 mb-3">
-                <DonorCard
-                  id={donor.get('pk')}
-                  image={donor.getIn(['media', 0, 'url'], '')}
-                  title={donor.get('title')}
-                />
-              </div>
+              <DonorCard
+                key={donor.get('pk')} 
+                id={donor.get('pk')}
+                image={donor.getIn(['media', 0, 'url'], '')}
+                title={donor.get('title')}
+                description={donor.get('description')}
+              />
             ))}
-          </div>
+          </Row>
         </AppContainerLayout>
         <DonateBar />
         <AppContainerLayout>
@@ -100,9 +100,7 @@ class Home extends PureComponent {
 
           <Row>
             {trendingAuctionsList.map(auction => (
-              <Col xs={12} md={2} lg={3} key={auction.get('pk')} className="mb-3">
-                <AuctionCard auction={auction.toJS()} />
-              </Col>
+              <AuctionCard key={auction.get('pk')} auction={auction.toJS()} />
             ))}
           </Row>
 
@@ -115,9 +113,7 @@ class Home extends PureComponent {
 
           <Row>
             {postsList.map(post => (
-              <Col key={post.get('pk')} xs={12} md={6} className="mb-3">
-                <PostItem post={post.toJS()} />
-              </Col>
+              <PostItem key={post.get('pk')} post={post.toJS()} />
             ))}
           </Row>
         </AppContainerLayout>

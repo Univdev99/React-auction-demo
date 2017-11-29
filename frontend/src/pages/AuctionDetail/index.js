@@ -127,18 +127,14 @@ class AuctionDetail extends PureComponent {
           <SectionTitle className="mb-5">More from {auctionDetail.getIn(['product', 'donor_details', 'title'])}</SectionTitle>
           <Row className="mb-5">
             {auctionDetail.get('donor_auctions').map(auction => (
-              <Col key={auction.get('pk')} xs={12} md={6} lg={3} className="mb-3">
-                <AuctionCard auction={auction.toJS()} />
-              </Col>
+              <AuctionCard key={auction.get('pk')} auction={auction.toJS()} />
             ))}
           </Row>
 
           <SectionTitle className="mb-5">Similar Auctions</SectionTitle>
           <Row className="mb-5">
             {auctionDetail.get('similar_auctions').map(auction => (
-              <Col key={auction.get('pk')} xs={12} md={6} lg={3} className="mb-3">
-                <AuctionCard auction={auction.toJS()} />
-              </Col>
+              <AuctionCard key={auction.get('pk')} auction={auction.toJS()} />
             ))}
           </Row>
         </div>}
