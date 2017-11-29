@@ -2,4 +2,22 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, .05);
   position: relative;
   z-index: 1;
+
+  &__account-toggler {
+    @extend .btn;
+    @extend .btn-link;
+    @extend .cursor-pointer;
+    @extend .text-right;
+    font-size: 1.125rem;
+    &, &:hover, &:focus, &:active {
+      text-decoration: none;
+    }
+  }
+
+  &__account-responsive {
+    @extend .d-md-none;
+    @extend .d-flex;
+    @extend .justify-content-end;
+    flex-grow: 1;
+  }
 }
