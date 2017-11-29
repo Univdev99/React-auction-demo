@@ -7,6 +7,8 @@ $dark: #333333;
 $font-family-base: 'Barlow Semi Condensed', Roboto, "Helvetica Neue", Arial, sans-serif;
 $headings-font-family: 'DIN Offc', Roboto, "Helvetica Neue", Arial, sans-serif;
 
+$enable-shadows: true;
+
 $border-color: #F8F8FD;
 $border-radius: 0;
 $border-radius-md: 0;
@@ -44,6 +46,14 @@ $btn-border-radius: 3px;
 $btn-border-radius-lg: 4px;
 $btn-border-radius-sm: 3px;
 $input-btn-border-width: 2px;
+
+$input-border-radius: 3px;
+$input-border-radius-lg: 4px;
+$input-border-radius-sm: 3px;
+$input-border-color: transparent;
+$input-box-shadow: 0 5px 20px rgba(72, 78, 84, .1);
+$input-btn-focus-color: rgba($primary, .25);
+$input-btn-focus-box-shadow: 0 5px 20px $input-btn-focus-color;
 
 /* END Overriding Bootstrap Variables */
 
