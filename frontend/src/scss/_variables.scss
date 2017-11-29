@@ -7,6 +7,11 @@ $dark: #333333;
 $font-family-base: 'Barlow Semi Condensed', Roboto, "Helvetica Neue", Arial, sans-serif;
 $headings-font-family: 'DIN Offc', Roboto, "Helvetica Neue", Arial, sans-serif;
 
+$border-color: #F8F8FD;
+$border-radius: 0;
+$border-radius-md: 0;
+$border-radius-lg: 0;
+
 $navbar-brand-font-size: 2rem;
 $navbar-padding-y: 1rem;
 
@@ -26,7 +31,14 @@ $navbar-toggler-padding-x: 0.3rem;
 
 $dropdown-border-width: 4px;
 $dropdown-item-padding-y: 0.5rem;
-$dropdown-border-color: #F8F8FD;
+$dropdown-border-color: $border-color;
+
+$modal-inner-padding: 60px;
+$modal-content-border-width: 4px;
+$modal-content-border-color: $border-color;
+$modal-header-padding: 60px;
+$modal-header-border-color: transparent;
+$modal-sm: 420px;
 
 /* END Overriding Bootstrap Variables */
 
