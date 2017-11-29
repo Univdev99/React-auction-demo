@@ -9,6 +9,9 @@ import { Link } from 'react-router-dom'
 
 import AdminHeader from 'components/AdminHeader'
 import Spinner from 'components/Spinner'
+import {
+  registerRealTimeNotificationHandler, unregisterRealTimeNotificationHandler
+} from 'managers/RealTimeNotificationManager'
 import { signOut } from 'store/modules/auth'
 import { getNotificationListOnMenu, addNotification, resetNotificationUnreadCount } from 'store/modules/admin/notifications'
 import { authSelector, adminNotificationsSelector } from 'store/selectors'
@@ -49,8 +52,20 @@ class AdminLayout extends PureComponent {
     })
   }
 
+  handleNotification = (data) => {
+    this.props.addNotification(data)
+  }
+
   componentWillMount() {
     this.props.getNotificationListOnMenu()
+  }
+
+  componentDidMount() {
+    registerRealTimeNotificationHandler(null, this.handleNotification)
+  }
+
+  componentWillUnmount() {
+    unregisterRealTimeNotificationHandler(null, this.handleNotification)
   }
 
   render() {
