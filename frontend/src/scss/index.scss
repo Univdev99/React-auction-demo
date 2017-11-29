@@ -4,15 +4,17 @@
 
 @import "bs-overrides/all";
 
-@import "components/app-layout1";
+@import "components/app-footer";
 @import "components/app-header";
 @import "components/app-header-menu";
+@import "components/app-layout1";
 @import "components/auction-card";
 @import "components/post-item";
 @import "components/richeditor";
+@import "components/social-icon";
 @import "components/sortable-medium-list";
-@import "components/uploader";
 @import "components/tab";
 @import "components/table";
+@import "components/uploader";
 
 @import "utils";

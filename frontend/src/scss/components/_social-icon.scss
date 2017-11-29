@@ -1,0 +1,38 @@
+.social-icon {
+  border-radius: 50%;
+  font-size: .75rem;
+  text-align: center;
+  width: 1.875rem;
+  height: 1.875rem;
+  line-height: 1.875rem;
+  padding: 0;
+
+  &, &:hover, &:focus, &:active {
+    color: #ffffff;
+  }
+
+  > * {
+    vertical-align: baseline !important;
+  }
+
+  &--facebook {
+    background-color: $facebook-color;
+    &:hover, &:focus, &:active {
+      background-color: darken($facebook-color, 5%);
+    }
+  }
+
+  &--twitter {
+    background-color: $twitter-color;
+    &:hover, &:focus, &:active {
+      background-color: darken($twitter-color, 5%);
+    }
+  }
+
+  &--linkedin {
+    background-color: $linkedin-color;
+    &:hover, &:focus, &:active {
+      background-color: darken($linkedin-color, 5%);
+    }
+  }
+}

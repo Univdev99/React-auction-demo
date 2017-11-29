@@ -1,0 +1,44 @@
+.app-footer {
+  @include media-breakpoint-down('sm') {
+    display: block;
+  }
+
+  &__logo {
+    @extend .text-center;
+    @include media-breakpoint-down('sm') {
+      display: block;
+      margin-bottom: 1.25rem;
+    }
+  }
+
+  &__navs {
+    flex: 1;
+    @include media-breakpoint-up('md') {
+      display: flex;
+    }
+  }
+
+  &__nav {
+    @extend .ml-auto;
+    @extend .mr-auto;
+    @extend .text-center;
+    @include media-breakpoint-down('sm') {
+      display: block;
+      margin-bottom: 1.875rem;
+    }
+  }
+
+  &__social {
+    @extend .justify-content-center;
+    @extend .align-items-center;
+
+    li {
+      &:not(:first-child) {
+        margin-left: .5rem;
+      }
+      &:not(:last-child) {
+        margin-right: .5rem;
+      }
+    }
+  }
+}
