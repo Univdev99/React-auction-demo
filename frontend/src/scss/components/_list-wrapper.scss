@@ -1,0 +1,6 @@
+.list-wrapper {
+  margin-bottom: -$grid-gutter-width;
+  @include media-breakpoint-down($gutter-breakpoint) {
+    margin-bottom: -$grid-gutter-width-responsive;
+  }
+}

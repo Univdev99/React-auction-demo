@@ -1,11 +1,9 @@
 import React, { PureComponent } from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import PropTypes from 'prop-types'
-import { Button, Row } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
-import { Link } from 'react-router-dom'
 import { show } from 'redux-modal'
 
 import AppContainerLayout from 'layouts/AppContainerLayout'
@@ -14,12 +12,14 @@ import AuctionCard from 'components/AuctionCard'
 import DonateBar from 'components/DonateBar'
 import DonorCard from 'components/DonorCard'
 import HomeBanner from 'components/HomeBanner'
+import ListWrapper from 'components/ListWrapper'
 import PostItem from 'components/PostItem'
-import SectionTitle from 'components/SectionTitle'
+import Section from 'components/Section'
 import { auctionsSelector, blogSelector, donorsSelector } from 'store/selectors'
 import { getDonorFrontList } from 'store/modules/donors'
 import { getPostFrontList } from 'store/modules/blog'
 import { getTrendingAuctionList } from 'store/modules/auctions'
+
 
 const SUBSCRIBE_MODAL_POPUP_DELAY = 3000
 
@@ -70,52 +70,51 @@ class Home extends PureComponent {
         <HomeBanner />
 
         <AppContainerLayout>
-          <div className="clearfix mb-5">
-            <SectionTitle className="pull-left">Donors</SectionTitle>
-            <Button color="primary" outline tag={Link} to="/donors" className="pull-right">
-              All donors
-            </Button>
-          </div>
-
-          <Row>
-            {donorFrontList.map(donor => (
-              <DonorCard
-                key={donor.get('pk')} 
-                id={donor.get('pk')}
-                image={donor.getIn(['media', 0, 'url'], '')}
-                title={donor.get('title')}
-                description={donor.get('description')}
-              />
-            ))}
-          </Row>
+          <Section
+            title="Donors"
+            link="/donors"
+            linkText="All Donors"
+          >
+            <ListWrapper>
+              {donorFrontList.map(donor => (
+                <DonorCard
+                  key={donor.get('pk')} 
+                  id={donor.get('pk')}
+                  image={donor.getIn(['media', 0, 'url'], '')}
+                  title={donor.get('title')}
+                  description={donor.get('description')}
+                />
+              ))}
+            </ListWrapper>
+          </Section>
         </AppContainerLayout>
-        <DonateBar />
+        <Section>
+          <DonateBar />
+        </Section>
         <AppContainerLayout>
-          <div className="clearfix mb-5">
-            <SectionTitle className="pull-left">Trending Auctions</SectionTitle>
-            <Button color="primary" outline tag={Link} to="/auctions" className="pull-right">
-              All auctions
-            </Button>
-          </div>
+          <Section
+            title="Trending Auctions"
+            link="/auctions"
+            linkText="All Auctions"
+          >
+            <ListWrapper>
+              {trendingAuctionsList.map(auction => (
+                <AuctionCard key={auction.get('pk')} auction={auction.toJS()} />
+              ))}
+            </ListWrapper>
+          </Section>
 
-          <Row>
-            {trendingAuctionsList.map(auction => (
-              <AuctionCard key={auction.get('pk')} auction={auction.toJS()} />
-            ))}
-          </Row>
-
-          <div className="clearfix my-5">
-            <SectionTitle className="pull-left">Our Blog</SectionTitle>
-            <Button color="primary" outline tag={Link} to="/blog" className="pull-right">
-              All articles
-            </Button>
-          </div>
-
-          <Row>
-            {postsList.map(post => (
-              <PostItem key={post.get('pk')} post={post.toJS()} />
-            ))}
-          </Row>
+          <Section
+            title="Our Blog"
+            link="/blog"
+            linkText="All Articles"
+          >
+            <ListWrapper>
+              {postsList.map(post => (
+                <PostItem key={post.get('pk')} post={post.toJS()} />
+              ))}
+            </ListWrapper>
+          </Section>
         </AppContainerLayout>
       </AppLayout1>
     )

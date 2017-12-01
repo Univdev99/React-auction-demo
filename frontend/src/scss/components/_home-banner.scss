@@ -47,5 +47,8 @@
     text-transform: uppercase;
     font-family: $headings-font-family;
     letter-spacing: 1px;
+    &:hover {
+      text-decoration: none;
+    }
   }
 }

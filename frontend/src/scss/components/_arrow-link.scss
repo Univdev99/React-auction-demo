@@ -1,0 +1,12 @@
+$arrow-link-color: #666666;
+.arrow-link {
+  font-family: $headings-font-family;
+  text-transform: uppercase;
+  color: $arrow-link-color;
+
+  &:hover, &:focus, &:active {
+    color: $primary;
+    text-decoration: none;
+    outline: none;
+  }
+}
