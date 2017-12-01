@@ -1,0 +1,47 @@
+version: '2.1'
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:8001"
+    volumes:
+      - ./backend/staticfiles:/app/backend/staticfiles
+      - ./frontend/build:/app/frontend/build
+      - ./docker/nginx:/etc/nginx/conf.d
+    depends_on:
+      - backend
+      - frontend
+
+  backend:
+    build: .
+    container_name: backend
+    working_dir: /app/backend
+    command: sh /app/docker/start-backend.sh
+    volumes:
+      - ./backend/staticfiles:/app/backend/staticfiles
+    depends_on:
+      db:
+        condition: service_healthy
+    expose:
+      - "8000"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: DockerfileFrontend
+    container_name: frontend
+    working_dir: /app/frontend
+    command: npm run build
+    volumes:
+      - ./frontend/build:/app/frontend/build
+    expose:
+      - "3000"
+
+  db:
+    image: postgres:latest
+    container_name: db
+    volumes:
+      - ~/postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: "exit 0"

@@ -1,0 +1,14 @@
+version: '2.1'
+services:
+  nginx:
+    ports:
+      - "8000:8001"
+
+  frontend:
+    command: npm run start
+    ports:
+      - "3000:3000"
+
+  db:
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
