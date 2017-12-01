@@ -6,6 +6,8 @@ services:
     ports:
       - "80:8001"
     volumes:
+      - ./backend/staticfiles:/app/backend/staticfiles
+      - ./frontend/build:/app/frontend/build
       - ./docker/nginx:/etc/nginx/conf.d
     depends_on:
       - backend
@@ -14,8 +16,10 @@ services:
   backend:
     build: .
     container_name: backend
-    working_dir: /code/backend
-    command: bash -c "chmod +x /code/docker/start-backend.sh && /code/docker/start-backend.sh"
+    working_dir: /app/backend
+    command: sh /app/docker/start-backend.sh
+    volumes:
+      - ./backend/staticfiles:/app/backend/staticfiles
     depends_on:
       db:
         condition: service_healthy
@@ -23,10 +27,14 @@ services:
       - "8000"
 
   frontend:
-    build: .
+    build:
+      context: .
+      dockerfile: DockerfileFrontend
     container_name: frontend
-    working_dir: /code/frontend
-    command: bash -c "chmod +x /code/docker/start-frontend.sh && /code/docker/start-frontend.sh"
+    working_dir: /app/frontend
+    command: npm run build
+    volumes:
+      - ./frontend/build:/app/frontend/build
     expose:
       - "3000"
 

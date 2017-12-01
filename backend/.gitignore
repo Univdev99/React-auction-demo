@@ -17,3 +17,4 @@ tests/report/
 local_settings.py
 venv
 *.sock
+staticfiles

@@ -1,7 +1,7 @@
 #!/bin/bash
 # start-backend.sh
 
-cd /code/backend
+cd /app/backend
 cp ./charibin/docker_settings.py ./charibin/local_settings.py
 
 # migration
@@ -11,6 +11,4 @@ python manage.py migrate
 python manage.py collectstatic --noinput
 
 # now boot
-gunicorn charibin.wsgi:application -b 0.0.0.0:8000 -t 300 \
-    --access-logfile /code/log/access.log \
-    --error-logfile /code/log/error.log
+gunicorn charibin.wsgi:application -b 0.0.0.0:8000 -t 300 --access-logfile /app/log/access.log --error-logfile /app/log/error.log
