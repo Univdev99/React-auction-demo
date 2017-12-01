@@ -1,0 +1,12 @@
+version: '2.1'
+services:
+  nginx:
+    ports:
+      - "8010:8001"
+
+  frontend:
+    command: bash -c "chmod +x /code/docker/start-frontend-dev.sh && /code/docker/start-frontend-dev.sh"
+
+  db:
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data

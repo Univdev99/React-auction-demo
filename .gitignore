@@ -1,2 +1,4 @@
 venv
 *.sock
+postgres_data
+docker/ssh/*/id_rsa*

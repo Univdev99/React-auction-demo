@@ -1,0 +1,39 @@
+version: '2.1'
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:8001"
+    volumes:
+      - ./docker/nginx:/etc/nginx/conf.d
+    depends_on:
+      - backend
+      - frontend
+
+  backend:
+    build: .
+    container_name: backend
+    working_dir: /code/backend
+    command: bash -c "chmod +x /code/docker/start-backend.sh && /code/docker/start-backend.sh"
+    depends_on:
+      db:
+        condition: service_healthy
+    expose:
+      - "8000"
+
+  frontend:
+    build: .
+    container_name: frontend
+    working_dir: /code/frontend
+    command: bash -c "chmod +x /code/docker/start-frontend.sh && /code/docker/start-frontend.sh"
+    expose:
+      - "3000"
+
+  db:
+    image: postgres:latest
+    container_name: db
+    volumes:
+      - ~/postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: "exit 0"
