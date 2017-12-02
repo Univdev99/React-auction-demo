@@ -1,0 +1,27 @@
+.charity-info {
+  border: $dropdown-border-width solid $border-color;
+  padding: 1.25rem;
+
+  &:not(:first-child) {
+    margin-top: 1.875rem;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 1.875rem;
+  }
+
+  &__label {
+    color: $primary;
+    font-size: $h4-font-size;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  &__logo {
+    img {
+      display: block;
+      max-height: 50px;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+  }
+}

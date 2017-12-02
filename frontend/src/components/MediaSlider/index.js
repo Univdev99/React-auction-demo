@@ -4,13 +4,22 @@ import ReactSlick from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
-import './style.css'
 
+const COMPONENT_CLASS = 'media-slider'
+const bem = (suffix) => `${COMPONENT_CLASS}__${suffix}`
 
-class Slider extends PureComponent {
+class MediaSlider extends PureComponent {
 
   static propTypes = {
     media: ImmutablePropTypes.list.isRequired
+  }
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      activeSlide: 0
+    }
   }
 
   disableContextMenu(e) {
@@ -22,28 +31,28 @@ class Slider extends PureComponent {
     return (
       <div className="slide">
         {medium.get('type') === 'video' && <video
-          className="slide-inner slide-video" src={medium.get('url')} controls />}
+          className="slide-media slide-video" src={medium.get('url')} controls />}
         {medium.get('type') === 'audio' && <audio
-          className="slide-inner slide-video" src={medium.get('url')} controls
+          className="slide-media slide-video" src={medium.get('url')} controls
           style={{ paddingTop: '60%', background: '#000' }} />}
         {medium.get('type') === 'image' && <div
-          className="slide-inner slide-image" style={{ backgroundImage: `url(${medium.get('url')})` }} />}
+          className="slide-media slide-image" style={{ backgroundImage: `url(${medium.get('url')})` }} />}
       </div>
     )
   }
 
   smallSlide(medium, index) {
     return (
-      <div className="slide-thumb" onClick={this.handleClickThumb.bind(this, index)}>
+      <div className={bem('bottom__slide-inner')} onClick={this.handleClickThumb(index)}>
         {medium.get('type') === 'video' && <video
-          className="slide-inner slide-video"
+          className="slide-media slide-video"
           src={medium.get('url')}
           disabled
           preload="metadata"
           onContextMenu={this.disableContextMenu}
         />}
         {medium.get('type') === 'audio' && <audio
-          className="slide-inner slide-video"
+          className="slide-media slide-video"
           src={medium.get('url')}
           disabled
           preload="metadata"
@@ -52,20 +61,28 @@ class Slider extends PureComponent {
           style={{ paddingTop: '60%', background: '#000' }}
         />}
         {medium.get('type') === 'image' && <div
-          className="slide-inner slide-image" style={{ backgroundImage: `url(${medium.get('url')})` }} />}
+          className="slide-media slide-image" style={{ backgroundImage: `url(${medium.get('url')})` }} />}
       </div>
     )
   }
 
-  handleClickThumb = (index) => {
-    this.mainSlider.slickGoTo(index)
+  handleBeforeChangeBig = (oldIndex, index) => {
+    this.setState({ activeSlide: index })
+  }
+
+  handleClickThumb = (index) => () => {
+    // this.mainSlider.slickGoTo(index)
+    this.setState({ activeSlide: index })
   }
 
   render() {
     const { media } = this.props
+    const { activeSlide } = this.state
 
     const bigSliderSettings = {
-      className: 'mb-4',
+      className: bem('top'),
+      slickGoTo: activeSlide,
+      beforeChange: this.handleBeforeChangeBig,
       infinite: true,
       slidesToShow: 1,
       slidesToScroll: 1,
@@ -74,6 +91,8 @@ class Slider extends PureComponent {
     }
 
     const smallSliderSettings = {
+      className: bem('bottom'),
+      slickGoTo: activeSlide,
       infinite: false,
       slidesToShow: 5,
       slidesToScroll: 1,
@@ -87,11 +106,11 @@ class Slider extends PureComponent {
       ]
     }
 
-    return (
-      <div>
+    return media && (
+      <div className={COMPONENT_CLASS}>
         <ReactSlick ref={slider => this.mainSlider = slider} {...bigSliderSettings}>
           {media.map((medium, index) => (
-            <div key={index} className="px-2">
+            <div key={index} className={bem('top__slide')}>
               {this.slide(medium)}
             </div>
           ))}
@@ -99,7 +118,7 @@ class Slider extends PureComponent {
 
         {media.size > 1 && <ReactSlick {...smallSliderSettings}>
           {media.map((medium, index) => (
-            <div key={index} className="px-2">
+            <div key={index} className={bem('bottom__slide')}>
               {this.smallSlide(medium, index)}
             </div>
           ))}
@@ -109,4 +128,4 @@ class Slider extends PureComponent {
   }
 }
 
-export default Slider
+export default MediaSlider

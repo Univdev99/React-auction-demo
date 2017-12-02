@@ -10,7 +10,7 @@ const bem = (suffix) => `${COMPONENT_CLASS}__${suffix}`
 const Section = ({ children, title, link, linkText }) => (
   <div className={COMPONENT_CLASS}>
     {title && <div className={bem('header')}>
-      <SectionTitle>{title}</SectionTitle>
+      <SectionTitle noMargin>{title}</SectionTitle>
       {link && linkText && <ArrowLink className="d-none d-md-inline-block" to={link} text={linkText} />}
     </div>}
     {children}

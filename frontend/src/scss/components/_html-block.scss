@@ -1,0 +1,9 @@
+.html-block {
+  &:not(:first-child) {
+    margin-top: 1.25rem;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 1.25rem;
+  }
+}

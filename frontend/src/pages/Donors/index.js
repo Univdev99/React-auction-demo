@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react'
-import { Row } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'

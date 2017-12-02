@@ -23,11 +23,17 @@ class AppLayout1 extends PureComponent {
   static propTypes = {
     auth: ImmutablePropTypes.map.isRequired,
     getCurrentUser: PropTypes.func.isRequired,
+    children: PropTypes.node,
+    className: PropTypes.string,
     subscribe: PropTypes.bool
   }
 
-  state = {
-    minContentHeight: 0,
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      minContentHeight: 0,
+    }
   }
 
   handleSignOut = () => {
@@ -49,7 +55,7 @@ class AppLayout1 extends PureComponent {
   }
 
   render() {
-    const { auth, children, subscribe } = this.props
+    const { auth, children, className, subscribe } = this.props
 
     if (!children) return false
 
@@ -64,7 +70,7 @@ class AppLayout1 extends PureComponent {
       <AppHeaderGuest />
 
     return (
-      <div className={COMPONENT_CLASSNAME} ref={element => this.layoutElement = element}>
+      <div className={cx(COMPONENT_CLASSNAME, className)} ref={element => this.layoutElement = element}>
         {header}
 
         <div

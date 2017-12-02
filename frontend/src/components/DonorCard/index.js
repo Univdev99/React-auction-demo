@@ -30,13 +30,13 @@ class DonorCard extends PureComponent {
               </Col>
               <Col xs={12} md={4} lg={5} xl={4} className="text-right">
                 <Button color="primary" tag={Link} to={`/donors/${id}`} className="d-none d-md-block">
-                  Learn more
+                  See all auctions
                 </Button>
               </Col>
             </Row>
             <CardText className={bem('description')} dangerouslySetInnerHTML={{ __html: description }} />
             <Button color="primary" block tag={Link} to={`/donors/${id}`} className="d-md-none mt-3">
-              Learn more
+              See all auctions
             </Button>
           </CardBody>
         </Card>
