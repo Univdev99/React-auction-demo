@@ -1,0 +1,8 @@
+.app-container-layout {
+  margin-top: $section-spacing / 2;
+  margin-bottom: $section-spacing / 2;
+  @include media-breakpoint-up('md') {
+    margin-top: $section-spacing;
+    margin-bottom: $section-spacing;
+  }
+}

@@ -1,0 +1,9 @@
+.front-container-layout {
+  &__header {
+    margin-bottom: $section-header-spacing-responsive;
+
+    @include media-breakpoint-up('md') {
+      margin-bottom: $section-header-spacing;
+    }
+  }
+}

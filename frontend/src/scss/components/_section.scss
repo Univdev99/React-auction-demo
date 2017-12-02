@@ -1,17 +1,17 @@
 .section {
-  margin-bottom: 3.75rem;
+  margin-bottom: $section-spacing / 2;
   @include media-breakpoint-up('md') {
-    margin-bottom: 7.5rem;
+    margin-bottom: $section-spacing;
   }
 
   &__header {
-    margin-bottom: 1.875rem;
+    margin-bottom: $section-header-spacing-responsive;
     @extend .d-flex;
     @extend .align-items-end;
     @extend .justify-content-between;
 
     @include media-breakpoint-up('md') {
-      margin-bottom: 3.125rem;
+      margin-bottom: $section-header-spacing;
     }
   }
 
