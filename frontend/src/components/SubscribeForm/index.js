@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Input } from 'reactstrap'
+import { Button, Col, Input, Row } from 'reactstrap'
 import { reduxForm } from 'redux-form/immutable'
 
 import FormField from 'components/FormField'
@@ -10,8 +10,9 @@ const renderField = ({
   meta: { error, touched },
   placeholder
 }) => (
-  <Input className="mr-2" style={{ flexGrow: 1}}
-    type="email" 
+  <Input className="mr-3" style={{ flexGrow: 1}}
+    type="email"
+    size="lg"
     {...input}
     placeholder={placeholder}
     valid={touched && error ? false : undefined}
@@ -38,17 +39,22 @@ class SubscribeForm extends PureComponent {
     const { handleSubmit, submitting } = this.props
 
     return (
-      <form onSubmit={handleSubmit(this.doSubmit)}
-        className="d-flex flex-row mx-auto"
-        style={{ maxWidth: 300 }}
-      >
-        <FormField
-          name="email"
-          placeholder="Email"
-          validate={[isRequired, isValidEmail]}
-          component={renderField}
-        />
-        <Button type="submit" color="primary" disabled={submitting}>Subscribe</Button>
+      <form onSubmit={handleSubmit(this.doSubmit)}>
+        <Row>
+          <Col xs={12} md={8} className="mb-2 mb-md-0">
+            <FormField
+              name="email"
+              placeholder="Email"
+              validate={[isRequired, isValidEmail]}
+              component={renderField}
+            />
+          </Col>
+          <Col xs={12} md={4}>
+            <Button type="submit" block size="lg" color="primary" disabled={submitting}>
+              Subscribe
+            </Button>
+          </Col>
+        </Row>
       </form>
     )
   }

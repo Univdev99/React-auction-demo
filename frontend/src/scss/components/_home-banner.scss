@@ -23,7 +23,7 @@
   }
 
   &__content {
-    color: #ffffff;
+    color: $white;
     position: relative;
     font-size: 1.375rem;
   }
@@ -32,6 +32,8 @@
     letter-spacing: 1.42px;
     text-transform: uppercase;
     margin-bottom: 1.25rem;
+    color: $white;
+
     @include media-breakpoint-down('sm') {
       text-align: center;
       font-size: 2.5rem;
@@ -47,6 +49,7 @@
     text-transform: uppercase;
     font-family: $headings-font-family;
     letter-spacing: 1px;
+
     &:hover {
       text-decoration: none;
     }
