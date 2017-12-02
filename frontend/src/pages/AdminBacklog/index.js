@@ -8,6 +8,7 @@ import { Table } from 'reactstrap'
 import { Link } from 'react-router-dom'
 
 import Pagination from 'components/Pagination'
+import SectionTitle from 'components/SectionTitle'
 import Spinner from 'components/Spinner'
 import {
   getAuctionBacklog,
@@ -60,7 +61,7 @@ class AdminBacklog extends PureComponent {
 
     return (
       <div>
-        <h2 className="mb-5">Backlog</h2>
+        <SectionTitle className="mb-5">Backlog</SectionTitle>
 
         {loadingStatus === 1 && <Spinner />}
 

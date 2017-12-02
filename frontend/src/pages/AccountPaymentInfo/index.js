@@ -7,6 +7,7 @@ import { createStructuredSelector } from 'reselect'
 
 import CardInfo from './CardInfo'
 import PaymentForm from './PaymentForm'
+import SectionTitle from 'components/SectionTitle'
 import { authSelector } from 'store/selectors'
 import { setPayment } from 'store/modules/payment'
 
@@ -34,7 +35,7 @@ class AccountPaymentInfo extends PureComponent {
 
     return (
       <div>
-        <h3 className="mb-4">Payment Information</h3>
+        <SectionTitle className="mb-4">Payment Information</SectionTitle>
         {editMode
           ? <PaymentForm {...props} setEditMode={this.handleSetEditMode} />
           : <CardInfo {...props} setEditMode={this.handleSetEditMode} />

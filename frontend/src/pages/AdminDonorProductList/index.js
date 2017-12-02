@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Link } from 'react-router-dom'
 
+import SectionTitle from 'components/SectionTitle'
 import Spinner from 'components/Spinner'
 import {
   getDonorDetail,
@@ -99,7 +100,7 @@ class AdminDonorProductList extends PureComponent {
     if (loadingDonorStatus === -1) {
       return (
         <div>
-          <h2>Donor not found</h2>
+          <SectionTitle>Donor not found</SectionTitle>
         </div>
       )
     }
@@ -114,7 +115,7 @@ class AdminDonorProductList extends PureComponent {
           </div>}
 
           {loadingProductListStatus === 10 && donorDetail && <div>
-            <h3 className="mb-5">Products from {donorDetail.get('title')}</h3>
+            <SectionTitle className="mb-5">Products from {donorDetail.get('title')}</SectionTitle>
 
             <table className="table">
               <thead>

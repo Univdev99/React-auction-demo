@@ -5,6 +5,7 @@ import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
+import SectionTitle from 'components/SectionTitle'
 import Spinner from 'components/Spinner'
 import {
   getUserList,
@@ -68,7 +69,7 @@ class AdminUserList extends PureComponent {
 
     return (
       <div>
-        <h2 className="mb-5">Users</h2>
+        <SectionTitle className="mb-5">Users</SectionTitle>
 
         {loadingStatus === 1 && <Spinner />}
 

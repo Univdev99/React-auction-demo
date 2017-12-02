@@ -5,6 +5,7 @@ import AppContainerLayout from 'layouts/AppContainerLayout'
 import AppLayout1 from 'layouts/AppLayout1'
 import Breadcrumb from 'components/Breadcrumb'
 import IconListItem from 'components/IconListItem'
+import SectionTitle from 'components/SectionTitle'
 import SubscribeBar from 'components/SubscribeBar'
 
 import placeholderImg from 'images/mission-placeholder.jpg'
@@ -22,7 +23,7 @@ class Mission extends PureComponent {
         <AppContainerLayout>
           <Breadcrumb className="mb-5" path={breadcrumbPath} />
 
-          <h3 className="mb-5">Mission</h3>
+          <SectionTitle className="mb-5">Mission</SectionTitle>
           <Row className="mb-5">
             <Col xs={12} md={6}>
               <p>
@@ -54,7 +55,7 @@ class Mission extends PureComponent {
         </AppContainerLayout>
         <SubscribeBar />
         <AppContainerLayout>
-          <h3 className="mt-5 mb-5 text-center">Mentioned In</h3>
+          <SectionTitle className="mt-5 mb-5 text-center">Mentioned In</SectionTitle>
           <Row>
             {[...Array(12).keys()].map((item, index) => (
               <Col xs={6} sm={4} md={3} lg={2} key={index} className="mb-4">

@@ -1,15 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+
 import AppContainerLayout from '../AppContainerLayout'
 import AppLayout1 from '../AppLayout1'
 import Breadcrumb from 'components/Breadcrumb'
+import SectionTitle from 'components/SectionTitle'
 
 
 const FrontContainerLayout = ({ breadcrumbPath, children, subscribe, title }) => (
   <AppLayout1 subscribe={subscribe}>
     <AppContainerLayout>
       {breadcrumbPath && <Breadcrumb className="mb-5" path={breadcrumbPath} />}
-      {title && <h3 className="mb-5">{title}</h3>}
+      {title && <SectionTitle className="mb-5">{title}</SectionTitle>}
       {children}
     </AppContainerLayout>
   </AppLayout1>

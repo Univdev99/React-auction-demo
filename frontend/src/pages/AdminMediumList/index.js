@@ -10,6 +10,7 @@ import {
 import moment from 'moment'
 
 import Pagination from 'components/Pagination'
+import SectionTitle from 'components/SectionTitle'
 import { MEDIUM_PAGE_SIZE } from 'config'
 import {
   getMediumListPage,
@@ -103,7 +104,7 @@ class AdminMediumList extends PureComponent {
 
     return (
       <div>
-        <h2 className="mb-5">Media Library</h2>
+        <SectionTitle className="mb-5">Media Library</SectionTitle>
 
         {loadingStatus === -1 && <div>
           Failed to load data.

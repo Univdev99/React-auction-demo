@@ -8,6 +8,7 @@ import { createStructuredSelector } from 'reselect'
 import { Link } from 'react-router-dom'
 
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
+import SectionTitle from 'components/SectionTitle'
 import Spinner from 'components/Spinner'
 import { getJobList } from 'store/modules/jobs'
 import { jobsSelector } from 'store/selectors'
@@ -77,7 +78,7 @@ class Careers extends PureComponent {
           leo, vel malesuada quam aliquam et.
         </p>
 
-        <h3 className="mt-5 mb-3">Current Openings</h3>
+        <SectionTitle className="mt-5 mb-3">Current Openings</SectionTitle>
 
         {status === 0 && <Spinner />}
 

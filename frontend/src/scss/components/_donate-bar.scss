@@ -1,0 +1,9 @@
+.donate-bar {
+  border: 10px solid $border-color;
+  padding: 2rem 0;
+
+  @include media-breakpoint-down('sm') {
+    margin-left: -$grid-gutter-width-responsive;
+    margin-right: -$grid-gutter-width-responsive;
+  }
+}

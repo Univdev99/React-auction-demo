@@ -8,6 +8,7 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import { formSubmit } from 'utils/form'
+import SectionTitle from 'components/SectionTitle'
 import Spinner from 'components/Spinner'
 import Uploader from 'components/Uploader'
 import ProductForm from 'components/ProductForm'
@@ -152,7 +153,7 @@ class AdminProductDetail extends PureComponent {
     if (loadingStatus === -1) {
       return (
         <div>
-          <h2>Product not found</h2>
+          <SectionTitle>Product not found</SectionTitle>
         </div>
       )
     }
@@ -173,7 +174,7 @@ class AdminProductDetail extends PureComponent {
     return (
       <div>
         <div>
-          <h3 className="mb-5">Edit Product</h3>
+          <SectionTitle className="mb-5">Edit Product</SectionTitle>
 
           {(loadingStatus === 1 || !productDetail || !donorListLoaded) && <Spinner />}
 

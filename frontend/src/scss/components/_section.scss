@@ -1,0 +1,25 @@
+.section {
+  margin-bottom: 3.75rem;
+  @include media-breakpoint-up('md') {
+    margin-bottom: 7.5rem;
+  }
+
+  &__header {
+    margin-bottom: 1.875rem;
+    @extend .d-flex;
+    @extend .align-items-end;
+    @extend .justify-content-between;
+
+    @include media-breakpoint-up('md') {
+      margin-bottom: 3.125rem;
+    }
+  }
+
+  &__footer {
+    margin-top: 2.5rem;
+    text-align: center;
+    @include media-breakpoint-up('md') {
+      display: none;
+    }
+  }
+}

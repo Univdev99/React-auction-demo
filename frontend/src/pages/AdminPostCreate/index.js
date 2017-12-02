@@ -7,9 +7,10 @@ import RichTextEditor from 'react-rte'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router'
 
-import { formSubmit } from 'utils/form'
 import PostForm from 'components/PostForm'
+import SectionTitle from 'components/SectionTitle'
 import { createPost } from 'store/modules/admin/blog'
+import { formSubmit } from 'utils/form'
 import { POST_VISIBILITY_PUBLIC } from 'config'
 
 
@@ -59,7 +60,7 @@ class AdminPostCreate extends PureComponent {
     return (
       <div>
         <div>
-          <h3 className="mb-5">Create Post</h3>
+          <SectionTitle className="mb-5">Create Post</SectionTitle>
 
           <PostForm
             initialValues={_postDetail}

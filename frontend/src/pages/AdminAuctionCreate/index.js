@@ -7,10 +7,11 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withRouter } from 'react-router'
 
 import AuctionForm from 'components/AuctionForm'
-import { formSubmit } from 'utils/form'
+import SectionTitle from 'components/SectionTitle'
 import Spinner from 'components/Spinner'
 import { adminProductsSelector } from 'store/selectors'
 import { createAuction } from 'store/modules/admin/auctions'
+import { formSubmit } from 'utils/form'
 import { getProductList } from 'store/modules/admin/products'
 
 
@@ -55,7 +56,7 @@ class AdminAuctionCreate extends PureComponent {
     return (
       <div>
         <div>
-          <h3 className="mb-5">Create Auction</h3>
+          <SectionTitle className="mb-5">Create Auction</SectionTitle>
 
           {!productListLoaded && <Spinner />}
 

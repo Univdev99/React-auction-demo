@@ -14,6 +14,7 @@ import {
 } from 'reactstrap'
 
 import Pagination from 'components/Pagination'
+import SectionTitle from 'components/SectionTitle'
 import {
   getAuctionList,
   finishAuction,
@@ -207,7 +208,7 @@ class AdminAuctionList extends PureComponent {
     return (
       <div>
         <div className="mb-5 clearfix">
-          <h2 className="pull-left">Auctions</h2>
+          <SectionTitle className="pull-left">Auctions</SectionTitle>
           <Link className="btn btn-primary pull-right" to="/admin/auctions/create">Create</Link>
         </div>
 

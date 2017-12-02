@@ -1,11 +1,9 @@
 import React, { PureComponent } from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import PropTypes from 'prop-types'
-import { Button, Col, Row } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
-import { Link } from 'react-router-dom'
 import { show } from 'redux-modal'
 
 import AppContainerLayout from 'layouts/AppContainerLayout'
@@ -14,11 +12,14 @@ import AuctionCard from 'components/AuctionCard'
 import DonateBar from 'components/DonateBar'
 import DonorCard from 'components/DonorCard'
 import HomeBanner from 'components/HomeBanner'
+import ListWrapper from 'components/ListWrapper'
 import PostItem from 'components/PostItem'
+import Section from 'components/Section'
 import { auctionsSelector, blogSelector, donorsSelector } from 'store/selectors'
 import { getDonorFrontList } from 'store/modules/donors'
 import { getPostFrontList } from 'store/modules/blog'
 import { getTrendingAuctionList } from 'store/modules/auctions'
+
 
 const SUBSCRIBE_MODAL_POPUP_DELAY = 3000
 
@@ -69,56 +70,51 @@ class Home extends PureComponent {
         <HomeBanner />
 
         <AppContainerLayout>
-          <div className="clearfix mb-5">
-            <h3 className="pull-left">Donors</h3>
-            <Button color="primary" outline tag={Link} to="/donors" className="pull-right">
-              All donors
-            </Button>
-          </div>
-
-          <div className="row">
-            {donorFrontList.map(donor => (
-              <div key={donor.get('pk')} className="col-lg-6 col-md-12 mb-3">
+          <Section
+            title="Donors"
+            link="/donors"
+            linkText="All Donors"
+          >
+            <ListWrapper>
+              {donorFrontList.map(donor => (
                 <DonorCard
+                  key={donor.get('pk')} 
                   id={donor.get('pk')}
                   image={donor.getIn(['media', 0, 'url'], '')}
                   title={donor.get('title')}
+                  description={donor.get('description')}
                 />
-              </div>
-            ))}
-          </div>
+              ))}
+            </ListWrapper>
+          </Section>
         </AppContainerLayout>
-        <DonateBar />
+        <Section>
+          <DonateBar />
+        </Section>
         <AppContainerLayout>
-          <div className="clearfix mb-5">
-            <h3 className="pull-left">Trending Auctions</h3>
-            <Button color="primary" outline tag={Link} to="/auctions" className="pull-right">
-              All auctions
-            </Button>
-          </div>
+          <Section
+            title="Trending Auctions"
+            link="/auctions"
+            linkText="All Auctions"
+          >
+            <ListWrapper>
+              {trendingAuctionsList.map(auction => (
+                <AuctionCard key={auction.get('pk')} auction={auction.toJS()} />
+              ))}
+            </ListWrapper>
+          </Section>
 
-          <Row>
-            {trendingAuctionsList.map(auction => (
-              <Col xs={12} md={2} lg={3} key={auction.get('pk')} className="mb-3">
-                <AuctionCard auction={auction.toJS()} />
-              </Col>
-            ))}
-          </Row>
-
-          <div className="clearfix my-5">
-            <h3 className="pull-left">Our Blog</h3>
-            <Button color="primary" outline tag={Link} to="/blog" className="pull-right">
-              All articles
-            </Button>
-          </div>
-
-          <Row>
-            {postsList.map(post => (
-              <Col key={post.get('pk')} xs={12} md={6} className="mb-3">
-                <PostItem post={post.toJS()} />
-              </Col>
-            ))}
-          </Row>
+          <Section
+            title="Our Blog"
+            link="/blog"
+            linkText="All Articles"
+          >
+            <ListWrapper>
+              {postsList.map(post => (
+                <PostItem key={post.get('pk')} post={post.toJS()} />
+              ))}
+            </ListWrapper>
+          </Section>
         </AppContainerLayout>
       </AppLayout1>
     )

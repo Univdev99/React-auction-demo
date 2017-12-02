@@ -7,6 +7,7 @@ import { createStructuredSelector } from 'reselect'
 
 import fbHandle from 'utils/fbHandle'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
+import SectionTitle from 'components/SectionTitle'
 import SignUpForm from 'components/SignUpForm'
 import { formSubmit } from 'utils/form'
 import { signUp } from 'store/modules/auth'
@@ -75,7 +76,7 @@ class SignUp extends PureComponent {
               </center>
               :
               <div>
-                <h3 className="mb-4 text-center">Sign Up</h3>
+                <SectionTitle className="mb-4 text-center">Sign Up</SectionTitle>
 
                 <SignUpForm onSubmit={this.handleSubmit} />
 

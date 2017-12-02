@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Col, Row } from 'reactstrap'
+import { Row } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
@@ -45,13 +45,13 @@ class Donors extends PureComponent {
       >  
         <Row>
           {donorListPage.map(donor => (
-            <Col key={donor.get('pk')} xs={12} lg={6} className="mb-3">
-              <DonorCard
-                id={donor.get('pk')}
-                image={donor.getIn(['media', 0, 'url'], '')}
-                title={donor.get('title')}
-              />
-            </Col>
+            <DonorCard
+              key={donor.get('pk')}
+              id={donor.get('pk')}
+              image={donor.getIn(['media', 0, 'url'], '')}
+              title={donor.get('title')}
+              description={donor.get('description')}
+            />
           ))}
         </Row>
       </FrontContainerLayout>

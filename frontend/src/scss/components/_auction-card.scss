@@ -1,16 +1,14 @@
 .auction-card {
   &__image {
-    padding-top: 60%;
+    padding-top: 100%;
     background: center/contain no-repeat;
   }
 
   &__title {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  &__button {
-    border-radius: 999px;
+    @include media-breakpoint-up('md') {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      height: $headings-line-height * $h4-font-size * 2;
+    }
   }
 }

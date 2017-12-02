@@ -12,6 +12,7 @@ import {
 import { Link } from 'react-router-dom'
 
 import Pagination from 'components/Pagination'
+import SectionTitle from 'components/SectionTitle'
 import {
   getPostList,
 } from 'store/modules/admin/blog'
@@ -118,7 +119,7 @@ class AdminPostList extends PureComponent {
     return (
       <div>
         <div className="mb-4 clearfix">
-          <h2 className="pull-left">Blog Posts</h2>
+          <SectionTitle className="pull-left">Blog Posts</SectionTitle>
           <Link className="btn btn-primary pull-right" to="/admin/posts/create">Create</Link>
         </div>
 

@@ -18,25 +18,27 @@ class PostItem extends PureComponent {
     const { post: { pk, title, created_at: postDate, excerpt, featured_image: image } } = this.props
     const linkTo = `/blog/posts/${pk}`
     return (
-      <Card className={COMPONENT_CLASS}>
-        <Link to={linkTo}>
-          <div className={cx(bem('image'), 'card-img-top')} style={{ backgroundImage: `url(${image})`}} />
-        </Link>
-        <CardBody>
-          <CardTitle className={bem('title')} title={title}>{title}</CardTitle>
-          <CardText>{excerpt}</CardText>
-          <Row className="mt-3">
-            <Col xs={6}>
-              <Input plaintext>{moment(postDate).format('ll')}</Input>
-            </Col>
-            <Col xs={6} className="text-right">
-              <Button color='primary' tag={Link} to={`/blog/posts/${pk}`}>
-                Read Article
-              </Button>
-            </Col>
-          </Row>
-        </CardBody>
-      </Card>
+      <Col xs={12} md={6} className="gb">
+        <Card className={COMPONENT_CLASS}>
+          <Link to={linkTo}>
+            <div className={cx(bem('image'), 'card-img-top')} style={{ backgroundImage: `url(${image})`}} />
+          </Link>
+          <CardBody>
+            <CardTitle className={bem('title')} title={title}>{title}</CardTitle>
+            <CardText>{excerpt}</CardText>
+            <Row className="mt-3">
+              <Col xs={12} md={6} lg={7} xl={8}>
+                <Input plaintext>{moment(postDate).format('ll')}</Input>
+              </Col>
+              <Col xs={12} md={6} lg={5} xl={4} className="text-right">
+                <Button block color='primary' tag={Link} to={`/blog/posts/${pk}`}>
+                  Read Article
+                </Button>
+              </Col>
+            </Row>
+          </CardBody>
+        </Card>
+      </Col>
     )
   }
 }

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import Pagination from 'components/Pagination'
+import SectionTitle from 'components/SectionTitle'
 import Spinner from 'components/Spinner'
 import {
   registerRealTimeNotificationHandler, unregisterRealTimeNotificationHandler
@@ -138,7 +139,7 @@ class AdminAuctionBidList extends PureComponent {
         </div>}
 
         {loadingStatus === 10 && loadingAuctionStatus === 10 && auctionDetail && <div>
-          <h2 className="mb-5">Bids on {auctionDetail.get('title')}</h2>
+          <SectionTitle className="mb-5">Bids on {auctionDetail.get('title')}</SectionTitle>
 
           <table className="table">
             <thead>

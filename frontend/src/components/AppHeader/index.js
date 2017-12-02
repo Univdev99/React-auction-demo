@@ -11,6 +11,22 @@ import AppLogo from 'components/AppLogo'
 import IconUser from 'icons/IconUser'
 
 
+const COMPONENT_CLASS = 'app-header'
+const bem = (suffix) => `${COMPONENT_CLASS}__${suffix}`
+
+const AccountDropdown = ({ className, isStaff, onSignOut }) => (
+  <UncontrolledDropdown className={className}>
+    <DropdownToggle tag="button" className={bem('account-toggler')}>
+      <IconUser className="text-primary" />
+    </DropdownToggle>
+    <DropdownMenu right>
+      {isStaff && <DropdownItem tag={Link} className="dropdown-item" to="/admin">Admin</DropdownItem>}
+      <DropdownItem tag={Link} className="dropdown-item" to="/account">My Account</DropdownItem>
+      <DropdownItem onClick={onSignOut}>Sign Out</DropdownItem>
+    </DropdownMenu>
+  </UncontrolledDropdown>
+)
+
 class AppHeader extends PureComponent {
 
   static propTypes = {
@@ -39,27 +55,26 @@ class AppHeader extends PureComponent {
   }
 
   render() {
-    const { username, isStaff } = this.props
+    const { isStaff } = this.props
     const { menuOpened } = this.state
 
     return (
-      <Navbar color="faded" light expand="md" className="app-header">
+      <Navbar color="faded" light expand="md" className={COMPONENT_CLASS}>
         <AppLogo />
+        <div className={bem('account-responsive')} style={{ flexGrow: 1 }}>
+          <AccountDropdown
+            isStaff={isStaff}
+            onSignOut={this.handleSignOut}
+          />
+        </div>
         <NavbarToggler onClick={this.handleToggleMenu} />
         <Collapse isOpen={menuOpened} navbar>
           <AppHeaderMenu />
-
-          <UncontrolledDropdown>
-            <DropdownToggle tag="span" className="navbar-link cursor-pointer mr-2 text-muted">
-              <IconUser className="text-primary mr-2" />
-              {username}
-            </DropdownToggle>
-            <DropdownMenu right>
-              {isStaff && <DropdownItem tag={Link} className="dropdown-item" to="/admin">Admin</DropdownItem>}
-              <DropdownItem tag={Link} className="dropdown-item" to="/account">My Account</DropdownItem>
-              <DropdownItem onClick={this.handleSignOut}>Sign Out</DropdownItem>
-            </DropdownMenu>
-          </UncontrolledDropdown>
+          <AccountDropdown
+            className="d-none d-md-block"
+            isStaff={isStaff}
+            onSignOut={this.handleSignOut}
+          />
         </Collapse>
       </Navbar>
     )

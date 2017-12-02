@@ -20,9 +20,11 @@ class SubscribeModal extends PureComponent {
       <Modal isOpen={show} toggle={handleHide} size="sm">
         <ModalHeader toggle={handleHide}>Welcome!</ModalHeader>
         <ModalBody>
-          <h5>Join our mailing list</h5>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-          <SubscribeForm />
+          <h4 className="mb-4 pb-1">Join our mailing list</h4>
+          <p className="mb-4 pb-1">
+            We never send spam. Only valuable information once or twice per week.
+          </p>
+          <SubscribeForm forModal />
         </ModalBody>
       </Modal>
     )

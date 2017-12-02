@@ -11,6 +11,7 @@ import AuctionCard from 'components/AuctionCard'
 import DonorCard from 'components/DonorCard'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
 import Pagination from 'components/Pagination'
+import SectionTitle from 'components/SectionTitle'
 import Slider from 'components/Slider'
 import Spinner from 'components/Spinner'
 import { ACCOUNT_BID_AUCTIONS_PAGE_SIZE } from 'config'
@@ -95,7 +96,7 @@ class DonorDetail extends PureComponent {
       <FrontContainerLayout breadcrumbPath={this.breadcrumbPath()} subscribe>
         {status !== -1 && !donorDetail && <Spinner />}
 
-        {status === -1 && <h3><center>Donor not found</center></h3>}
+        {status === -1 && <SectionTitle><center>Donor not found</center></SectionTitle>}
 
         {status !== -1 && donorDetail && <div>
           <Row className="mb-5">
@@ -116,13 +117,11 @@ class DonorDetail extends PureComponent {
           </Row>
 
           <div className="clearfix mb-5">
-            <h3 className="pull-left">Auctions</h3>
+            <SectionTitle className="pull-left">Auctions</SectionTitle>
           </div>
           <Row className="mb-5">
             {auctionList.map(auction => (
-              <Col xs={12} md={2} lg={3} key={auction.get('pk')} className="mb-3">
-                <AuctionCard auction={auction.toJS()} />
-              </Col>
+              <AuctionCard key={auction.get('pk')} auction={auction.toJS()} />
             ))}
           </Row>
           <div className="my-5 text-center">
@@ -135,19 +134,19 @@ class DonorDetail extends PureComponent {
           </div>
 
           <div className="clearfix mb-5">
-            <h3 className="pull-left">Similar Donors</h3>
+            <SectionTitle className="pull-left">Similar Donors</SectionTitle>
             <Link to="/donors" className="pull-right btn btn-sm btn-outline-secondary">All donors</Link>
           </div>
 
           <Row className="mb-5">
             {donorDetail.get('similar_donors').map(donor => (
-              <Col key={donor.get('pk')} xs={12} lg={6} className="mb-3">
-                <DonorCard
-                  id={donor.get('pk')}
-                  image={donor.getIn(['media', 0, 'url'], '')}
-                  title={donor.get('title')}
-                />
-              </Col>
+              <DonorCard
+                key={donor.get('pk')} 
+                id={donor.get('pk')}
+                image={donor.getIn(['media', 0, 'url'], '')}
+                title={donor.get('title')}
+                description={donor.get('description')}
+              />
             ))}
           </Row>
 

@@ -1,0 +1,41 @@
+@include media-breakpoint-down($gutter-breakpoint) {
+  .container {
+    padding-left: $grid-gutter-width-responsive;
+    padding-right: $grid-gutter-width-responsive;
+  }
+
+  .container-fluid {
+    padding-left: $grid-gutter-width-responsive;
+    padding-right: $grid-gutter-width-responsive;
+  }
+
+  .row {
+    margin-left: -$grid-gutter-width-responsive / 2;
+    margin-right: -$grid-gutter-width-responsive / 2;
+  }
+}
+
+%grid-padding {
+  @include media-breakpoint-down($gutter-breakpoint) {
+    padding-right: ($grid-gutter-width-responsive / 2);
+    padding-left: ($grid-gutter-width-responsive / 2);
+  }
+}
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+  $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+  // Allow columns to stretch full width below their breakpoints
+  @for $i from 1 through $grid-columns {
+    .col#{$infix}-#{$i} {
+      @extend %grid-padding;
+    }
+  }
+}
+
+.gb {
+  margin-bottom: $grid-gutter-width;
+  @include media-breakpoint-down($gutter-breakpoint) {
+    margin-bottom: $grid-gutter-width-responsive;
+  }
+}

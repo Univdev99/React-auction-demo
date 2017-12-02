@@ -10,6 +10,7 @@ import { reduxForm } from 'redux-form'
 import FormField from 'components/FormField'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
 import InputField from 'components/InputField'
+import SectionTitle from 'components/SectionTitle'
 import Spinner from 'components/Spinner'
 import TextareaField from 'components/TextareaField'
 import { getJobDetail } from 'store/modules/jobs'
@@ -88,13 +89,13 @@ class JobDetail extends PureComponent {
         {status === -1 && <Alert color="danger">Job not found</Alert>}
 
         {status === 1 && jobDetail && <div>
-          <h3 className="mb-5">{title}</h3>
+          <SectionTitle className="mb-5">{title}</SectionTitle>
 
           <div className="mb-5">
             {jobDetail.get('description')}
           </div>
 
-          <h3 className="mt-5 mb-3">Apply For This Job</h3>
+          <SectionTitle className="mt-5 mb-3">Apply For This Job</SectionTitle>
           <form onSubmit={handleSubmit(this.submitForm)}>
             <Row>
               <Col xs={12} md={6}>

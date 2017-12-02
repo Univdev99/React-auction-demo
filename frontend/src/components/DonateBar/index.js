@@ -1,15 +1,17 @@
 import React from 'react'
-import { Button, Container } from 'reactstrap'
+import { Container } from 'reactstrap'
+
+import ArrowButton from 'components/ArrowButton'
 
 const DonateBar = () => (
-  <div className="bg-secondary text-light py-4">
-    <Container className="text-center">
-      <div className="pr-sm-3 mb-3 mb-sm-0 d-sm-inline-block">
+  <Container className="text-center">
+    <div className="donate-bar">
+      <div className="h2 text-primary d-md-inline-block align-middle mb-4 mb-md-0 mr-md-5">
         Donate your stuff
       </div>
-      <Button color="primary">Donate</Button>
-    </Container>
-  </div>
+      <ArrowButton className="align-middle" text="Donate" />
+    </div>
+  </Container>
 )
 
 export default DonateBar

@@ -1,11 +1,33 @@
-// Overrides Bootstrap Variables
+/* BEGIN Overriding Bootstrap Variables */
 
 $primary: #fdb600;
+$secondary: #666666;
 
 $dark: #333333;
 
+$body-color: #5E6566;
+$headings-color: #000000;
+
+$paragraph-margin-bottom: 1.5rem;
+
 $font-family-base: 'Barlow Semi Condensed', Roboto, "Helvetica Neue", Arial, sans-serif;
 $headings-font-family: 'DIN Offc', Roboto, "Helvetica Neue", Arial, sans-serif;
+
+$font-size-base: 1rem;
+
+$h1-font-size: $font-size-base * 4;
+$h2-font-size: $font-size-base * 2.5;
+$h3-font-size: $font-size-base * 2.25;
+$h4-font-size: $font-size-base * 1.375;
+$h5-font-size: $font-size-base * 1.125;
+$h6-font-size: $font-size-base;
+
+$enable-shadows: true;
+
+$border-color: #F8F8FD;
+$border-radius: 0;
+$border-radius-md: 0;
+$border-radius-lg: 0;
 
 $navbar-brand-font-size: 2rem;
 $navbar-padding-y: 1rem;
@@ -21,6 +43,40 @@ $navbar-light-hover-color: $primary;
 $navbar-light-active-color: $primary;
 $navbar-light-toggler-icon-bg: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='#{$navbar-light-color}' stroke-width='1' stroke='none' d='M6,6 L24,6 L24,9 L6,9 L6,9 Z M6,13 L24,13 L24,16 L6,16 L6,13 Z M6,20 L24,20 L24,23 L6,23 L6,20 Z'/%3E%3C/svg%3E");
 $navbar-light-toggler-border-color: transparent;
+
+$navbar-toggler-padding-x: 0.3rem;
+
+$dropdown-border-width: 4px;
+$dropdown-item-padding-y: 0.5rem;
+$dropdown-border-color: $border-color;
+
+$modal-inner-padding: 60px;
+$modal-content-border-width: 4px;
+$modal-content-border-color: $border-color;
+$modal-header-padding: 60px;
+$modal-header-border-color: transparent;
+$modal-sm: 420px;
+
+$btn-border-radius: 3px;
+$btn-border-radius-lg: 4px;
+$btn-border-radius-sm: 3px;
+$input-btn-border-width: 2px;
+
+$input-border-radius: 3px;
+$input-border-radius-lg: 4px;
+$input-border-radius-sm: 3px;
+$input-border-color: #ffffff;
+$input-box-shadow: 0 5px 20px rgba(72, 78, 84, .1);
+$input-btn-focus-color: rgba($primary, .25);
+$input-btn-focus-box-shadow: 0 5px 20px $input-btn-focus-color;
+
+$card-border-color: transparent;
+$card-spacer-y: 1rem;
+
+/* END Overriding Bootstrap Variables */
+
+$grid-gutter-width-responsive: 20px;
+$gutter-breakpoint: 'lg';
 
 $facebook-color: #6E85E0;
 $twitter-color: #54B9F3;

@@ -1,0 +1,13 @@
+.subscribe-bar {
+  @extend .bg-secondary;
+  @extend .py-4;
+
+  &__text {
+    margin-bottom: 0;
+    color: $white;
+
+    @include media-breakpoint-up('lg') {
+      font-size: $h2-font-size;
+    }
+  }
+}

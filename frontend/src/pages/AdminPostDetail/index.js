@@ -8,6 +8,7 @@ import Immutable from 'immutable'
 import RichTextEditor from 'react-rte'
 
 import PostForm from 'components/PostForm'
+import SectionTitle from 'components/SectionTitle'
 import { formSubmit } from 'utils/form'
 import Spinner from 'components/Spinner'
 import {
@@ -85,7 +86,7 @@ class AdminPostDetail extends PureComponent {
     if (loadingStatus === -1) {
       return (
         <div>
-          <h2>Post not found</h2>
+          <SectionTitle>Post not found</SectionTitle>
         </div>
       )
     }
@@ -109,7 +110,7 @@ class AdminPostDetail extends PureComponent {
     return (
       <div>
         <div>
-          <h3 className="mb-5">Edit Post</h3>
+          <SectionTitle className="mb-5">Edit Post</SectionTitle>
 
           {(loadingStatus === 1 || !postDetail) && <Spinner />}
 

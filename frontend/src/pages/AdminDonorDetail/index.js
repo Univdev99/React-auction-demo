@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom'
 
 import DonorForm from 'components/DonorForm'
 import { formSubmit } from 'utils/form'
+import SectionTitle from 'components/SectionTitle'
 import SortableMediaList from 'components/SortableMediaList'
 import Spinner from 'components/Spinner'
 import Uploader from 'components/Uploader'
@@ -154,7 +155,7 @@ class AdminDonorDetail extends PureComponent {
     if (loadingStatus === -1) {
       return (
         <div>
-          <h2>Donor not found</h2>
+          <SectionTitle>Donor not found</SectionTitle>
         </div>
       )
     }
@@ -176,7 +177,7 @@ class AdminDonorDetail extends PureComponent {
       <div>
         <div>
           <div className="clearfix">
-            <h3 className="mb-5 pull-left">Edit Donor</h3>
+            <SectionTitle className="mb-5 pull-left">Edit Donor</SectionTitle>
             {
               donorDetail ?
               <Link
