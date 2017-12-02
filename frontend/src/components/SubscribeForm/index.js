@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import cx from 'classnames'
 import { Button, Col, Input, Row } from 'reactstrap'
 import { reduxForm } from 'redux-form/immutable'
 
@@ -27,6 +28,7 @@ const isValidEmail = value =>
 
 class SubscribeForm extends PureComponent {
   static propTypes = {
+    forModal: PropTypes.bool,
     handleSubmit: PropTypes.func.isRequired,
     submitting: PropTypes.bool.isRequired
   }
@@ -36,12 +38,15 @@ class SubscribeForm extends PureComponent {
   }
 
   render() {
-    const { handleSubmit, submitting } = this.props
+    const { forModal, handleSubmit, submitting } = this.props
 
     return (
       <form onSubmit={handleSubmit(this.doSubmit)}>
         <Row>
-          <Col xs={12} md={8} className="mb-2 mb-md-0">
+          <Col
+            xs={12}
+            md={forModal ? undefined : 8}
+            className={cx({ 'mb-2 mb-md-0': !forModal, 'mb-4 pb-1': forModal })}>
             <FormField
               name="email"
               placeholder="Email"
@@ -49,7 +54,7 @@ class SubscribeForm extends PureComponent {
               component={renderField}
             />
           </Col>
-          <Col xs={12} md={4}>
+          <Col xs={12} md={forModal ? undefined : 4}>
             <Button type="submit" block size="lg" color="primary" disabled={submitting}>
               Subscribe
             </Button>
