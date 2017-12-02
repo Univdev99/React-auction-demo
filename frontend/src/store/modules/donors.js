@@ -1,7 +1,14 @@
 import Immutable from 'immutable'
 import { createAction, handleActions } from 'redux-actions'
 
-import { requestSuccess, requestFail } from 'store/api/request'
+import {
+  API_PENDING,
+  API_SUCCESS,
+  API_FAIL,
+  requestPending,
+  requestSuccess,
+  requestFail
+} from 'store/api/request'
 import {
   DONOR_GET_LIST_PAGE,
   DONOR_GET_FRONT_LIST,
@@ -13,12 +20,15 @@ import {
 
 const initialState = Immutable.fromJS({
   donorListPage: [],
-  donorListPageLoaded: false,
+  donorListPageStatus: 'INIT',
   donorCount: 0,
-  donorPageNumber: 1,
+  donorNextPage: 1,
+
   donorFrontList: [],
-  donorFrontListLoaded: false,
+  donorFrontListStatus: 'INIT',
+
   donorDetail: null,
+  donorDetailStatus: 'INIT'
 })
 
 /* Action creators */
@@ -33,38 +43,57 @@ export default handleActions({
 
   /* Get donor list actions */
 
+  [requestPending(DONOR_GET_LIST_PAGE)]: (state, { payload }) => state.withMutations(map => {
+    map.set('donorListPageStatus', API_PENDING)
+  }),
+
   [requestSuccess(DONOR_GET_LIST_PAGE)]: (state, { payload }) => state.withMutations(map => {
-    map.set('donorListPage', Immutable.fromJS(payload.results))
+    const newContent = Immutable.fromJS(payload.results)
+    map.set(
+      'donorListPage',
+      payload.loadMore ? state.get('donorListPage').concat(newContent) : newContent
+    )
     map.set('donorCount', payload.count)
-    map.set('donorListPageLoaded', true)
+    map.set('donorNextPage', payload.nextPage)
+    map.set('donorListPageStatus', API_SUCCESS)
   }),
 
   [requestFail(DONOR_GET_LIST_PAGE)]: (state, { payload }) => state.withMutations(map => {
     map.set('donorListPage', Immutable.List())
     map.set('donorCount', 0)
-    map.set('donorListPageLoaded', false)
+    map.set('donorListPageStatus', API_FAIL)
   }),
 
   /* Get donor front list actions */
 
+  [requestPending(DONOR_GET_LIST_PAGE)]: (state, { payload }) => state.withMutations(map => {
+    map.set('donorFrontListStatus', API_PENDING)
+  }),
+
   [requestSuccess(DONOR_GET_FRONT_LIST)]: (state, { payload }) => state.withMutations(map => {
     map.set('donorFrontList', Immutable.fromJS(payload))
-    map.set('donorFrontListLoaded', true)
+    map.set('donorFrontListStatus', API_SUCCESS)
   }),
 
   [requestFail(DONOR_GET_FRONT_LIST)]: (state, { payload }) => state.withMutations(map => {
     map.set('donorFrontList', Immutable.List())
-    map.set('donorFrontListLoaded', false)
+    map.set('donorFrontListStatus', API_FAIL)
   }),
 
   /* Get donor detail actions */
 
+  [requestPending(DONOR_GET_DETAIL)]: (state, { payload }) => state.withMutations(map => {
+    map.set('donorDetailStatus', API_PENDING)
+  }),
+
   [requestSuccess(DONOR_GET_DETAIL)]: (state, { payload }) => state.withMutations(map => {
     map.set('donorDetail', Immutable.fromJS(payload))
+    map.set('donorDetailStatus', API_SUCCESS)
   }),
 
   [requestFail(DONOR_GET_DETAIL)]: (state, { payload }) => state.withMutations(map => {
     map.set('donorDetail', null)
+    map.set('donorDetailStatus', API_FAIL)
   }),
 
 }, initialState)

@@ -10,6 +10,7 @@ export default ({
   type,
   method, // one of 'get', 'post', 'put', 'delete'
   path,
+  params: sagaParams,
   headers,
   success,
   fail,
@@ -45,7 +46,7 @@ export default ({
         ...(customHeaders ? customHeaders : {}),
       },
       data,
-      params,
+      params: { ...sagaParams, ...params },
       baseURL: BASE_API_URL,
       onUploadProgress,
       onDownloadProgress,
