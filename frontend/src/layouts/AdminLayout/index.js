@@ -102,31 +102,31 @@ class AdminLayout extends PureComponent {
           <div className="container-fluid py-2">
             <ul className="nav flex-column">
               <li className="nav-item">
-                <Link className="nav-link" to="/admin/auctions">Auctions</Link>
+                <Link className="nav-link text-dark" to="/admin/auctions">Auctions</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/admin/donors">Donors</Link>
+                <Link className="nav-link text-dark" to="/admin/donors">Donors</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/admin/products">Products</Link>
+                <Link className="nav-link text-dark" to="/admin/products">Products</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/admin/charities">Charities</Link>
+                <Link className="nav-link text-dark" to="/admin/charities">Charities</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/admin/sales">Sales</Link>
+                <Link className="nav-link text-dark" to="/admin/sales">Sales</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/admin/posts">Blog</Link>
+                <Link className="nav-link text-dark" to="/admin/posts">Blog</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/admin/users">Users</Link>
+                <Link className="nav-link text-dark" to="/admin/users">Users</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/admin/media">Media</Link>
+                <Link className="nav-link text-dark" to="/admin/media">Media</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/admin/backlog">Backlog</Link>
+                <Link className="nav-link text-dark" to="/admin/backlog">Backlog</Link>
               </li>
             </ul>
           </div>
