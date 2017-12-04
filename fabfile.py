@@ -48,7 +48,16 @@ def shell():
     Create django admin account
     """
     with cd(PROJECT_ROOT):
-        run('docker-compose exec web bash')
+        run('docker-compose exec backend bash')
+
+
+@task
+def createsuperuser():
+    """
+    Create django admin account
+    """
+    with cd(PROJECT_ROOT):
+        run('docker-compose exec backend python manage.py createsuperuser')
 
 
 @task
