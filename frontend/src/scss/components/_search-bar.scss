@@ -1,0 +1,16 @@
+.search-bar {
+  &__input-group {
+    position: relative;
+  }
+  &__icon {
+    display: block;
+    position: absolute;
+    left: 1.25rem;
+    line-height: 1;
+    @include vcenter;
+  }
+
+  &__input {
+    padding-left: 2.75rem;
+  }
+}

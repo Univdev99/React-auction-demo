@@ -12,12 +12,11 @@ import DonorCard from 'components/DonorCard'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
 import HtmlBlock from 'components/HtmlBlock'
 import ListWrapper from 'components/ListWrapper'
-import Pagination from 'components/Pagination'
+import MoreButton from 'components/MoreButton'
 import Section from 'components/Section'
 import SectionTitle from 'components/SectionTitle'
 import MediaSlider from 'components/MediaSlider'
 import Spinner from 'components/Spinner'
-import { ACCOUNT_BID_AUCTIONS_PAGE_SIZE } from 'config'
 import { API_PENDING, API_SUCCESS, API_FAIL } from 'store/api/request'
 import { auctionsSelector, donorsSelector } from 'store/selectors'
 import { getAuctionList } from 'store/modules/auctions'
@@ -44,15 +43,15 @@ class DonorDetail extends PureComponent {
   getDetail = (id) => {
     const { getDonorDetail } = this.props
     getDonorDetail({ id })
-    this.getAuctionListPage(1)
+    this.getAuctionListPage(false)
   }
 
-  getAuctionListPage = (page) => {
+  getAuctionListPage = (loadMore) => {
     const { getAuctionList, match: { params } } = this.props
     getAuctionList({
+      loadMore,
       params: {
-        donor: params.id,
-        page
+        donor: params.id
       }
     })
   }
@@ -68,14 +67,19 @@ class DonorDetail extends PureComponent {
     }
   }
 
+  handleLoadMoreAuctions = () => {
+    this.getAuctionListPage(true)
+  }
+
   render() {
     const { auctions, donors } = this.props
     const donorDetail = donors.get('donorDetail')
     const donorDetailStatus = donors.get('donorDetailStatus')
 
     const auctionList = auctions.get('auctionList')
-    const auctionListPageNumber = auctions.get('auctionListPageNumber')
-    const auctionListCount = auctions.get('auctionListCount')
+    const auctionListNextPage = auctions.get('auctionListNextPage')
+    const auctionListStatus = auctions.get('auctionListStatus')
+    const isLoadingAuctions = auctionListStatus === API_PENDING
 
     return (
       <FrontContainerLayout breadcrumbPath={this.breadcrumbPath()} subscribe>
@@ -107,14 +111,11 @@ class DonorDetail extends PureComponent {
                 <AuctionCard key={auction.get('pk')} auction={auction.toJS()} /> 
               ))}
             </ListWrapper>
-            <div className="my-5 text-center">
-              <Pagination
-                currentPage={auctionListPageNumber}
-                totalCount={auctionListCount}
-                pageSize={ACCOUNT_BID_AUCTIONS_PAGE_SIZE}
-                onPage={this.getAuctionListPage}
-              />
-            </div>
+            {auctionListNextPage && <MoreButton
+              onClick={this.handleLoadMoreAuctions}
+              text="Show More"
+              disabled={isLoadingAuctions}
+            />}
           </Section>
 
           <Section
