@@ -61,6 +61,15 @@ def createsuperuser():
 
 
 @task
+def migrate():
+    """
+    Create django admin account
+    """
+    with cd(PROJECT_ROOT):
+        run('docker-compose exec backend python manage.py migrate')
+
+
+@task
 def psql():
     """
     Create django admin account
