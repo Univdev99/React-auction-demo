@@ -10,7 +10,7 @@ import auctionBidFlow from 'utils/auctionBidFlow'
 import AuctionCard from 'components/AuctionCard'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
 import SectionTitle from 'components/SectionTitle'
-import Slider from 'components/Slider'
+import MediaSlider from 'components/MediaSlider'
 import Spinner from 'components/Spinner'
 import TimeLeft from 'components/TimeLeft'
 import { auctionsSelector } from 'store/selectors'
@@ -91,7 +91,7 @@ class AuctionDetail extends PureComponent {
         {status !== -1 && auctionDetail && <div>
           <Row className="mb-5">
             <Col xs={12} md={6} className="mb-5">
-              <Slider media={auctionDetail.getIn(['product', 'media'])} />
+              <MediaSlider media={auctionDetail.getIn(['product', 'media'])} />
             </Col>
             <Col xs={12} md={6} className="mb-5">
               <div className="px-3">

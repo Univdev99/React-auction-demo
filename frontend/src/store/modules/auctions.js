@@ -1,7 +1,14 @@
 import Immutable from 'immutable'
 import { createAction, handleActions } from 'redux-actions'
 
-import { requestSuccess, requestFail } from 'store/api/request'
+import {
+  API_PENDING,
+  API_SUCCESS,
+  API_FAIL,
+  requestPending,
+  requestSuccess,
+  requestFail
+} from 'store/api/request'
 import {
   AUCTION_GET_LIST,
   AUCTION_GET_DETAIL,
@@ -16,11 +23,14 @@ const initialState = Immutable.fromJS({
   /* Auction */
   auctionList: [],
   auctionListCount: 0,
-  auctionListLoaded: false,
-  auctionListPageNumber: 1,
+  auctionListNextPage: 1,
+  auctionListStatus: 'INIT',
+
   auctionTrendingList: [],
-  auctionTrendingListLoaded: false,
-  auctionDetail: null
+  auctionTrendingListStatus: 'INIT',
+
+  auctionDetail: null,
+  auctionDetailStatus: 'INIT'
 })
 
 /* Action creators */
@@ -34,50 +44,62 @@ export const placeBid = createAction(AUCTION_PLACE_BID)
 
 export default handleActions({
 
-  [AUCTION_GET_LIST]: (state, { payload }) => state.withMutations(map => {
-    payload && payload.params && map.set('auctionListPageNumber', payload.params.page || 1)
+  /* Get donor list actions */
+
+  [requestPending(AUCTION_GET_LIST)]: (state, { payload }) => state.withMutations(map => {
+    map.set('auctionListStatus', API_PENDING)
   }),
 
-  /* Get auction list actions */
-
   [requestSuccess(AUCTION_GET_LIST)]: (state, { payload }) => state.withMutations(map => {
-    map.set('auctionList', Immutable.fromJS(payload.results))
+    const newContent = Immutable.fromJS(payload.results)
+    map.set(
+      'auctionList',
+      payload.loadMore ? state.get('auctionList').concat(newContent) : newContent
+    )
     map.set('auctionListCount', payload.count)
-    map.set('auctionListLoaded', true)
+    map.set('auctionListNextPage', payload.nextPage)
+    map.set('auctionListStatus', API_SUCCESS)
   }),
 
   [requestFail(AUCTION_GET_LIST)]: (state, { payload }) => state.withMutations(map => {
     map.set('auctionList', Immutable.List())
     map.set('auctionListCount', 0)
-    map.set('auctionListLoaded', false)
+    map.set('auctionListStatus', API_FAIL)
   }),
 
   /* Get trending auction list actions */
 
+  [requestPending(AUCTION_GET_TRENDING_LIST)]: (state, { payload }) => state.withMutations(map => {
+    map.set('auctionTrendingListStatus', API_PENDING)
+  }),
+
   [requestSuccess(AUCTION_GET_TRENDING_LIST)]: (state, { payload }) => state.withMutations(map => {
     map.set('auctionTrendingList', Immutable.fromJS(payload.results))
-    map.set('auctionTrendingListLoaded', true)
+    map.set('auctionTrendingListStatus', API_SUCCESS)
   }),
 
   [requestFail(AUCTION_GET_LIST)]: (state, { payload }) => state.withMutations(map => {
     map.set('auctionTrendingList', Immutable.List())
-    map.set('auctionTrendingListLoaded', false)
+    map.set('auctionTrendingListStatus', API_FAIL)
   }),
 
   /* Get auction detail actions */
 
-  [AUCTION_GET_DETAIL]: (state, { payload }) => state.withMutations(map => {
+  [requestPending(AUCTION_GET_DETAIL)]: (state, { payload }) => state.withMutations(map => {
+    map.set('auctionDetailStatus', API_PENDING)
     map.set('auctionDetail', null)
   }),
 
   [requestSuccess(AUCTION_GET_DETAIL)]: (state, { payload }) => state.withMutations(map => {
     map.set('auctionDetail', Immutable.fromJS(payload))
+    map.set('auctionDetailStatus', API_SUCCESS)
   }),
 
   /* Update auction detail actions */
 
   [requestSuccess(AUCTION_GET_DETAIL)]: (state, { payload }) => state.withMutations(map => {
     map.set('auctionDetail', Immutable.fromJS(payload))
+    map.set('auctionDetailStatus', API_FAIL)
   }),
 
 }, initialState)

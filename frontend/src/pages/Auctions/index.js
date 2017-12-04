@@ -1,17 +1,21 @@
 import React, { PureComponent } from 'react'
+import Immutable from 'immutable'
+import ImmutablePropTypes from 'react-immutable-proptypes'
+import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
-import { Row } from 'reactstrap'
-import PropTypes from 'prop-types'
-import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import AuctionCard from 'components/AuctionCard'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
-import Pagination from 'components/Pagination'
-import { ACCOUNT_BID_AUCTIONS_PAGE_SIZE } from 'config'
+import ListWrapper from 'components/ListWrapper'
+import MoreButton from 'components/MoreButton'
+import SearchBar from 'components/SearchBar'
+import Section from 'components/Section'
+import { API_PENDING } from 'store/api/request'
 import { auctionsSelector } from 'store/selectors'
 import { getAuctionList } from 'store/modules/auctions'
+import { jsonToQueryString, queryStringToJson } from 'utils/pureFunctions'
 
 
 class Auctions extends PureComponent {
@@ -29,41 +33,71 @@ class Auctions extends PureComponent {
   }
 
   componentDidMount() {
-    this.getAuctionListPage(1)
+    this.getAuctionListPage(false)
   }
 
-  getAuctionListPage = (page) => {
-    const { getAuctionList } = this.props
+  componentDidUpdate(prevProps) {
+    const prevSearch = Immutable.fromJS(queryStringToJson(prevProps.location.search))
+    const nextSearch = Immutable.fromJS(queryStringToJson(this.props.location.search))
+    if (!prevSearch.equals(nextSearch)) {
+      this.getAuctionListPage(false)
+    }
+  }
+
+  getAuctionListPage = (loadMore) => {
+    const { getAuctionList, location } = this.props
+    const searchParams = queryStringToJson(location.search)
     getAuctionList({
-      params: { page }
+      loadMore,
+      params: searchParams
+    })
+  }
+
+  handleLoadMoreAuctions = () => {
+    this.getAuctionListPage(true)
+  }
+
+  handleSearch = (searchText) => {
+    const { history, location } = this.props
+    const searchParams = queryStringToJson(location.search)
+
+    history.push({
+      pathname: '/auctions',
+      search: jsonToQueryString({
+        ...searchParams,
+        search: searchText
+      })
     })
   }
 
   render() {
-    const { auctions } = this.props
+    const { auctions, location } = this.props
     const auctionList = auctions.get('auctionList')
-    const auctionListPageNumber = auctions.get('auctionListPageNumber')
-    const auctionListCount = auctions.get('auctionListCount')
+    const auctionListNextPage = auctions.get('auctionListNextPage')
+    const auctionListStatus = auctions.get('auctionListStatus')
+    const isLoadingAuctions = auctionListStatus === API_PENDING
+    const searchParams = queryStringToJson(location.search)
 
     return (
       <FrontContainerLayout
         breadcrumbPath={this.breadcrumbPath()}
-        title="Auctions"
         subscribe
       >
-        <Row>
-          {auctionList.map(auction => (
-            <AuctionCard key={auction.get('pk')} auction={auction.toJS()} />
-          ))}
-        </Row>
-        <div className="my-5 text-center">
-          <Pagination
-            currentPage={auctionListPageNumber}
-            totalCount={auctionListCount}
-            pageSize={ACCOUNT_BID_AUCTIONS_PAGE_SIZE}
-            onPage={this.getAuctionListPage}
-          />
-        </div>
+        <Section>
+          <SearchBar initialValue={searchParams.search} onSearch={this.handleSearch} />
+        </Section>
+        <Section title="Auctions">
+          <ListWrapper>
+            {auctionList.map(auction => (
+              <AuctionCard key={auction.get('pk')} auction={auction.toJS()} />
+            ))}
+          </ListWrapper>
+          {auctionListNextPage && <MoreButton
+            onClick={this.handleLoadMoreAuctions}
+            text="Show More"
+            disabled={isLoadingAuctions}
+          />}
+        </Section>
       </FrontContainerLayout>
     )
   }

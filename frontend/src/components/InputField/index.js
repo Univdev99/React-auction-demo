@@ -13,6 +13,7 @@ class InputField extends PureComponent {
     label: PropTypes.string,
     meta: PropTypes.object.isRequired,
     placeholder: PropTypes.string,
+    size: PropTypes.string,
     type: PropTypes.string,
     radioValue: PropTypes.string
   }
@@ -30,6 +31,7 @@ class InputField extends PureComponent {
       meta: { error, touched },
       options,
       placeholder,
+      size,
       type,
       radioValue
     } = this.props
@@ -43,7 +45,7 @@ class InputField extends PureComponent {
       return (
         <FormGroup>
           <Label check>
-            <Input type={type} {...input} placeholder={placeholder}
+            <Input type={type} {...input} placeholder={placeholder} size={size}
               valid={fieldError ? false : undefined} children={children} {...checkedExtra} />
             {label}
           </Label>
@@ -57,7 +59,7 @@ class InputField extends PureComponent {
         <FormGroup>
           <Label check>
             <Input onChange={onChange} checked={radioValue === value}
-              type={type} {..._input} placeholder={placeholder}
+              type={type} {..._input} placeholder={placeholder} size={size}
               valid={fieldError ? false : undefined} children={children} value={radioValue} />
             {label}
           </Label>
@@ -69,7 +71,7 @@ class InputField extends PureComponent {
       return (
         <FormGroup>
           {label && <Label>{label}</Label>}
-          <Input type={type} {...input} placeholder={placeholder}
+          <Input type={type} {...input} placeholder={placeholder} size={size}
             valid={fieldError ? false : undefined} children={children}
           >
             {type === 'select' && options ? [

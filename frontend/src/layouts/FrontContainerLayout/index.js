@@ -6,11 +6,11 @@ import AppLayout1 from '../AppLayout1'
 import SectionTitle from 'components/SectionTitle'
 
 
-const FrontContainerLayout = ({ breadcrumbPath, children, subscribe, title }) => (
-  <AppLayout1 subscribe={subscribe}>
+const FrontContainerLayout = ({ breadcrumbPath, children, className, subscribe, title }) => (
+  <AppLayout1 className={className} subscribe={subscribe}>
     <AppContainerLayout>
       {title && <div className="front-container-layout__header">
-        <SectionTitle>{title}</SectionTitle>
+        <SectionTitle noMargin>{title}</SectionTitle>
       </div>}
       {children}
     </AppContainerLayout>

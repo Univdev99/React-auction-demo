@@ -1,5 +1,11 @@
-export const requestPending = type => `${type}/pending`
+export const API_PENDING = 'pending'
 
-export const requestSuccess = type => `${type}/success`
+export const API_SUCCESS = 'success'
 
-export const requestFail = type => `${type}/fail`
+export const API_FAIL = 'fail'
+
+export const requestPending = type => `${type}/${API_PENDING}`
+
+export const requestSuccess = type => `${type}/${API_SUCCESS}`
+
+export const requestFail = type => `${type}/${API_FAIL}`

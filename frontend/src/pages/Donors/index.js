@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react'
-import { Row } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
@@ -8,6 +7,9 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import DonorCard from 'components/DonorCard'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
+import ListWrapper from 'components/ListWrapper'
+import MoreButton from 'components/MoreButton'
+import { API_PENDING } from 'store/api/request'
 import { getDonorListPage } from 'store/modules/donors'
 import { donorsSelector } from 'store/selectors'
 
@@ -19,31 +21,29 @@ class Donors extends PureComponent {
     getDonorListPage: PropTypes.func.isRequired,
   }
 
-  breadcrumbPath() {
-    return [
-      { route: '/', text: 'Home' },
-      { text: 'Donors' },
-    ]
+  componentDidMount() {
+    const { getDonorListPage } = this.props
+    getDonorListPage()
   }
 
-  componentWillMount() {
-    const { donors, getDonorListPage } = this.props
-    if (!donors.get('donorListPageLoaded')) {
-      getDonorListPage()
-    }
+  handleLoadMore = () => {
+    const { getDonorListPage } = this.props
+    getDonorListPage({ loadMore: true })
   }
 
   render() {
     const { donors } = this.props
     const donorListPage = donors.get('donorListPage')
+    const donorListPageStatus = donors.get('donorListPageStatus')
+    const donorNextPage = donors.get('donorNextPage')
+    const isLoading = donorListPageStatus === API_PENDING
 
     return (
       <FrontContainerLayout
-        breadcrumbPath={this.breadcrumbPath()}
         title="Donors"
         subscribe
       >  
-        <Row>
+        <ListWrapper>
           {donorListPage.map(donor => (
             <DonorCard
               key={donor.get('pk')}
@@ -53,7 +53,12 @@ class Donors extends PureComponent {
               description={donor.get('description')}
             />
           ))}
-        </Row>
+        </ListWrapper>
+        {donorNextPage && <MoreButton
+          onClick={this.handleLoadMore}
+          text="Show More"
+          disabled={isLoading}
+        />}
       </FrontContainerLayout>
     )
   }

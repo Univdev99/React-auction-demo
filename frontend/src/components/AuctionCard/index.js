@@ -39,7 +39,7 @@ class AuctionCard extends PureComponent {
             <CardText><TimeLeft until={openUntil} /></CardText>
             <div className="mt-3">
               <Button block color='primary' onClick={this.handleBid} className={bem('button')}>
-                Make a bid
+                Bid Now
               </Button>
             </div>
           </CardBody>
