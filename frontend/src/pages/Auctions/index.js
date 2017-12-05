@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
 import AuctionCard from 'components/AuctionCard'
+import AuctionSideFilter from './AuctionSideFilter'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
 import ListWrapper from 'components/ListWrapper'
 import MoreButton from 'components/MoreButton'
@@ -17,9 +18,26 @@ import { auctionsSelector } from 'store/selectors'
 import { getAuctionList } from 'store/modules/auctions'
 import { jsonToQueryString, queryStringToJson } from 'utils/pureFunctions'
 
+const getSearchParams = (query) => {
+  const searchParams = queryStringToJson(query)
+  return {
+    ...searchParams,
+    price_range_enabled: !!searchParams.price_range,
+    price_range: searchParams.price_range
+      ? searchParams.price_range.split(',').map(val => parseInt(val, 10))
+      : undefined
+  }
+}
+
+const getQueryString = (params) => {
+  const { price_range_enabled, ...fields } = params
+  return jsonToQueryString({
+    ...fields,
+    price_range: price_range_enabled ? params.price_range : undefined
+  })
+}
 
 class Auctions extends PureComponent {
-
   static propTypes = {
     auctions: ImmutablePropTypes.map.isRequired,
     getAuctionList: PropTypes.func.isRequired,
@@ -57,16 +75,12 @@ class Auctions extends PureComponent {
     this.getAuctionListPage(true)
   }
 
-  handleSearch = (searchText) => {
-    const { history, location } = this.props
-    const searchParams = queryStringToJson(location.search)
+  handleSearch = (values) => {
+    const { history } = this.props
 
     history.push({
       pathname: '/auctions',
-      search: jsonToQueryString({
-        ...searchParams,
-        search: searchText
-      })
+      search: getQueryString(values.toJS())
     })
   }
 
@@ -76,15 +90,16 @@ class Auctions extends PureComponent {
     const auctionListNextPage = auctions.get('auctionListNextPage')
     const auctionListStatus = auctions.get('auctionListStatus')
     const isLoadingAuctions = auctionListStatus === API_PENDING
-    const searchParams = queryStringToJson(location.search)
+    const searchParams = getSearchParams(location.search)
 
     return (
       <FrontContainerLayout
         breadcrumbPath={this.breadcrumbPath()}
         subscribe
       >
+        <AuctionSideFilter initialValues={searchParams} onSubmit={this.handleSearch} />
         <Section>
-          <SearchBar initialValue={searchParams.search} onSearch={this.handleSearch} />
+          <SearchBar initialValues={searchParams} onSubmit={this.handleSearch} />
         </Section>
         <Section title="Auctions">
           <ListWrapper>
