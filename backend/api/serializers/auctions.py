@@ -14,6 +14,9 @@ from api.serializers.auth import UserSerializer
 from api.serializers.entities import ProductSerializer
 from api.serializers.entities import ProductDetailSerializer
 from api.serializers.mixins import TagnamesSerializerMixin
+from history.constants import HISTORY_RECORD_AUCTION_NEW
+from history.constants import HISTORY_RECORD_USER_BID
+from history.models import HistoryRecord
 from notification.constants import NOTIFICATION_AUCTION_NEW_BID
 from notification.models import Notification
 
@@ -56,6 +59,11 @@ class AuctionAdminSerializer(AuctionSerializer):
             return user.email
         except:
             return None
+
+    def create(self, *args, **kwargs):
+        instance = super(AuctionAdminSerializer, self).create(*args, **kwargs)
+        HistoryRecord.objects.create_history_record(instance, None, HISTORY_RECORD_AUCTION_NEW)
+        return instance
 
 
 class AuctionDetailWithSimilarSerializer(serializers.ModelSerializer):
@@ -153,6 +161,11 @@ class BidSerializer(serializers.ModelSerializer):
             user=request.user,
             auction=auction
         )
+
+        HistoryRecord.objects.create_history_record(request.user, auction, HISTORY_RECORD_USER_BID, {
+            'price': price,
+            'placed_at': placed_at,
+        })
 
         Notification.objects.create_notification(
             request.user,

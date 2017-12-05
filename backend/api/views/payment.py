@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from api.serializers.payment import PaymentInfoSerializer
 from api.serializers.payment import PaymentSerializer
 from api.serializers.payment import SetPaymentSerializer
+from history.constants import HISTORY_RECORD_USER_UPDATE_PAYMENT
+from history.models import HistoryRecord
 
 
 class AccountPaymentView(views.APIView):
@@ -22,6 +24,9 @@ class AccountPaymentView(views.APIView):
         )
         serializer.is_valid(raise_exception=True)
         customer = serializer.save()
+
+        HistoryRecord.objects.create_history_record(self.request.user, None, HISTORY_RECORD_USER_UPDATE_PAYMENT)
+
         response_ser = PaymentInfoSerializer(instance=customer)
         return Response(response_ser.data)
 

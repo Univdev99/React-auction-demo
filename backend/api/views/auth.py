@@ -18,6 +18,11 @@ from api.serializers.auth import UserSerializer
 from api.serializers.auth import UpdatePasswordSerializer
 
 from account.models import UserVerification
+from history.constants import HISTORY_RECORD_USER_SIGNUP
+from history.constants import HISTORY_RECORD_USER_SIGNUP_VERIFY
+from history.constants import HISTORY_RECORD_USER_SIGNUP_FACEBOOK
+from history.constants import HISTORY_RECORD_USER_UPDATE_DETAILS
+from history.models import HistoryRecord
 
 
 class SignUpView(views.APIView):
@@ -33,6 +38,9 @@ class SignUpView(views.APIView):
             token=get_random_string(32),
             user=user
         )
+
+        HistoryRecord.objects.create_history_record(user, None, HISTORY_RECORD_USER_SIGNUP)
+
         with mail.get_connection() as connection:
             mail.EmailMessage(
                 'Account Verification',
@@ -69,6 +77,9 @@ class SignUpVerificationView(views.APIView):
         verification.save()
         verification.user.is_active = True
         verification.user.save()
+
+        HistoryRecord.objects.create_history_record(verification.user, None, HISTORY_RECORD_USER_SIGNUP_VERIFY)
+
         return Response({
             'success': True
         })
@@ -102,6 +113,8 @@ class SignUpWithFacebookView(views.APIView):
         token_ser = JSONWebTokenSerializer(data={'email': data['email'], 'password': data['password']})
         token_ser.is_valid(raise_exception=True)
 
+        HistoryRecord.objects.create_history_record(user, None, HISTORY_RECORD_USER_SIGNUP_FACEBOOK)
+
         return Response({
             'token': token_ser.object.get('token')
         }, status=status.HTTP_201_CREATED if created else status.HTTP_200_OK)
@@ -121,6 +134,9 @@ class CurrentUserView(views.APIView):
         serializer = UserSerializer(instance=self.request.user, data=self.request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
+
+        HistoryRecord.objects.create_history_record(self.request.user, None, HISTORY_RECORD_USER_UPDATE_DETAILS)
+
         return Response(serializer.data)
 
 

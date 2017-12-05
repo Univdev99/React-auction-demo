@@ -31,6 +31,11 @@ from auction.constants import SALE_STATUS_RECEIVED_PAYMENT
 from auction.constants import SALE_STATUS_CANCELLED
 from common.exceptions import PaymentRequired
 from entity.models import Product
+from history.constants import HISTORY_RECORD_AUCTION_START
+from history.constants import HISTORY_RECORD_AUCTION_FINISH
+from history.constants import HISTORY_RECORD_AUCTION_CANCEL
+from history.constants import HISTORY_RECORD_AUCTION_PAYMENT
+from history.models import HistoryRecord
 from notification.constants import NOTIFICATION_AUCTION_CLOSE
 from notification.constants import NOTIFICATION_AUCTION_NEW
 from notification.models import Notification
@@ -153,12 +158,16 @@ class Auction(models.Model):
 
         if charge.paid:
             self.status = AUCTION_STATUS_WAITING_TO_SHIP
+
+            HistoryRecord.objects.create_history_record(self, None, HISTORY_RECORD_AUCTION_PAYMENT, {'amount': highest_bid.price})
         else:
             self.status = AUCTION_STATUS_WAITING_FOR_PAYMENT
         self.ended_at = timezone.now()
         self.save()
 
         try:
+            HistoryRecord.objects.create_history_record(self, None, HISTORY_RECORD_AUCTION_FINISH)
+
             Notification.objects.create_notification(
                 None,
                 self,
@@ -180,6 +189,8 @@ class Auction(models.Model):
         self.started_at = timezone.now()
         self.open_until = open_until
         self.save()
+
+        HistoryRecord.objects.create_history_record(self, None, HISTORY_RECORD_AUCTION_START)
 
         Notification.objects.create_notification(
             None,
@@ -222,11 +233,7 @@ class Auction(models.Model):
         except Sale.DoesNotExist:
             pass
 
-    def _received_payment(self):
-        raise NotImplementedError('Payment receive logic not implemented yet')
-
-        self.status = AUCTION_STATUS_AUCTION_STATUS_WAITING_TO_SHIP
-        self.save()
+        HistoryRecord.objects.create_history_record(self, None, HISTORY_RECORD_AUCTION_CANCEL)
 
 
 class Bid(models.Model):
