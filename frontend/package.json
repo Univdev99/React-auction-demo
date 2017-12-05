@@ -25,6 +25,7 @@
     "react-router-redux": "^5.0.0-alpha.6",
     "react-rte": "^0.15.0",
     "react-scripts": "1.0.14",
+    "react-select": "^1.1.0",
     "react-slick": "^0.15.4",
     "react-stripe-elements": "^1.2.0",
     "react-tagsinput": "^3.19.0",
