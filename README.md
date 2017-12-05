@@ -26,6 +26,10 @@
 - In terminal, run `fab staging bootstrap` or `fab production bootstrap` to set up server environment. Needed only for the first deploy.
 - In terminal, run `fab staging deploy` or `fab production deploy` to build and run containers.
 
+## Update server
+
+- Run `fab staging deploy` or `fab production deploy` to deploy latest version to the server. Before doing this, all steps in Deploy Using docker should be completed.
+
 ## Some additional operations available
 
 - Create a super admin
