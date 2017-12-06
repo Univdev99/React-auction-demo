@@ -70,6 +70,12 @@ $input-box-shadow: 0 5px 20px rgba(72, 78, 84, .1);
 $input-btn-focus-color: rgba($primary, .25);
 $input-btn-focus-box-shadow: 0 5px 20px $input-btn-focus-color;
 
+$input-btn-padding-y-lg: .5rem;
+$input-btn-line-height-lg: 1.875;
+$input-height-inner-lg: ($font-size-base * $input-btn-line-height-lg) + ($input-btn-padding-y-lg * 2) !default;
+
+$form-check-input-margin-y: .4375rem;
+
 $card-border-color: transparent;
 $card-spacer-y: 1rem;
 

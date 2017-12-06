@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Col, Input, Row } from 'reactstrap'
-import { compose } from 'redux'
-import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form/immutable'
 
 import IconSearch from 'icons/IconSearch'
@@ -35,7 +33,7 @@ class SearchBar extends PureComponent {
   static propTypes = {
     handleSubmit: PropTypes.func,
     initialValue: PropTypes.string,
-    onSearch: PropTypes.func,
+    onSubmit: PropTypes.func,
     placeholder: PropTypes.string
   };
 
@@ -47,20 +45,15 @@ class SearchBar extends PureComponent {
     }
   }
 
-  handleSearch = (values) => {
-    const { onSearch } = this.props
-    onSearch(values.get('search'))
-  }
-
   render() {
     const { handleSubmit, placeholder } = this.props
 
     return (
-      <form onSubmit={handleSubmit(this.handleSearch)} className={COMPONENT_CLASS}>
+      <form onSubmit={handleSubmit} className={COMPONENT_CLASS}>
         <Row>
           <Col xs={12} md={10} className="mb-3 mb-md-0">
             <Field
-              name="search"
+              name="q"
               placeholder={placeholder || 'Search'}
               component={renderField}
             />
@@ -76,14 +69,7 @@ class SearchBar extends PureComponent {
   }
 }
 
-const selector = (state, props) => ({
-  initialValues: { search: props.initialValue || '' }
-})
-
-export default compose(
-  connect(selector),
-  reduxForm({
-    form: 'searchBarForm',
-    enableReinitialize: true
-  })
-)(SearchBar)
+export default reduxForm({
+  form: 'auctionFilterForm',
+  enableReinitialize: true
+})(SearchBar)
