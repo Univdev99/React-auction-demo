@@ -14,6 +14,11 @@ export const ADMIN_TABLE_PAGE_SIZE = 10
 export const AUCTION_BID_PAGE_SIZE = 10
 export const ACCOUNT_BID_AUCTIONS_PAGE_SIZE = 4
 
+/* API content type constants */
+
+export const CONTENT_TYPE_AUCTION = 'auction'
+export const CONTENT_TYPE_USER = 'user'
+
 /* Donor constants */
 
 export const DONOR_TYPES = [

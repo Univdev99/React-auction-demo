@@ -65,7 +65,9 @@ class HistoryRecord(models.Model):
     objects = HistoryRecordManager()
 
     def __str__(self):
-        model_str = 'HistoryRecord <{}> on {}'.format(self.action, str(self.target.content_object))
+        model_str = 'HistoryRecord <{}>'.format(self.action)
+        if self.target:
+            model_str += ' on {}'.format(str(self.target.content_object))
         if self.subject:
             model_str += ' by {}'.format(self.subject.content_object)
         return model_str

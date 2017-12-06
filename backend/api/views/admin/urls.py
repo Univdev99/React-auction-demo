@@ -34,6 +34,7 @@ from api.views.admin.products import ProductMediaReorderView
 from api.views.admin.tags import TagSuggestionListView
 from api.views.admin.users import UserBlockUnblockView
 from api.views.admin.users import UserListView
+from api.views.admin.users import UserHistoryView
 
 
 urlpatterns = [
@@ -75,6 +76,7 @@ urlpatterns = [
     # users endpoints
     url(r'^users/$', UserListView.as_view(), name='user-list'),
     url(r'^users/(?P<pk>[0-9]+)/block/$', UserBlockUnblockView.as_view(), name='user-block-unblock'),
+    url(r'^users/(?P<pk>[0-9]+)/history/$', UserHistoryView.as_view(), name='user-history'),
 
     # media endpoints
     url(r'^media/$', MediumListView.as_view(), name='medium-list'),

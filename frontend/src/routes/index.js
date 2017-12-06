@@ -30,7 +30,6 @@ import TermsConditions from 'pages/TermsConditions'
 
 // Admin pages
 import AdminAuthenticating from 'pages/AdminAuthenticating'
-import AdminIndex from 'pages/AdminIndex'
 import AdminCharityList from 'pages/AdminCharityList'
 import AdminCharityCreate from 'pages/AdminCharityCreate'
 import AdminCharityDetail from 'pages/AdminCharityDetail'
@@ -47,6 +46,7 @@ import AdminAuctionDetail from 'pages/AdminAuctionDetail'
 import AdminAuctionStart from 'pages/AdminAuctionStart'
 import AdminAuctionBidList from 'pages/AdminAuctionBidList'
 import AdminUserList from 'pages/AdminUserList'
+import AdminUserHistory from 'pages/AdminUserHistory'
 import AdminMediumList from 'pages/AdminMediumList'
 import AdminSaleList from 'pages/AdminSaleList'
 import AdminSaleDetail from 'pages/AdminSaleDetail'
@@ -84,7 +84,7 @@ import ScrollToTop from 'components/ScrollToTop'
 
 const AdminRoutes = props => (
   <AdminLayout>
-    <Route exact path="/admin" component={AdminIndex} />
+    <Route exact path="/admin" render={() => (<Redirect to="/admin/auctions" />)} />
     <Route exact path="/admin/charities" component={AdminCharityList} />
     <Route exact path="/admin/charities/create" component={AdminCharityCreate} />
     <Route exact path="/admin/charities/:id(\d+)" component={AdminCharityDetail} />
@@ -106,6 +106,7 @@ const AdminRoutes = props => (
     <Route exact path="/admin/posts/create" component={AdminPostCreate} />
     <Route exact path="/admin/posts/:id(\d+)" component={AdminPostDetail} />
     <Route exact path="/admin/users" component={AdminUserList} />
+    <Route exact path="/admin/users/:id(\d+)/history" component={AdminUserHistory} />
     <Route exact path="/admin/media" component={AdminMediumList} />
     <Route exact path="/admin/backlog" component={AdminBacklog} />
   </AdminLayout>

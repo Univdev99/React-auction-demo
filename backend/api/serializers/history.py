@@ -7,11 +7,11 @@ from api.serializers.auctions import AuctionSerializer
 from api.serializers.auth import UserSerializer
 from auction.models import Auction
 from account.models import User
-from notification.models import Notification
-from notification.models import NotificationEntity
+from history.models import HistoryRecord
+from history.models import HistoryRecordEntity
 
 
-class NotificationEntityField(serializers.Field):
+class HistoryRecordEntityField(serializers.Field):
     def to_representation(self, obj):
         serializer_class = None
         content_object = obj.content_object
@@ -22,7 +22,7 @@ class NotificationEntityField(serializers.Field):
             serializer_class = UserSerializer
             content_type = CONTENT_TYPE_USER
         else:
-            raise ParseError('Unsupported model type for NotificationEntity serializer field')
+            raise ParseError('Unsupported model type for HistoryRecordEntityField')
 
         if serializer_class:
             data = serializer_class(content_object).data
@@ -32,11 +32,11 @@ class NotificationEntityField(serializers.Field):
             return None
 
 
-class NotificationSerializer(serializers.ModelSerializer):
-    subject = NotificationEntityField()
-    target = NotificationEntityField()
+class HistoryRecordSerializer(serializers.ModelSerializer):
+    subject = HistoryRecordEntityField()
+    target = HistoryRecordEntityField()
 
     class Meta:
-        model = Notification
+        model = HistoryRecord
         fields = ('pk', 'subject', 'target', 'action', 'action_type', 'extra', 'created_at')
         read_only_fields = ('pk', 'subject', 'target', 'action', 'action_type', 'extra', 'created_at')
