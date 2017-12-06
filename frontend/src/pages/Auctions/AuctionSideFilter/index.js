@@ -6,6 +6,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import { Field, getFormValues, reduxForm } from 'redux-form/immutable'
+import { FormattedNumber } from 'react-intl'
 
 import IconArrowLeft from 'icons/IconArrowLeft'
 import IconFilter from 'icons/IconFilter'
@@ -115,7 +116,7 @@ class AuctionSideFilter extends PureComponent {
               max={2000}
               type="range"
               name="price_range"
-              tipFormatter={value => `$${value}`}
+              tipFormatter={value => <FormattedNumber value={value} format='currency' />}
               component={SliderField}
             />
           }

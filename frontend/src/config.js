@@ -116,3 +116,59 @@ export const POST_VISIBILITY_PRIVATE = 'private'
 export const COMMENT_STATUS_PUBLIC = 'public'
 export const COMMENT_STATUS_REVIEW = 'review'
 export const COMMENT_STATUS_FLAGGED = 'flagged'
+
+/* React Intl config */
+
+export const INTL = {
+  locale: 'en',
+  formats: {
+    date: {
+      numericDate: {
+        day: 'numeric',
+        month: 'numeric',
+        year: 'numeric'
+      },
+      monthAndYear: {
+        month: 'long',
+        year: 'numeric'
+      },
+      dayMonthAndYear: {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      },
+      year: {
+        year: 'numeric'
+      }
+    },
+    number: {
+      currency: {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      },
+      currencyWithoutCents: {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      },
+      percent: {
+        style: 'percent',
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 2
+      },
+      percentRounded: {
+        style: 'percent',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      },
+      decimal: {
+        style: 'decimal',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      }
+    }
+  }
+}

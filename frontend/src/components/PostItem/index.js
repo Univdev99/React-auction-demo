@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
 import { Button, Card, CardBody, CardText, CardTitle, Col, Input, Row } from 'reactstrap'
-import moment from 'moment'
+import { FormattedDate } from 'react-intl'
 import { Link } from 'react-router-dom'
 
 const COMPONENT_CLASS = 'post-item'
@@ -28,7 +28,9 @@ class PostItem extends PureComponent {
             <CardText>{excerpt}</CardText>
             <Row className="mt-3">
               <Col xs={12} md={6} lg={7} xl={8}>
-                <Input plaintext>{moment(postDate).format('ll')}</Input>
+                <Input plaintext>
+                  <FormattedDate value={postDate} format="dayMonthAndYear" />
+                </Input>
               </Col>
               <Col xs={12} md={6} lg={5} xl={4} className="text-right">
                 <Button block color='primary' tag={Link} to={`/blog/posts/${pk}`}>

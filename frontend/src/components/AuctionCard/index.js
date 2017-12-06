@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
 import { Button, Card, CardBody, CardText, CardTitle, Col } from 'reactstrap'
+import { FormattedNumber } from 'react-intl'
 import { Link } from 'react-router-dom'
 
 import auctionBidFlow from 'utils/auctionBidFlow'
@@ -24,7 +25,7 @@ class AuctionCard extends PureComponent {
   }
 
   render() {
-    const { auction: { pk, title, product_details: product, open_until: openUntil } } = this.props
+    const { auction: { pk, title, product_details: product, open_until: openUntil, current_price: price } } = this.props
 
     return (
       <Col xs={12} md={6} lg={3} className="gb">
@@ -36,7 +37,12 @@ class AuctionCard extends PureComponent {
             <CardTitle className={bem('title')}>
               {title}
             </CardTitle>
-            <CardText><TimeLeft until={openUntil} /></CardText>
+            <CardText>
+              <span className={bem('price')}>
+                <FormattedNumber value={price} format='currency' />
+              </span>
+              <TimeLeft until={openUntil} />
+            </CardText>
             <div className="mt-3">
               <Button block color='primary' onClick={this.handleBid} className={bem('button')}>
                 Bid Now
