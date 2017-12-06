@@ -3,6 +3,7 @@ import random
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
+from api.filters.q import DonorQueryFilterBackend
 from api.serializers.entities import DonorSerializer
 from api.serializers.entities import DonorDetailWithSimilarSerializer
 from api.paginations import EightPerPagePagination
@@ -20,6 +21,7 @@ class DonorFrontListView(generics.ListAPIView):
 class DonorListView(generics.ListAPIView):
     serializer_class = DonorSerializer
     pagination_class = EightPerPagePagination
+    filter_backends = (DonorQueryFilterBackend, )
     queryset = Donor.objects.order_by('id').prefetch_related('media')
 
 

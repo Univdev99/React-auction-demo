@@ -6,6 +6,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import { Field, getFormValues, reduxForm } from 'redux-form/immutable'
+import { FormattedNumber } from 'react-intl'
 
 import IconArrowLeft from 'icons/IconArrowLeft'
 import IconFilter from 'icons/IconFilter'
@@ -16,9 +17,9 @@ import { getDonorListPage } from 'store/modules/donors'
 
 const sortByOptions = [
   { value: 'title', label: 'Auction Name' },
-  { value: 'price', label: 'Price' },
-  { value: 'start_date', label: 'Start Date' },
-  { value: 'end_date', label: 'End Date' },
+  { value: 'bid_price', label: 'Price' },
+  { value: 'started_at', label: 'Start Date' },
+  { value: 'open_until', label: 'End Date' },
 ]
 
 const sortDirOptions = [
@@ -53,7 +54,7 @@ class AuctionSideFilter extends PureComponent {
     const { getDonorListPage } = this.props
     getDonorListPage({
       params: {
-        search: input || undefined
+        q: input || undefined
       },
       success: (res) => {
         callback(null, {
@@ -115,7 +116,7 @@ class AuctionSideFilter extends PureComponent {
               max={2000}
               type="range"
               name="price_range"
-              tipFormatter={value => `$${value}`}
+              tipFormatter={value => <FormattedNumber value={value} format='currency' />}
               component={SliderField}
             />
           }

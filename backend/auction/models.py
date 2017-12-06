@@ -3,9 +3,9 @@ from decimal import Decimal
 from django.conf import settings
 from django.db import models
 from django.db import transaction
-from django.db.models import Max, Min
+from django.db.models import Max, Min, Q
+from django.db.models.functions import Greatest
 from django.utils import timezone
-
 from rest_framework.exceptions import ParseError
 from pinax.stripe.actions import charges
 from pinax.stripe.actions import refunds
@@ -41,6 +41,16 @@ from notification.constants import NOTIFICATION_AUCTION_NEW
 from notification.models import Notification
 
 
+class AuctionQuerySet(models.QuerySet):
+    def with_bid_price(self):
+        return self.annotate(bid_price=Greatest('starting_price', Max('bid__price')))
+
+
+class AuctionManager(models.Manager):
+    def get_queryset(self):
+        return AuctionQuerySet(self.model, using=self._db)
+
+
 class Auction(models.Model):
     title = models.CharField(max_length=300)
     starting_price = models.FloatField()
@@ -54,6 +64,8 @@ class Auction(models.Model):
     ended_at = models.DateTimeField(null=True, blank=True, default=None)
 
     product = models.OneToOneField(Product, on_delete=models.CASCADE)
+
+    objects = AuctionManager() 
 
     def __str__(self):
         return 'Auction on {}'.format(self.product.title)
