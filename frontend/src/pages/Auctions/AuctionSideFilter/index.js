@@ -17,9 +17,9 @@ import { getDonorListPage } from 'store/modules/donors'
 
 const sortByOptions = [
   { value: 'title', label: 'Auction Name' },
-  { value: 'price', label: 'Price' },
-  { value: 'start_date', label: 'Start Date' },
-  { value: 'end_date', label: 'End Date' },
+  { value: 'bid_price', label: 'Price' },
+  { value: 'started_at', label: 'Start Date' },
+  { value: 'open_until', label: 'End Date' },
 ]
 
 const sortDirOptions = [
@@ -54,7 +54,7 @@ class AuctionSideFilter extends PureComponent {
     const { getDonorListPage } = this.props
     getDonorListPage({
       params: {
-        search: input || undefined
+        q: input || undefined
       },
       success: (res) => {
         callback(null, {
