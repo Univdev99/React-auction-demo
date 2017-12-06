@@ -1,0 +1,22 @@
+.account-layout {
+  &__nav {
+    font-size: $h4-font-size;
+
+    @include media-breakpoint-down('md') {
+      margin-bottom: $section-spacing / 2;
+    }
+  }
+
+  &__nav-item {
+    @include media-breakpoint-down('md') {
+      text-align: center;
+    }
+  }
+
+  &__nav-link {
+    color: $headings-color;
+    &.active, &:hover, &:focus, &:active {
+      color: $primary;
+    }
+  }
+}

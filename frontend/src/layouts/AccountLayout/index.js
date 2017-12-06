@@ -29,16 +29,22 @@ const navs = [
   }
 ]
 
+
+const COMPONENT_CLASS = 'account-layout'
+const bem = (suffix) => `${COMPONENT_CLASS}__${suffix}`
+
 const AccountLayout = ({ children }) => (
   <AppLayout1>
     <AppContainerLayout>
       <Row>
-        <Col xs={12} md={4} className="mb-5">
-          <Nav vertical>
+        <Col xs={12} lg={4}>
+          <Nav vertical className={bem('nav')}>
             {navs.map((item, index) => (
-              <NavItem key={index}>
-                <NavLink tag={RouterNavLink} to={`/account/${item.slug}`}
-                  activeClassName="text-secondary"
+              <NavItem key={index} className={bem('nav-item')}>
+                <NavLink
+                  tag={RouterNavLink}
+                  to={`/account/${item.slug}`}
+                  className={bem('nav-link')}
                 >
                   {item.name}
                 </NavLink>
@@ -46,7 +52,7 @@ const AccountLayout = ({ children }) => (
             ))}
           </Nav>
         </Col>
-        <Col xs={12} md={8}>
+        <Col xs={12} lg={8}>
           {children}
         </Col>
       </Row>
