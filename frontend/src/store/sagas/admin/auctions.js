@@ -73,7 +73,7 @@ const changeBidStatus = apiCall({
 const getAuctionBacklog = apiCall({
   type: ADMIN_GET_AUCTION_BACKLOG,
   method: 'get',
-  path: 'admin/backlog',
+  path: ({ payload }) => `admin/backlog/?page=${payload.page}`,
 })
 
 export default function* rootSaga () {

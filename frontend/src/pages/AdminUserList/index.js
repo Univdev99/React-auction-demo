@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
+import { Link } from 'react-router-dom'
 
 import SectionTitle from 'components/SectionTitle'
 import Spinner from 'components/Spinner'
@@ -99,6 +100,7 @@ class AdminUserList extends PureComponent {
                 <td>{user.get('is_staff') ? 'Admin' : 'Normal User'}</td>
                 <td>{user.get('is_active') ? 'Active' : 'Blocked'}</td>
                 <td>
+                  <Link className="text-secondary pr-3" to={`/admin/users/${user.get('pk')}/history`}>History</Link>
                   {
                     user.get('is_active') ?
                     <a className="text-danger" href="/" onClick={this.handleBlockUnblockUser.bind(this, user.get('pk'), true)}>Block</a>

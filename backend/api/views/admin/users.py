@@ -1,4 +1,6 @@
 from django.contrib.auth import get_user_model
+from django.contrib.contenttypes.models import ContentType
+from django.db.models import Q
 
 from rest_framework import generics
 from rest_framework import status
@@ -7,7 +9,11 @@ from rest_framework.response import Response
 
 from api.serializers.auth import UserSerializer
 from api.serializers.auth import UserBlockUnblockSerializer
+from api.serializers.history import HistoryRecordSerializer
 from api.permissions import IsAdmin
+from api.paginations import TenPerPagePagination
+from history.models import HistoryRecord
+from history.models import HistoryRecordEntity
 
 
 class UserListView(generics.ListAPIView):
@@ -31,3 +37,17 @@ class UserBlockUnblockView(generics.UpdateAPIView):
 
         serializer = UserSerializer(user)
         return Response(serializer.data)
+
+
+class UserHistoryView(generics.ListAPIView):
+    permission_classes = (IsAuthenticated, IsAdmin,)
+    serializer_class = HistoryRecordSerializer
+    pagination_class = TenPerPagePagination
+
+    def get_queryset(self):
+        user = get_user_model().objects.get(pk=self.kwargs.get('pk'))
+        user_content_type = ContentType.objects.get_for_model(get_user_model())
+        return HistoryRecord.objects.filter(
+            (Q(subject__object_id=user.pk) & Q(subject__content_type=user_content_type)) |
+            (Q(target__object_id=user.pk) & Q(target__content_type=user_content_type))
+        )

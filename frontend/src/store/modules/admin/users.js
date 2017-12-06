@@ -5,6 +5,7 @@ import { requestSuccess, requestFail } from 'store/api/request'
 import {
   ADMIN_GET_USER_LIST,
   ADMIN_BLOCK_UNBLOCK_USER,
+  ADMIN_GET_USER_HISTORY,
 } from 'store/constants'
 
 
@@ -13,12 +14,18 @@ import {
 const initialState = Immutable.fromJS({
   userList: [],
   userListLoaded: false,
+  /* Current user history */
+  userHistoryListPage: [],
+  userHistoryListPageLoaded: false,
+  userHistoryCount: 0,
+  userHistoryListPageNumber: 1,
 })
 
 /* Action creators */
 
 export const getUserList = createAction(ADMIN_GET_USER_LIST)
 export const blockUnblockUser = createAction(ADMIN_BLOCK_UNBLOCK_USER)
+export const getUserHistory = createAction(ADMIN_GET_USER_HISTORY)
 
 /* Reducer */
 
@@ -44,6 +51,24 @@ export default handleActions({
     if (index >= 0) {
       map.setIn(['userList', index], Immutable.fromJS(payload))
     }
+  }),
+
+  /* Get user history list actions */
+
+  [ADMIN_GET_USER_HISTORY]: (state, { payload }) => state.withMutations(map => {
+    map.set('userHistoryListPageNumber', payload.page)
+  }),
+
+  [requestSuccess(ADMIN_GET_USER_HISTORY)]: (state, { payload }) => state.withMutations(map => {
+    map.set('userHistoryListPage', Immutable.fromJS(payload.results))
+    map.set('userHistoryCount', payload.count)
+    map.set('userHistoryListPageLoaded', true)
+  }),
+
+  [requestFail(ADMIN_GET_USER_HISTORY)]: (state, { payload }) => state.withMutations(map => {
+    map.set('userHistoryListPage', Immutable.List())
+    map.set('userHistoryCount', 0)
+    map.set('userHistoryListPageLoaded', false)
   }),
 
 }, initialState)
