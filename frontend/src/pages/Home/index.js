@@ -11,6 +11,7 @@ import AppLayout1 from 'layouts/AppLayout1'
 import AuctionCard from 'components/AuctionCard'
 import DonateBar from 'components/DonateBar'
 import DonorCard from 'components/DonorCard'
+import EmptyItems from 'components/EmptyItems'
 import HomeBanner from 'components/HomeBanner'
 import ListWrapper from 'components/ListWrapper'
 import PostItem from 'components/PostItem'
@@ -75,33 +76,43 @@ class Home extends PureComponent {
             link="/donors"
             linkText="All Donors"
           >
-            <ListWrapper>
-              {donorFrontList.map(donor => (
-                <DonorCard
-                  key={donor.get('pk')} 
-                  id={donor.get('pk')}
-                  image={donor.getIn(['media', 0, 'url'], '')}
-                  title={donor.get('title')}
-                  description={donor.get('description')}
-                />
-              ))}
-            </ListWrapper>
+            {donorFrontList.size ? (
+              <ListWrapper>
+                {donorFrontList.map(donor => (
+                  <DonorCard key={donor.get('pk')} donor={donor} />
+                ))}
+              </ListWrapper>
+            ) : (
+              <EmptyItems
+                description="Sorry, Donors added yet."
+                actionText="Subscribe to get more updates."
+              />
+            )}
           </Section>
         </AppContainerLayout>
+
         <Section>
           <DonateBar />
         </Section>
+
         <AppContainerLayout>
           <Section
             title="Trending Auctions"
             link="/auctions"
             linkText="All Auctions"
           >
-            <ListWrapper>
-              {trendingAuctionsList.map(auction => (
-                <AuctionCard key={auction.get('pk')} auction={auction.toJS()} />
-              ))}
-            </ListWrapper>
+            {trendingAuctionsList.size ? (
+              <ListWrapper>
+                {trendingAuctionsList.map(auction => (
+                  <AuctionCard key={auction.get('pk')} auction={auction} />
+                ))}
+              </ListWrapper>
+            ) : (
+              <EmptyItems
+                description="Sorry, there's no trending auctions yet."
+                actionText="Subscribe to get more updates."
+              />
+            )}
           </Section>
 
           <Section
@@ -109,11 +120,18 @@ class Home extends PureComponent {
             link="/blog"
             linkText="All Articles"
           >
-            <ListWrapper>
-              {postsList.map(post => (
-                <PostItem key={post.get('pk')} post={post.toJS()} />
-              ))}
-            </ListWrapper>
+            {postsList.size ? (
+              <ListWrapper>
+                {postsList.map(post => (
+                  <PostItem key={post.get('pk')} post={post.toJS()} />
+                ))}
+              </ListWrapper>
+            ) : (
+              <EmptyItems
+                description="Sorry, No blogs posted yet"
+                actionText="Subscribe to get more updates."
+              />
+            )}
           </Section>
         </AppContainerLayout>
       </AppLayout1>

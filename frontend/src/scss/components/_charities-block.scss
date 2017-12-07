@@ -1,0 +1,50 @@
+$charity-logo-size: 50px;
+
+.charities-block {
+  &:not(:first-child) {
+    margin-top: 1.875rem;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 1.875rem;
+  }
+
+  &__logos {
+    @include media-breakpoint-up('md') {
+      margin: 0 -1rem;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  &__logo {
+    margin-top: 1rem;
+    height: $charity-logo-size;
+
+    @include media-breakpoint-up('md') {
+      margin: 0 1rem;
+      text-align: center;
+      display: flex;
+      align-items: center;
+    }
+
+    img {
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: $charity-logo-size;
+      vertical-align: middle;
+    }
+  }
+
+  &--card {
+    &:not(:first-child) {
+      margin-top: 1rem;
+    }
+
+    &:not(:last-child) {
+      margin-bottom: 0;
+    }
+  }
+}

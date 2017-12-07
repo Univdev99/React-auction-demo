@@ -1,0 +1,7 @@
+.instagram-link {
+  color: $instagram-color;
+
+  &:hover, &:active, &:focus {
+    color: darken($instagram-color, 15%);
+  }
+}

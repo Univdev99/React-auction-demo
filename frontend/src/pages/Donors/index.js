@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import DonorCard from 'components/DonorCard'
+import EmptyItems from 'components/EmptyItems'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
 import ListWrapper from 'components/ListWrapper'
 import MoreButton from 'components/MoreButton'
@@ -42,18 +43,19 @@ class Donors extends PureComponent {
       <FrontContainerLayout
         title="Donors"
         subscribe
-      >  
-        <ListWrapper>
-          {donorListPage.map(donor => (
-            <DonorCard
-              key={donor.get('pk')}
-              id={donor.get('pk')}
-              image={donor.getIn(['media', 0, 'url'], '')}
-              title={donor.get('title')}
-              description={donor.get('description')}
-            />
-          ))}
-        </ListWrapper>
+      >
+        {donorListPage.size ? (
+          <ListWrapper>
+            {donorListPage.map(donor => (
+              <DonorCard donor={donor} key={donor.get('pk')} />
+            ))}
+          </ListWrapper>
+        ) : (
+          <EmptyItems
+            description="Sorry, No donors added yet"
+            actionText="Subscribe to get updates."
+          />
+        )}
         {donorNextPage && <MoreButton
           onClick={this.handleLoadMore}
           text="Show More"
