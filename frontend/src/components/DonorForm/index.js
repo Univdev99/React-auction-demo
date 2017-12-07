@@ -8,6 +8,7 @@ import { Row, Col } from 'reactstrap'
 
 import FormField from 'components/FormField'
 import InputField from 'components/InputField'
+import TextareaField from 'components/TextareaField'
 import TagsInputField from 'components/TagsInputField'
 import RichEditorField from 'components/RichEditorField'
 import { DONOR_TYPES } from 'config'
@@ -76,6 +77,18 @@ class DonorForm extends PureComponent {
                 key: charity.get('pk'),
                 value: charity.get('title'),
               }))}
+            />
+            <FormField
+              name="instagram_handle"
+              label="Instagram:"
+              type="text"
+              component={InputField}
+            />
+            <FormField
+              name="website"
+              label="Website:"
+              type="text"
+              component={TextareaField}
             />
             <FormField
               name="tagnames"
