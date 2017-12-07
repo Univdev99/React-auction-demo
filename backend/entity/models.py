@@ -31,7 +31,8 @@ class Donor(ModelTagnamesMixin, models.Model):
     title = models.CharField(unique=True, max_length=200)
     description = models.TextField()
     type = models.CharField(choices=DONOR_TYPE_CHOICES, max_length=50)
-    website = models.CharField(max_length=300, null=True, blank=True)
+    website = models.URLField(max_length=300, null=True, blank=True)
+    instagram_handle = models.CharField(max_length=300, null=True, blank=True)
 
     charity = models.ForeignKey(Charity, null=True, on_delete=models.SET_NULL)
     media = GenericRelation(Medium)
