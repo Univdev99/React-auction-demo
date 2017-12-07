@@ -86,6 +86,27 @@ class AuctionDetailWithSimilarSerializer(serializers.ModelSerializer):
             'product', 'similar_auctions', 'donor_auctions')
 
 
+class BidAuctionSerializer(serializers.ModelSerializer):
+    product_details = serializers.SerializerMethodField()
+    user_price = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Auction
+        fields = (
+            'pk',
+            'title', 'starting_price', 'product', 'user_price',
+            'current_price', 'status', 'started_at', 'open_until', 'ended_at', 'product_details'
+        )
+        read_only_fields = ('pk', 'current_price', 'user_price', 'status', 'started_at', 'ended_at', 'product_details')
+
+    def get_product_details(self, obj):
+        serializer = ProductDetailSerializer(obj.product)
+        return serializer.data
+
+    def get_user_price(self, obj):
+        return obj.user_price
+
+
 class StartAuctionSerializer(serializers.Serializer):
     open_until = serializers.DateTimeField(required=False)
     duration_days = serializers.IntegerField(required=False, min_value=0)
