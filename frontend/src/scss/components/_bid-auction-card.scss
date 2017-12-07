@@ -1,0 +1,45 @@
+.bid-auction-card {
+  @include media-breakpoint-up('md') {
+    flex-direction: row;
+  }
+
+  &__image {
+    padding-top: 100%;
+    background: center/contain no-repeat;
+    @include media-breakpoint-up('md') {
+      width: 220px;
+      flex-shrink: 0;
+      padding-top: 0;
+    }
+  }
+
+  &__body {
+    @include media-breakpoint-up('md') {
+      flex: 1 0 auto;
+      padding: 1.875rem 2.5rem;
+    }
+  }
+
+  &__text {
+    @include media-breakpoint-up('md') {
+      margin-bottom: 1.125rem;
+    }
+  }
+
+  &__status {
+    margin: 0.375rem 0;
+  }
+
+  &__remove {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
+  &__price {
+    font-size: $h4-font-size;
+    font-family: $headings-font-family;
+    margin-right: .5rem;
+    color: $primary;
+  }
+}

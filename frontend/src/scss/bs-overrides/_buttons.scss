@@ -4,6 +4,12 @@
   cursor: pointer;
 }
 
+.btn-link {
+  &:not([disabled]):not(.disabled):active {
+    box-shadow: none;
+  }
+}
+
 .btn-primary {
   &, &:focus, &:hover, &:active {
     color: #ffffff;
