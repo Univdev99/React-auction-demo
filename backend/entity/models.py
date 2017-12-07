@@ -34,7 +34,8 @@ class Donor(ModelTagnamesMixin, models.Model):
     website = models.URLField(max_length=300, null=True, blank=True)
     instagram_handle = models.CharField(max_length=300, null=True, blank=True)
 
-    charity = models.ForeignKey(Charity, null=True, on_delete=models.SET_NULL)
+    charity = models.ForeignKey(Charity, null=True, on_delete=models.SET_NULL, related_name='_charity')
+    charities = models.ManyToManyField(Charity)
     media = GenericRelation(Medium)
 
     def __str__(self):
