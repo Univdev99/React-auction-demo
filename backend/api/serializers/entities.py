@@ -30,8 +30,8 @@ class DonorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Donor
-        fields = ('pk', 'title', 'description', 'type', 'website', 'charity', 'media')
-        read_only_fields = ('pk', 'title', 'description', 'type', 'website', 'charity', 'media')
+        fields = ('pk', 'title', 'description', 'type', 'instagram_handle', 'website', 'charity', 'media')
+        read_only_fields = ('pk', 'title', 'description', 'type', 'instagram_handle', 'website', 'charity', 'media')
 
     def get_media(self, obj):
         return MediumSerializer(obj.media.order_by('order'), many=True).data
