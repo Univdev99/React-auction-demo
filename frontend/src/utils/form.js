@@ -10,7 +10,7 @@ export const formSubmit = (actionCreator, payload) => {
     const fieldErrors = res.data || res.error
     if (typeof fieldErrors === 'object') {
       const globalErrors = [
-        ...fieldErrors.non_field_errors,
+        ...fieldErrors.non_field_errors || [],
         ...fieldErrors.detail || []
       ];
       throw new SubmissionError({

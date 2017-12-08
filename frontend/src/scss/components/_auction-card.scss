@@ -12,6 +12,10 @@
     }
   }
 
+  &__text {
+    margin-bottom: 1rem;
+  }
+
   &__price {
     font-size: $h4-font-size;
     font-family: $headings-font-family;

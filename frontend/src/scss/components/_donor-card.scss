@@ -1,4 +1,10 @@
 .donor-card {
+  &__heading {
+    margin-bottom: 1rem;
+    @extend .align-items-center;
+    height: 3.125rem;
+  }
+
   &__title {
     flex: 1;
   }

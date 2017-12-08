@@ -87,7 +87,6 @@ export default handleActions({
 
   [requestPending(AUCTION_GET_DETAIL)]: (state, { payload }) => state.withMutations(map => {
     map.set('auctionDetailStatus', API_PENDING)
-    map.set('auctionDetail', null)
   }),
 
   [requestSuccess(AUCTION_GET_DETAIL)]: (state, { payload }) => state.withMutations(map => {
@@ -95,10 +94,8 @@ export default handleActions({
     map.set('auctionDetailStatus', API_SUCCESS)
   }),
 
-  /* Update auction detail actions */
-
-  [requestSuccess(AUCTION_GET_DETAIL)]: (state, { payload }) => state.withMutations(map => {
-    map.set('auctionDetail', Immutable.fromJS(payload))
+  [requestFail(AUCTION_GET_LIST)]: (state, { payload }) => state.withMutations(map => {
+    map.set('auctionDetail', null)
     map.set('auctionDetailStatus', API_FAIL)
   }),
 

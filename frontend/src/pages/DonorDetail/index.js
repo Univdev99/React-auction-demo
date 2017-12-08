@@ -1,16 +1,18 @@
 import React, { PureComponent } from 'react'
+import ImmutablePropTypes from 'react-immutable-proptypes'
+import PropTypes from 'prop-types'
 import { Col, Row } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
-import PropTypes from 'prop-types'
-import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import AuctionCard from 'components/AuctionCard'
-import CharityInfo from 'components/CharityInfo'
+import CharitiesBlock from 'components/CharitiesBlock'
 import DonorCard from 'components/DonorCard'
+import EmptyItems from 'components/EmptyItems'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
 import HtmlBlock from 'components/HtmlBlock'
+import InstagramLink from 'components/InstagramLink'
 import ListWrapper from 'components/ListWrapper'
 import MoreButton from 'components/MoreButton'
 import Section from 'components/Section'
@@ -80,6 +82,7 @@ class DonorDetail extends PureComponent {
     const auctionListNextPage = auctions.get('auctionListNextPage')
     const auctionListStatus = auctions.get('auctionListStatus')
     const isLoadingAuctions = auctionListStatus === API_PENDING
+    const simiarDonors = donorDetail ? donorDetail.get('similar_donors') : null
 
     return (
       <FrontContainerLayout breadcrumbPath={this.breadcrumbPath()} subscribe>
@@ -92,25 +95,33 @@ class DonorDetail extends PureComponent {
         {donorDetailStatus === API_SUCCESS && <div>
           <Section>
             <Row>
-              <Col xs={12} md={7} className="mb-5">
+              <Col xs={12} md={7} className="mb-40 mb-md-0">
                 <MediaSlider media={donorDetail.get('media')} />
               </Col>
-              <Col xs={12} md={5} className="mb-5">
-                <div className="px-1">
+              <Col xs={12} md={5}>
+                <div className="pl-md-3">
                   <SectionTitle>{donorDetail.get('title')}</SectionTitle>
+                  <InstagramLink handle={donorDetail.get('instagram_handle')} />
                   <HtmlBlock html={donorDetail.get('description')} />
-                  <CharityInfo charity={donorDetail.get('charity').toJS()} />
+                  <CharitiesBlock charities={donorDetail.get('charities')} />
                 </div>
               </Col>
             </Row>
           </Section>
 
           <Section title="Auctions">
-            <ListWrapper>
-              {auctionList.map(auction => (
-                <AuctionCard key={auction.get('pk')} auction={auction.toJS()} /> 
-              ))}
-            </ListWrapper>
+            {auctionList.size ? (
+              <ListWrapper>
+                {auctionList.map(auction => (
+                  <AuctionCard key={auction.get('pk')} auction={auction} /> 
+                ))}
+              </ListWrapper>
+            ) : (
+              <EmptyItems
+                description="Sorry, there’s no active auctions for this Do-Gooder."
+                actionText="Get updates on new auctions."
+              />
+            )}
             {auctionListNextPage && <MoreButton
               onClick={this.handleLoadMoreAuctions}
               text="Show More"
@@ -123,17 +134,18 @@ class DonorDetail extends PureComponent {
             link="/donors"
             linkText="All Do-Gooders"
           >
-            <ListWrapper>
-              {donorDetail.get('similar_donors').map(donor => (
-                <DonorCard
-                  key={donor.get('pk')} 
-                  id={donor.get('pk')}
-                  image={donor.getIn(['media', 0, 'url'], '')}
-                  title={donor.get('title')}
-                  description={donor.get('description')}
-                />
-              ))}
-            </ListWrapper>
+            {simiarDonors && simiarDonors.size ? (
+              <ListWrapper>
+                {simiarDonors.map(donor => (
+                  <DonorCard donor={donor} />
+                ))}
+              </ListWrapper>
+            ) : (
+              <EmptyItems
+                description="Sorry, there’s no similar donor for this Do-Gooder."
+                actionText="Get updates for this donor."
+              />
+            )}
           </Section>
         </div>}
       </FrontContainerLayout>

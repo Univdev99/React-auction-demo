@@ -25,7 +25,7 @@ class PostItem extends PureComponent {
           </Link>
           <CardBody>
             <CardTitle className={bem('title')} title={title}>{title}</CardTitle>
-            <CardText>{excerpt}</CardText>
+            <CardText className={bem('text')}>{excerpt}</CardText>
             <Row className="mt-3">
               <Col xs={12} md={6} lg={7} xl={8}>
                 <Input plaintext>

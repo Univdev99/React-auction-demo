@@ -8,6 +8,19 @@ $dark: #333333;
 $body-color: #5E6566;
 $headings-color: #000000;
 
+$link-hover-decoration: none;
+
+$spacer: 1rem;
+$spacers: (
+  0: 0,
+  1: ($spacer * .25),
+  2: ($spacer * .5),
+  3: $spacer,
+  4: ($spacer * 1.5),
+  40: ($spacer * 2.25),
+  5: ($spacer * 3)
+);
+
 $paragraph-margin-bottom: 1.5rem;
 
 $font-family-base: 'Barlow Semi Condensed', Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -78,6 +91,7 @@ $form-check-input-margin-y: .4375rem;
 
 $card-border-color: transparent;
 $card-spacer-y: 1rem;
+$card-border-width: 0;
 
 /* END Overriding Bootstrap Variables */
 
@@ -87,6 +101,7 @@ $gutter-breakpoint: 'lg';
 $facebook-color: #6E85E0;
 $twitter-color: #54B9F3;
 $linkedin-color: #6491E2;
+$instagram-color: #3897f0;
 
 $section-spacing: 7.5rem;
 $section-header-spacing: 3.125rem;

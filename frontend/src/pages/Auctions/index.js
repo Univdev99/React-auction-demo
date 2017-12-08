@@ -8,6 +8,7 @@ import { createStructuredSelector } from 'reselect'
 
 import AuctionCard from 'components/AuctionCard'
 import AuctionSideFilter from './AuctionSideFilter'
+import EmptyItems from 'components/EmptyItems'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
 import ListWrapper from 'components/ListWrapper'
 import MoreButton from 'components/MoreButton'
@@ -102,11 +103,21 @@ class Auctions extends PureComponent {
           <SearchBar initialValues={searchParams} onSubmit={this.handleSearch} />
         </Section>
         <Section title="Auctions">
-          <ListWrapper>
-            {auctionList.map(auction => (
-              <AuctionCard key={auction.get('pk')} auction={auction.toJS()} />
-            ))}
-          </ListWrapper>
+          {auctionList.size ? (
+            <ListWrapper>
+              {auctionList.map(auction => (
+                <AuctionCard key={auction.get('pk')} auction={auction} />
+              ))}
+            </ListWrapper>
+          ) : (
+            <EmptyItems
+              description={location.search
+                ? "Sorry, No auctions found that matches your search criteria."
+                : "Sorry, No auctions added yet"
+              }
+              actionText="Get updates on new auctions."
+            />
+          )}
           {auctionListNextPage && <MoreButton
             onClick={this.handleLoadMoreAuctions}
             text="Show More"

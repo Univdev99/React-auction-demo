@@ -4,15 +4,23 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import { Badge, Button, Col, Row } from 'reactstrap'
+import { Button, Col, Row } from 'reactstrap'
+import { FormattedNumber } from 'react-intl'
+import { Link } from 'react-router-dom'
 
 import auctionBidFlow from 'utils/auctionBidFlow'
 import AuctionCard from 'components/AuctionCard'
+import CharitiesBlock from 'components/CharitiesBlock'
+import EmptyItems from 'components/EmptyItems'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
+import HtmlBlock from 'components/HtmlBlock'
+import ListWrapper from 'components/ListWrapper'
+import Section from 'components/Section'
 import SectionTitle from 'components/SectionTitle'
 import MediaSlider from 'components/MediaSlider'
 import Spinner from 'components/Spinner'
 import TimeLeft from 'components/TimeLeft'
+import { API_PENDING, API_SUCCESS, API_FAIL } from 'store/api/request'
 import { auctionsSelector } from 'store/selectors'
 import { getAuctionDetail } from 'store/modules/auctions'
 
@@ -77,40 +85,30 @@ class AuctionDetail extends PureComponent {
     startBidFlow(auctionId)
   }
 
-  render() {
+  renderDetail() {
     const { auctions } = this.props
     const auctionDetail = auctions.get('auctionDetail')
-    const { status } = this.state
+    const donorAuctions = auctionDetail.get('donor_auctions')
+    const similarAuctions = auctionDetail.get('similar_auctions')
+    const donor = auctionDetail.getIn(['product', 'donor_details'])
 
     return (
-      <FrontContainerLayout breadcrumbPath={this.breadcrumbPath()} subscribe>
-        {status !== -1 && !auctionDetail && <Spinner />}
-
-        {status === -1 && <SectionTitle><center>Auction not found</center></SectionTitle>}
-
-        {status !== -1 && auctionDetail && <div>
-          <Row className="mb-5">
-            <Col xs={12} md={6} className="mb-5">
+      <div>
+        <Section>
+          <Row>
+            <Col xs={12} md={7} className="mb-40 mb-md-0">
               <MediaSlider media={auctionDetail.getIn(['product', 'media'])} />
             </Col>
-            <Col xs={12} md={6} className="mb-5">
-              <div className="px-3">
+            <Col xs={12} md={5}>
+              <div className="pl-md-3">
                 <SectionTitle>{auctionDetail.get('title')}</SectionTitle>
-                <div className="pb-3 mb-4 mt-4">
-                  <div className="h4">
-                    <Badge color="light">
-                      <img
-                        src={auctionDetail.getIn(['product', 'donor_details', 'charity', 'logo'])}
-                        alt="Charity Logo" 
-                        style={{ maxHeight: 50, maxWidth: '100%' }}
-                      />
-                      {' '}
-                      {auctionDetail.getIn(['product', 'donor_details', 'charity', 'title'])}
-                    </Badge>
-                  </div>
-                  <p>{auctionDetail.getIn(['product', 'donor_details', 'charity', 'description'])}</p>
-                  <div className="h5 mb-4 mt-4">
+                <div className="pb-3 mt-4">
+                  <CharitiesBlock charities={donor.get('charities')} />
+                  <div className="h4 mb-3">
                     Time Left: <TimeLeft until={auctionDetail.get('open_until')} />
+                  </div>
+                  <div className="h4 mb-4 pb-2 text-primary">
+                    Current Bid: <FormattedNumber format="currency" value={auctionDetail.get('current_price')} />
                   </div>
                   <Button color="primary" onClick={this.handleBid}>
                     Place a bid
@@ -119,25 +117,63 @@ class AuctionDetail extends PureComponent {
               </div>
             </Col>
           </Row>
-          <SectionTitle className="mb-4">Details</SectionTitle>
-          <p>
-            {auctionDetail.getIn(['product', 'description'])}
-          </p>
+        </Section>
+        <Section title="Details">
+          <HtmlBlock html={auctionDetail.getIn(['product', 'description'])} />
+        </Section>
 
-          <SectionTitle className="mb-5">More from {auctionDetail.getIn(['product', 'donor_details', 'title'])}</SectionTitle>
-          <Row className="mb-5">
-            {auctionDetail.get('donor_auctions').map(auction => (
-              <AuctionCard key={auction.get('pk')} auction={auction.toJS()} />
-            ))}
-          </Row>
+        <Section
+          title={
+            <span>
+              More from <Link to={`/donors/${donor.get('pk')}`}>{donor.get('title')}</Link>
+            </span>
+          }
+        >
+          {donorAuctions && donorAuctions.size ? (
+            <ListWrapper>
+              {donorAuctions.map(auction => (
+                <AuctionCard key={auction.get('pk')} auction={auction} />
+              ))}
+            </ListWrapper>
+          ) : (
+            <EmptyItems
+              description="Sorry, there’s no more auctions for this Do-Gooder."
+              actionText="Get updates on new auctions."
+            />
+          )}
+        </Section>
 
-          <SectionTitle className="mb-5">Similar Auctions</SectionTitle>
-          <Row className="mb-5">
-            {auctionDetail.get('similar_auctions').map(auction => (
-              <AuctionCard key={auction.get('pk')} auction={auction.toJS()} />
-            ))}
-          </Row>
-        </div>}
+        <Section title="Similar Auctions">
+          {similarAuctions && similarAuctions.size ? (
+            <ListWrapper>
+              {similarAuctions.map(auction => (
+                <AuctionCard key={auction.get('pk')} auction={auction} />
+              ))}
+            </ListWrapper>
+          ) : (
+            <EmptyItems
+              description="Sorry, there’s no similar auctions to this one."
+              actionText="Get updates on new auctions."
+            />
+          )}
+        </Section>
+      </div>
+    )
+  }
+
+  render() {
+    const { auctions } = this.props
+    const auctionDetailStatus = auctions.get('auctionDetailStatus')
+
+    return (
+      <FrontContainerLayout breadcrumbPath={this.breadcrumbPath()} subscribe>
+        {auctionDetailStatus === API_PENDING && <Spinner />}
+
+        {auctionDetailStatus === API_FAIL &&
+          <SectionTitle><center>Auction not found</center></SectionTitle>
+        }
+ 
+        {auctionDetailStatus === API_SUCCESS && this.renderDetail()}
       </FrontContainerLayout>
     )
   }

@@ -20,24 +20,29 @@ class AuctionCard extends PureComponent {
   }
 
   handleBid = () => {
-    const { auction: { pk }, startBidFlow } = this.props
-    startBidFlow(pk)
+    const { auction, startBidFlow } = this.props
+    startBidFlow(auction.get('pk'))
   }
 
   render() {
-    const { auction: { pk, title, product_details: product, open_until: openUntil, current_price: price } } = this.props
+    const { auction } = this.props
+    const { pk, title, open_until: openUntil, current_price: price } = auction.toJS()
+    const linkTo = `/auctions/${pk}`
 
     return (
       <Col xs={12} md={6} lg={3} className="gb">
         <Card className={COMPONENT_CLASS}>
-          <Link to={`/auctions/${pk}`}>
-            <div className={cx(bem('image'), 'card-img-top')} style={{ backgroundImage: `url(${product.media[0].url})`}} />
+          <Link to={linkTo}>
+            <div
+              className={cx(bem('image'), 'card-img-top')}
+              style={{ backgroundImage: `url(${auction.getIn(['product_details', 'media', 0, 'url'])})` }}
+            />
           </Link>
           <CardBody>
             <CardTitle className={bem('title')}>
-              {title}
+              <Link to={linkTo}>{title}</Link>
             </CardTitle>
-            <CardText>
+            <CardText className={bem('text')}>
               <span className={bem('price')}>
                 <FormattedNumber value={price} format='currency' />
               </span>
