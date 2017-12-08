@@ -107,7 +107,7 @@ class AccountForm extends PureComponent {
           size="lg"
           component={InputField}
         />
-        <Row>
+        <Row className="submit-wrapper">
           <Col xs={12} md={8} />
           <Col xs={12} md={4}>
             <Button block color="primary" type="submit" size="lg" disabled={submitting}>

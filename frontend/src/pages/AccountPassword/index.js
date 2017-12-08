@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react'
-import { Alert } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
@@ -8,7 +7,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import { formSubmit } from 'utils/form'
 import PasswordForm from 'components/PasswordForm'
-import SectionTitle from 'components/SectionTitle'
+import Section from 'components/Section'
 import Spinner from 'components/Spinner'
 import { authSelector } from 'store/selectors'
 import { updatePassword } from 'store/modules/auth'
@@ -21,22 +20,9 @@ class AccountPassword extends PureComponent {
     updatePassword: PropTypes.func.isRequired,
   }
 
-  state = {
-    updateStatus: 0
-  }
-
   handleSubmit = (data) => {
     const { updatePassword } = this.props
-    this.setState({
-      updateStatus: 1
-    })
-
-    return formSubmit(updatePassword, {
-      data,
-      success: () => this.setState({
-        updateStatus: 10
-      })
-    })
+    return formSubmit(updatePassword, { data })
   }
 
   render() {
@@ -47,22 +33,10 @@ class AccountPassword extends PureComponent {
       return <Spinner />
     }
 
-    const { updateStatus } = this.state
-
     return (
-      <div>
-        <SectionTitle className="mb-4">Change Password</SectionTitle>
-
-        {updateStatus === 10 && <Alert color="success">
-          Successfully updated password
-        </Alert>}
-
-        <PasswordForm
-          disabled={updateStatus === 1}
-          onSubmit={this.handleSubmit}
-        />
-
-      </div>
+      <Section title="Change Password">
+        <PasswordForm onSubmit={this.handleSubmit} />
+      </Section>
     )
   }
 }
