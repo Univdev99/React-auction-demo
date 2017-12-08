@@ -50,13 +50,14 @@ class DonorDetailViewTests(AdminAPITestCase):
     def test_update_donor_with_tags(self):
         serializer = DonorSerializer(self.donor)
         data = serializer.data
+        data['website'] = ''
         data['tagnames'] = ['tag1', 'tag2']
 
         response = self.client.put(
             reverse('api:admin:donor-detail', kwargs=dict(pk=self.donor.pk)),
             data
         )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.content)
         self.assertEqual(self.donor.tagnames, ['tag1', 'tag2'])
 
     def test_delete_donor(self):

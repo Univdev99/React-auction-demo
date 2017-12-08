@@ -12,6 +12,7 @@ class FormField extends PureComponent {
     label: PropTypes.string,
     name: PropTypes.string.isRequired,
     options: PropTypes.any,
+    getTitle: PropTypes.func,
     placeholder: PropTypes.string,
     type: PropTypes.string,
     validate: PropTypes.oneOfType([
@@ -21,11 +22,14 @@ class FormField extends PureComponent {
   }
 
   render() {
-    const { name, label, helpText, children, component, type, validate, options, placeholder } = this.props
+    const {
+      name, label, helpText, children, component, type, validate,
+      options, getTitle, placeholder
+    } = this.props
 
     return (
       <Field name={name} component={component} type={type} validate={validate}
-        props={{ children, label, helpText, options, placeholder }} />
+        props={{ children, label, helpText, options, getTitle, placeholder }} />
     )
   }
 }

@@ -40,7 +40,11 @@ class DonorFactory(factory.DjangoModelFactory):
         lambda n: DONOR_TYPES[(n + 2) % len(DONOR_TYPES)]
     )
 
-    charity = factory.SubFactory(CharityFactory)
+    @factory.post_generation
+    def charities(self, create, extracted, **kwargs):
+        if create:
+            self.charities.add(CharityFactory.create())
+            self.charities.add(CharityFactory.create())
 
 
 class ProductFactory(factory.DjangoModelFactory):
