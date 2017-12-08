@@ -8,6 +8,7 @@ import { Row, Col } from 'reactstrap'
 
 import FormField from 'components/FormField'
 import InputField from 'components/InputField'
+import ListField from 'components/ListField'
 import TextareaField from 'components/TextareaField'
 import TagsInputField from 'components/TagsInputField'
 import RichEditorField from 'components/RichEditorField'
@@ -69,14 +70,11 @@ class DonorForm extends PureComponent {
               options={DONOR_TYPES}
             />
             <FormField
-              name="charity"
-              label="Charity:"
-              type="select"
-              component={InputField}
-              options={charityList.map(charity => ({
-                key: charity.get('pk'),
-                value: charity.get('title'),
-              }))}
+              name="charity_ids"
+              label="Charities:"
+              component={ListField}
+              options={charityList}
+              getTitle={charity => charity.get('title')}
             />
             <FormField
               name="instagram_handle"
