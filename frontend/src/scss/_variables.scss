@@ -89,14 +89,18 @@ $input-height-inner-lg: ($font-size-base * $input-btn-line-height-lg) + ($input-
 
 $form-check-input-margin-y: .4375rem;
 
+$form-group-margin-bottom: 1.25rem;
+
 $card-border-color: transparent;
 $card-spacer-y: 1rem;
 $card-border-width: 0;
 
+$alert-margin-bottom: 1.875rem;
 /* END Overriding Bootstrap Variables */
 
 $grid-gutter-width-responsive: 20px;
 $gutter-breakpoint: 'lg';
+$form-group-margin-bottom-lg: 1.875rem;
 
 $facebook-color: #6E85E0;
 $twitter-color: #54B9F3;
