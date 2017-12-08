@@ -27,11 +27,17 @@ class DonorSerializer(serializers.ModelSerializer):
     Serializer used in admin api for serializing Donor query set
     """
     media = serializers.SerializerMethodField()
+    charity_ids = serializers.PrimaryKeyRelatedField(
+        many=True,
+        read_only=False,
+        queryset=Charity.objects.all(),
+        source='charities'
+    )
 
     class Meta:
         model = Donor
-        fields = ('pk', 'title', 'description', 'type', 'instagram_handle', 'website', 'charity', 'media')
-        read_only_fields = ('pk', 'title', 'description', 'type', 'instagram_handle', 'website', 'charity', 'media')
+        fields = ('pk', 'title', 'description', 'type', 'instagram_handle', 'website', 'charity_ids', 'media')
+        read_only_fields = ('pk', 'title', 'description', 'type', 'instagram_handle', 'website', 'charity_ids', 'media')
 
     def get_media(self, obj):
         return MediumSerializer(obj.media.order_by('order'), many=True).data
@@ -41,12 +47,12 @@ class DonorWithoutMediaSerializer(serializers.ModelSerializer):
     """
     Serializer used in AuctionSerializer in nested fashion
     """
-    charity = CharitySerializer(read_only=True)
+    charities = CharitySerializer(many=True, read_only=True)
 
     class Meta:
         model = Donor
-        fields = ('pk', 'title', 'description', 'type', 'website', 'charity')
-        read_only_fields = ('pk', 'title', 'description', 'type', 'website', 'charity')
+        fields = ('pk', 'title', 'description', 'type', 'website', 'charities')
+        read_only_fields = ('pk', 'title', 'description', 'type', 'website', 'charities')
 
 
 class DonorDetailSerializer(TagnamesSerializerMixin, DonorSerializer):
@@ -62,14 +68,14 @@ class DonorDetailWithSimilarSerializer(serializers.ModelSerializer):
     """
     Serializer used in front api for serializing Donor model object, with data on similar donors
     """
-    charity = CharitySerializer(read_only=True)
+    charities = CharitySerializer(many=True, read_only=True)
     media = serializers.SerializerMethodField()
     similar_donors = DonorSerializer(many=True, read_only=True)
 
     class Meta:
         model = Donor
-        fields = ('pk', 'title', 'description', 'type', 'website', 'charity', 'media', 'similar_donors')
-        read_only_fields = ('pk', 'title', 'description', 'type', 'website', 'charity', 'media', 'similar_donors')
+        fields = ('pk', 'title', 'description', 'type', 'website', 'charities', 'media', 'similar_donors')
+        read_only_fields = ('pk', 'title', 'description', 'type', 'website', 'charities', 'media', 'similar_donors')
 
     def get_media(self, obj):
         return MediumSerializer(obj.media.order_by('order'), many=True).data
