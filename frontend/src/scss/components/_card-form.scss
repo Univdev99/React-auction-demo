@@ -1,0 +1,9 @@
+$card-form-padding-y: ($input-height-inner-lg - $font-size-base) / 2;
+.card-form {
+  &__input {
+    @extend .form-control;
+    @extend .form-control-lg;
+    padding-top: $card-form-padding-y;
+    padding-bottom: $card-form-padding-y;
+  }
+}

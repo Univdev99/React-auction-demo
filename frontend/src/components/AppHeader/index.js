@@ -20,7 +20,7 @@ const AccountDropdown = ({ className, isStaff, onSignOut }) => (
       <IconUser className="text-primary" />
     </DropdownToggle>
     <DropdownMenu right>
-      {isStaff && <DropdownItem tag={Link} className="dropdown-item" to="/admin">Admin</DropdownItem>}
+      {isStaff && <DropdownItem tag={Link} to="/admin">Admin</DropdownItem>}
       <DropdownItem tag={Link} className="dropdown-item" to="/account">My Account</DropdownItem>
       <DropdownItem onClick={onSignOut}>Sign Out</DropdownItem>
     </DropdownMenu>

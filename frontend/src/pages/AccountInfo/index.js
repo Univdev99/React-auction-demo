@@ -1,13 +1,12 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import { Alert } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
 import AccountForm from 'components/AccountForm'
-import SectionTitle from 'components/SectionTitle'
+import Section from 'components/Section'
 import Spinner from 'components/Spinner'
 import { authSelector, countriesSelector } from 'store/selectors'
 import { formSubmit } from 'utils/form'
@@ -24,13 +23,6 @@ class AccountInfo extends PureComponent {
     updateCurrentUser: PropTypes.func.isRequired,
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      updateStatus: 0
-    }
-  }
-
   componentDidMount() {
     const { getCountries } = this.props
     getCountries()
@@ -38,16 +30,7 @@ class AccountInfo extends PureComponent {
 
   handleSubmit = (data) => {
     const { updateCurrentUser } = this.props
-    this.setState({
-      updateStatus: 1
-    })
-
-    return formSubmit(updateCurrentUser, {
-      data,
-      success: () => this.setState({
-        updateStatus: 10
-      })
-    })
+    return formSubmit(updateCurrentUser, { data })
   }
 
   render() {
@@ -58,23 +41,14 @@ class AccountInfo extends PureComponent {
       return <Spinner />
     }
 
-    const { updateStatus } = this.state
-
     return (
-      <div>
-        <SectionTitle className="mb-4">Account Information</SectionTitle>
-
-        {updateStatus === 10 && <Alert color="success">
-          Successfully saved
-        </Alert>}
-
+      <Section title="Account Information">
         <AccountForm
           countries={countries}
           initialValues={currentUser}
           onSubmit={this.handleSubmit}
         />
-
-      </div>
+      </Section>
     )
   }
 }

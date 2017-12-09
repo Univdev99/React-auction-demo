@@ -11,7 +11,9 @@
 @import "components/arrow-link";
 @import "components/auction-card";
 @import "components/auction-side-filter";
+@import "components/bid-auction-card";
 @import "components/charities-block";
+@import "components/card-form";
 @import "components/donate-bar";
 @import "components/donor-card";
 @import "components/home-banner";
@@ -34,6 +36,7 @@
 @import "components/table";
 @import "components/uploader";
 
+@import "layouts/account-layout";
 @import "layouts/app-container-layout";
 @import "layouts/app-layout1";
 @import "layouts/front-container-layout";

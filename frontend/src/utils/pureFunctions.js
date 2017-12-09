@@ -1,3 +1,4 @@
+import Immutable from 'immutable'
 
 export const ucFirst = (str) =>
   str.charAt(0).toUpperCase() + str.slice(1)
@@ -22,3 +23,8 @@ export const jsonToQueryString = (obj) => {
 
   return pairs.length ? `?${pairs.join('&')}` : ''
 }
+
+export const keyIn = (...keys) => (v, k) =>
+  Immutable.Set(keys).has(k)
+
+export const pick = (map, keys) => map.filter(keyIn(...keys))

@@ -18,6 +18,7 @@ class Select extends PureComponent {
 
   handleChange = (option) => {
     const { onChange } = this.props
+    option = option || { value: null }
     const value = option.constructor === Array
       ? option.map((item) => item.value)
       : option.value

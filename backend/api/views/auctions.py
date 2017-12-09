@@ -11,6 +11,7 @@ from api.filters.q import AuctionQueryFilterBackend
 from api.filters.status import AuctionBidStatusFilterBackend
 from api.filters.status import StatusFilterBackend
 from api.serializers.auctions import AuctionSerializer
+from api.serializers.auctions import BidAuctionSerializer
 from api.serializers.auctions import AuctionDetailWithSimilarSerializer
 from api.serializers.auctions import BidSerializer
 from api.paginations import FourPerPagePagination
@@ -66,12 +67,13 @@ class AuctionPlaceBidView(generics.CreateAPIView):
 
 class AccountBidListView(generics.ListAPIView):
     permission_classes = (IsAuthenticated, )
-    serializer_class = AuctionSerializer
+    serializer_class = BidAuctionSerializer
     pagination_class = FourPerPagePagination
     filter_backends = (AuctionBidStatusFilterBackend, )
 
     def get_queryset(self):
         return Auction.objects \
-            .filter(bid__user=self.request.user) \
+            .filter_with_user(self.request.user) \
             .order_by('-open_until') \
-            .order_by('pk').distinct('pk')
+            .order_by('pk') \
+            .select_related('product')

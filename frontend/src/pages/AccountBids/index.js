@@ -1,17 +1,18 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import { Alert, Button, Col, Row } from 'reactstrap'
+import { Alert } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
+import BidAuctionCard from 'components/BidAuctionCard'
 import Pagination from 'components/Pagination'
-import SectionTitle from 'components/SectionTitle'
+import Section from 'components/Section'
 import Spinner from 'components/Spinner'
-import TimeLeft from 'components/TimeLeft'
-import { ACCOUNT_BID_AUCTIONS_PAGE_SIZE } from 'config'
+import { ACCOUNT_BID_AUCTIONS_PAGE_SIZE, BID_STATUS_ACTIVE } from 'config'
 import { accountSelector } from 'store/selectors'
+import { API_PENDING, API_SUCCESS, API_FAIL } from 'store/api/request'
 import { getMyBids } from 'store/modules/account'
 
 
@@ -19,14 +20,6 @@ class AccountBids extends PureComponent {
   static propTypes = {
     account: ImmutablePropTypes.map.isRequired,
     getMyBids: PropTypes.func.isRequired
-  }
-
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      loadingStatus: 1
-    }
   }
 
   componentDidMount() {
@@ -40,50 +33,30 @@ class AccountBids extends PureComponent {
     })
 
     getMyBids({
-      params: { page },
-      success: () => this.setState({
-        loadingStatus: 10
-      }),
-      fail: () => this.setState({
-        loadingStatus: -1
-      }),
+      params: {
+        page,
+        status: BID_STATUS_ACTIVE
+      }
     })
   }
 
   render() {
     const { account } = this.props
-    const { loadingStatus } = this.state
     const bidAuctionsList = account.get('bidAuctionsList')
     const currentPage = account.get('bidAuctionsPageNumber')
     const totalCount = account.get('bidAuctionsCount')
+    const bidAuctionsStatus = account.get('bidAuctionsStatus')
 
     return (
-      <div>
-        <SectionTitle className="mb-4">My Bids</SectionTitle>
+      <Section title="My Current Bids">
+        {bidAuctionsStatus === API_PENDING && <Spinner />}
 
-        {loadingStatus === 1 && <Spinner />}
-
-        {loadingStatus === -1 && <Alert color="danger">
+        {bidAuctionsStatus === API_FAIL && <Alert color="danger">
           Failed to load data.
         </Alert>}
 
-        {loadingStatus === 10 && bidAuctionsList.map((item, index) => (
-          <Row key={index} className="align-items-center mb-3">
-            <Col md={6} xs={12} className="mb-3 text-center">
-              <img
-                className="mw-100"
-                src={item.getIn(['product_details', 'media', 0, 'url'], '')}
-                alt={item.get('title')}
-              />
-            </Col>
-            <Col md={6} xs={12} className="mb-3 text-center text-md-left">
-              <h5>{item.get('title')}</h5>
-              <div className="mb-3">
-                Time Left: <TimeLeft until={item.get('open_until')} />
-              </div>
-              <Button color="primary">Place a new bid</Button>
-            </Col>
-          </Row>
+        {bidAuctionsStatus === API_SUCCESS && bidAuctionsList.map((auction, index) => (
+          <BidAuctionCard key={index} auction={auction.toJS()} />
         ))}
 
         <div className="mt-5 text-center">
@@ -94,7 +67,7 @@ class AccountBids extends PureComponent {
             onPage={this.getPage}
           />
         </div>
-      </div>
+      </Section>
     )
   }
 }

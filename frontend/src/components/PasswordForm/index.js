@@ -1,10 +1,9 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Alert, Button } from 'reactstrap'
+import { Alert, Button, Col, Row } from 'reactstrap'
 import { compose } from 'redux'
-import { reduxForm } from 'redux-form/immutable'
+import { Field, reduxForm } from 'redux-form/immutable'
 
-import FormField from 'components/FormField'
 import InputField from 'components/InputField'
 
 
@@ -14,43 +13,56 @@ class PasswordForm extends PureComponent {
     error: PropTypes.any,
     handleSubmit: PropTypes.func.isRequired,
     submitFailed: PropTypes.bool,
+    submitSucceeded: PropTypes.bool,
     submitting: PropTypes.bool,
   }
 
   render() {
-    const { error, handleSubmit, submitFailed, submitting } = this.props
+    const { error, handleSubmit, submitFailed, submitSucceeded, submitting } = this.props
     return (
       <form onSubmit={handleSubmit}>
         {submitFailed && <Alert color="danger">
           {error || 'Failed to update your password'}
         </Alert>}
 
-        <FormField
+        {submitSucceeded && <Alert color="success">
+          Successfully updated password
+        </Alert>}
+
+        <Field
           name="old_password"
           type="password"
           label="Current Password"
           helpText="Must have at least 6 characters"
           placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;"
+          size="lg"
           component={InputField}
         />
-        <FormField
+        <Field
           name="new_password"
           type="password"
           label="New Password"
           helpText="Must have at least 6 characters"
           placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;"
+          size="lg"
           component={InputField}
         />
-        <FormField
+        <Field
           name="password_confirm"
           type="password"
           label="Confirmation New Password"
           placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;"
+          size="lg"
           component={InputField}
         />
-        <div className="text-right">
-          <Button type="submit" color="primary" disabled={submitting}>Update</Button>
-        </div>
+        <Row className="submit-wrapper">
+          <Col xs={12} md={8} />
+          <Col xs={12} md={4}>
+            <Button block type="submit" size="lg" color="primary" disabled={submitting}>
+              Save
+            </Button>
+          </Col>
+        </Row>
       </form>
     )
   }
@@ -61,7 +73,7 @@ const validate = (values) => {
 
   const password = values.get('new_password')
   if (password && password.length < 6) {
-    errors.password = 'Must have at least 6 characters'
+    errors.new_password = 'Must have at least 6 characters'
   }
 
   const passwordConfirm = values.get('password_confirm')

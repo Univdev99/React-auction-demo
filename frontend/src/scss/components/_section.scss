@@ -1,7 +1,10 @@
 .section {
-  margin-bottom: $section-spacing / 2;
-  @include media-breakpoint-up('md') {
-    margin-bottom: $section-spacing;
+  &:not(:last-child) {
+    margin-bottom: $section-spacing / 2;
+
+    @include media-breakpoint-up('md') {
+      margin-bottom: $section-spacing;
+    }
   }
 
   &__header {

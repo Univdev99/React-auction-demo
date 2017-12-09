@@ -7,3 +7,9 @@
 .form-control-lg {
   font-size: $font-size-base;
 }
+
+.form-group {
+  @include media-breakpoint-up('lg') {
+    margin-bottom: $form-group-margin-bottom-lg;
+  }
+}

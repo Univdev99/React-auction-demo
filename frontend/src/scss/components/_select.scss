@@ -64,13 +64,6 @@ $select-item-disabled-bg:           #fcfcfc !default;
 $select-item-disabled-border-color: darken($select-item-disabled-bg, 10%) !default;
 
 @mixin select_patch() {
-  .Select-input {
-    > input {
-      line-height: $input-btn-line-height;
-      padding: $select-padding-vertical 0;
-    }
-  }
-
   .Select-control {
     cursor: pointer;
     @include transition($input-transition);
@@ -81,6 +74,14 @@ $select-item-disabled-border-color: darken($select-item-disabled-bg, 10%) !defau
 .select-wrapper {
   @import "../../../node_modules/react-select/scss/default.scss";
   @include select_patch();
+
+  .Select-input {
+    > input {
+      line-height: $input-btn-line-height;
+      padding: $select-padding-vertical 0;
+    }
+  }
+
   font-size: $font-size-base;
 
   &--lg {
@@ -94,6 +95,13 @@ $select-item-disabled-border-color: darken($select-item-disabled-bg, 10%) !defau
     $select-item-gutter:                5px;
     @import "../../../node_modules/react-select/scss/default.scss";
     @include select_patch();
+
+    .Select-input {
+      > input {
+        line-height: $input-btn-line-height-lg;
+        padding: $select-padding-vertical 0;
+      }
+    }
   }
 
   &--sm {
@@ -108,6 +116,13 @@ $select-item-disabled-border-color: darken($select-item-disabled-bg, 10%) !defau
     @import "../../../node_modules/react-select/scss/default.scss";
     @include select_patch();
     font-size: $font-size-sm;
+
+    .Select-input {
+      > input {
+        line-height: $input-btn-line-height;
+        padding: $select-padding-vertical 0;
+      }
+    }
   }
 }
 
