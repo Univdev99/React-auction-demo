@@ -9,13 +9,13 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from api.permissions import IsAdmin
 from api.serializers.entities import DonorSerializer
 from api.serializers.entities import DonorDetailSerializer
 from api.serializers.entities import MediaReorderSerializer
 from api.serializers.entities import ProductSerializer
 from api.serializers.storage import MediumSerializer
 from api.serializers.storage import UploadMediumSerializer
-from api.permissions import IsAdmin
 from entity.models import Donor
 from storage.mixins import MediumUploadMixin
 from storage.mixins import MediumDeleteMixin
@@ -46,6 +46,7 @@ class DonorDetailView(MediumDeleteMixin, generics.RetrieveUpdateDestroyAPIView):
 
 
 class DonorProductListView(generics.ListAPIView):
+    permission_classes = (IsAuthenticated, IsAdmin,)
     serializer_class = ProductSerializer
 
     def get_queryset(self):

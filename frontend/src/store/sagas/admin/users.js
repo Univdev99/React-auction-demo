@@ -11,7 +11,7 @@ import {
 const getUserList = apiCall({
   type: ADMIN_GET_USER_LIST,
   method: 'get',
-  path: 'admin/users/',
+  path: ({ payload }) => `admin/users/?page=${payload.page}`,
 })
 
 const blockUnblockUser = apiCall({

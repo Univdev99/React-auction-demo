@@ -1,7 +1,13 @@
 import Immutable from 'immutable'
 import { createAction, handleActions } from 'redux-actions'
 
-import { requestSuccess, requestFail } from 'store/api/request'
+import {
+  API_PENDING,
+  API_SUCCESS,
+  API_FAIL,
+  requestSuccess,
+  requestFail,
+} from 'store/api/request'
 import {
   ADMIN_GET_USER_LIST,
   ADMIN_BLOCK_UNBLOCK_USER,
@@ -12,8 +18,10 @@ import {
 /* Initial state */
 
 const initialState = Immutable.fromJS({
-  userList: [],
-  userListLoaded: false,
+  userListPage: [],
+  userListCount: 0,
+  userListPageNumber: 1,
+  userListStatus: 'INIT',
   /* Current user history */
   userHistoryListPage: [],
   userHistoryListPageLoaded: false,
@@ -33,23 +41,30 @@ export default handleActions({
 
   /* Get user list actions */
 
+  [ADMIN_GET_USER_LIST]: (state, { payload }) => state.withMutations(map => {
+    map.set('userListPageNumber', payload.page)
+    map.set('userListStatus', API_PENDING)
+  }),
+
   [requestSuccess(ADMIN_GET_USER_LIST)]: (state, { payload }) => state.withMutations(map => {
-    map.set('userList', Immutable.fromJS(payload))
-    map.set('userListLoaded', true)
+    map.set('userListPage', Immutable.fromJS(payload.results))
+    map.set('userListCount', payload.count)
+    map.set('userListStatus', API_SUCCESS)
   }),
 
   [requestFail(ADMIN_GET_USER_LIST)]: (state, { payload }) => state.withMutations(map => {
-    map.set('userList', Immutable.List())
-    map.set('userListLoaded', false)
+    map.set('userListPage', Immutable.List())
+    map.set('userListCount', 0)
+    map.set('userListStatus', API_FAIL)
   }),
 
   /* Block/unblock user actions */
 
   [requestSuccess(ADMIN_BLOCK_UNBLOCK_USER)]: (state, { payload }) => state.withMutations(map => {
-    const userList = state.get('userList')
-    const index = userList.findIndex(pm => pm.get('pk') === payload.pk)
+    const userListPage = state.get('userListPage')
+    const index = userListPage.findIndex(pm => pm.get('pk') === payload.pk)
     if (index >= 0) {
-      map.setIn(['userList', index], Immutable.fromJS(payload))
+      map.setIn(['userListPage', index], Immutable.fromJS(payload))
     }
   }),
 
