@@ -30,6 +30,7 @@ from auction.constants import SALE_STATUS_WAITING_FOR_PAYMENT
 from auction.constants import SALE_STATUS_RECEIVED_PAYMENT
 from auction.constants import SALE_STATUS_CANCELLED
 from common.exceptions import PaymentRequired
+from common.models import SoftDeletionModel
 from entity.models import Product
 from history.constants import HISTORY_RECORD_AUCTION_START
 from history.constants import HISTORY_RECORD_AUCTION_FINISH
@@ -248,7 +249,7 @@ class Auction(models.Model):
         HistoryRecord.objects.create_history_record(self, None, HISTORY_RECORD_AUCTION_CANCEL)
 
 
-class Bid(models.Model):
+class Bid(SoftDeletionModel):
     price = models.FloatField()
     status = models.CharField(
         choices=BID_STATUS_CHOICES,
