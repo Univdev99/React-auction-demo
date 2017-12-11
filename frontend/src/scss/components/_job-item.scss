@@ -1,0 +1,9 @@
+$job-card-padding: 20px;
+$job-card-padding-md-up: 27px 40px;
+
+.job-item {
+  padding: $job-card-padding;
+  @include media-breakpoint-up('md') {
+    padding: $job-card-padding-md-up;
+  }
+}
