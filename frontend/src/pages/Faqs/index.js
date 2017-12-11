@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import { Link } from 'react-router-dom'
 
 import FaqItem from './FaqItem'
 import faqList from './faqList'
@@ -8,7 +9,7 @@ export default class Faqs extends PureComponent {
   breadcrumbPath() {
     return [
       { route: '/', text: 'Home' },
-      { text: 'FAQs' },
+      { text: 'FAQ' },
     ]
   }
 
@@ -22,6 +23,9 @@ export default class Faqs extends PureComponent {
         {faqList.map((item, index) => (
           <FaqItem {...item} key={index} />
         ))}
+        <h4 className="text-center mt-50 mt-md-40 pt-md-40">
+          Didn’t find the answer? <Link to="/support">Contact us</Link>
+        </h4>
       </FrontContainerLayout>
     )
   }

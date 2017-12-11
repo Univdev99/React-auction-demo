@@ -17,8 +17,9 @@ $spacers: (
   2: ($spacer * .5),
   3: $spacer,
   4: ($spacer * 1.5),
-  40: ($spacer * 2.25),
-  5: ($spacer * 3)
+  40: ($spacer * 2.5),
+  5: ($spacer * 3),
+  50: ($spacer * 3.125),
 );
 
 $paragraph-margin-bottom: 1.5rem;
@@ -50,7 +51,7 @@ $navbar-dark-hover-color: $primary;
 $navbar-dark-active-color: $primary;
 $navbar-light-toggler-icon-bg: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='#{$navbar-dark-color}' stroke-width='1' stroke='none' d='M6,6 L24,6 L24,9 L6,9 L6,9 Z M6,13 L24,13 L24,16 L6,16 L6,13 Z M6,20 L24,20 L24,23 L6,23 L6,20 Z'/%3E%3C/svg%3E");
 $navbar-dark-toggler-border-color: transparent;
-
+ 
 $navbar-light-color: #000000;
 $navbar-light-hover-color: $primary;
 $navbar-light-active-color: $primary;
