@@ -52,7 +52,7 @@ urlpatterns = [
     url(r'^posts/(?P<pk>[0-9]+)/$', PostDetailView.as_view(), name='post-detail'),
     url(r'^posts/(?P<pk>[0-9]+)/comments/$', PostCommentListView.as_view(), name='post-comments'),
 
-    url(r'^account/bid-auctions/$', AccountBidListView.as_view(), name='account-bid-auctions-list'),
+    url(r'^account/bids/$', AccountBidListView.as_view(), name='account-bid-list'),
     url(r'^account/payment/$', AccountPaymentView.as_view(), name='account-payment'),
 
     url(r'^payment-test/$', PaymentTestView.as_view(), name='payment-test'),

@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react'
 import cx from 'classnames'
 import PropTypes from 'prop-types'
+import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Button, Card, CardBody, CardText, CardTitle, Col, Row } from 'reactstrap'
-import { FormattedNumber } from 'react-intl'
+import { FormattedDate, FormattedNumber } from 'react-intl'
 import { Link } from 'react-router-dom'
 
 import auctionBidFlow from 'utils/auctionBidFlow'
@@ -10,26 +11,29 @@ import IconCheckCircle from 'icons/IconCheckCircle'
 import IconTrash from 'icons/IconTrash'
 import IconWarningCircle from 'icons/IconWarningCircle'
 import TimeLeft from 'components/TimeLeft'
-import { AUCTION_STATUS_OPEN } from 'config'
+import { BID_STATUS_ACTIVE } from 'config'
 
 const COMPONENT_CLASS = 'bid-auction-card'
 const bem = (suffix) => `${COMPONENT_CLASS}__${suffix}`
 
-class BidAuctionCard extends PureComponent {
+class BidCard extends PureComponent {
 
   static propTypes = {
-    auction: PropTypes.object.isRequired,
+    bid: ImmutablePropTypes.map.isRequired,
     startBidFlow: PropTypes.func.isRequired
   }
 
   handleBid = () => {
-    const { auction: { pk }, startBidFlow } = this.props
+    const { bid, startBidFlow } = this.props
+    const pk = bid.get('auction')
     startBidFlow(pk)
   }
 
   renderActiveStatus() {
-    const { auction: { user_price: userPrice, current_price: currentPrice } } = this.props
-    return currentPrice > userPrice ? (
+    const { bid } = this.props
+    const price = bid.get('price')
+    const currentPrice = bid.getIn(['auction_details', 'current_price'])
+    return currentPrice > price ? (
       <div className={bem('status')}>
         <IconWarningCircle size="1.125rem" />
         <span className="ml-1 align-middle">You've been outbid. Make a new bid now.</span>
@@ -43,7 +47,9 @@ class BidAuctionCard extends PureComponent {
   }
 
   renderActive() {
-    const { auction: { pk, title, open_until: openUntil, user_price: price } } = this.props
+    const { bid } = this.props
+    const { price, auction_details: auction } = bid.toJS()
+    const { pk, title, open_until: openUntil } = auction
 
     return (
       <CardBody className={bem('body')}>
@@ -69,7 +75,9 @@ class BidAuctionCard extends PureComponent {
   }
 
   renderInactive() {
-    const { auction: { pk, title, open_until: openUntil, user_price: price } } = this.props
+    const { bid } = this.props
+    const { price, auction_details: auction } = bid.toJS()
+    const { pk, title, open_until: openUntil } = auction
 
     return (
       <CardBody className={bem('body')}>
@@ -81,7 +89,7 @@ class BidAuctionCard extends PureComponent {
             <FormattedNumber value={price} format="currency" />
           </span>
           on{' '}
-          <TimeLeft until={openUntil} />
+          <FormattedDate value={openUntil} format="dayMonthAndYear" />
         </CardText>
         <Button color="link" className={bem('remove')}>
           <IconTrash />
@@ -91,13 +99,14 @@ class BidAuctionCard extends PureComponent {
   }
 
   render() {
-    const { auction: { product_details: product, status } } = this.props
-    const imgUrl = product.media ? product.media[0].url : ''
+    const { bid } = this.props
+    const status = bid.get('status')
+    const imgUrl = bid.getIn(['auction_details', 'product_details', 'media', 0, 'url'], '')
 
     return (
       <Card className={cx(COMPONENT_CLASS, 'gb')}>
         <div className={cx(bem('image'), 'card-img-top')} style={{ backgroundImage: `url(${imgUrl})`}} />
-        {status === AUCTION_STATUS_OPEN
+        {status === BID_STATUS_ACTIVE
           ? this.renderActive()
           : this.renderInactive()
         }
@@ -106,4 +115,4 @@ class BidAuctionCard extends PureComponent {
   }
 }
 
-export default auctionBidFlow(BidAuctionCard)
+export default auctionBidFlow(BidCard)

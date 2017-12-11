@@ -86,27 +86,6 @@ class AuctionDetailWithSimilarSerializer(serializers.ModelSerializer):
             'product', 'similar_auctions', 'donor_auctions')
 
 
-class BidAuctionSerializer(serializers.ModelSerializer):
-    product_details = serializers.SerializerMethodField()
-    user_price = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Auction
-        fields = (
-            'pk',
-            'title', 'starting_price', 'product', 'user_price',
-            'current_price', 'status', 'started_at', 'open_until', 'ended_at', 'product_details'
-        )
-        read_only_fields = ('pk', 'current_price', 'user_price', 'status', 'started_at', 'ended_at', 'product_details')
-
-    def get_product_details(self, obj):
-        serializer = ProductDetailSerializer(obj.product)
-        return serializer.data
-
-    def get_user_price(self, obj):
-        return obj.user_price
-
-
 class StartAuctionSerializer(serializers.Serializer):
     open_until = serializers.DateTimeField(required=False)
     duration_days = serializers.IntegerField(required=False, min_value=0)
@@ -147,8 +126,8 @@ class StartAuctionSerializer(serializers.Serializer):
 class BidSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bid
-        fields = ('price', 'status', 'placed_at', 'closed_at', 'user', 'auction')
-        read_only_fields = ('status', 'placed_at', 'closed_at', 'user', 'auction')
+        fields = ('pk', 'price', 'status', 'placed_at', 'closed_at', 'user', 'auction')
+        read_only_fields = ('pk', 'status', 'placed_at', 'closed_at', 'user', 'auction')
 
     def validate_price(self, value):
         auction = self.context.get('view').get_object()
@@ -209,6 +188,16 @@ class BidSerializer(serializers.ModelSerializer):
         })
 
         return bid
+
+
+class BidDetailSerializer(serializers.ModelSerializer):
+    user_detail = UserSerializer(source='user')
+    auction_details = AuctionSerializer(source='auction')
+
+    class Meta:
+        model = Bid
+        fields = ('pk', 'price', 'status', 'placed_at', 'closed_at', 'user', 'user_detail', 'auction', 'auction_details')
+        read_only_fields = ('pk', 'price', 'status', 'placed_at', 'closed_at', 'user', 'user_detail', 'auction', 'auction_details')
 
 
 class BidWithUserDetailSerializer(serializers.ModelSerializer):

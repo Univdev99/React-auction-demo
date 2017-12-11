@@ -68,7 +68,7 @@ export const ADMIN_RESET_NOTIFICATION_UNREAD_COUNT = 'charibin/admin/reset-notif
 export const ADMIN_GET_NOTIFICATION_LIST_ON_MENU = 'charibin/admin/get-notification-list-on-menu'
 export const ADMIN_GET_NOTIFICATION_PAGE = 'charibin/admin/get-notification-page'
 
-export const ACCOUNT_GET_MY_BID_AUCTIONS = 'charibin/account/get-my-bid-auctions'
+export const ACCOUNT_GET_MY_BIDS = 'charibin/account/get-my-bids'
 
 export const AUCTION_GET_LIST = 'charibin/auctions/get-list'
 export const AUCTION_GET_DETAIL = 'charibin/auctions/get-detail'

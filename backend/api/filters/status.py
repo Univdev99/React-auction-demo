@@ -14,7 +14,7 @@ class StatusFilterBackend(filters.BaseFilterBackend):
         return queryset
 
 
-class AuctionBidStatusFilterBackend(filters.BaseFilterBackend):
+class BidStatusFilterBackend(filters.BaseFilterBackend):
     """
     Filters queryset with status parameter applied on its related bid model status field
     """
@@ -23,5 +23,5 @@ class AuctionBidStatusFilterBackend(filters.BaseFilterBackend):
         if status_param:
             status_list = status_param.split(',')
             status_list = [status.strip() for status in status_list]
-            queryset = queryset.filter(bid__status__in=status_list)
+            queryset = queryset.filter(status__in=status_list)
         return queryset

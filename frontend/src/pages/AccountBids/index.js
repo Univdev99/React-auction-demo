@@ -6,11 +6,11 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
-import BidAuctionCard from 'components/BidAuctionCard'
+import BidCard from 'components/BidCard'
 import Pagination from 'components/Pagination'
 import Section from 'components/Section'
 import Spinner from 'components/Spinner'
-import { ACCOUNT_BID_AUCTIONS_PAGE_SIZE, BID_STATUS_ACTIVE } from 'config'
+import { ACCOUNT_BIDS_PAGE_SIZE, BID_STATUS_ACTIVE } from 'config'
 import { accountSelector } from 'store/selectors'
 import { API_PENDING, API_SUCCESS, API_FAIL } from 'store/api/request'
 import { getMyBids } from 'store/modules/account'
@@ -42,28 +42,28 @@ class AccountBids extends PureComponent {
 
   render() {
     const { account } = this.props
-    const bidAuctionsList = account.get('bidAuctionsList')
-    const currentPage = account.get('bidAuctionsPageNumber')
-    const totalCount = account.get('bidAuctionsCount')
-    const bidAuctionsStatus = account.get('bidAuctionsStatus')
+    const bidsList = account.get('bidsList')
+    const currentPage = account.get('bidsPageNumber')
+    const totalCount = account.get('bidsCount')
+    const bidsStatus = account.get('bidsStatus')
 
     return (
       <Section title="My Current Bids">
-        {bidAuctionsStatus === API_PENDING && <Spinner />}
+        {bidsStatus === API_PENDING && <Spinner />}
 
-        {bidAuctionsStatus === API_FAIL && <Alert color="danger">
+        {bidsStatus === API_FAIL && <Alert color="danger">
           Failed to load data.
         </Alert>}
 
-        {bidAuctionsStatus === API_SUCCESS && bidAuctionsList.map((auction, index) => (
-          <BidAuctionCard key={index} auction={auction.toJS()} />
+        {bidsStatus === API_SUCCESS && bidsList.map((bid, index) => (
+          <BidCard key={index} bid={bid} />
         ))}
 
         <div className="mt-5 text-center">
           <Pagination
             currentPage={currentPage}
             totalCount={totalCount}
-            pageSize={ACCOUNT_BID_AUCTIONS_PAGE_SIZE}
+            pageSize={ACCOUNT_BIDS_PAGE_SIZE}
             onPage={this.getPage}
           />
         </div>
