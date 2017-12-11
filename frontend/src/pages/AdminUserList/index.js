@@ -6,8 +6,14 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Link } from 'react-router-dom'
 
+import Pagination from 'components/Pagination'
 import SectionTitle from 'components/SectionTitle'
 import Spinner from 'components/Spinner'
+import {
+  API_PENDING,
+  API_SUCCESS,
+  API_FAIL,
+} from 'store/api/request'
 import {
   getUserList,
   blockUnblockUser,
@@ -15,6 +21,7 @@ import {
 import {
   adminUsersSelector,
 } from 'store/selectors'
+import { ADMIN_TABLE_PAGE_SIZE } from 'config'
 
 
 class AdminUserList extends PureComponent {
@@ -23,10 +30,6 @@ class AdminUserList extends PureComponent {
     adminUsers: ImmutablePropTypes.map.isRequired,
     getUserList: PropTypes.func.isRequired,
     blockUnblockUser: PropTypes.func.isRequired,
-  }
-
-  state = {
-    loadingStatus: 1
   }
 
   handleBlockUnblockUser = (id, block, event) => {
@@ -48,70 +51,81 @@ class AdminUserList extends PureComponent {
     })
   }
 
-  componentWillMount() {
-    this.setState({
-      loadingStatus: 1
-    })
+  loadData = (page = 1) => {
+    const { adminUsers } = this.props
+    const userListPageNumber = adminUsers.get('userListPageNumber')
 
     this.props.getUserList({
-      success: () => this.setState({
-        loadingStatus: 10
-      }),
-      fail: () => this.setState({
-        loadingStatus: -1
-      }),
+      page: page ? page : userListPageNumber,
     })
+  }
+
+  componentWillMount() {
+    this.loadData(1)
   }
 
   render() {
     const { adminUsers } = this.props
-    const userList = adminUsers.get('userList')
-    const { loadingStatus } = this.state
+    const userListPage = adminUsers.get('userListPage')
+    const userListCount = adminUsers.get('userListCount')
+    const userListPageNumber = adminUsers.get('userListPageNumber')
+    const userListStatus = adminUsers.get('userListStatus')
 
     return (
       <div>
         <SectionTitle className="mb-5">Users</SectionTitle>
 
-        {loadingStatus === 1 && <Spinner />}
+        {userListStatus === API_PENDING && <Spinner />}
 
-        {loadingStatus === -1 && <div>
+        {userListStatus === API_FAIL && <div>
           Failed to load data.
         </div>}
 
-        {loadingStatus === 10 && <table className="table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Email</th>
-              <th>Username</th>
-              <th>Full name</th>
-              <th>Admin</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {userList.map(user => (
-              <tr key={user.get('pk')}>
-                <th scope="row">{user.get('pk')}</th>
-                <td>{user.get('email')}</td>
-                <td>{user.get('username')}</td>
-                <td>{user.get('first_name')} {user.get('last_name')}</td>
-                <td>{user.get('is_staff') ? 'Admin' : 'Normal User'}</td>
-                <td>{user.get('is_active') ? 'Active' : 'Blocked'}</td>
-                <td>
-                  <Link className="text-secondary pr-3" to={`/admin/users/${user.get('pk')}/history`}>History</Link>
-                  {
-                    user.get('is_active') ?
-                    <a className="text-danger" href="/" onClick={this.handleBlockUnblockUser.bind(this, user.get('pk'), true)}>Block</a>
-                    :
-                    <a className="text-primary" href="/" onClick={this.handleBlockUnblockUser.bind(this, user.get('pk'), false)}>Unblock</a>
-                  }
-                </td>
+        {userListStatus === API_SUCCESS && <div>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Username</th>
+                <th>Full name</th>
+                <th>Admin</th>
+                <th>Status</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>}
+            </thead>
+            <tbody>
+              {userListPage.map(user => (
+                <tr key={user.get('pk')}>
+                  <th scope="row">{user.get('pk')}</th>
+                  <td>{user.get('email')}</td>
+                  <td>{user.get('username')}</td>
+                  <td>{user.get('first_name')} {user.get('last_name')}</td>
+                  <td>{user.get('is_staff') ? 'Admin' : 'Normal User'}</td>
+                  <td>{user.get('is_active') ? 'Active' : 'Blocked'}</td>
+                  <td>
+                    <Link className="text-secondary pr-3" to={`/admin/users/${user.get('pk')}/history`}>History</Link>
+                    {
+                      user.get('is_active') ?
+                      <a className="text-danger" href="/" onClick={this.handleBlockUnblockUser.bind(this, user.get('pk'), true)}>Block</a>
+                      :
+                      <a className="text-primary" href="/" onClick={this.handleBlockUnblockUser.bind(this, user.get('pk'), false)}>Unblock</a>
+                    }
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <div className="mt-5 text-center">
+            <Pagination
+              currentPage={userListPageNumber}
+              totalCount={userListCount}
+              pageSize={ADMIN_TABLE_PAGE_SIZE}
+              onPage={this.loadData}
+            />
+          </div>
+        </div>}
       </div>
     )
   }
