@@ -10,7 +10,7 @@ import {
   requestFail
 } from 'store/api/request'
 import {
-  ACCOUNT_GET_MY_BID_AUCTIONS,
+  ACCOUNT_GET_MY_BIDS,
   AUCTION_PLACE_BID
 } from 'store/constants'
 
@@ -18,15 +18,15 @@ import {
 /* Initial state */
 
 const initialState = Immutable.fromJS({
-  bidAuctionsList: [],
-  bidAuctionsCount: 0,
-  bidAuctionsPageNumber: 1,
-  bidAuctionsStatus: 'INIT'
+  bidsList: [],
+  bidsCount: 0,
+  bidsPageNumber: 1,
+  bidsStatus: 'INIT'
 })
 
 /* Action creators */
 
-export const getMyBids = createAction(ACCOUNT_GET_MY_BID_AUCTIONS)
+export const getMyBids = createAction(ACCOUNT_GET_MY_BIDS)
 
 /* Reducer */
 
@@ -34,31 +34,31 @@ export default handleActions({
 
   /* Get bid auctions list actions */
 
-  [ACCOUNT_GET_MY_BID_AUCTIONS]: (state, { payload }) => state.withMutations(map => {
-    map.set('bidAuctionsPageNumber', payload.params.page)
+  [ACCOUNT_GET_MY_BIDS]: (state, { payload }) => state.withMutations(map => {
+    map.set('bidsPageNumber', payload.params.page)
   }),
 
-  [requestPending(ACCOUNT_GET_MY_BID_AUCTIONS)]: (state, { payload }) => state.withMutations(map => {
-    map.set('bidAuctionsStatus', API_PENDING)
+  [requestPending(ACCOUNT_GET_MY_BIDS)]: (state, { payload }) => state.withMutations(map => {
+    map.set('bidsStatus', API_PENDING)
   }),
 
-  [requestSuccess(ACCOUNT_GET_MY_BID_AUCTIONS)]: (state, { payload }) => state.withMutations(map => {
-    map.set('bidAuctionsList', Immutable.fromJS(payload.results))
-    map.set('bidAuctionsCount', payload.count)
-    map.set('bidAuctionsStatus', API_SUCCESS)
+  [requestSuccess(ACCOUNT_GET_MY_BIDS)]: (state, { payload }) => state.withMutations(map => {
+    map.set('bidsList', Immutable.fromJS(payload.results))
+    map.set('bidsCount', payload.count)
+    map.set('bidsStatus', API_SUCCESS)
   }),
 
-  [requestFail(ACCOUNT_GET_MY_BID_AUCTIONS)]: (state, { payload }) => state.withMutations(map => {
-    map.set('bidAuctionsList', Immutable.List())
-    map.set('bidAuctionsCount', 0)
-    map.set('bidAuctionsStatus', API_FAIL)
+  [requestFail(ACCOUNT_GET_MY_BIDS)]: (state, { payload }) => state.withMutations(map => {
+    map.set('bidsList', Immutable.List())
+    map.set('bidsCount', 0)
+    map.set('bidsStatus', API_FAIL)
   }),
 
   /* Update existing bid list if bid price updated */
   [requestSuccess(AUCTION_PLACE_BID)]: (state, { payload }) => state.withMutations(map => {
-    const bidItemKey = map.get('bidAuctionsList').findKey((item) => item.get('pk') === payload.auction)
+    const bidItemKey = map.get('bidsList').findKey((item) => item.get('pk') === payload.pk)
     if (typeof bidItemKey !== 'undefined') {
-      map.setIn(['bidAuctionsList', bidItemKey, 'user_price'], payload.price)
+      map.setIn(['bidsList', bidItemKey, 'price'], payload.price)
     }
   })
 
