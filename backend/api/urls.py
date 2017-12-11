@@ -11,11 +11,12 @@ from api.views.donors import DonorListView
 from api.views.donors import DonorDetailView
 from api.views.jobs import JobListView
 from api.views.jobs import JobDetailView
+from api.views.auctions import AccountBidDetailView
+from api.views.auctions import AccountBidListView
+from api.views.auctions import AuctionDetailView
 from api.views.auctions import AuctionFrontListView
 from api.views.auctions import AuctionListView
-from api.views.auctions import AuctionDetailView
 from api.views.auctions import AuctionPlaceBidView
-from api.views.auctions import AccountBidListView
 from api.views.blog import PostFrontListView
 from api.views.blog import PostListView
 from api.views.blog import PostDetailView
@@ -53,6 +54,7 @@ urlpatterns = [
     url(r'^posts/(?P<pk>[0-9]+)/comments/$', PostCommentListView.as_view(), name='post-comments'),
 
     url(r'^account/bids/$', AccountBidListView.as_view(), name='account-bid-list'),
+    url(r'^account/bids/(?P<pk>[0-9]+)/$', AccountBidDetailView.as_view(), name='account-bid-detail'),
     url(r'^account/payment/$', AccountPaymentView.as_view(), name='account-payment'),
 
     url(r'^payment-test/$', PaymentTestView.as_view(), name='payment-test'),

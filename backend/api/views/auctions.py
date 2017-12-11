@@ -78,3 +78,15 @@ class AccountBidListView(generics.ListAPIView):
             .order_by('pk') \
             .select_related('auction') \
             .select_related('auction__product')
+
+
+class AccountBidDetailView(generics.RetrieveDestroyAPIView):
+    permission_classes = (IsAuthenticated, )
+    serializer_class = BidDetailSerializer
+    pagination_class = FourPerPagePagination
+
+    def get_queryset(self):
+        return Bid.objects \
+            .filter(user=self.request.user) \
+            .select_related('auction') \
+            .select_related('auction__product')

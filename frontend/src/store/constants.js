@@ -69,6 +69,7 @@ export const ADMIN_GET_NOTIFICATION_LIST_ON_MENU = 'charibin/admin/get-notificat
 export const ADMIN_GET_NOTIFICATION_PAGE = 'charibin/admin/get-notification-page'
 
 export const ACCOUNT_GET_MY_BIDS = 'charibin/account/get-my-bids'
+export const ACCOUNT_DELETE_MY_BID = 'charibin/account/delete-my-bid'
 
 export const AUCTION_GET_LIST = 'charibin/auctions/get-list'
 export const AUCTION_GET_DETAIL = 'charibin/auctions/get-detail'

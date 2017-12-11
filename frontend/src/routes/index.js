@@ -63,6 +63,7 @@ import AccountCreatedModal from 'components/AccountCreatedModal'
 import AuctionAddCardModal from 'components/AuctionAddCardModal'
 import AuctionBidModal from 'components/AuctionBidModal'
 import AuctionBidPlacedModal from 'components/AuctionBidPlacedModal'
+import ConfirmModal from 'components/ConfirmModal'
 import SignInModal from 'components/SignInModal'
 import SignUpModal from 'components/SignUpModal'
 import SubscribeModal from 'components/SubscribeModal'
@@ -157,6 +158,7 @@ const modals = (
     <AuctionAddCardModal />
     <AuctionBidModal />
     <AuctionBidPlacedModal />
+    <ConfirmModal />
     <SignInModal />
     <SignUpModal />
     <SubscribeModal />

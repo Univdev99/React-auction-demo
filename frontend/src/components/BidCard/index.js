@@ -3,8 +3,11 @@ import cx from 'classnames'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Button, Card, CardBody, CardText, CardTitle, Col, Row } from 'reactstrap'
+import { compose } from 'redux'
+import { connect } from 'react-redux'
 import { FormattedDate, FormattedNumber } from 'react-intl'
 import { Link } from 'react-router-dom'
+import { show } from 'redux-modal'
 
 import auctionBidFlow from 'utils/auctionBidFlow'
 import IconCheckCircle from 'icons/IconCheckCircle'
@@ -12,14 +15,17 @@ import IconTrash from 'icons/IconTrash'
 import IconWarningCircle from 'icons/IconWarningCircle'
 import TimeLeft from 'components/TimeLeft'
 import { BID_STATUS_ACTIVE } from 'config'
+import { deleteMyBid } from 'store/modules/account'
 
-const COMPONENT_CLASS = 'bid-auction-card'
+
+const COMPONENT_CLASS = 'bid-card'
 const bem = (suffix) => `${COMPONENT_CLASS}__${suffix}`
 
 class BidCard extends PureComponent {
 
   static propTypes = {
     bid: ImmutablePropTypes.map.isRequired,
+    show: PropTypes.func,
     startBidFlow: PropTypes.func.isRequired
   }
 
@@ -27,6 +33,14 @@ class BidCard extends PureComponent {
     const { bid, startBidFlow } = this.props
     const pk = bid.get('auction')
     startBidFlow(pk)
+  }
+
+  handleDelete = () => {
+    const { bid, deleteMyBid, show } = this.props
+    show('confirmModal', {
+      text: 'Are you sure to delete this bid?',
+      onOk: () => deleteMyBid({ id: bid.get('pk') })
+    })
   }
 
   renderActiveStatus() {
@@ -91,7 +105,7 @@ class BidCard extends PureComponent {
           on{' '}
           <FormattedDate value={openUntil} format="dayMonthAndYear" />
         </CardText>
-        <Button color="link" className={bem('remove')}>
+        <Button color="link" className={bem('remove')} onClick={this.handleDelete}>
           <IconTrash />
         </Button>
       </CardBody>
@@ -115,4 +129,12 @@ class BidCard extends PureComponent {
   }
 }
 
-export default auctionBidFlow(BidCard)
+const actions = {
+  deleteMyBid,
+  show
+}
+
+export default compose(
+  auctionBidFlow,
+  connect(null, actions)
+)(BidCard)
