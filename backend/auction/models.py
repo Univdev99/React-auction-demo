@@ -50,11 +50,6 @@ class AuctionManager(models.Manager):
     def get_queryset(self):
         return AuctionQuerySet(self.model, using=self._db)
 
-    def filter_with_user(self, user):
-        return AuctionQuerySet(self.model, using=self._db) \
-            .filter(bid__user=user) \
-            .annotate(user_price=Max('bid__price'))
-
 
 class Auction(models.Model):
     title = models.CharField(max_length=300)
