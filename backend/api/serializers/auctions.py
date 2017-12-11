@@ -151,31 +151,41 @@ class BidSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def create(self, validated_data):
         request = self.context.get('request')
+        user = request.user
         auction = self.context.get('view').get_object()
         price = validated_data['price']
         placed_at = timezone.now()
 
-        bid = Bid.objects.create(
-            price=price,
-            placed_at=placed_at,
-            user=request.user,
-            auction=auction
-        )
+        try:
+            bid = Bid.objects.get(user=user, auction=auction)
+            bid.price = price
+            bid.placed_at = placed_at
+            bid.save()
+        except Bid.DoesNotExist:
+            bid = Bid.objects.create(
+                price=price,
+                placed_at=placed_at,
+                user=user,
+                auction=auction
+            )
+        except Bid.MultipleObjectsReturned:
+            Bid.objects.filter(user=user).filter(auction=auction).delete()
+            bid = Bid.objects.create(
+                price=price,
+                placed_at=placed_at,
+                user=user,
+                auction=auction
+            )
 
-        HistoryRecord.objects.create_history_record(request.user, auction, HISTORY_RECORD_USER_BID, {
+        HistoryRecord.objects.create_history_record(user, auction, HISTORY_RECORD_USER_BID, {
             'price': price,
             'placed_at': placed_at,
         })
 
-        Notification.objects.create_notification(
-            request.user,
-            auction,
-            NOTIFICATION_AUCTION_NEW_BID,
-            {
-                'price': price,
-                'placed_at': placed_at,
-            }
-        )
+        Notification.objects.create_notification(user, auction, NOTIFICATION_AUCTION_NEW_BID, {
+            'price': price,
+            'placed_at': placed_at,
+        })
 
         return bid
 
