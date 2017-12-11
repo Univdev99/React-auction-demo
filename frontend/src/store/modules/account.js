@@ -10,6 +10,7 @@ import {
   requestFail
 } from 'store/api/request'
 import {
+  ACCOUNT_DELETE_MY_BID,
   ACCOUNT_GET_MY_BIDS,
   AUCTION_PLACE_BID
 } from 'store/constants'
@@ -27,6 +28,7 @@ const initialState = Immutable.fromJS({
 /* Action creators */
 
 export const getMyBids = createAction(ACCOUNT_GET_MY_BIDS)
+export const deleteMyBid = createAction(ACCOUNT_DELETE_MY_BID)
 
 /* Reducer */
 
@@ -59,6 +61,14 @@ export default handleActions({
     const bidItemKey = map.get('bidsList').findKey((item) => item.get('pk') === payload.pk)
     if (typeof bidItemKey !== 'undefined') {
       map.setIn(['bidsList', bidItemKey, 'price'], payload.price)
+    }
+  }),
+
+  /* Remove deleted bid from the bid list */
+  [requestSuccess(ACCOUNT_DELETE_MY_BID)]: (state, { payload }) => state.withMutations(map => {
+    const bidItemKey = map.get('bidsList').findKey((item) => item.get('pk') === payload.pk)
+    if (typeof bidItemKey !== 'undefined') {
+      map.deleteIn(['bidsList', bidItemKey])
     }
   })
 
