@@ -16,7 +16,6 @@ export default class Faqs extends PureComponent {
   render() {
     return (
       <FrontContainerLayout
-        breadcrumbPath={this.breadcrumbPath()}
         title="FAQs"
         subscribe
       >

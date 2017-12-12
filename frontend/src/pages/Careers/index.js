@@ -50,7 +50,6 @@ class Careers extends PureComponent {
 
     return (
       <FrontContainerLayout
-        breadcrumbPath={this.breadcrumbPath()}
         title="Careers"
         subscribe
       >

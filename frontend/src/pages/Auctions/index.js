@@ -94,10 +94,7 @@ class Auctions extends PureComponent {
     const searchParams = getSearchParams(location.search)
 
     return (
-      <FrontContainerLayout
-        breadcrumbPath={this.breadcrumbPath()}
-        subscribe
-      >
+      <FrontContainerLayout subscribe>
         <AuctionSideFilter initialValues={searchParams} onSubmit={this.handleSearch} />
         <Section>
           <SearchBar initialValues={searchParams} onSubmit={this.handleSearch} />

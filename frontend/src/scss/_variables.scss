@@ -99,6 +99,16 @@ $card-spacer-y: 1rem;
 $card-border-width: 0;
 
 $alert-margin-bottom: 1.875rem;
+
+$breadcrumb-padding-y: 0;
+$breadcrumb-padding-x: 0;
+$breadcrumb-item-padding: .625rem;
+$breadcrumb-margin-bottom: 1.25rem;
+$breadcrumb-divider-color: $secondary;
+$breadcrumb-active-color: $secondary;
+$breadcrumb-bg: transparent;
+$breadcrumb-divider: '›';
+
 /* END Overriding Bootstrap Variables */
 
 $grid-gutter-width-responsive: 20px;
