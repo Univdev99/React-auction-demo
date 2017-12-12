@@ -1,5 +1,6 @@
 $icon-list-item-margin: 20px;
 $icon-list-item-margin-md-up: 30px;
+$icon-list-item-icon-size: 40px;
 
 .icon-list-item {
   display: flex;
@@ -12,8 +13,19 @@ $icon-list-item-margin-md-up: 30px;
     }
   }
 
-  &__icon {
-    align-self: center;
+  &__icon, &__image {
+    align-self: top;
     margin-right: $icon-list-item-margin
+  }
+
+  &__icon {
+    width: $icon-list-item-icon-size;
+    height: $icon-list-item-icon-size;
+    background-color: $border-color;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $primary;
   }
 }
