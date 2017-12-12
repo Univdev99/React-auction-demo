@@ -4,6 +4,7 @@ import { compose } from 'redux'
 import { reduxForm } from 'redux-form/immutable'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
+import Immutable from 'immutable'
 
 import FormField from 'components/FormField'
 import InputField from 'components/InputField'
@@ -17,6 +18,8 @@ class AuctionForm extends PureComponent {
     initialValues: ImmutablePropTypes.map,
     onBack: PropTypes.func,
     productList: ImmutablePropTypes.list.isRequired,
+    charityList: ImmutablePropTypes.list,
+    getCharityList: PropTypes.func,
     submitFailed: PropTypes.bool,
     submitting: PropTypes.bool,
   }
@@ -30,8 +33,25 @@ class AuctionForm extends PureComponent {
     }
   }
 
+  handleChangeProduct = (event, productId) => {
+    const { getCharityList } = this.props
+    if (getCharityList) {
+      getCharityList(productId)
+    }
+  }
+
   render() {
-    const { error, handleSubmit, initialValues, onBack, productList, submitFailed, submitting } = this.props
+    const {
+      error, handleSubmit, initialValues, submitFailed, submitting,
+      onBack, productList, charityList,
+    } = this.props
+
+    const charityListOptions = charityList ?
+      charityList.map(product => ({
+        key: product.get('pk'),
+        value: product.get('title'),
+      })) :
+      Immutable.List()
 
     return (
       <form onSubmit={handleSubmit}>
@@ -60,6 +80,14 @@ class AuctionForm extends PureComponent {
             key: product.get('pk'),
             value: product.get('title'),
           }))}
+          onChange={this.handleChangeProduct}
+        />
+        <FormField
+          name="charity"
+          label="Charity:"
+          type="select"
+          component={InputField}
+          options={charityListOptions}
         />
         <center>
           {onBack && <button className="btn mr-3" onClick={this.handleClickBack}>
@@ -92,6 +120,10 @@ const validate = (values) => {
 
   if (!values.get('product')) {
     errors.product = 'Please select a product'
+  }
+
+  if (!values.get('charity')) {
+    errors.charity = 'Please select a charity'
   }
 
   if (!values.get('tagnames') || !values.get('tagnames').size) {

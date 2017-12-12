@@ -47,7 +47,7 @@ class AuctionAdminSerializer(AuctionSerializer):
     class Meta:
         model = Auction
         fields = AuctionSerializer.Meta.fields + (
-            'max_bid', 'min_bid', 'highest_bidder', 'number_of_bids', 'time_remaining'
+            'charity', 'max_bid', 'min_bid', 'highest_bidder', 'number_of_bids', 'time_remaining'
         )
         read_only_fields = AuctionSerializer.Meta.read_only_fields + (
             'max_bid', 'min_bid', 'highest_bidder', 'number_of_bids', 'time_remaining'
@@ -256,7 +256,7 @@ class SaleSerializer(serializers.ModelSerializer):
         return '{} {}'.format(obj.user.first_name, obj.user.last_name)
 
     def get_charity(self, obj):
-        return obj.product.donor.charity.title
+        return obj.auction.charity.title
 
 
 class SaleNoteSerializer(SaleSerializer):

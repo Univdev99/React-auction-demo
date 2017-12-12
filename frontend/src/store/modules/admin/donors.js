@@ -13,6 +13,7 @@ import {
   ADMIN_DELETE_DONOR_MEDIUM,
   ADMIN_REORDER_DONOR_MEDIUM,
 } from 'store/constants'
+import { replaceListItem } from 'utils/list'
 
 
 /* Initial state */
@@ -65,10 +66,18 @@ export default handleActions({
     map.set('donorDetail', Immutable.fromJS(payload))
   }),
 
+  /* Create donor detail actions */
+
+  [requestSuccess(ADMIN_CREATE_DONOR)]: (state, { payload }) => state.withMutations(map => {
+    const donorList = state.get('donorList')
+    map.set('donorList', donorList.push(Immutable.fromJS(payload)))
+  }),
+
   /* Update donor detail actions */
 
   [requestSuccess(ADMIN_UPDATE_DONOR_DETAIL)]: (state, { payload }) => state.withMutations(map => {
     map.set('donorDetail', Immutable.fromJS(payload))
+    replaceListItem(payload, map, 'donorList')
   }),
 
   /* Get donor product list actions */

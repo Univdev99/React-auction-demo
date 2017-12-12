@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 import Spinner from 'components/Spinner'
 import AuctionForm from 'components/AuctionForm'
 import SectionTitle from 'components/SectionTitle'
-import { getProductList } from 'store/modules/admin/products'
+import { getProductList, getProductDonorCharityList } from 'store/modules/admin/products'
 import {
   getAuctionDetail,
   updateAuctionDetail,
@@ -23,6 +23,7 @@ class AdminAuctionDetail extends PureComponent {
     adminProducts: ImmutablePropTypes.map.isRequired,
     adminAuctions: ImmutablePropTypes.map.isRequired,
     getProductList: PropTypes.func.isRequired,
+    getProductDonorCharityList: PropTypes.func.isRequired,
     getAuctionDetail: PropTypes.func.isRequired,
     updateAuctionDetail: PropTypes.func.isRequired,
     match: PropTypes.object.isRequired,
@@ -31,6 +32,10 @@ class AdminAuctionDetail extends PureComponent {
   state = {
     loadingStatus: 1,
     updatingStatus: 0,
+  }
+
+  handleChangeProduct = (id) => {
+    this.props.getProductDonorCharityList({ id })
   }
 
   handleSubmit = (data) => {
@@ -75,11 +80,12 @@ class AdminAuctionDetail extends PureComponent {
   }
 
   render() {
-    const { adminProducts, match } = this.props
+    const { adminProducts, adminAuctions, match } = this.props
     const productListLoaded = adminProducts.get('productListLoaded')
     const productList = adminProducts.get('productList')
-    const { adminAuctions } = this.props
+    const productDonorCharityList = adminProducts.get('productDonorCharityList')
     const auctionDetail = adminAuctions.get('auctionDetail')
+
     const { loadingStatus, updatingStatus } = this.state
 
     if (loadingStatus === -1) {
@@ -111,6 +117,8 @@ class AdminAuctionDetail extends PureComponent {
               disabled={updatingStatus === 1}
               onSubmit={this.handleSubmit}
               onBack={this.handleBack}
+              getCharityList={this.handleChangeProduct}
+              charityList={productDonorCharityList}
             />
           </div>}
         </div>
@@ -126,6 +134,7 @@ const selector = createStructuredSelector({
 
 const actions = {
   getProductList,
+  getProductDonorCharityList,
   getAuctionDetail,
   updateAuctionDetail,
 }

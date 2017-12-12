@@ -31,6 +31,7 @@ from api.views.admin.products import ProductMediumUploadView
 from api.views.admin.products import ProductMediumDeleteView
 from api.views.admin.products import ProductListView
 from api.views.admin.products import ProductMediaReorderView
+from api.views.admin.products import ProductDonorCharityListView
 from api.views.admin.tags import TagSuggestionListView
 from api.views.admin.users import UserBlockUnblockView
 from api.views.admin.users import UserListView
@@ -59,6 +60,8 @@ urlpatterns = [
     url(r'^products/(?P<pk>[0-9]+)/media/(?P<pm_pk>[0-9]+)/$',
         ProductMediumDeleteView.as_view(), name='product-medium-delete'),
     url(r'^products/(?P<pk>[0-9]+)/media/reorder/$', ProductMediaReorderView.as_view(), name='product-media-reorder'),
+    url(r'^products/(?P<pk>[0-9]+)/donor/charities/$',
+        ProductDonorCharityListView.as_view(), name='product-donor-charities'),
 
     # auctions endpoints
     url(r'^auctions/$', AuctionListView.as_view(), name='auction-list'),

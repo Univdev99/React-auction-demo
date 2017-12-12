@@ -33,6 +33,7 @@ export const ADMIN_DELETE_PRODUCT = 'charibin/admin/delete-product'
 export const ADMIN_UPLOAD_PRODUCT_MEDIUM = 'charibin/admin/upload-product-medium'
 export const ADMIN_DELETE_PRODUCT_MEDIUM = 'charibin/admin/delete-product-medium'
 export const ADMIN_REORDER_PRODUCT_MEDIUM = 'charibin/admin/reorder-product-medium'
+export const ADMIN_GET_PRODUCT_DONOR_CHARITY_LIST = 'charibin/admin/get-auction-product-donor-charity-list'
 
 export const ADMIN_GET_AUCTION_LIST = 'charibin/admin/get-auction-list'
 export const ADMIN_CREATE_AUCTION = 'charibin/admin/create-auction'

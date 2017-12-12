@@ -11,7 +11,9 @@ import {
   ADMIN_UPLOAD_PRODUCT_MEDIUM,
   ADMIN_DELETE_PRODUCT_MEDIUM,
   ADMIN_REORDER_PRODUCT_MEDIUM,
+  ADMIN_GET_PRODUCT_DONOR_CHARITY_LIST,
 } from 'store/constants'
+import { replaceListItem } from 'utils/list'
 
 
 /* Initial state */
@@ -22,6 +24,7 @@ const initialState = Immutable.fromJS({
   productListLoaded: false,
   productDetail: null,
   reorderedTemporaryProductMedia: null,
+  productDonorCharityList: [],
 })
 
 /* Action creators */
@@ -34,6 +37,7 @@ export const deleteProduct = createAction(ADMIN_DELETE_PRODUCT)
 export const uploadProductMedium = createAction(ADMIN_UPLOAD_PRODUCT_MEDIUM)
 export const deleteProductMedium = createAction(ADMIN_DELETE_PRODUCT_MEDIUM)
 export const reorderProductMedia = createAction(ADMIN_REORDER_PRODUCT_MEDIUM)
+export const getProductDonorCharityList = createAction(ADMIN_GET_PRODUCT_DONOR_CHARITY_LIST)
 
 /* Reducer */
 
@@ -61,10 +65,18 @@ export default handleActions({
     map.set('productDetail', Immutable.fromJS(payload))
   }),
 
+  /* Create product detail actions */
+
+  [requestSuccess(ADMIN_CREATE_PRODUCT)]: (state, { payload }) => state.withMutations(map => {
+    const productList = state.get('productList')
+    map.set('productList', productList.push(Immutable.fromJS(payload)))
+  }),
+
   /* Update product detail actions */
 
   [requestSuccess(ADMIN_UPDATE_PRODUCT_DETAIL)]: (state, { payload }) => state.withMutations(map => {
     map.set('productDetail', Immutable.fromJS(payload))
+    replaceListItem(payload, map, 'productList')
   }),
 
   /* Upload product medium actions */
@@ -98,6 +110,16 @@ export default handleActions({
 
   [requestFail(ADMIN_REORDER_PRODUCT_MEDIUM)]: (state, { payload }) => state.withMutations(map => {
     map.set('reorderedTemporaryProductMedia', null)
+  }),
+
+  /* Get charity list of the product donor in auction form actions */
+
+  [ADMIN_GET_PRODUCT_DONOR_CHARITY_LIST]: (state, { payload }) => state.withMutations(map => {
+    map.set('productDonorCharityList', Immutable.List())
+  }),
+
+  [requestSuccess(ADMIN_GET_PRODUCT_DONOR_CHARITY_LIST)]: (state, { payload }) => state.withMutations(map => {
+    map.set('productDonorCharityList', Immutable.fromJS(payload))
   }),
 
 }, initialState)

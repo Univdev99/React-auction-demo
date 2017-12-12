@@ -34,6 +34,7 @@ class AuctionListView(generics.ListCreateAPIView):
     queryset = Auction.objects.order_by('pk') \
         .select_related('product') \
         .select_related('product__donor') \
+        .prefetch_related('product__donor__charities') \
         .prefetch_related('product__media')
     serializer_class = AuctionAdminSerializer
     pagination_class = TenPerPagePagination
@@ -42,7 +43,7 @@ class AuctionListView(generics.ListCreateAPIView):
 
 class AuctionDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
-    serializer_class = AuctionSerializer
+    serializer_class = AuctionAdminSerializer
     lookup_url_kwarg = 'pk'
     queryset = Auction.objects.select_related('product')
 
@@ -130,7 +131,7 @@ class AuctionBidStatusChangeView(generics.UpdateAPIView):
 class SaleListView(generics.ListAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
     queryset = Sale.objects.order_by('pk') \
-        .select_related('product__donor__charity') \
+        .prefetch_related('product__donor__charities') \
         .select_related('user')
     serializer_class = SaleSerializer
     pagination_class = TenPerPagePagination
@@ -156,7 +157,7 @@ class AuctionBacklogListView(generics.ListAPIView):
         .select_related('sale') \
         .select_related('product') \
         .select_related('product__donor') \
-        .select_related('product__donor__charity') \
+        .prefetch_related('product__donor__charities') \
         .prefetch_related('product__media')
     serializer_class = AuctionBacklogSerializer
     pagination_class = TenPerPagePagination
