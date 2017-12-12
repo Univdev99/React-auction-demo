@@ -1,0 +1,17 @@
+.page-content {
+  h4 {
+    margin-top: 1.857rem;
+    @include media-breakpoint-up('md') {
+      margin-top: 2.5rem;
+    }
+  }
+
+  ul {
+    padding-left: 1.2rem;
+  }
+
+  li {
+    list-style: outside square;
+    margin-bottom: 0.375rem;
+  }
+}

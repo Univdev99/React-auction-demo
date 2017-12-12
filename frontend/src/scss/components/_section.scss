@@ -7,11 +7,17 @@
     }
   }
 
+  &--mb-mobile {
+    @include media-breakpoint-down('sm') {
+      margin-bottom: $section-spacing / 2;
+    }
+  }
+
   &__header {
     margin-bottom: $section-header-spacing-responsive;
-    @extend .d-flex;
-    @extend .align-items-end;
-    @extend .justify-content-between;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
 
     @include media-breakpoint-up('md') {
       margin-bottom: $section-header-spacing;
@@ -24,5 +30,9 @@
     @include media-breakpoint-up('md') {
       display: none;
     }
+  }
+
+  p:last-child {
+    margin-bottom: 0;
   }
 }

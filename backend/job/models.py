@@ -8,3 +8,4 @@ class Job(models.Model):
     title = models.CharField(max_length=300)
     description = models.TextField()
     posted_at = models.DateTimeField(auto_now_add=True)
+    location = models.CharField(max_length=256, null=True, blank=True)

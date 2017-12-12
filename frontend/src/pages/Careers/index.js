@@ -1,15 +1,20 @@
 import React, { PureComponent } from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import PropTypes from 'prop-types'
-import { Alert, Button, ListGroup, ListGroupItem } from 'reactstrap'
+import { Alert } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
-import { Link } from 'react-router-dom'
 
+import careersImg1 from 'images/careers-img1.jpg'
+import careersImg2 from 'images/careers-img2.jpg'
+import careersImg3 from 'images/careers-img3.jpg'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
-import SectionTitle from 'components/SectionTitle'
+import ImageGrid from 'components/ImageGrid'
+import JobItem from './JobItem'
+import Section from 'components/Section'
 import Spinner from 'components/Spinner'
+import { API_PENDING, API_SUCCESS, API_FAIL } from 'store/api/request'
 import { getJobList } from 'store/modules/jobs'
 import { jobsSelector } from 'store/selectors'
 
@@ -28,28 +33,10 @@ class Careers extends PureComponent {
     ]
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      status: 0, // 0: loading, 1: loaded, -1: error
-    }
-  }
-
   getJobs = () => {
     const { getJobList } = this.props
 
-    this.setState({
-      status: 0
-    })
-
-    getJobList({
-      success: () => this.setState({
-        status: 1
-      }),
-      fail: () => this.setState({
-        status: -1
-      }),
-    })
+    getJobList()
   }
 
   componentWillMount() {
@@ -59,47 +46,36 @@ class Careers extends PureComponent {
   render() {
     const { jobs } = this.props
     const jobList = jobs.get('jobList')
-    const { status } = this.state
+    const jobListStatus = jobs.get('jobListStatus')
 
     return (
       <FrontContainerLayout
-        breadcrumbPath={this.breadcrumbPath()}
         title="Careers"
         subscribe
       >
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut nibh dictum, auctor libero ac,
-          varius sem. Aenean in augue sed enim pulvinar ultricies eget at nibh. Sed ac iaculis lorem. Donec
-          faucibus sodales risus, ac scelerisque urna tristique at. Etiam non nulla molestie mi pellentesque
-          rutrum. Fusce sodales tellus sit amet facilisis dictum. Sed sagittis vel dui condimentum dictum.
-          Cras ut purus in ligula fermentum convallis. Praesent non dolor imperdiet, rutrum mi in, rhoncus
-          neque. Maecenas sed gravida turpis. Proin commodo sem in arcu viverra lobortis. Morbi pulvinar at
-          ante sed vestibulum. Sed molestie mi nec odio pharetra finibus non non est. Vivamus cursus velit
-          leo, vel malesuada quam aliquam et.
-        </p>
+        <Section>
+          <p>
+            Yuma harnesses the power of celebrity, technology, and media to raise awareness and
+            funds for some of the world's toughest challenges. With a mission to complement traditional
+            fundraising models and help charities transition from analog to digital, Yuma has raised
+            well over $200M for charity since inception...and we’re just getting started.
+          </p>
+          <ImageGrid image1={careersImg1} image2={careersImg2} image3={careersImg3} />
+        </Section>
 
-        <SectionTitle className="mt-5 mb-3">Current Openings</SectionTitle>
+        <Section title="Current Openings">
+          {jobListStatus === API_PENDING && <Spinner />}
 
-        {status === 0 && <Spinner />}
+          {jobListStatus === API_FAIL && <Alert color="danger">
+            No Open Jobs!
+          </Alert>}
 
-        {status === -1 && <Alert color="danger">
-          No Open Jobs!
-        </Alert>}
-
-        {status === 1 && <ListGroup>
-          {jobList.map((item, index) => (
-            <ListGroupItem className="d-flex" key={index}>
-              <div className="col align-self-md-center">
-                {item.get('title')}
-              </div>
-              <div className="text-right align-self-md-center">
-                <Button color="primary" tag={Link} to={`/jobs/${item.get('pk')}`}>
-                  Apply
-                </Button>
-              </div>
-            </ListGroupItem>
-          ))}
-        </ListGroup>}
+          {jobListStatus === API_SUCCESS &&
+            jobList.map((item, index) =>
+              <JobItem key={index} job={item} />
+            )
+          }
+        </Section>
       </FrontContainerLayout>
     )
   }

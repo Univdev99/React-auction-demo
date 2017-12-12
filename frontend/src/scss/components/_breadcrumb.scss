@@ -1,0 +1,19 @@
+$breadcrumb-spacing: 1.875rem;
+$breadcrumb-spacing-md-up: 3.75rem;
+
+.breadcrumb-top {
+  font-family: $headings-font-family;
+  text-transform: uppercase;
+  transform: translateY(-$breadcrumb-spacing);
+  display: block;
+
+  @include media-breakpoint-up('md') {
+    transform: translateY(-$breadcrumb-spacing-md-up);
+  }
+
+  li {
+    &, &:before {
+      display: inline !important;
+    }
+  }
+}

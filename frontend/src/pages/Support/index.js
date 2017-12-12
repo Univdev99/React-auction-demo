@@ -1,110 +1,64 @@
 import React, { PureComponent } from 'react'
-import PropTypes from 'prop-types'
-import { compose } from 'redux'
-import { reduxForm } from 'redux-form/immutable'
-import { Button, Col, Row } from 'reactstrap'
+import { Col, Row } from 'reactstrap'
 
-import FormField from 'components/FormField'
+import ContactForm from 'components/ContactForm'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
 import IconListItem from 'components/IconListItem'
-import InputField from 'components/InputField'
-import TextareaField from 'components/TextareaField'
+import IconBuilding from 'icons/IconBuilding'
+import IconMail from 'icons/IconMail'
+import IconPhone from 'icons/IconPhone'
+import Section from 'components/Section'
 
-const isRequired = value => (value ? undefined : 'This Field is Required')
-const isValidEmail = value =>
-  value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
-    ? 'Invalid email address'
-    : undefined
-
-const breadcrumbPath = [
-  { route: '/', text: 'Home' },
-  { text: 'Support' },
-]
 
 class Support extends PureComponent {
-  static propTypes = {
-    handleSubmit: PropTypes.func
-  }
 
   submitForm = (data) => {
     console.log(data)
   }
 
   render() {
-    const { handleSubmit } = this.props
 
     return (
       <FrontContainerLayout
-        breadcrumbPath={breadcrumbPath}
         title="Support"
         subscribe
       >
-        <Row className="mb-5">
-          <Col xs={12} md={6}>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut nibh dictum, auctor libero ac,
-              varius sem. Aenean in augue sed enim pulvinar ultricies eget at nibh. Sed ac iaculis lorem. Donec
-              faucibus sodales risus, ac scelerisque urna tristique at. Etiam non nulla molestie mi pellentesque
-              rutrum. Fusce sodales tellus sit amet facilisis dictum. Sed sagittis vel dui condimentum dictum.
-              Cras ut purus in ligula fermentum convallis. Praesent non dolor imperdiet, rutrum mi in, rhoncus
-              neque. Maecenas sed gravida turpis. Proin commodo sem in arcu viverra lobortis. Morbi pulvinar at
-              ante sed vestibulum. Sed molestie mi nec odio pharetra finibus non non est. Vivamus cursus velit
-              leo, vel malesuada quam aliquam et.
-            </p>
-          </Col>
-          <Col xs={12} md={6}>
-            <IconListItem icon="fa-file">
-              Etiam non nulla molestie mi pellentesque rutrum. Fusce sodales tellus sit amet facilisis dictum.
-              Sed sagittis vel dui condimentum dictum.
-            </IconListItem>
-            <IconListItem icon="fa-file">
-              Cras ut purus in ligula fermentum convallis. Praesent non dolor imperdiet, rutrum mi in, rhoncus
-              neque. Maecenas sed gravida turpis. Proin commodo sem in arcu viverra lobortis.
-            </IconListItem>
-            <IconListItem icon="fa-file">
-              ESed molestie mi nec odio pharetra finibus non non est. Vivamus cursus velit leo, vel malesuada
-              quam aliquam et.
-            </IconListItem>
-          </Col>
-        </Row>
-        <form onSubmit={handleSubmit(this.submitForm)}>
+        <Section>
           <Row>
-            <Col xs={12} md={6}>
-              <FormField
-                name="name"
-                type="text"
-                label="Name"
-                validate={[isRequired]}
-                component={InputField}
-              />
+            <Col xs={12} md={7}>
+              <p>
+                Don’t hesistate to contact us with any questions or suggestions, as we’re always
+                glad to hear from you. We believe we all want to do good, but sometimes it’s hard
+                to figure out how. That’s why we’ve made it our mission to do more good in the
+                world with easy, meaningfulgiving . We’ve created a unique auction space full of
+                collectibles, celebrity luxury items, and other valuable goods. Each day, we place
+                them on auction for buyers around the world, with proceeds going to the giver’s
+                organization of choice.
+              </p>
             </Col>
-            <Col xs={12} md={6}>
-              <FormField
-                name="email"
-                type="email"
-                label="Email"
-                validate={[isRequired, isValidEmail]}
-                component={InputField}
-              />
+            <Col xs={12} md={5}>
+              <div mbResponsive className="pl-md-4">
+                <IconListItem icon={IconPhone}>
+                  (212) 243-3900 (9am-6pm EST)
+                </IconListItem>
+                <IconListItem icon={IconMail}>
+                  <a href="mailto:info@yuma.com">info@yuma.com</a>
+                </IconListItem>
+                <IconListItem icon={IconBuilding}>
+                  437 Fifth Avenue<br />
+                  11th Floor<br />
+                  New York, NY 10016
+                </IconListItem>
+              </div>
             </Col>
           </Row>
-          <FormField
-            name="message"
-            label="Message"
-            validate={[isRequired]}
-            component={TextareaField}
-          />
-          <div className="text-right">
-            <Button type="submit" color="primary">Submit</Button>
-          </div>
-        </form>
+        </Section>
+        <Section title="Contact Form">
+          <ContactForm onSubmit={this.submitForm} />
+        </Section>
       </FrontContainerLayout>
     )
   }
 }
 
-export default compose(
-  reduxForm({
-    form: 'contactForm'
-  })
-)(Support)
+export default Support

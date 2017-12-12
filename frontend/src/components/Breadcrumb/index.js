@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import classnames from 'classnames'
+import { Breadcrumb as BsBreadcrumb, BreadcrumbItem } from 'reactstrap';
 import { Link } from 'react-router-dom'
 
 
@@ -14,17 +14,20 @@ class Breadcrumb extends PureComponent {
     const { className, path } = this.props
 
     return (
-      <nav aria-label="breadcrumb">
-        <ol className={classnames('breadcrumb p-0 bg-transparent', className)}>
+      <nav aria-label="breadcrumb" className={className}>
+        <BsBreadcrumb className="breadcrumb-top">
           {path.map((pathElement, index) => (
-            pathElement.route ?
-            <li key={index} className="breadcrumb-item">
-              <Link to={pathElement.route}>{pathElement.text}</Link>
-            </li>
-            :
-            <li key={index} className="breadcrumb-item active" aria-current="page">{pathElement.text}</li>
+            pathElement.route ? (
+              <BreadcrumbItem key={index}>
+                <Link to={pathElement.route}>{pathElement.text}</Link>
+              </BreadcrumbItem>
+            ) : (
+              <BreadcrumbItem key={index} active>
+                {pathElement.text}
+              </BreadcrumbItem>
+            )
           ))}
-        </ol>
+        </BsBreadcrumb>
       </nav>
     )
   }

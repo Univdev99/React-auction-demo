@@ -1,0 +1,30 @@
+$image-height: 400px;
+$image-height-md: 280px;
+$image-height-sm: 64.28%;
+
+.image-grid {
+  &__image {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    padding-top: $image-height-sm;
+
+    @include media-breakpoint-up('md') {
+      padding-top: ($image-height - $grid-gutter-width) / 2;
+    }
+
+    @include media-breakpoint-between('md', $gutter-breakpoint) {
+      padding-top: ($image-height-md - $grid-gutter-width-responsive) / 2;
+    }
+  }
+
+  &__image--big {
+    @include media-breakpoint-up('md') {
+      padding-top: $image-height;
+    }
+
+    @include media-breakpoint-between('md', $gutter-breakpoint) {
+      padding-top: $image-height-md;
+    }
+  }
+}
