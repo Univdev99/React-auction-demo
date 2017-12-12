@@ -84,7 +84,7 @@ class AuctionForm extends PureComponent {
         />
         <FormField
           name="charity"
-          label="Charity:"
+          label="Charity (selected from charities of product donor):"
           type="select"
           component={InputField}
           options={charityListOptions}
