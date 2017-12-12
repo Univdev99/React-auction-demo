@@ -61,7 +61,8 @@ class AdminDonorCreate extends PureComponent {
     const charityList = adminCharities.get('charityList')
 
     const _donorDetail = Immutable.Map({
-      description: RichTextEditor.createEmptyValue()
+      description: RichTextEditor.createEmptyValue(),
+      charity_ids: Immutable.List(),
     })
 
     return (

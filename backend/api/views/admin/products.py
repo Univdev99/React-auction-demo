@@ -13,6 +13,7 @@ from tagging.models import Tag
 from api.serializers.entities import MediaReorderSerializer
 from api.serializers.entities import ProductSerializer
 from api.serializers.entities import ProductDetailSerializer
+from api.serializers.entities import CharitySerializer
 from api.serializers.storage import MediumSerializer
 from api.serializers.storage import UploadMediumSerializer
 from api.permissions import IsAdmin
@@ -115,3 +116,11 @@ class ProductMediaReorderView(generics.GenericAPIView):
 
         serializer = MediumSerializer(product.media.order_by('order'), many=True)
         return Response(serializer.data)
+
+
+class ProductDonorCharityListView(generics.ListAPIView):
+    permission_classes = (IsAuthenticated, IsAdmin,)
+    serializer_class = CharitySerializer
+
+    def get_queryset(self):
+        return Product.objects.get(pk=self.kwargs.get('pk')).donor.charities

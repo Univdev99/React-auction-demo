@@ -32,6 +32,7 @@ from auction.constants import SALE_STATUS_CANCELLED
 from common.exceptions import PaymentRequired
 from common.models import SoftDeletionModel
 from entity.models import Product
+from entity.models import Charity
 from history.constants import HISTORY_RECORD_AUCTION_START
 from history.constants import HISTORY_RECORD_AUCTION_FINISH
 from history.constants import HISTORY_RECORD_AUCTION_CANCEL
@@ -65,8 +66,9 @@ class Auction(models.Model):
     ended_at = models.DateTimeField(null=True, blank=True, default=None)
 
     product = models.OneToOneField(Product, on_delete=models.CASCADE)
+    charity = models.ForeignKey(Charity, null=True, blank=True)
 
-    objects = AuctionManager() 
+    objects = AuctionManager()
 
     def __str__(self):
         return 'Auction on {}'.format(self.product.title)
@@ -297,4 +299,4 @@ class Sale(models.Model):
 
     @property
     def charity(self):
-        return self.product.donor.charity
+        return self.auction.charity

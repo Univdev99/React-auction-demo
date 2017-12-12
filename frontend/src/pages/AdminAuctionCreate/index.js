@@ -12,7 +12,7 @@ import Spinner from 'components/Spinner'
 import { adminProductsSelector } from 'store/selectors'
 import { createAuction } from 'store/modules/admin/auctions'
 import { formSubmit } from 'utils/form'
-import { getProductList } from 'store/modules/admin/products'
+import { getProductList, getProductDonorCharityList } from 'store/modules/admin/products'
 
 
 class AdminAuctionCreate extends PureComponent {
@@ -20,8 +20,13 @@ class AdminAuctionCreate extends PureComponent {
   static propTypes = {
     adminProducts: ImmutablePropTypes.map.isRequired,
     getProductList: PropTypes.func.isRequired,
+    getProductDonorCharityList: PropTypes.func.isRequired,
     createAuction: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
+  }
+
+  handleChangeProduct = (id) => {
+    this.props.getProductDonorCharityList({ id })
   }
 
   handleSubmit = (data) => {
@@ -52,6 +57,7 @@ class AdminAuctionCreate extends PureComponent {
     const { adminProducts } = this.props
     const productListLoaded = adminProducts.get('productListLoaded')
     const productList = adminProducts.get('productList')
+    const productDonorCharityList = adminProducts.get('productDonorCharityList')
 
     return (
       <div>
@@ -65,6 +71,8 @@ class AdminAuctionCreate extends PureComponent {
               productList={productList}
               onSubmit={this.handleSubmit}
               onBack={this.handleBack}
+              getCharityList={this.handleChangeProduct}
+              charityList={productDonorCharityList}
             />
           }
         </div>
@@ -79,6 +87,7 @@ const selector = createStructuredSelector({
 
 const actions = {
   getProductList,
+  getProductDonorCharityList,
   createAuction,
 }
 

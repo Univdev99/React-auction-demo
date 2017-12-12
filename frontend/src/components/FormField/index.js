@@ -19,16 +19,18 @@ class FormField extends PureComponent {
       PropTypes.array,
       PropTypes.func
     ]),
+    onChange: PropTypes.func,
   }
 
   render() {
     const {
       name, label, helpText, children, component, type, validate,
-      options, getTitle, placeholder
+      options, getTitle, placeholder,
+      onChange,
     } = this.props
 
     return (
-      <Field name={name} component={component} type={type} validate={validate}
+      <Field name={name} component={component} type={type} validate={validate} onChange={onChange}
         props={{ children, label, helpText, options, getTitle, placeholder }} />
     )
   }

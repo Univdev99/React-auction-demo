@@ -10,6 +10,7 @@ import {
   ADMIN_UPLOAD_CHARITY_LOGO,
   ADMIN_DELETE_CHARITY,
 } from 'store/constants'
+import { replaceListItem } from 'utils/list'
 
 
 /* Initial state */
@@ -56,10 +57,18 @@ export default handleActions({
     map.set('charityDetail', Immutable.fromJS(payload))
   }),
 
+  /* Create charity actions */
+
+  [requestSuccess(ADMIN_CREATE_CHARITY)]: (state, { payload }) => state.withMutations(map => {
+    const charityList = state.get('charityList')
+    map.set('charityList', charityList.push(Immutable.fromJS(payload)))
+  }),
+
   /* Update charity detail actions */
 
   [requestSuccess(ADMIN_UPDATE_CHARITY_DETAIL)]: (state, { payload }) => state.withMutations(map => {
     map.set('charityDetail', Immutable.fromJS(payload))
+    replaceListItem(payload, map, 'charityList')
   }),
 
 }, initialState)
