@@ -1,0 +1,9 @@
+$job-application-form-padding: 40px;
+$job-application-form-border-width: 10px;
+
+.job-application-form {
+  @include media-breakpoint-up('md') {
+    border: $job-application-form-border-width solid $border-color;
+    padding: $job-application-form-padding;
+  }
+}

@@ -1,0 +1,17 @@
+.file-field {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+
+  &__input {
+    position: absolute;
+    cursor: pointer;
+    font-size: 100px;
+    right: 0;
+    bottom: 0;
+    opacity: 0.1;
+  }
+  &:hover {
+    color: $black;
+  }
+}
