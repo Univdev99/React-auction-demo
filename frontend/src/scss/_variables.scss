@@ -15,11 +15,14 @@ $spacers: (
   0: 0,
   1: ($spacer * .25),
   2: ($spacer * .5),
+  20: ($spacer * 1.25),
   3: $spacer,
+  30: ($spacer * 1.875),
   4: ($spacer * 1.5),
   40: ($spacer * 2.5),
   5: ($spacer * 3),
   50: ($spacer * 3.125),
+  60: ($spacer * 3.75),
 );
 
 $paragraph-margin-bottom: 1.5rem;

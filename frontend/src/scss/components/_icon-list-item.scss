@@ -1,0 +1,19 @@
+$icon-list-item-margin: 20px;
+$icon-list-item-margin-md-up: 30px;
+
+.icon-list-item {
+  display: flex;
+
+  &:not(:last-child) {
+    margin-bottom: $icon-list-item-margin;
+
+    @include media-breakpoint-up('md') {
+      margin-bottom: $icon-list-item-margin-md-up;
+    }
+  }
+
+  &__icon {
+    align-self: center;
+    margin-right: $icon-list-item-margin
+  }
+}
