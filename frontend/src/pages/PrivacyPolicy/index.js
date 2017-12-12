@@ -2,48 +2,55 @@ import React from 'react'
 
 import ContactTextLink from 'components/ContactTextLink'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
+import Section from 'components/Section'
 
-const breadcrumbPath = [
-  { route: '/', text: 'Home' },
-  { text: 'Privacy Policy' },
-]
 
 const PrivacyPolicy = () => (
   <FrontContainerLayout
-    breadcrumbPath={breadcrumbPath}
     title="Privacy Policy"
     subscribe
   >
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut nibh dictum, auctor libero ac,
-      varius sem. Aenean in augue sed enim pulvinar ultricies eget at nibh. Sed ac iaculis lorem. Donec
-      faucibus sodales risus, ac scelerisque urna tristique at. Etiam non nulla molestie mi pellentesque
-      rutrum. Fusce sodales tellus sit amet facilisis dictum. Sed sagittis vel dui condimentum dictum.
-      Cras ut purus in ligula fermentum convallis. Praesent non dolor imperdiet, rutrum mi in, rhoncus
-      neque. Maecenas sed gravida turpis. Proin commodo sem in arcu viverra lobortis. Morbi pulvinar at
-      ante sed vestibulum. Sed molestie mi nec odio pharetra finibus non non est. Vivamus cursus velit
-      leo, vel malesuada quam aliquam et.
-    </p>
+    <Section className="page-content">
+      <h5>Effective Date: Feb 18, 2017</h5>
+      <p>
+        Your privacy is extremely important to Yuma. We have developed a Privacy Policy
+        that covers how we collect, use, disclose, transfer, and store your information
+        on our website. Please take a moment to familiarize yourself with our privacy
+        practices and if you have any questions please direct them to{' '}
+        <a href="mailto:privacy@yuma.com">privacy@yuma.com</a>
+      </p>
+      <h4>Disclosure to Third Parties</h4>
+      <p>
+        At times Yuma may make certain personal information available to strategic partners
+        that work with Yuma to provide products and services, or that help Yuma market to
+        customers. Yuma shares personal information with companies who provide services such
+        as information processing, shipping, fulfilling customer orders, delivering products
+        to you, managing and enhancing customer data, providing customer service, assessing
+        your interest in our products and services, and conducting customer research or
+        satisfaction surveys. These companies are obligated to protect your information and
+        may be located wherever Yuma operates. We will share your personal information with
+        third parties only in the ways that are described in this privacy statement. We do
+        not sell your personal information to third parties.
+      </p>
+      <h4>Others</h4>
+      <p>
+        It may be necessary − by law, legal process, litigation, and/or requests from public
+        and governmental authorities within or outside your country of residence − for Yuma
+        to disclose your personal information. We may also disclose information about you if
+        we determine that for purposes of national security, law enforcement, or other issues
+        of public importance, disclosure is necessary or appropriate.
+      </p>
+      <p>
+        We may also disclose information about you if we determine that disclosure is reasonably
+        necessary to enforce our user agreement or protect our operations or users. Additionally,
+        in the event of a reorganization, merger, or sale we may transfer any and all personal
+        information we collect to the relevant third party. You will be notified via email and/or
+        a prominent notice on our website, of any change in ownership, uses of your personal
+        information, and choices you may have regarding your personal information.
+      </p>
+      <ContactTextLink />
+    </Section>
 
-    <h5 className="mb-3">Section Title</h5>
-    <p>
-      Pellentesque faucibus urna id nulla varius convallis. Interdum et malesuada fames ac ante ipsum
-      primis in faucibus. In congue hendrerit ex vel tincidunt. Suspendisse potenti. Interdum et malesuada
-      fames ac ante ipsum primis in faucibus. Maecenas vestibulum tempor lacinia. Mauris orci libero,
-      fermentum eu varius eget, commodo eu ipsum. Integer ornare vitae odio egestas varius. Cras egestas
-      iaculis ligula, sit amet dignissim massa elementum et. Proin ut suscipit tellus, vel viverra orci.
-      Donec orci neque, laoreet nec risus non, imperdiet efficitur mauris. Duis a enim non neque sagittis
-      tempus quis vel diam. Cras hendrerit velit eget odio suscipit, suscipit tincidunt nibh tincidunt.
-    </p>
-    <p>
-      Donec ut elit in enim imperdiet vehicula ut vel ex. Pellentesque enim purus, malesuada sed tempor in,
-      aliquet ut dolor. Aliquam gravida, leo eget bibendum gravida, nisl dui viverra lectus, quis pharetra
-      nulla sem et eros. Sed in purus sed eros euismod pellentesque ac eu metus. In viverra laoreet metus a
-      sodales. Quisque pulvinar sem sit amet enim molestie, in congue erat ultricies. Donec nec dolor nisl.
-      Nunc sed aliquet diam. Cras aliquam orci in placerat feugiat. Maecenas id justo nibh.
-    </p>
-
-    <ContactTextLink />
   </FrontContainerLayout>
 )
 
