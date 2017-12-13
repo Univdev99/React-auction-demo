@@ -1,15 +1,18 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Modal, ModalHeader, ModalBody } from 'reactstrap'
+import { Modal, ModalHeader, ModalBody } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { connectModal, show as showModal } from 'redux-modal'
+import { Link } from 'react-router-dom'
 import { modalSelector } from 'store/selectors'
 
 import auctionBidFlow from 'utils/auctionBidFlow'
+import FacebookButton from 'components/FacebookButton'
 import fbHandle from 'utils/fbHandle'
-import { formSubmit } from 'utils/form'
+import Hr from 'components/Hr'
 import SignUpForm from 'components/SignUpForm'
+import { formSubmit } from 'utils/form'
 import { signUp } from 'store/modules/auth'
 
 class SignUpModal extends PureComponent {
@@ -62,17 +65,17 @@ class SignUpModal extends PureComponent {
       <Modal isOpen={show} toggle={handleHide} size="sm">
         <ModalHeader toggle={handleHide}>Hello there</ModalHeader>
         <ModalBody>
-          <p>Please sign up to our website</p>
-          <Button color="secondary" block disabled={!fbReady} onClick={this.handleSignUpWithFacebook}>
+          <h4 className="mb-30">Please sign up to our website</h4>
+          <FacebookButton block disabled={!fbReady} onClick={this.handleSignUpWithFacebook}>
             Sign up using facebook
-          </Button>
-          <hr />
+          </FacebookButton>
+          <Hr text="OR" />
           <SignUpForm forModal onSubmit={this.handleSubmit} />
-          <div className="text-center">
-            <Button tag="a" href="#" color="link" onClick={this.handleSignIn}>
+          <h5 className="text-center mt-4 mb-0">
+            <Link to="/signin" onClick={this.handleSignIn}>
               I already have an account
-            </Button>
-          </div>
+            </Link>
+          </h5>
         </ModalBody>
       </Modal>
     )
