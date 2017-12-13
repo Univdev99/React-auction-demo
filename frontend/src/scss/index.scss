@@ -51,3 +51,8 @@
 @import "layouts/page-content";
 
 @import "utils";
+
+.admin-layout {
+  @import "admin/tab";
+  @import "admin/table";
+}

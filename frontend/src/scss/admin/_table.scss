@@ -1,0 +1,15 @@
+.table {
+  th {
+    padding-top: 17px;
+    padding-bottom: 17px;
+  }
+
+  thead th,
+  tbody td {
+    border: 0;
+  }
+}
+
+.table-wrapper {
+  border: 3px solid $admin-gray;
+}
