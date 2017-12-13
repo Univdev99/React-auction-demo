@@ -73,9 +73,9 @@ class SignUp extends PureComponent {
         <Row className="justify-content-center">
           <Col xs={12} md={8} lg={6}>
             {signUpStatus === 10 ? (
-              <center>
+              <h4 className="text-center">
                 You've successfully signed up a new account. Please check your email for account verification.
-              </center>
+              </h4>
             ) : (
               <div>
                 <SectionTitle className="mb-4 text-center">Sign Up</SectionTitle>

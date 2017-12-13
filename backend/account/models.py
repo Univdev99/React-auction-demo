@@ -101,4 +101,4 @@ class UserVerification(models.Model):
     )
 
     def __str__(self):
-        return 'User Verification for {}'.format(user.email)
+        return 'User Verification for {}'.format(self.user.email)
