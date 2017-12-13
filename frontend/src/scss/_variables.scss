@@ -23,6 +23,7 @@ $spacer: 1rem;
 $spacers: (
   0: 0,
   1: ($spacer * .25),
+  10: ($spacer * .625),
   2: ($spacer * .5),
   20: ($spacer * 1.25),
   3: $spacer,
