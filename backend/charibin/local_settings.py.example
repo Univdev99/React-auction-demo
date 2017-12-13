@@ -2,6 +2,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_URL = 'https://www.yuma.org'
+
 DATABASES['default'] = {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
     'NAME': 'databasename',

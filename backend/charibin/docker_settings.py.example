@@ -1,5 +1,7 @@
 DEBUG = False   # Should be False for production server
 
+SITE_URL = 'https://www.yuma.org'
+
 DATABASES['default'] = {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
     'NAME': 'postgres',

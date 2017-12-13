@@ -45,7 +45,7 @@ class SignUpView(views.APIView):
             mail.EmailMessage(
                 'Account Verification',
                 'Please verify your registered account by clicking on this URL: {}'.format(
-                    'http://localhost:3000/verify-account/{}'.format(user_verification.token)
+                    settings.SITE_URL + '/verify-account/{}'.format(user_verification.token)
                 ),
                 settings.NO_REPLY_EMAIL_ADDRESS,
                 [serializer.validated_data['email']],
