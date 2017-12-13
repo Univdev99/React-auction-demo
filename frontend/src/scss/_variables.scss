@@ -1,3 +1,8 @@
+$facebook-color: #6E85E0;
+$twitter-color: #54B9F3;
+$linkedin-color: #6491E2;
+$instagram-color: #3897f0;
+
 /* BEGIN Overriding Bootstrap Variables */
 
 $primary: #fdb600;
@@ -9,6 +14,10 @@ $body-color: #5E6566;
 $headings-color: #000000;
 
 $link-hover-decoration: none;
+
+$theme-colors: (
+  "facebook": $facebook-color
+);
 
 $spacer: 1rem;
 $spacers: (
@@ -118,11 +127,6 @@ $breadcrumb-divider: '›';
 $grid-gutter-width-responsive: 20px;
 $gutter-breakpoint: 'lg';
 $form-group-margin-bottom-lg: 1.875rem;
-
-$facebook-color: #6E85E0;
-$twitter-color: #54B9F3;
-$linkedin-color: #6491E2;
-$instagram-color: #3897f0;
 
 $section-spacing: 7.5rem;
 $section-header-spacing: 3.125rem;

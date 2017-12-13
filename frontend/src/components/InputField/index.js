@@ -8,6 +8,7 @@ class InputField extends PureComponent {
 
   static propTypes = {
     children: PropTypes.node,
+    className: PropTypes.string,
     helpText: PropTypes.string,
     input: PropTypes.object.isRequired,
     label: PropTypes.string,
@@ -25,6 +26,7 @@ class InputField extends PureComponent {
   render() {
     const {
       children,
+      className,
       helpText,
       input,
       label,
@@ -43,7 +45,7 @@ class InputField extends PureComponent {
         checkedExtra.checked = true
       }
       return (
-        <FormGroup>
+        <FormGroup className={className}>
           <Label check>
             <Input type={type} {...input} placeholder={placeholder} size={size}
               valid={fieldError ? false : undefined} children={children} {...checkedExtra} />
@@ -56,7 +58,7 @@ class InputField extends PureComponent {
     } else if (type === 'radio') {
       const { value, onChange, ..._input } = input
       return (
-        <FormGroup>
+        <FormGroup className={className}>
           <Label check>
             <Input onChange={onChange} checked={radioValue === value}
               type={type} {..._input} placeholder={placeholder} size={size}
@@ -69,7 +71,7 @@ class InputField extends PureComponent {
       )
     } else {
       return (
-        <FormGroup>
+        <FormGroup className={className}>
           {label && <Label>{label}</Label>}
           <Input type={type} {...input} placeholder={placeholder} size={size}
             valid={fieldError ? false : undefined} children={children}

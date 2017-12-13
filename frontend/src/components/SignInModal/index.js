@@ -1,15 +1,18 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Modal, ModalHeader, ModalBody } from 'reactstrap'
+import { Modal, ModalHeader, ModalBody } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { connectModal, show as showModal } from 'redux-modal'
+import { Link } from 'react-router-dom'
 import { modalSelector } from 'store/selectors'
 
 import auctionBidFlow from 'utils/auctionBidFlow'
+import FacebookButton from 'components/FacebookButton'
 import fbHandle from 'utils/fbHandle'
-import { formSubmit } from 'utils/form'
+import Hr from 'components/Hr'
 import SignInForm from 'components/SignInForm'
+import { formSubmit } from 'utils/form'
 import { signIn } from 'store/modules/auth'
 
 class SignInModal extends PureComponent {
@@ -36,19 +39,12 @@ class SignInModal extends PureComponent {
     if (!fbReady) {
       return
     }
-    
-    this.setState({
-      signUpStatus: 1
-    })
 
     signUpWithFacebook({
       success: () => {
         handleHide()
         auctionId && startBidFlow(auctionId)
-      },
-      fail: () => this.setState({
-        signUpStatus: -1
-      })
+      }
     })
   }
 
@@ -71,17 +67,17 @@ class SignInModal extends PureComponent {
         <Modal isOpen={show} toggle={handleHide} size="sm">
           <ModalHeader toggle={handleHide}>Hello there</ModalHeader>
           <ModalBody>
-            <p>Please sign in to your account</p>
-            <Button color="secondary" block disabled={!fbReady} onClick={this.handleSignUpWithFacebook}>
+            <h4 className="mb-30">Please sign in to your account</h4>
+            <FacebookButton block disabled={!fbReady} onClick={this.handleSignUpWithFacebook}>
               Sign in with facebook
-            </Button>
-            <hr />
+            </FacebookButton>
+            <Hr text="OR" />
             <SignInForm forModal onSubmit={this.handleSubmit} />
-            <div className="text-center">
-              <Button tag="a" href="#" color="link" onClick={this.handleSignup}>
+            <h5 className="text-center mt-4 mb-0">
+              <Link to="/" onClick={this.handleSignup}>
                 I don't have an account yet
-              </Button>
-            </div>
+              </Link>
+            </h5>
           </ModalBody>
         </Modal>
       </div>
