@@ -9,7 +9,7 @@ const AccountCreatedModal = ({ handleHide, show }) => (
     <Modal isOpen={show} toggle={handleHide} size="sm">
       <ModalHeader toggle={handleHide}>Thank you!</ModalHeader>
       <ModalBody>
-        <p className="text-center">
+        <p className="mb-30">
           Your account has been created and the confirmation email has been sent. Please check your inbox.
         </p>
         <Button color="primary" block onClick={handleHide}>Done</Button>
