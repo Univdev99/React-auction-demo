@@ -10,8 +10,12 @@ const AuctionBidPlacedModal = ({ handleHide, show }) => (
     <Modal isOpen={show} toggle={handleHide} size="sm">
       <ModalHeader toggle={handleHide}>Thank you!</ModalHeader>
       <ModalBody>
-        <p>Your bid has been placed.</p>
-        <Button block color="primary" onClick={handleHide}>Done</Button>
+        <h4 className="mb-30">
+          Your bid has been placed.
+        </h4>
+        <Button block color="primary" size="lg" onClick={handleHide}>
+          Done
+        </Button>
       </ModalBody>
     </Modal>
   </div>
