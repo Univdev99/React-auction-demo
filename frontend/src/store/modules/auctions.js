@@ -99,4 +99,17 @@ export default handleActions({
     map.set('auctionDetailStatus', API_FAIL)
   }),
 
+  /* Update existing bid list if bid price updated */
+  [requestSuccess(AUCTION_PLACE_BID)]: (state, { payload }) => state.withMutations(map => {
+    const auctionIndex = map.get('auctionList').findKey((item) => item.get('pk') === payload.auction)
+    if (typeof auctionIndex !== 'undefined') {
+      map.setIn(['auctionList', auctionIndex, 'current_price'], payload.price)
+    }
+
+    const trendingIndex = map.get('auctionTrendingList').findKey((item) => item.get('pk') === payload.auction)
+    if (typeof trendingIndex !== 'undefined') {
+      map.setIn(['auctionTrendingList', trendingIndex, 'current_price'], payload.price)
+    }
+  }),
+
 }, initialState)
