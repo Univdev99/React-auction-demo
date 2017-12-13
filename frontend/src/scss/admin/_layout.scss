@@ -1,30 +1,38 @@
-.admin-layout .admin-menu {
+$admin-menu-width:  250px;
+
+.admin-menu {
   position: fixed;
   left: 0;
-  top: 0;
+  top: 70px;
   bottom: 0;
-  width: 300px;
+  width: $admin-menu-width;
   max-width: 100%;
-  background-color: #f0f0f1;
+  background-color: $admin-gray;
   z-index: 20;
   overflow: hidden;
+
+  .nav-link {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: $headings-font-family;
+  }
 }
 
-.admin-layout .admin-content {
-  padding-left: 300px;
+.admin-content {
+  padding-left: $admin-menu-width;
 }
 
-.admin-layout .logo {
+.logo {
   max-width: 100px;
 }
 
-.admin-layout .menu-toggle,
-.admin-layout .menu-bg {
+.menu-toggle,
+.menu-bg {
   display: none;
 }
 
 @media screen and (max-width: 1023px) {
-  .admin-layout .menu-bg {
+  .menu-bg {
     position: fixed;
     left: 0;
     top: 0;
@@ -34,15 +42,15 @@
     cursor: pointer;
   }
 
-  .admin-layout .menu-bg.open {
+  .menu-bg.open {
     display: block;
   }
 
-  .admin-layout .menu-toggle {
+  .menu-toggle {
     display: block;
     position: fixed;
-    left: 10px;
-    top: 10px;
+    left: 15px;
+    bottom: 15px;
     width: 40px;
     height: 40px;
     line-height: 38px;
@@ -54,21 +62,21 @@
     z-index: 10;
   }
 
-  .admin-layout .admin-menu {
+  .admin-menu {
     transition: transform 0.3s;
   }
 
-  .admin-layout .admin-menu:not(.open) {
+  .admin-menu:not(.open) {
     transform: translateX(-100%);
   }
 
-  .admin-layout .admin-content {
+  .admin-content {
     padding-left: 0;
   }
 }
 
 @media screen and (max-width: 400px) {
-  .admin-layout .admin-menu {
+  .admin-menu {
     width: 100%;
   }
 }
@@ -76,23 +84,25 @@
 .admin-header {
   height: 70px;
   padding: 15px 0;
-}
+  position: relative;
+  z-index: 30;
 
-.admin-header.shadow {
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
-}
+  &.shadow {
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
+  }
 
-.admin-header .logo,
-.admin-header .user-avatar {
-  height: 40px;
-  width: auto;
-  vertical-align: middle;
-}
+  .logo,
+  .user-avatar {
+    height: 40px;
+    width: auto;
+    vertical-align: middle;
+  }
 
-.admin-header .user-avatar {
-  border-radius: 999px;
-}
+  .user-avatar {
+    border-radius: 999px;
+  }
 
-.admin-header .content {
-  height: 100%;
+  .content {
+    height: 100%;
+  }
 }

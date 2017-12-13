@@ -38,59 +38,65 @@ class AdminHeader extends PureComponent {
     } = this.props
 
     return (
-      <div className="admin-header shadow">
-        <div className="px-4 content text-right">
-          <UncontrolledDropdown
-            className="mr-3"
-            style={{ display: 'inline-block' }}
-            onClick={resetNotificationUnreadCount}
-          >
-            <DropdownToggle
-              tag="a"
-              className="p-2 text-muted position-relative"
-              style={{ cursor: 'pointer' }}
-            >
-              <i className="fa fa-bell" />
-              {!!notificationUnreadCount && <div className="notification-count bg-primary text-white small">
-                {notificationUnreadCount > 5 ? '5+' : notificationUnreadCount}
-              </div>}
-            </DropdownToggle>
-            {
-              notificationListOnMenuLoaded ?
-              <DropdownMenu right style={{ left: 'auto' }}>
-                {notificationListOnMenu.map(notification => (
-                  <AdminHeaderNotificationItem
-                    key={notification.get('pk')}
-                    notification={notification}
-                  />
-                ))}
-              </DropdownMenu>
-              :
-              <DropdownMenu right style={{ left: 'auto' }}>
-                <div className="py-5 text-center">
-                  Loading...
-                </div>
-              </DropdownMenu>
-            }
-          </UncontrolledDropdown>
+      <div className="admin-header shadow bg-white">
+        <div className="d-flex">
+          <div className="pl-4 pr-3">
+            <img className="logo" src="/logo.svg" alt="Logo" />
+          </div>
 
-          <UncontrolledDropdown style={{ display: 'inline-block' }}>
-            <DropdownToggle
-              tag="a"
-              className="text-muted"
-              style={{ display: 'inline-block', cursor: 'pointer' }}
+          <div className="ml-auto px-4 content text-right text-black">
+            <UncontrolledDropdown
+              className="mr-3"
+              style={{ display: 'inline-block' }}
+              onClick={resetNotificationUnreadCount}
             >
-              <img className="user-avatar mr-3" src={userAvatarImage} alt="User Avatar" />
-              {username}
-              <i className="ml-2 fa fa-angle-down" />
-            </DropdownToggle>
-            <DropdownMenu right style={{ width: 200 }}>
-              <DropdownItem tag={Link} to="/">View Site</DropdownItem>
-              <DropdownItem tag={Link} to="/account">Account Settings</DropdownItem>
-              <DropdownItem divider />
-              <DropdownItem onClick={this.handleSignOut}>Sign Out</DropdownItem>
-            </DropdownMenu>
-          </UncontrolledDropdown>
+              <DropdownToggle
+                tag="a"
+                className="p-2 position-relative"
+                style={{ cursor: 'pointer' }}
+              >
+                <i className="fa fa-bell" />
+                {!!notificationUnreadCount && <div className="notification-count bg-primary text-white small">
+                  {notificationUnreadCount > 5 ? '5+' : notificationUnreadCount}
+                </div>}
+              </DropdownToggle>
+              {
+                notificationListOnMenuLoaded ?
+                <DropdownMenu right style={{ left: 'auto' }}>
+                  {notificationListOnMenu.map(notification => (
+                    <AdminHeaderNotificationItem
+                      key={notification.get('pk')}
+                      notification={notification}
+                    />
+                  ))}
+                </DropdownMenu>
+                :
+                <DropdownMenu right style={{ left: 'auto' }}>
+                  <div className="py-5 text-center">
+                    Loading...
+                  </div>
+                </DropdownMenu>
+              }
+            </UncontrolledDropdown>
+
+            <UncontrolledDropdown style={{ display: 'inline-block' }}>
+              <DropdownToggle
+                tag="a"
+                className="text-uppercase"
+                style={{ display: 'inline-block', cursor: 'pointer' }}
+              >
+                <img className="user-avatar mr-3" src={userAvatarImage} alt="User Avatar" />
+                <strong>{username}</strong>
+                <i className="ml-2 fa fa-caret-down" />
+              </DropdownToggle>
+              <DropdownMenu right style={{ width: 200 }}>
+                <DropdownItem tag={Link} to="/">View Site</DropdownItem>
+                <DropdownItem tag={Link} to="/account">Account Settings</DropdownItem>
+                <DropdownItem divider />
+                <DropdownItem onClick={this.handleSignOut}>Sign Out</DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </div>
         </div>
       </div>
     )

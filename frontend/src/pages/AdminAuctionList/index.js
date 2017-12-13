@@ -207,7 +207,7 @@ class AdminAuctionList extends PureComponent {
 
     return (
       <div>
-        <div className="mb-5 clearfix">
+        <div className="mb-3 clearfix">
           <SectionTitle className="pull-left">Auctions</SectionTitle>
           <Link className="btn btn-primary pull-right" to="/admin/auctions/create">Create</Link>
         </div>

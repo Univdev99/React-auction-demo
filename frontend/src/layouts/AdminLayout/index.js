@@ -16,7 +16,6 @@ import { signOut } from 'store/modules/auth'
 import { getNotificationListOnMenu, addNotification, resetNotificationUnreadCount } from 'store/modules/admin/notifications'
 import { authSelector, adminNotificationsSelector } from 'store/selectors'
 import userAvatarImage from 'images/avatar-placeholder.png'
-import './style.css'
 
 
 class AdminLayout extends PureComponent {
@@ -95,11 +94,18 @@ class AdminLayout extends PureComponent {
           <i className="fa fa-bars"></i>
         </a>
 
+        <AdminHeader
+          username={username}
+          userAvatarImage={userAvatarImage}
+          notificationListOnMenu={notificationListOnMenu}
+          notificationListOnMenuLoaded={notificationListOnMenuLoaded}
+          notificationUnreadCount={notificationUnreadCount}
+          onSignOut={this.handleSignOut}
+          resetNotificationUnreadCount={resetNotificationUnreadCount}
+        />
+
         <div className={menuClasses.join(' ')}>
-          <div className="admin-header px-2 text-center">
-            <img className="logo" src="/logo.svg" alt="Logo" />
-          </div>
-          <div className="container-fluid py-2">
+          <div className="container-fluid py-4">
             <ul className="nav flex-column">
               <li className="nav-item">
                 <Link className="nav-link text-dark" to="/admin/auctions">Auctions</Link>
@@ -134,17 +140,7 @@ class AdminLayout extends PureComponent {
         <div className={menuBgClasses.join(' ')} onClick={this.handleCloseMenu} />
 
         <div className="admin-content">
-          <AdminHeader
-            username={username}
-            userAvatarImage={userAvatarImage}
-            notificationListOnMenu={notificationListOnMenu}
-            notificationListOnMenuLoaded={notificationListOnMenuLoaded}
-            notificationUnreadCount={notificationUnreadCount}
-            onSignOut={this.handleSignOut}
-            resetNotificationUnreadCount={resetNotificationUnreadCount}
-          />
-
-          <div className="container-fluid p-4" style={{ maxWidth: 1200, marginLeft: 0 }}>
+          <div className="container-fluid p-4 pt-5" style={{ maxWidth: 1200, marginLeft: 0 }}>
             {children}
           </div>
         </div>
