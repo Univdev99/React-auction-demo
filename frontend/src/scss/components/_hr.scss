@@ -1,0 +1,16 @@
+.hr {
+  display: flex;
+  align-items: center;
+
+  > span {
+    padding: 0 0.3125rem;
+  }
+
+  &:before, &:after {
+    content: "";
+    display: block;
+    border-bottom: 1px solid rgba($body-color, 0.2);
+    height: 0;
+    flex: 1 0 auto;
+  }
+}

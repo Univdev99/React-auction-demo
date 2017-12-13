@@ -7,7 +7,11 @@ import { Col, Row } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 
+
+import FacebookButton from 'components/FacebookButton'
+import fbHandle from 'utils/fbHandle'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
+import Hr from 'components/Hr'
 import SectionTitle from 'components/SectionTitle'
 import SignInForm from 'components/SignInForm'
 import { formSubmit } from 'utils/form'
@@ -26,19 +30,31 @@ class SignIn extends PureComponent {
   }
 
   render() {
+    const { fbReady } = this.props
+
     return (
       <FrontContainerLayout subscribe>
         <Row className="justify-content-center">
           <Col xs={12} md={8} lg={6}>
-
             <SectionTitle className="mb-4 text-center">Sign In</SectionTitle>
+
+            <h4 className="mb-30 text-center">Please sign in to your account</h4>
 
             <SignInForm onSubmit={this.handleSubmit} />
 
-            <div className="text-center mt-2">
-              <Link to={{ pathname: 'signup' }}>Sign Up</Link>
-            </div>
+            <h5 className="text-center mt-4 mb-0">
+              <Link to={{ pathname: 'signup' }}>
+                I don't have an account yet
+              </Link>
+            </h5>
 
+            <Hr text="OR" />
+
+            <div className="text-center">
+              <FacebookButton disabled={!fbReady} onClick={this.handleSignUpWithFacebook}>
+                Sign in with facebook
+              </FacebookButton>
+            </div>
           </Col>
         </Row>
       </FrontContainerLayout>
@@ -55,5 +71,6 @@ const actions = {
 
 export default compose(
   withRouter,
+  fbHandle,
   connect(selector, actions),
 )(SignIn)

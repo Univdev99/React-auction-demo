@@ -42,7 +42,9 @@ class AuctionBidModal extends PureComponent {
         <Modal isOpen={show} toggle={handleHide} size="sm">
           <ModalHeader toggle={handleHide}>Are you sure?</ModalHeader>
           <ModalBody>
-            <p>Your credit card won't be charged now. Only if you win the auction</p>
+            <h4 className="mb-30">
+              Your credit card won't be charged now. Only if you win the auction.
+            </h4>
             <AuctionBidForm onSubmit={this.handleSubmit} />
           </ModalBody>
         </Modal>

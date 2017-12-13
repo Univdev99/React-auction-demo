@@ -1,12 +1,20 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { Alert, Button } from 'reactstrap'
+import { Alert, Button, Col, Row } from 'reactstrap'
 import { compose } from 'redux'
-import { reduxForm } from 'redux-form/immutable'
+import { Field, reduxForm } from 'redux-form/immutable'
 
-import FormField from 'components/FormField'
 import InputField from 'components/InputField'
 
+const FormField = ({ label, forModal, ...props }) => (
+  <Field
+    {...props}
+    size="lg"
+    label={forModal ? undefined : `${label}:`}
+    placeholder={forModal ? label : undefined}
+    component={InputField}
+  />
+)
 
 class SignInForm extends PureComponent {
 
@@ -29,22 +37,22 @@ class SignInForm extends PureComponent {
         <FormField
           name="email"
           type="email"
-          label={forModal ? undefined : 'Email:'}
-          placeholder={forModal ? 'Email' : undefined}
-          component={InputField}
+          label="Email"
+          forModal={forModal}
         />
         <FormField
           name="password"
           type="password"
-          label={forModal ? undefined : 'Password:'}
-          placeholder={forModal ? 'Password' : undefined}
-          component={InputField}
+          label="Password"
+          forModal={forModal}
         />
-        <div className="text-center">
-          <Button type="submit" color="primary" block={forModal} disabled={submitting}>
-            Sign In
-          </Button>
-        </div>
+        <Row className={forModal ? 'mt-30' : undefined}>
+          <Col xs={12} md={forModal ? undefined : { size: 4, offset: 4 }}>
+            <Button type="submit" color="primary" size="lg" block disabled={submitting}>
+              Sign In
+            </Button>
+          </Col>
+        </Row>
       </form>
     )
   }

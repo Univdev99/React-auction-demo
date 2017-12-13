@@ -87,7 +87,7 @@ class CardForm extends PureComponent {
             </FormGroup>
           </Col>
         </Row>
-        <Row className="submit-wrapper">
+        <Row className={forModal ? 'mt-10' : 'submit-wrapper'}>
           <Col xs={12} md={6} />
           <Col xs={12} md={forModal ? 12 : 3}>
             <Button type="submit" color="primary" size="lg" block disabled={disabled || tokenCreating}>
@@ -96,7 +96,7 @@ class CardForm extends PureComponent {
           </Col>
           {!forModal &&
             <Col xs={12} md={3} className="mt-3 mt-md-0">
-              <Button color="secondary" type="button" size="lg" block onClick={onCancel} className="mr-2">
+              <Button color="secondary" type="button" size="lg" block onClick={onCancel}>
                 Cancel
               </Button>
             </Col>

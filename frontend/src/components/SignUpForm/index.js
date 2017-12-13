@@ -1,12 +1,20 @@
 import React, { PureComponent } from 'react'
 import { compose } from 'redux'
-import { Alert, Col, Row } from 'reactstrap'
-import { reduxForm } from 'redux-form/immutable'
+import { Alert, Button, Col, Row } from 'reactstrap'
+import { Field, reduxForm } from 'redux-form/immutable'
 import PropTypes from 'prop-types'
 
-import FormField from 'components/FormField'
 import InputField from 'components/InputField'
 
+const FormField = ({ label, forModal, ...props }) => (
+  <Field
+    {...props}
+    size="lg"
+    label={forModal ? undefined : `${label}:`}
+    placeholder={forModal ? label : undefined}
+    component={InputField}
+  />
+)
 
 class SignUpForm extends PureComponent {
 
@@ -30,44 +38,46 @@ class SignUpForm extends PureComponent {
         <FormField
           name="email"
           type="email"
-          label="Email:"
-          component={InputField}
+          label="Email"
+          forModal={forModal}
         />
         {!forModal && <Row>
           <Col xs={12} md={6}>
             <FormField
               name="first_name"
               type="text"
-              label="First Name:"
-              component={InputField}
+              label="First Name"
+              forModal={forModal}
             />
           </Col>
           <Col xs={12} md={6}>
             <FormField
               name="last_name"
               type="text"
-              label="Last Name:"
-              component={InputField}
+              label="Last Name"
+              forModal={forModal}
             />
           </Col>
         </Row>}
         <FormField
           name="password"
           type="password"
-          label="Password:"
-          component={InputField}
+          label="Password"
+          forModal={forModal}
         />
-        <FormField
+        <FormField 
           name="password_confirm"
           type="password"
-          label="Password Confirmation:"
-          component={InputField}
+          label="Password Confirmation"
+          forModal={forModal}
         />
-        <div className="text-center">
-          <button type="submit" className="btn btn-primary" disabled={submitting}>
-            Sign Up
-          </button>
-        </div>
+        <Row className={forModal ? 'mt-30' : undefined}>
+          <Col xs={12} md={forModal ? undefined : { size: 4, offset: 4 }}>
+            <Button type="submit" color="primary" size="lg" block disabled={submitting}>
+              Sign Up
+            </Button>
+          </Col>
+        </Row>
       </form>
     )
   }

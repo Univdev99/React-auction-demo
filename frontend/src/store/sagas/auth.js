@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects'
+import { call, takeLatest } from 'redux-saga/effects'
 
 import apiCall from 'store/api/call'
 import { getCurrentUser as getCurrentUserAction } from 'store/modules/auth'
@@ -13,31 +13,23 @@ import {
 } from 'store/constants'
 
 
-const doSignIn = function* (action) {
-  const status = yield call(apiCall({
-    type: AUTH_SIGNIN,
-    method: 'post',
-    path: 'signin/',
-  }), action)
+const signIn = apiCall({
+  type: AUTH_SIGNIN,
+  method: 'post',
+  path: 'signin/',
+})
 
-  status && (yield put(getCurrentUserAction()))
-}
+const signUpWithFacebook = apiCall({
+  type: AUTH_SIGNUP_WITH_FACEBOOK,
+  method: 'post',
+  path: 'signup-with-facebook/',
+})
 
 const doSignUp = apiCall({
   type: AUTH_SIGNUP,
   method: 'post',
   path: 'signup/',
 })
-
-const doSignUpWithFacebook = function* (action) {
-  const status = yield call(apiCall({
-    type: AUTH_SIGNUP_WITH_FACEBOOK,
-    method: 'post',
-    path: 'signup-with-facebook/',
-  }), action)
-
-  status && (yield put(getCurrentUserAction()))
-}
 
 const doVerifySignUp = apiCall({
   type: AUTH_VERIFY_SIGNUP,
@@ -50,6 +42,30 @@ const getCurrentUser = apiCall({
   method: 'get',
   path: 'current-user/',
 })
+
+const doSignIn = function* (action) {
+  const { success, ...payload } = (action.payload || {})
+  const status = yield call(signIn, {
+    type: action.type,
+    payload
+  })
+
+  status && (
+    yield call(getCurrentUser, getCurrentUserAction({ success }))
+  )
+}
+
+const doSignUpWithFacebook = function* (action) {
+  const { success, ...payload } = (action.payload || {})
+  const status = yield call(signUpWithFacebook, {
+    type: action.type,
+    payload
+  })
+
+  status && (
+    yield call(getCurrentUser, getCurrentUserAction({ success }))
+  )
+}
 
 const updateCurrentUser = apiCall({
   type: AUTH_CURRENT_USER_UPDATE,

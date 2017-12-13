@@ -62,7 +62,7 @@ class AuctionAddCardModal extends PureComponent {
         <Modal isOpen={show} toggle={handleHide} size="sm">
           <ModalHeader toggle={handleHide}>Credit card info</ModalHeader>
           <ModalBody>
-            <p>Please enter your credit card information. No worries, it's secure.</p>
+            <h4>Please enter your credit card information. No worries, it's secure.</h4>
             <Elements>
               <CardForm email={email} disabled={savingPayment} forModal onSubmit={this.handleSubmit} />
             </Elements>

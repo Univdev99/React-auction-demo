@@ -1,0 +1,9 @@
+$facebook-button-icon-size: 1.25rem;
+
+.facebook-button {
+  padding-left: $input-btn-padding-x + $facebook-button-icon-size;
+  position: relative;
+  &__icon {
+    transform: translateX(-$facebook-button-icon-size);
+  }
+}

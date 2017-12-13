@@ -4,9 +4,12 @@ import { Col, Row } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
+import { Link } from 'react-router-dom'
 
+import FacebookButton from 'components/FacebookButton'
 import fbHandle from 'utils/fbHandle'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
+import Hr from 'components/Hr'
 import SectionTitle from 'components/SectionTitle'
 import SignUpForm from 'components/SignUpForm'
 import { formSubmit } from 'utils/form'
@@ -69,25 +72,32 @@ class SignUp extends PureComponent {
       <FrontContainerLayout subscribe>
         <Row className="justify-content-center">
           <Col xs={12} md={8} lg={6}>
-            {
-              signUpStatus === 10 ?
+            {signUpStatus === 10 ? (
               <center>
                 You've successfully signed up a new account. Please check your email for account verification.
               </center>
-              :
+            ) : (
               <div>
                 <SectionTitle className="mb-4 text-center">Sign Up</SectionTitle>
 
+                <h4 className="mb-30 text-center">Please sign up to our website</h4>
+
                 <SignUpForm onSubmit={this.handleSubmit} />
 
-                <div className="text-center mt-2">
-                  <a className={fbReady ? '' : 'text-muted'} href="/" onClick={this.handleSignUpWithFacebook}>
-                    Sign Up With Facebook
-                  </a>
-                </div>
+                <h5 className="text-center mt-4 mb-0">
+                  <Link to="/signin">
+                    I already have an account
+                  </Link>
+                </h5>
+                <Hr text="OR" />
 
+                <div className="text-center">
+                  <FacebookButton disabled={!fbReady} onClick={this.handleSignUpWithFacebook}>
+                    Sign up using facebook
+                  </FacebookButton>
+                </div>
               </div>
-            }
+            )}
           </Col>
         </Row>
       </FrontContainerLayout>
