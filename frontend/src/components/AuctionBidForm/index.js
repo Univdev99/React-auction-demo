@@ -1,10 +1,9 @@
 import React, { PureComponent } from 'react'
 import { Alert, Button } from 'reactstrap'
 import { compose } from 'redux'
-import { reduxForm } from 'redux-form/immutable'
+import { Field, reduxForm } from 'redux-form/immutable'
 import PropTypes from 'prop-types'
 
-import FormField from 'components/FormField'
 import InputField from 'components/InputField'
 
 const amountIsRequired = value => (value ? undefined : 'Amount is Required')
@@ -27,15 +26,16 @@ class AuctionBidForm extends PureComponent {
           {error || 'Failed to place your bid'}
         </Alert>}
 
-        <FormField
+        <Field
           name="price"
           type="number"
           placeholder="$"
+          size="lg"
           component={InputField}
           required={[amountIsRequired]}
         />
-        <div className="text-center">
-          <Button type="submit" color="primary" disabled={submitting}>
+        <div className="mt-30">
+          <Button block size="lg" type="submit" color="primary" disabled={submitting}>
             Bid on this auction
           </Button>
         </div>
