@@ -1,4 +1,9 @@
-$admin-menu-width:  230px;
+$admin-menu-width:      230px;
+$admin-header-height:   70px;
+
+& {
+  padding-top: $admin-header-height;
+}
 
 .admin-menu {
   position: fixed;
@@ -88,9 +93,12 @@ $admin-menu-width:  230px;
 }
 
 .admin-header {
-  height: 70px;
+  height: $admin-header-height;
   padding: 15px 0;
-  position: relative;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
   z-index: 30;
 
   &.shadow {
