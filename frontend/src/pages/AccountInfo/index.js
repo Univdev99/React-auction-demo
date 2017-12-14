@@ -4,14 +4,17 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
+import { Label } from 'reactstrap'
 
 import AccountForm from 'components/AccountForm'
+import avatarPlaceHolder from 'images/avatar-placeholder.png'
 import Section from 'components/Section'
 import Spinner from 'components/Spinner'
+import Uploader from 'components/Uploader'
 import { authSelector, countriesSelector } from 'store/selectors'
 import { formSubmit } from 'utils/form'
 import { getCountries } from 'store/modules/settings'
-import { updateCurrentUser } from 'store/modules/auth'
+import { uploadCurrentUserAvatar, updateCurrentUser } from 'store/modules/auth'
 
 
 class AccountInfo extends PureComponent {
@@ -34,7 +37,7 @@ class AccountInfo extends PureComponent {
   }
 
   render() {
-    const { auth, countries } = this.props
+    const { auth, countries, uploadCurrentUserAvatar } = this.props
     const currentUser = auth.get('currentUser')
 
     if (!currentUser) {
@@ -43,6 +46,15 @@ class AccountInfo extends PureComponent {
 
     return (
       <Section title="Account Information">
+        <div className="mb-40 mb-md-50">
+          <Label>Your avatar</Label>
+          <div style={{ width: 80 }}>
+            <Uploader
+              uploadAction={uploadCurrentUserAvatar}
+              defaultImageURL={currentUser.get('avatar') || avatarPlaceHolder}
+            />
+          </div>
+        </div>
         <AccountForm
           countries={countries}
           initialValues={currentUser}
@@ -60,6 +72,7 @@ const selector = createStructuredSelector({
 
 const actions = {
   getCountries,
+  uploadCurrentUserAvatar,
   updateCurrentUser
 }
 

@@ -8,6 +8,8 @@ from django.urls import reverse
 from rest_framework import status
 
 from account.models import UserVerification
+from account.test.factories import UserFactory
+from storage.test.factories import MediumFactory
 
 
 class SignUpTests(APITestCase):
@@ -105,3 +107,35 @@ class CurrentUserTests(APITestCase):
         self.assertEqual(self.user.country, new_data['country'])
         self.assertEqual(self.user.phone_number, new_data['phone_number'])
         self.assertEqual(self.user.zipcode, new_data['zipcode'])
+
+
+class UserAvatarUploadViewTests(APITestCase):
+
+    @patch('api.views.auth.UploadMediumSerializer.is_valid', return_value=True)
+    @patch('api.views.auth.UploadMediumSerializer.validated_data')
+    @patch('api.views.auth.MediumUploadMixin.is_mimetype_image')
+    @patch('api.views.auth.MediumUploadMixin.upload_medium')
+    def test_upload_logo(self, mock_upload_medium, mock_is_mimetype_image, mock_validated_data, mock_is_valid):
+        new_avatar = MediumFactory.create()
+        old_avatar = self.user.avatar
+        mock_upload_medium.return_value = new_avatar
+
+        response = self.client.put(reverse('api:current-user-avatar'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.avatar.pk, new_avatar.pk)
+
+        # Test replacing the existing avatar
+        new_avatar = MediumFactory.create()
+        old_avatar = self.user.avatar
+        mock_upload_medium.return_value = new_avatar
+
+        response = self.client.put(reverse('api:current-user-avatar'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        old_avatar.refresh_from_db()
+        self.assertNotEqual(old_avatar.deleted_at, None)
+
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.avatar.pk, new_avatar.pk)
