@@ -2,13 +2,12 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 import { Button, Col, Input, Row } from 'reactstrap'
-import { reduxForm } from 'redux-form/immutable'
-
 import FormField from 'components/FormField'
+
 
 const renderField = ({
   input,
-  meta: { error, touched },
+  meta: { error, submitFailed, touched },
   placeholder
 }) => (
   <Input className="mr-3" style={{ flexGrow: 1}}
@@ -16,7 +15,7 @@ const renderField = ({
     size="lg"
     {...input}
     placeholder={placeholder}
-    valid={touched && error ? false : undefined}
+    valid={submitFailed && touched && error ? false : undefined}
   />
 )
 
@@ -26,22 +25,19 @@ const isValidEmail = value =>
     ? 'Invalid email address'
     : undefined
 
+
 class SubscribeForm extends PureComponent {
   static propTypes = {
     forModal: PropTypes.bool,
     handleSubmit: PropTypes.func.isRequired,
-    submitting: PropTypes.bool.isRequired
-  }
-
-  doSubmit = (data) => {
-    console.log(data)
+    submitting: PropTypes.bool
   }
 
   render() {
     const { forModal, handleSubmit, submitting } = this.props
 
     return (
-      <form onSubmit={handleSubmit(this.doSubmit)}>
+      <form onSubmit={handleSubmit}>
         <Row>
           <Col
             xs={12}
@@ -65,7 +61,4 @@ class SubscribeForm extends PureComponent {
   }
 }
 
-export default reduxForm({
-  form: 'subscribeForm',
-  destroyOnUnmount: false
-})(SubscribeForm)
+export default SubscribeForm
