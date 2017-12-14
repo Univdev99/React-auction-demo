@@ -105,18 +105,20 @@ class AdminDonorDetail extends PureComponent {
 
     return (
       <div className="form-group">
-        <label className="mb-4">Add, remove or change order of images, audio and video:</label>
-        <SortableMediaList
-          media={donorMedia}
-          onDragEnd={this.handleDragEnd}
-          onDelete={this.handleDeleteDonorMedium}
-        />
-
-        <div className="mt-3">
+        <h4 className="mb-3">Add images, video or audio:</h4>
+        <div className="image-upload">
           <Uploader
             uploadAction={this.props.uploadDonorMedium}
             uploadActionParams={{ id: this.props.match.params.id }}
           />
+
+          <div className="mt-3">
+            <SortableMediaList
+              media={donorMedia}
+              onDragEnd={this.handleDragEnd}
+              onDelete={this.handleDeleteDonorMedium}
+            />
+          </div>
         </div>
       </div>
     )
