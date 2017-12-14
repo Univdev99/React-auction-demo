@@ -12,6 +12,7 @@ import {
   AUTH_CURRENT_USER,
   AUTH_PASSWORD_UPDATE,
   AUTH_CURRENT_USER_UPDATE,
+  AUTH_CURRENT_USER_AVATAR_UPLOAD,
   ACCOUNT_SET_PAYMENT
 } from 'store/constants'
 
@@ -37,6 +38,7 @@ export const signIn = createAction(AUTH_SIGNIN)
 export const signOut = createAction(AUTH_SIGNOUT)
 export const getCurrentUser = createAction(AUTH_CURRENT_USER)
 export const updateCurrentUser = createAction(AUTH_CURRENT_USER_UPDATE)
+export const uploadCurrentUserAvatar = createAction(AUTH_CURRENT_USER_AVATAR_UPLOAD)
 export const signUp = createAction(AUTH_SIGNUP)
 export const signUpWithFacebook = createAction(AUTH_SIGNUP_WITH_FACEBOOK)
 export const verifySignUp = createAction(AUTH_VERIFY_SIGNUP)
@@ -76,6 +78,12 @@ export default handleActions({
   /* Update current user actions */
 
   [requestSuccess(AUTH_CURRENT_USER_UPDATE)]: (state, { payload }) => state.withMutations(map => {
+    map.set('currentUser', Immutable.fromJS(payload))
+  }),
+
+  /* Upload current user avatar actions */
+
+  [requestSuccess(AUTH_CURRENT_USER_AVATAR_UPLOAD)]: (state, { payload }) => state.withMutations(map => {
     map.set('currentUser', Immutable.fromJS(payload))
   }),
 

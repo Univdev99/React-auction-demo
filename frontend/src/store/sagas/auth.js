@@ -9,6 +9,7 @@ import {
   AUTH_VERIFY_SIGNUP,
   AUTH_CURRENT_USER,
   AUTH_CURRENT_USER_UPDATE,
+  AUTH_CURRENT_USER_AVATAR_UPLOAD,
   AUTH_PASSWORD_UPDATE
 } from 'store/constants'
 
@@ -73,6 +74,12 @@ const updateCurrentUser = apiCall({
   path: 'current-user/',
 })
 
+const uploadCurrentUserAvatar = apiCall({
+  type: AUTH_CURRENT_USER_AVATAR_UPLOAD,
+  method: 'put',
+  path: ({ payload }) => `current-user/avatar/`,
+})
+
 const updatePassword = apiCall({
   type: AUTH_PASSWORD_UPDATE,
   method: 'put',
@@ -86,5 +93,6 @@ export default function* rootSaga () {
   yield takeLatest(AUTH_VERIFY_SIGNUP, doVerifySignUp)
   yield takeLatest(AUTH_CURRENT_USER, getCurrentUser)
   yield takeLatest(AUTH_CURRENT_USER_UPDATE, updateCurrentUser)
+  yield takeLatest(AUTH_CURRENT_USER_AVATAR_UPLOAD, uploadCurrentUserAvatar)
   yield takeLatest(AUTH_PASSWORD_UPDATE, updatePassword)
 }

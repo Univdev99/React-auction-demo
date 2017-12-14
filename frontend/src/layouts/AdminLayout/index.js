@@ -21,7 +21,7 @@ import {
 import { signOut } from 'store/modules/auth'
 import { getNotificationListOnMenu, addNotification, resetNotificationUnreadCount } from 'store/modules/admin/notifications'
 import { authSelector, adminNotificationsSelector } from 'store/selectors'
-import userAvatarImage from 'images/avatar-placeholder.png'
+import userAvatarPlaceholder from 'images/avatar-placeholder.png'
 
 
 class AdminLayout extends PureComponent {
@@ -86,6 +86,7 @@ class AdminLayout extends PureComponent {
 
     const { menuOpen } = this.state
     const username = currentUser.get('first_name') || currentUser.get('username')
+    const userAvatarImage = currentUser.get('avatar') || userAvatarPlaceholder
 
     const menuClasses = ['admin-menu']
     const menuBgClasses = ['menu-bg']
