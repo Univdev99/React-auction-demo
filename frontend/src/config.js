@@ -172,3 +172,5 @@ export const INTL = {
     }
   }
 }
+
+export const MAILCHIMP_NEWSLETTER_URL = 'https://charibin.us17.list-manage.com/subscribe/post-json?u=8cd4324f13de64eb84da0c1f3&id=80da438e73&b_8cd4324f13de64eb84da0c1f3_80da438e73' // eslint-disable-line
