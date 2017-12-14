@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 
 from common.constants import COUNTRY_CHOICES
+from storage.models import Medium
 
 
 class UserManager(BaseUserManager):
@@ -71,6 +72,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     zipcode = models.CharField(_('Zip Code'), max_length=20, blank=True, null=True)
 
     country = models.CharField(_('Country'), max_length=2, blank=True, null=True, choices=COUNTRY_CHOICES)
+
+    avatar = models.OneToOneField(Medium, null=True, blank=True)
 
     USERNAME_FIELD = 'email'
 

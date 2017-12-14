@@ -1,3 +1,5 @@
+import random
+
 from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.core import mail
@@ -16,6 +18,8 @@ from api.serializers.auth import SignUpSerializer
 from api.serializers.auth import SignUpVerificationSerializer
 from api.serializers.auth import UserSerializer
 from api.serializers.auth import UpdatePasswordSerializer
+from api.serializers.entities import CharitySerializer
+from api.serializers.storage import UploadMediumSerializer
 
 from account.models import UserVerification
 from history.constants import HISTORY_RECORD_USER_SIGNUP
@@ -23,6 +27,9 @@ from history.constants import HISTORY_RECORD_USER_SIGNUP_VERIFY
 from history.constants import HISTORY_RECORD_USER_SIGNUP_FACEBOOK
 from history.constants import HISTORY_RECORD_USER_UPDATE_DETAILS
 from history.models import HistoryRecord
+
+from storage.mixins import MediumUploadMixin
+from storage.mixins import MediumDeleteMixin
 
 
 class SignUpView(views.APIView):
@@ -166,3 +173,38 @@ class UpdatePasswordView(generics.UpdateAPIView):
             return Response('ok', status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CurrentUserAvatarUploadView(MediumUploadMixin, generics.GenericAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
+    tmp_file_prefix = 'user_avatar'
+
+    def get_queryset(self):
+        return get_user_model().objects.all().select_related('avatar')
+
+    def put(self, *args, **kwargs):
+        user = self.request.user
+
+        serializer = UploadMediumSerializer(data=self.request.data)
+        serializer.is_valid(raise_exception=True)
+
+        self.is_mimetype_image(serializer.validated_data['file'])
+        avatar_medium = self.upload_medium(
+            serializer.validated_data['file'],
+            'user/avatar',
+            '{}_{}'.format(user.pk, random.randint(10000000, 99999999)),
+            content_object=user
+        )
+
+        try:
+            if user.avatar:
+                self.delete_medium(user.avatar)
+        except:
+            pass
+
+        user.avatar = avatar_medium
+        user.save()
+
+        serializer = self.get_serializer(user)
+        return Response(serializer.data)

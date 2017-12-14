@@ -28,14 +28,18 @@ class SignUpVerificationSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=False)
     payment_info = PaymentInfoSerializer(source='customer', required=False)
+    avatar = serializers.SerializerMethodField()
 
     class Meta:
         model = get_user_model()
         fields = (
             'pk', 'username', 'first_name', 'last_name', 'email', 'is_staff', 'is_active', 'date_joined', 'last_login',
-            'phone_number', 'address_line', 'city', 'zipcode', 'country', 'payment_info'
+            'phone_number', 'address_line', 'city', 'zipcode', 'country', 'payment_info', 'avatar'
         )
-        read_only_fields = ('pk', 'date_joined', 'last_login', 'payment_info')
+        read_only_fields = ('pk', 'date_joined', 'last_login', 'payment_info', 'avatar')
+
+    def get_avatar(self, obj):
+        return obj.avatar.url if obj.avatar else None
 
 
 class UserBlockUnblockSerializer(serializers.Serializer):
