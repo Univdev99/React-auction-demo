@@ -1,8 +1,12 @@
 import React, { PureComponent } from 'react'
 import { Col, Container, Row } from 'reactstrap'
 import { reduxForm } from 'redux-form/immutable'
+import { compose } from 'redux'
+import { connect } from 'react-redux'
+import { show as showModal } from 'redux-modal'
 
 import SubscribeForm from 'components/SubscribeForm'
+import { MAILCHIMP_TYPE_NEWSLETTER } from 'config'
 import { mailchimpSubscribe } from 'utils/form'
 
 
@@ -12,9 +16,19 @@ const bem = (suffix) => `${COMPONENT_CLASS}__${suffix}`
 class SubscribeBar extends PureComponent {
 
   doSubmit = (data) => {
-    return mailchimpSubscribe(data.get('email'))
+    const { showModal } = this.props
+    return mailchimpSubscribe(MAILCHIMP_TYPE_NEWSLETTER, data.get('email'))
+      .then(() => {
+        showModal('messageModal', {
+          title: 'Thank you!',
+          subtitle: 'Successfully subscribed to our newsletter'
+        })
+      })
       .catch((err) => {
-        alert(err._error)
+        showModal('messageModal', {
+          title: 'Error',
+          text: err.errors._error
+        })
       })
   }
 
@@ -44,7 +58,14 @@ class SubscribeBar extends PureComponent {
   }
 }
 
-export default reduxForm({
-  form: 'subscribeBarForm',
-  propNamespace: 'subscribeForm'
-})(SubscribeBar)
+const actions = {
+  showModal
+}
+
+export default compose(
+  connect(null, actions),
+  reduxForm({
+    form: 'subscribeBarForm',
+    propNamespace: 'subscribeForm'
+  })
+)(SubscribeBar)

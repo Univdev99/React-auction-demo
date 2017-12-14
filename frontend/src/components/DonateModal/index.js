@@ -8,14 +8,14 @@ import { modalSelector } from 'store/selectors'
 import { reduxForm } from 'redux-form/immutable'
 
 import SubscribeForm from 'components/SubscribeForm'
-import { MAILCHIMP_TYPE_NEWSLETTER } from 'config'
+import { MAILCHIMP_TYPE_DONORS } from 'config'
 import { mailchimpSubscribe } from 'utils/form'
 
 
 const sanitizeError = (error) =>
   error.replace('<a', '<a class="alert-link"')
 
-class SubscribeModal extends PureComponent {
+class DonateModal extends PureComponent {
   static propTypes = {
     handleHide: PropTypes.func.isRequired,
     show: PropTypes.bool.isRequired
@@ -23,33 +23,33 @@ class SubscribeModal extends PureComponent {
 
   doSubmit = (data) => {
     const { handleHide, showModal } = this.props
-    return mailchimpSubscribe(MAILCHIMP_TYPE_NEWSLETTER, data.get('email'))
+    return mailchimpSubscribe(MAILCHIMP_TYPE_DONORS, data.get('email'))
       .then(() => {
         handleHide()
         showModal('messageModal', {
           title: 'Thank you!',
-          subtitle: 'Successfully subscribed to our newsletter'
+          subtitle: 'We will contact you shortly.'
         })
       })
   }
 
   render() {
-    const { handleHide, show, subscribeForm } = this.props
-    const { error, handleSubmit } = subscribeForm
+    const { handleHide, show, donateForm } = this.props
+    const { error, handleSubmit } = donateForm
 
     return (
       <Modal isOpen={show} toggle={handleHide} size="sm">
-        <ModalHeader toggle={handleHide}>Welcome!</ModalHeader>
-        <ModalBody> 
-          <h4 className="mb-30">Join our mailing list</h4>
+        <ModalHeader toggle={handleHide}>Donate</ModalHeader>
+        <ModalBody>
+          <h4 className="mb-30">Want to donate your stuff?</h4>
           <p className="mb-30">
-            We never send spam. Only valuable information once or twice per week.
+            Please leave your email below and we will contact you shortly.
           </p>
           {error && <Alert color="danger">
             <div dangerouslySetInnerHTML={{ __html: sanitizeError(error) }} />
           </Alert>}
           <SubscribeForm
-            {...subscribeForm}
+            {...donateForm}
             forModal
             handleSubmit={handleSubmit(this.doSubmit)}
           />
@@ -66,12 +66,12 @@ const actions = {
 export default compose(
   connect(null, actions),
   reduxForm({
-    form: 'subscribeModalForm',
-    propNamespace: 'subscribeForm'
+    form: 'donateModalForm',
+    propNamespace: 'donateForm'
   }),
   connectModal({
-    name: 'subscribeModal',
+    name: 'donateModal',
     destroyOnHide: false,
     getModalState: modalSelector
   })
-)(SubscribeModal)
+)(DonateModal)

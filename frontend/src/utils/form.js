@@ -35,8 +35,8 @@ export const sanitizeFormError = (error) =>
       : ucFirst(error)
   )
 
-export const mailchimpSubscribe = (email) => {
-  const url = MAILCHIMP_SUBSCRIBE_URL + `&EMAIL=${encodeURIComponent(email)}`
+export const mailchimpSubscribe = (type, email) => {
+  const url = MAILCHIMP_SUBSCRIBE_URL[type] + `&EMAIL=${encodeURIComponent(email)}`
   return new Promise((resolve, reject) => {
     jsonp(url, {
       param: "c"

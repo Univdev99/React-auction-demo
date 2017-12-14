@@ -173,4 +173,10 @@ export const INTL = {
   }
 }
 
-export const MAILCHIMP_NEWSLETTER_URL = 'https://charibin.us17.list-manage.com/subscribe/post-json?u=8cd4324f13de64eb84da0c1f3&id=80da438e73&b_8cd4324f13de64eb84da0c1f3_80da438e73' // eslint-disable-line
+export const MAILCHIMP_TYPE_DONORS = 'donors'
+export const MAILCHIMP_TYPE_NEWSLETTER = 'newsletter'
+
+export const MAILCHIMP_SUBSCRIBE_URL = {
+  [MAILCHIMP_TYPE_DONORS]: 'https://charibin.us17.list-manage.com/subscribe/post-json?u=8cd4324f13de64eb84da0c1f3&id=19f358b366&b_8cd4324f13de64eb84da0c1f3_19f358b366', // eslint-disable-line
+  [MAILCHIMP_TYPE_NEWSLETTER]: 'https://charibin.us17.list-manage.com/subscribe/post-json?u=8cd4324f13de64eb84da0c1f3&id=80da438e73&b_8cd4324f13de64eb84da0c1f3_80da438e73' // eslint-disable-line
+}
