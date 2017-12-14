@@ -64,8 +64,8 @@ class Pagination extends PureComponent {
 
     return (
       <ReactstrapPagination className="justify-content-center pagination-component">
-        <PaginationItem>
-          <PaginationLink href="#" onClick={this.handleClickPageLink.bind(this, 1)}>
+        <PaginationItem className="pr-2">
+          <PaginationLink className="arrow-link" href="#" onClick={this.handleClickPageLink.bind(this, 1)}>
             <FaLongArrowLeft />
           </PaginationLink>
         </PaginationItem>
@@ -83,8 +83,8 @@ class Pagination extends PureComponent {
             </PaginationItem>
           )
         })}
-        <PaginationItem>
-          <PaginationLink href="#" onClick={this.handleClickPageLink.bind(this, this.getPageCount())}>
+        <PaginationItem className="pl-2">
+          <PaginationLink className="arrow-link" href="#" onClick={this.handleClickPageLink.bind(this, this.getPageCount())}>
             <FaLongArrowRight />
           </PaginationLink>
         </PaginationItem>
