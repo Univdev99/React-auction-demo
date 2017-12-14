@@ -1,0 +1,28 @@
+.pagination-component {
+  font-family: $headings-font-family;
+  color: $admin-active;
+
+  .page-link {
+    border: 0;
+    color: inherit;
+    font-size: 22px;
+    padding: 8px 9px;
+
+    &:hover,
+    &:active,
+    &:focus {
+      background: transparent;
+      color: $primary;
+    }
+
+    &.arrow-link {
+      line-height: 22px;
+    }
+  }
+
+  .active .page-link {
+    background: transparent;
+    border: 0;
+    color: $primary;
+  }
+}

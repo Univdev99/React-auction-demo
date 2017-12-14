@@ -136,10 +136,10 @@ class AdminSaleList extends PureComponent {
         <div>
           <Nav pills>
             <NavItem className="ml-auto">
-              <NavLink tag="span">
+              <NavLink tag="span" className="column-selection">
                 <Dropdown isOpen={columnMenuOpen} toggle={this.handleToggleColumnMenu}>
                   <DropdownToggle size="sm" color="link" className="p-0 decoration-none">
-                    Column Selection <i className="fa fa-chevron-down" />
+                    <i className="fa fa-gear mr-2" /> Column Selection
                   </DropdownToggle>
                   <DropdownMenu right>
                     {columnList.filter(

@@ -1,0 +1,42 @@
+.nav-tabs {
+  border-bottom: 0;
+
+  .nav-link {
+    border-width: 3px 3px 0;
+    border-color: $admin-gray;
+    background: $admin-gray;
+    color: $admin-inactive;
+    padding: 14px 45px 17px 20px;
+    text-transform: uppercase;
+
+    &.active {
+      background: $white;
+      color: $admin-active;
+    }
+
+    button {
+      border: 0;
+      color: $admin-active;
+    }
+  }
+}
+
+.nav-tabs .nav-item {
+  margin-right: 3px;
+  margin-bottom: -3px;
+}
+
+.nav-link.column-selection {
+  padding-right: 0;
+  background: transparent;
+  border: 0;
+
+  button {
+    border: 0;
+    color: $admin-active;
+  }
+}
+
+.menu-tick {
+  top: 8px;
+}

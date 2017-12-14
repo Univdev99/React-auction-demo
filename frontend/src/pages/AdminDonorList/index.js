@@ -91,7 +91,7 @@ class AdminDonorList extends PureComponent {
 
     return (
       <div>
-        <div className="mb-5 clearfix">
+        <div className="mb-3 clearfix">
           <SectionTitle className="pull-left">Donors</SectionTitle>
           <Link className="btn btn-primary pull-right" to="/admin/donors/create">Create</Link>
         </div>
@@ -103,7 +103,7 @@ class AdminDonorList extends PureComponent {
         </div>}
 
         {loadingStatus === 10 && <div>
-          <table className="table">
+          <table className="table table-striped">
             <thead>
               <tr>
                 <th>ID</th>

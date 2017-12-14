@@ -91,7 +91,7 @@ class AdminProductList extends PureComponent {
 
     return (
       <div>
-        <div className="mb-5 clearfix">
+        <div className="mb-3 clearfix">
           <SectionTitle className="pull-left">Products</SectionTitle>
           <Link className="btn btn-primary pull-right" to="/admin/products/create">Create</Link>
         </div>
@@ -103,7 +103,7 @@ class AdminProductList extends PureComponent {
         </div>}
 
         {loadingStatus === 10 && <div>
-          <table className="table">
+          <table className="table table-striped">
             <thead>
               <tr>
                 <th>ID</th>

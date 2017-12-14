@@ -60,6 +60,7 @@ class DonorForm extends PureComponent {
               label="Description:"
               component={RichEditorField}
             />
+            {renderMediaDropzone && renderMediaDropzone()}
           </Col>
           <Col md="4" sm="12" className="mb-4">
             <FormField
@@ -93,12 +94,6 @@ class DonorForm extends PureComponent {
               label="Tags:"
               component={TagsInputField}
             />
-          </Col>
-        </Row>
-
-        <Row>
-          <Col md="8" sm="12" className="mb-4">
-            {renderMediaDropzone && renderMediaDropzone()}
           </Col>
         </Row>
 

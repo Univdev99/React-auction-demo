@@ -79,7 +79,7 @@ class SaleTable extends PureComponent {
         </div>}
 
         {loadingStatus === 10 && <div className="responsive-table-wrapper">
-          <Table responsive className="data-table mb-0">
+          <Table striped className="data-table mb-0">
             <thead>
               <tr>
                 {columnList.filter(
@@ -107,7 +107,11 @@ class SaleTable extends PureComponent {
                       >
                         <i className="fa fa-pencil" />
                       </Button>
-                      <Popover placement="bottom" isOpen={notePopoverOpen} target={`sale${id}`}
+                      <Popover
+                        className="admin-popover"
+                        placement="bottom-end"
+                        isOpen={notePopoverOpen}
+                        target={`sale${id}`}
                         toggle={this.handleToggleNotePopover.bind(this, sale.get('note'))}
                       >
                         <PopoverBody className="pt-3 pb-2">

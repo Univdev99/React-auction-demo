@@ -207,13 +207,13 @@ class AdminAuctionList extends PureComponent {
 
     return (
       <div>
-        <div className="mb-5 clearfix">
+        <div className="mb-3 clearfix">
           <SectionTitle className="pull-left">Auctions</SectionTitle>
           <Link className="btn btn-primary pull-right" to="/admin/auctions/create">Create</Link>
         </div>
 
         <div>
-          <Nav pills>
+          <Nav tabs>
             <NavItem>
               <NavLink
                 href="/"
@@ -251,10 +251,10 @@ class AdminAuctionList extends PureComponent {
               </NavLink>
             </NavItem>
             <NavItem className="ml-auto">
-              <NavLink tag="span">
+              <NavLink tag="span" className="column-selection">
                 <Dropdown isOpen={columnMenuOpen} toggle={this.handleToggleColumnMenu}>
                   <DropdownToggle size="sm" color="link" className="p-0 decoration-none">
-                    Column Selection <i className="fa fa-chevron-down" />
+                    <i className="fa fa-gear mr-2" /> Column Selection
                   </DropdownToggle>
                   <DropdownMenu right>
                     {columnList.filter(

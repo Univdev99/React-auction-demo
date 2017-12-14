@@ -6,6 +6,12 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
+import FaFacebook from 'react-icons/lib/fa/facebook'
+import FaTwitter from 'react-icons/lib/fa/twitter'
+import FaGoogle from 'react-icons/lib/fa/google'
+import FaLinkedin from 'react-icons/lib/fa/linkedin'
+import FaInstagram from 'react-icons/lib/fa/instagram'
+import { Row, Col } from 'reactstrap'
 
 import AdminHeader from 'components/AdminHeader'
 import Spinner from 'components/Spinner'
@@ -16,7 +22,6 @@ import { signOut } from 'store/modules/auth'
 import { getNotificationListOnMenu, addNotification, resetNotificationUnreadCount } from 'store/modules/admin/notifications'
 import { authSelector, adminNotificationsSelector } from 'store/selectors'
 import userAvatarImage from 'images/avatar-placeholder.png'
-import './style.css'
 
 
 class AdminLayout extends PureComponent {
@@ -95,11 +100,18 @@ class AdminLayout extends PureComponent {
           <i className="fa fa-bars"></i>
         </a>
 
+        <AdminHeader
+          username={username}
+          userAvatarImage={userAvatarImage}
+          notificationListOnMenu={notificationListOnMenu}
+          notificationListOnMenuLoaded={notificationListOnMenuLoaded}
+          notificationUnreadCount={notificationUnreadCount}
+          onSignOut={this.handleSignOut}
+          resetNotificationUnreadCount={resetNotificationUnreadCount}
+        />
+
         <div className={menuClasses.join(' ')}>
-          <div className="admin-header px-2 text-center">
-            <img className="logo" src="/logo.svg" alt="Logo" />
-          </div>
-          <div className="container-fluid py-2">
+          <div className="container-fluid py-4 mb-4">
             <ul className="nav flex-column">
               <li className="nav-item">
                 <Link className="nav-link text-dark" to="/admin/auctions">Auctions</Link>
@@ -130,21 +142,61 @@ class AdminLayout extends PureComponent {
               </li>
             </ul>
           </div>
+
+          <div className="container-fluid py-3 mt-auto sep-line">
+            <ul className="nav flex-column">
+              <li className="nav-item">
+                <Link className="nav-link text-dark" to="/privacy-policy">Privacy Policy</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-dark" to="/terms-conditions">Terms & Conditions</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-dark" to="/shipping">Shipping</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-dark" to="/support">Support</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-dark" to="/careers">Careers</Link>
+              </li>
+            </ul>
+          </div>
+
+          <div className="container-fluid py-4 sep-line">
+            <Row noGutters>
+              <Col>
+                <a href="/" className="text-dark">
+                  <center><FaFacebook /></center>
+                </a>
+              </Col>
+              <Col>
+                <a href="/" className="text-dark">
+                  <center><FaTwitter /></center>
+                </a>
+              </Col>
+              <Col>
+                <a href="/" className="text-dark">
+                  <center><FaGoogle /></center>
+                </a>
+              </Col>
+              <Col>
+                <a href="/" className="text-dark">
+                  <center><FaLinkedin /></center>
+                </a>
+              </Col>
+              <Col>
+                <a href="/" className="text-dark">
+                  <center><FaInstagram /></center>
+                </a>
+              </Col>
+            </Row>
+          </div>
         </div>
         <div className={menuBgClasses.join(' ')} onClick={this.handleCloseMenu} />
 
         <div className="admin-content">
-          <AdminHeader
-            username={username}
-            userAvatarImage={userAvatarImage}
-            notificationListOnMenu={notificationListOnMenu}
-            notificationListOnMenuLoaded={notificationListOnMenuLoaded}
-            notificationUnreadCount={notificationUnreadCount}
-            onSignOut={this.handleSignOut}
-            resetNotificationUnreadCount={resetNotificationUnreadCount}
-          />
-
-          <div className="container-fluid p-4" style={{ maxWidth: 1200, marginLeft: 0 }}>
+          <div className="container-fluid p-4 pt-5" style={{ maxWidth: 1200, marginLeft: 0 }}>
             {children}
           </div>
         </div>
