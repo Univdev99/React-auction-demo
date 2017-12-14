@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import moment from 'moment'
 import PropTypes from 'prop-types'
-import { Alert, Col, Row } from 'reactstrap'
+import { Alert } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
@@ -10,7 +9,9 @@ import { Link } from 'react-router-dom'
 import { show } from 'redux-modal'
 
 import CommentForm from 'components/CommentForm'
+import CommentItem from 'components/CommentItem'
 import FrontContainerLayout from 'layouts/FrontContainerLayout'
+import ListWrapper from 'components/ListWrapper'
 import PostItem from 'components/PostItem'
 import Section from 'components/Section'
 import SectionTitle from 'components/SectionTitle'
@@ -70,7 +71,7 @@ class PostDetail extends PureComponent {
   renderDetail() {
     const { auth, blog } = this.props
     const postDetail = blog.get('postDetail')
-    const comments = blog.get('commentList').toJS()
+    const comments = blog.get('commentList')
     const similarPosts = postDetail.get('similar_posts')
     const post = postDetail.toJS()
     const user = auth.get('currentUser')
@@ -82,15 +83,9 @@ class PostDetail extends PureComponent {
           <div className="my-5" dangerouslySetInnerHTML={{ __html: post.content }} />
         </Section>
 
-        <Section title={`Comments (${comments ? comments.length : 0})`}>
-          {comments && !!comments.length && comments.map((comment, index) => (
-            <div className="mb-4" key={index}>
-              <div className="mb-3">{comment.content}</div>
-              <Row>
-                <Col xs={6} className="mb-2">{moment(comment.created_at).format('ll')}</Col>
-                <Col xs={6} className="text-right mb-2">{comment.user.full_name}</Col>
-              </Row>
-            </div>
+        <Section title={`Comments (${comments ? comments.size : 0})`}>
+          {comments && comments.map((comment, index) => (
+            <CommentItem key={index} comment={comment} />
           ))}
           {user
             ? <CommentForm onSubmit={this.handlePostComment} user={user} />
@@ -100,12 +95,16 @@ class PostDetail extends PureComponent {
           }
         </Section>
 
-        <Section title="Similar Posts">
-          <Row className="mb-5">
-            {similarPosts.map(post => (
-              <PostItem key={post.pk} post={post} />
+        <Section
+          title="Similar Articles"
+          link="/blog"
+          linkText="All Articles"
+        >
+          <ListWrapper>
+            {similarPosts.map((post, index) => (
+              <PostItem key={index} post={post} />
             ))}
-          </Row>
+          </ListWrapper>
         </Section>
       </div>
     )

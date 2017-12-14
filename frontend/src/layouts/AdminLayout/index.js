@@ -21,7 +21,7 @@ import {
 import { signOut } from 'store/modules/auth'
 import { getNotificationListOnMenu, addNotification, resetNotificationUnreadCount } from 'store/modules/admin/notifications'
 import { authSelector, adminNotificationsSelector } from 'store/selectors'
-import userAvatarPlaceholder from 'images/avatar-placeholder.png'
+import userAvatarPlaceholder from 'images/avatar-placeholder.svg'
 
 
 class AdminLayout extends PureComponent {

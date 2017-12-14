@@ -1,0 +1,13 @@
+<svg width="60px" height="60px" viewBox="0 0 60 60" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="no-avatar">
+            <g>
+                <rect id="avatar" fill="#D1D1D1" x="0" y="0" width="60" height="60" rx="4"></rect>
+                <path d="M30,27.6315789 C26.3181017,27.6315789 23.3333333,24.8039037 23.3333333,21.3157895 C23.3333333,17.8276753 26.3181017,15 30,15 C33.6818983,15 36.6666667,17.8276753 36.6666667,21.3157895 C36.6666667,24.8039037 33.6818983,27.6315789 30,27.6315789 Z M30,30.7894737 C36.0962447,30.7894737 41.5221174,32.7822127 45,35.88066 C42.1348064,41.3082299 36.4922769,45 30,45 C23.5077231,45 17.8651936,41.3082299 15,35.88066 C18.4778826,32.7822127 23.9037553,30.7894737 30,30.7894737 Z" id="icon-user" fill="#FFFFFF"></path>
+            </g>
+        </g>
+    </g>
+</svg>

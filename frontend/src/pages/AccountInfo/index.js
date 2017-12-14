@@ -7,7 +7,7 @@ import { createStructuredSelector } from 'reselect'
 import { Label } from 'reactstrap'
 
 import AccountForm from 'components/AccountForm'
-import avatarPlaceHolder from 'images/avatar-placeholder.png'
+import avatarPlaceHolder from 'images/avatar-placeholder.svg'
 import Section from 'components/Section'
 import Spinner from 'components/Spinner'
 import Uploader from 'components/Uploader'
