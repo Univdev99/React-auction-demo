@@ -1,0 +1,15 @@
+.admin-popover {
+  border: 3px solid $admin-gray;
+
+  .arrow::before {
+    border-bottom-color: $admin-gray !important;
+  }
+
+  .arrow::after {
+    top: calc((0.8rem - 4px) * -1) !important;
+  }
+
+  .form-control {
+    box-shadow: none;
+  }
+}

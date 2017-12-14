@@ -19,10 +19,6 @@
       color: $admin-active;
     }
   }
-
-  .menu-tick {
-    top: 8px;
-  }
 }
 
 .nav-tabs .nav-item {
@@ -39,4 +35,8 @@
     border: 0;
     color: $admin-active;
   }
+}
+
+.menu-tick {
+  top: 8px;
 }

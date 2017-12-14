@@ -107,7 +107,11 @@ class SaleTable extends PureComponent {
                       >
                         <i className="fa fa-pencil" />
                       </Button>
-                      <Popover placement="bottom" isOpen={notePopoverOpen} target={`sale${id}`}
+                      <Popover
+                        className="admin-popover"
+                        placement="bottom-end"
+                        isOpen={notePopoverOpen}
+                        target={`sale${id}`}
                         toggle={this.handleToggleNotePopover.bind(this, sale.get('note'))}
                       >
                         <PopoverBody className="pt-3 pb-2">
