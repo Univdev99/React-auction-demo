@@ -8,7 +8,9 @@
     font-size: 22px;
     padding: 8px 9px;
 
-    &:hover {
+    &:hover,
+    &:active,
+    &:focus {
       background: transparent;
       color: $primary;
     }

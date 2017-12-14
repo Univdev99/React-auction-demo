@@ -1,15 +1,13 @@
 .table {
-  th {
+  border: 3px solid $admin-gray;
+
+  thead th {
     padding-top: 17px;
     padding-bottom: 17px;
   }
 
-  th,
-  td {
+  th, td {
     border: 0;
+    vertical-align: middle;
   }
-}
-
-.table-wrapper {
-  border: 3px solid $admin-gray;
 }

@@ -251,7 +251,7 @@ class AdminAuctionList extends PureComponent {
               </NavLink>
             </NavItem>
             <NavItem className="ml-auto">
-              <NavLink tag="span">
+              <NavLink tag="span" className="column-selection">
                 <Dropdown isOpen={columnMenuOpen} toggle={this.handleToggleColumnMenu}>
                   <DropdownToggle size="sm" color="link" className="p-0 decoration-none">
                     <i className="fa fa-gear mr-2" /> Column Selection

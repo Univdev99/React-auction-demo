@@ -20,12 +20,6 @@
     }
   }
 
-  .ml-auto .nav-link {
-    padding-right: 0;
-    background: transparent;
-    border: 0;
-  }
-
   .menu-tick {
     top: 8px;
   }
@@ -34,4 +28,15 @@
 .nav-tabs .nav-item {
   margin-right: 3px;
   margin-bottom: -3px;
+}
+
+.nav-link.column-selection {
+  padding-right: 0;
+  background: transparent;
+  border: 0;
+
+  button {
+    border: 0;
+    color: $admin-active;
+  }
 }

@@ -72,7 +72,7 @@ class AdminUserHistory extends PureComponent {
         </div>}
 
         {loadingStatus === 10 && <div className="responsive-table-wrapper">
-          <Table className="data-table mb-0">
+          <Table striped className="data-table mb-0">
             <thead>
               <tr>
                 <th>Action</th>

@@ -117,7 +117,7 @@ class AdminDonorProductList extends PureComponent {
           {loadingProductListStatus === 10 && donorDetail && <div>
             <SectionTitle className="mb-5">Products from {donorDetail.get('title')}</SectionTitle>
 
-            <table className="table">
+            <table className="table table-striped">
               <thead>
                 <tr>
                   <th>ID</th>

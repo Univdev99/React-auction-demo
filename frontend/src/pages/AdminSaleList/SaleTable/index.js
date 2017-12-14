@@ -79,7 +79,7 @@ class SaleTable extends PureComponent {
         </div>}
 
         {loadingStatus === 10 && <div className="responsive-table-wrapper">
-          <Table responsive className="data-table mb-0">
+          <Table striped className="data-table mb-0">
             <thead>
               <tr>
                 {columnList.filter(

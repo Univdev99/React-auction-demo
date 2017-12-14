@@ -103,7 +103,7 @@ class AdminCharityList extends PureComponent {
         </div>}
 
         {loadingStatus === 10 && <div>
-          <table className="table">
+          <table className="table table-striped">
             <thead>
               <tr>
                 <th>ID</th>

@@ -82,7 +82,7 @@ class AdminUserList extends PureComponent {
         </div>}
 
         {userListStatus === API_SUCCESS && <div>
-          <table className="table">
+          <table className="table table-striped">
             <thead>
               <tr>
                 <th>ID</th>
