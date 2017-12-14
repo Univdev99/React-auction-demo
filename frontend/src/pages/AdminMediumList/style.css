@@ -1,6 +1,10 @@
-.medium-wrapper {
-  border: 1px solid #e0e0e1;
-  border-radius: 3px;
+.medium-wrapper img {
+  border-radius: 5px;
+}
+
+.medium-list-wrapper {
+  border: 3px solid #f9f8fe;
+  padding: 25px;
 }
 
 .video-wrapper {

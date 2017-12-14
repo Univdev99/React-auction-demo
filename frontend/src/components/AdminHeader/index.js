@@ -52,13 +52,11 @@ class AdminHeader extends PureComponent {
             >
               <DropdownToggle
                 tag="a"
-                className="p-2 position-relative"
-                style={{ cursor: 'pointer' }}
+                className="p-1 position-relative"
+                style={{ cursor: 'pointer', fontSize: 22, verticalAlign: 'middle' }}
               >
                 <i className="fa fa-bell" />
-                {!!notificationUnreadCount && <div className="notification-count bg-primary text-white small">
-                  {notificationUnreadCount > 5 ? '5+' : notificationUnreadCount}
-                </div>}
+                {!!notificationUnreadCount && <div className="notification-count bg-primary" />}
               </DropdownToggle>
               {
                 notificationListOnMenuLoaded ?
