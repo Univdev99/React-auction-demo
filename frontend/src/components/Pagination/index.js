@@ -4,6 +4,9 @@ import {
   Pagination as ReactstrapPagination,
   PaginationItem, PaginationLink,
 } from 'reactstrap'
+import cx from 'classnames'
+import FaLongArrowLeft from 'react-icons/lib/fa/long-arrow-left'
+import FaLongArrowRight from 'react-icons/lib/fa/long-arrow-right'
 
 
 class Pagination extends PureComponent {
@@ -60,14 +63,16 @@ class Pagination extends PureComponent {
     const { currentPage } = this.props
 
     return (
-      <ReactstrapPagination className="justify-content-center">
+      <ReactstrapPagination className="justify-content-center pagination-component">
         <PaginationItem>
-          <PaginationLink previous onClick={this.handleClickPageLink.bind(this, 1)} />
+          <PaginationLink href="#" onClick={this.handleClickPageLink.bind(this, 1)}>
+            <FaLongArrowLeft />
+          </PaginationLink>
         </PaginationItem>
         {this.getPageNumbers(currentPage).map(pageNumber => {
           const ellipsis = (pageNumber === '.' || pageNumber === '..')
           return (
-            <PaginationItem key={pageNumber} disabled={ellipsis}>
+            <PaginationItem key={pageNumber} disabled={ellipsis} className={cx({ 'active': pageNumber === currentPage })}>
               <PaginationLink href="#" onClick={ellipsis ? null : this.handleClickPageLink.bind(this, pageNumber)}>
                 {
                   ellipsis ?
@@ -79,11 +84,9 @@ class Pagination extends PureComponent {
           )
         })}
         <PaginationItem>
-          <PaginationLink
-            next
-            href="#"
-            onClick={this.handleClickPageLink.bind(this, this.getPageCount())}
-          />
+          <PaginationLink href="#" onClick={this.handleClickPageLink.bind(this, this.getPageCount())}>
+            <FaLongArrowRight />
+          </PaginationLink>
         </PaginationItem>
       </ReactstrapPagination>
     )

@@ -6,6 +6,12 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
+import FaFacebook from 'react-icons/lib/fa/facebook'
+import FaTwitter from 'react-icons/lib/fa/twitter'
+import FaGoogle from 'react-icons/lib/fa/google'
+import FaLinkedin from 'react-icons/lib/fa/linkedin'
+import FaInstagram from 'react-icons/lib/fa/instagram'
+import { Row, Col } from 'reactstrap'
 
 import AdminHeader from 'components/AdminHeader'
 import Spinner from 'components/Spinner'
@@ -105,7 +111,7 @@ class AdminLayout extends PureComponent {
         />
 
         <div className={menuClasses.join(' ')}>
-          <div className="container-fluid py-4">
+          <div className="container-fluid py-4 mb-4">
             <ul className="nav flex-column">
               <li className="nav-item">
                 <Link className="nav-link text-dark" to="/admin/auctions">Auctions</Link>
@@ -135,6 +141,56 @@ class AdminLayout extends PureComponent {
                 <Link className="nav-link text-dark" to="/admin/backlog">Backlog</Link>
               </li>
             </ul>
+          </div>
+
+          <div className="container-fluid py-3 mt-auto sep-line">
+            <ul className="nav flex-column">
+              <li className="nav-item">
+                <Link className="nav-link text-dark" to="/privacy-policy">Privacy Policy</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-dark" to="/terms-conditions">Terms & Conditions</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-dark" to="/shipping">Shipping</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-dark" to="/support">Support</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-dark" to="/careers">Careers</Link>
+              </li>
+            </ul>
+          </div>
+
+          <div className="container-fluid py-4 sep-line">
+            <Row noGutters>
+              <Col>
+                <a href="/" className="text-dark">
+                  <center><FaFacebook /></center>
+                </a>
+              </Col>
+              <Col>
+                <a href="/" className="text-dark">
+                  <center><FaTwitter /></center>
+                </a>
+              </Col>
+              <Col>
+                <a href="/" className="text-dark">
+                  <center><FaGoogle /></center>
+                </a>
+              </Col>
+              <Col>
+                <a href="/" className="text-dark">
+                  <center><FaLinkedin /></center>
+                </a>
+              </Col>
+              <Col>
+                <a href="/" className="text-dark">
+                  <center><FaInstagram /></center>
+                </a>
+              </Col>
+            </Row>
           </div>
         </div>
         <div className={menuBgClasses.join(' ')} onClick={this.handleCloseMenu} />
