@@ -15,8 +15,10 @@ class PostItem extends PureComponent {
   }
 
   render() {
-    const { post: { pk, title, created_at: postDate, excerpt, featured_image: image } } = this.props
+    const { post } = this.props
+    const { pk, title, created_at: postDate, excerpt, featured_image: image } = post.toJS()
     const linkTo = `/blog/posts/${pk}`
+
     return (
       <Col xs={12} md={6} className="gb">
         <Card className={COMPONENT_CLASS}>
