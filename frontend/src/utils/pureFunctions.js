@@ -18,7 +18,10 @@ export const queryStringToJson = (query) => {
 export const jsonToQueryString = (obj) => {
   const pairs = []
   obj && Object.keys(obj).forEach((key) => {
-    obj[key] && pairs.push(`${key}=${encodeURIComponent(obj[key])}`)
+    if (obj[key]) {
+      const value = encodeURIComponent(obj[key])
+      value && pairs.push(`${key}=${value}`)
+    }
   })
 
   return pairs.length ? `?${pairs.join('&')}` : ''
