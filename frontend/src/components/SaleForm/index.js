@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { compose } from 'redux'
-import { Alert, Button } from 'reactstrap'
+import { Alert, Button, Row, Col } from 'reactstrap'
 import { reduxForm } from 'redux-form/immutable'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
@@ -40,34 +40,51 @@ class SaleForm extends PureComponent {
           {error || `Failed to ${initialValues.get('title') ? 'update the' : 'create a'} sale`}
         </Alert>}
 
-        <FormField
-          name="item_sent"
-          label="Item sent at:"
-          component={DateTimeField}
-        />
-        <FormField
-          name="tracking_number"
-          label="Tracking number:"
-          component={InputField}
-        />
-        <FormField
-          name="cheque_sent_at"
-          label="Cheque sent to charity at:"
-          component={DateTimeField}
-        />
-        <FormField
-          name="receipt_received_at"
-          label="Receipt received from charity at:"
-          component={DateTimeField}
-        />
-        <FormField
-          name="status"
-          label="Status:"
-          type="select"
-          component={InputField}
-          options={SALE_STATUS_CHOICES}
-        />
-        <div className="text-right">
+        <div className="bordered-box no-bottom-padding">
+          <Row>
+            <Col md={6} xs={12}>
+              <FormField
+                name="item_sent"
+                label="Item sent at:"
+                component={DateTimeField}
+              />
+            </Col>
+            <Col md={6} xs={12}>
+              <FormField
+                name="tracking_number"
+                label="Tracking number:"
+                component={InputField}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={4} xs={12}>
+              <FormField
+                name="cheque_sent_at"
+                label="Cheque sent to charity at:"
+                component={DateTimeField}
+              />
+            </Col>
+            <Col md={4} xs={12}>
+              <FormField
+                name="receipt_received_at"
+                label="Receipt received from charity at:"
+                component={DateTimeField}
+              />
+            </Col>
+            <Col md={4} xs={12}>
+              <FormField
+                name="status"
+                label="Status:"
+                type="select"
+                component={InputField}
+                options={SALE_STATUS_CHOICES}
+              />
+            </Col>
+          </Row>
+        </div>
+
+        <div className="text-right mt-4">
           {onBack && <Button className="mr-3 px-4" onClick={this.handleClickBack}>
             Back
           </Button>}

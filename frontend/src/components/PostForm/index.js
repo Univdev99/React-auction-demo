@@ -27,7 +27,7 @@ class PostForm extends PureComponent {
   }
 
   renderFeaturedImageField = ({ input }) => {
-    return <Uploader onChange={input.onChange} preview />
+    return <Uploader bordered onChange={input.onChange} preview />
   }
 
   handleClickBack = (e) => {
@@ -51,52 +51,54 @@ class PostForm extends PureComponent {
           {error || `Failed to ${initialValues.get('title') ? 'update the' : 'create a'} post`}
         </Alert>}
 
-        <Row>
-          <Col md="8" sm="12" className="mb-4">
-            <FormField
-              name="title"
-              type="text"
-              label="Add blog title"
-              component={InputField}
-            />
-            <FormField
-              name="content"
-              label="Add blog content"
-              component={RichEditorField}
-            />
-            <FormField
-              name="excerpt"
-              label="Excerpt"
-              component={TextareaField}
-              helpText="* Excerpts are optional hand-crafted summaries"
-            />
-          </Col>
-          <Col md="4" sm="12" className="mb-4">
-            <Fields
-              names={['visibility', 'is_sticky', 'password']}
-              component={VisibilityFields}
-            />
-            <FormField
-              name="tagnames"
-              label="Tags:"
-              component={TagsInputField}
-            />
-            <div className="mb-2">
-              <label>Set featured image</label>
-              {featuredImage && <img
-                className="d-block w-100 mb-2"
-                src={featuredImage}
-                alt="Featured"
-              />}
-              <Field
-                name="image_file"
-                component={this.renderFeaturedImageField}
+        <div className="bordered-box no-bottom-padding">
+          <Row>
+            <Col md="8" sm="12">
+              <FormField
+                name="title"
+                type="text"
+                label="Add blog title"
+                component={InputField}
               />
-            </div>
-          </Col>
-        </Row>
+              <FormField
+                name="content"
+                label="Add blog content"
+                component={RichEditorField}
+              />
+              <FormField
+                name="excerpt"
+                label="Excerpt"
+                component={TextareaField}
+                helpText="* Excerpts are optional hand-crafted summaries"
+              />
+            </Col>
+            <Col md="4" sm="12">
+              <Fields
+                names={['visibility', 'is_sticky', 'password']}
+                component={VisibilityFields}
+              />
+              <FormField
+                name="tagnames"
+                label="Tags:"
+                component={TagsInputField}
+              />
+              <div className="mb-2">
+                <label>Set featured image</label>
+                {featuredImage && <img
+                  className="d-block w-100 mb-2"
+                  src={featuredImage}
+                  alt="Featured"
+                />}
+                <Field
+                  name="image_file"
+                  component={this.renderFeaturedImageField}
+                />
+              </div>
+            </Col>
+          </Row>
+        </div>
 
-        <div className="text-right">
+        <div className="text-right mt-4">
           {onBack && <Button className="mr-3 px-4" onClick={this.handleClickBack}>
             Back
           </Button>}

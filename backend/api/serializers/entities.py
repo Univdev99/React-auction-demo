@@ -15,7 +15,7 @@ class CharitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Charity
-        fields = ('pk', 'title', 'description', 'logo')
+        fields = ('pk', 'title', 'contact', 'phone', 'address', 'logo')
         read_only_fields = ('pk',)
 
     def get_logo(self, obj):

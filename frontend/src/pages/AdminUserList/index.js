@@ -2,18 +2,18 @@ import React, { PureComponent } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
+import Immutable from 'immutable' 
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import { Link } from 'react-router-dom'
+import {
+  Nav, NavItem, NavLink,
+  Dropdown, DropdownToggle, DropdownMenu, DropdownItem,
+} from 'reactstrap'
 
 import Pagination from 'components/Pagination'
 import SectionTitle from 'components/SectionTitle'
 import Spinner from 'components/Spinner'
-import {
-  API_PENDING,
-  API_SUCCESS,
-  API_FAIL,
-} from 'store/api/request'
 import {
   getUserList,
   blockUnblockUser,
@@ -22,6 +22,7 @@ import {
   adminUsersSelector,
 } from 'store/selectors'
 import { ADMIN_TABLE_PAGE_SIZE } from 'config'
+import UserTable from './UserTable'
 
 
 class AdminUserList extends PureComponent {
@@ -32,9 +33,60 @@ class AdminUserList extends PureComponent {
     blockUnblockUser: PropTypes.func.isRequired,
   }
 
-  handleBlockUnblockUser = (id, block, event) => {
+  state = {
+    columnMenuOpen: false,
+    columnList: Immutable.fromJS([
+      { field: 'email', label: 'Email', enabled: true },
+      { field: 'name', label: 'Name', enabled: true },
+      { field: 'auctions_total', label: 'Auctions Total', enabled: true },
+      { field: 'date_joined', label: 'Joined', enabled: true },
+      { field: 'address', label: 'Address', enabled: true },
+      { field: 'group', label: 'Group', enabled: true },
+      { field: 'status', label: 'Status', enabled: true },
+    ])
+  }
+
+  getColumnIndex = (field) => {
+    const { columnList } = this.state
+    const count = columnList.size
+
+    for (let i = 0; i < count; i++) {
+      const _column = columnList.get(i)
+      if (_column.get('field') === field) {
+        return i
+      }
+    }
+    return -1
+  }
+
+  handleToggleColumnMenu = (e) => {
+    if (e.target.classList.contains('dropdown-item')) {
+      return
+    }
+
+    this.setState({
+      columnMenuOpen: !this.state.columnMenuOpen
+    })
+  }
+
+  handleToggleColumn = (field, event) => {
     event.preventDefault()
 
+    const { columnList } = this.state
+    const columnIndex = this.getColumnIndex(field)
+
+    if (columnIndex >= 0) {
+      const path = [columnIndex, 'enabled']
+      this.setState({
+        columnList: columnList.setIn(
+          path,
+          !columnList.getIn(path)
+        )
+      })
+    }
+  }
+
+  handleBlockUnblockUser = (id, block) => {
     const action = block ? 'Block' : 'Unblock'
     if (!window.confirm(`Are you sure to ${action} this user?`)) {
       return
@@ -71,61 +123,59 @@ class AdminUserList extends PureComponent {
     const userListPageNumber = adminUsers.get('userListPageNumber')
     const userListStatus = adminUsers.get('userListStatus')
 
+    const { columnMenuOpen, columnList } = this.state
+
     return (
       <div>
         <SectionTitle className="mb-5">Users</SectionTitle>
 
-        {userListStatus === API_PENDING && <Spinner />}
+        <Nav pills>
+          <NavItem className="ml-auto">
+            <NavLink tag="span" className="column-selection">
+              <Dropdown isOpen={columnMenuOpen} toggle={this.handleToggleColumnMenu}>
+                <DropdownToggle size="sm" color="link" className="p-0 decoration-none">
+                  <i className="fa fa-gear mr-2" /> Column Selection
+                </DropdownToggle>
+                <DropdownMenu right>
+                  {columnList.filter(
+                    column => column.get('field') !== 'item_number'
+                  ).map(column => (
+                    <DropdownItem
+                      key={column.get('field')}
+                      className="position-relative"
+                      onClick={this.handleToggleColumn.bind(this, column.get('field'))}
+                    >
+                      <div className="menu-tick">
+                        {
+                          column.get('enabled') ?
+                          <i className="fa fa-dot-circle-o" /> :
+                          <i className="fa fa-circle-o" />
+                        }
+                      </div>
+                      {column.get('label')}
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+            </NavLink>
+          </NavItem>
+        </Nav>
 
-        {userListStatus === API_FAIL && <div>
-          Failed to load data.
-        </div>}
+        <UserTable
+          columnList={columnList}
+          loadingStatus={userListStatus}
+          userList={userListPage}
+          onBlockUnblock={this.handleBlockUnblockUser}
+        />
 
-        {userListStatus === API_SUCCESS && <div>
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Email</th>
-                <th>Username</th>
-                <th>Full name</th>
-                <th>Admin</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {userListPage.map(user => (
-                <tr key={user.get('pk')}>
-                  <th scope="row">{user.get('pk')}</th>
-                  <td>{user.get('email')}</td>
-                  <td>{user.get('username')}</td>
-                  <td>{user.get('first_name')} {user.get('last_name')}</td>
-                  <td>{user.get('is_staff') ? 'Admin' : 'Normal User'}</td>
-                  <td>{user.get('is_active') ? 'Active' : 'Blocked'}</td>
-                  <td>
-                    <Link className="text-secondary pr-3" to={`/admin/users/${user.get('pk')}/history`}>History</Link>
-                    {
-                      user.get('is_active') ?
-                      <a className="text-danger" href="/" onClick={this.handleBlockUnblockUser.bind(this, user.get('pk'), true)}>Block</a>
-                      :
-                      <a className="text-primary" href="/" onClick={this.handleBlockUnblockUser.bind(this, user.get('pk'), false)}>Unblock</a>
-                    }
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          <div className="mt-5 text-center">
-            <Pagination
-              currentPage={userListPageNumber}
-              totalCount={userListCount}
-              pageSize={ADMIN_TABLE_PAGE_SIZE}
-              onPage={this.loadData}
-            />
-          </div>
-        </div>}
+        <div className="mt-5 text-center">
+          <Pagination
+            currentPage={userListPageNumber}
+            totalCount={userListCount}
+            pageSize={ADMIN_TABLE_PAGE_SIZE}
+            onPage={this.loadData}
+          />
+        </div>
       </div>
     )
   }

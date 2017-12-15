@@ -58,8 +58,9 @@ class AdminCharityDetail extends PureComponent {
 
     return (
       <div className="mb-4">
-        <label>Upload logo here:</label>
+        <label className="form-control-label">Charity Logo</label>
         <Uploader
+          bordered
           uploadAction={this.props.uploadCharityLogo}
           uploadActionParams={{ id: this.props.match.params.id }}
           defaultImageURL={charityDetail.get('logo')}

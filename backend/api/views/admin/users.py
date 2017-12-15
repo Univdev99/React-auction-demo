@@ -9,7 +9,7 @@ from rest_framework.response import Response
 
 from api.paginations import TenPerPagePagination
 from api.permissions import IsAdmin
-from api.serializers.auth import UserSerializer
+from api.serializers.auth import UserAdminSerializer
 from api.serializers.auth import UserBlockUnblockSerializer
 from api.serializers.history import HistoryRecordSerializer
 from history.models import HistoryRecord
@@ -19,7 +19,7 @@ from history.models import HistoryRecordEntity
 class UserListView(generics.ListAPIView):
     permission_classes = (IsAuthenticated, IsAdmin,)
     queryset = get_user_model().objects.order_by('-is_staff', 'date_joined')
-    serializer_class = UserSerializer
+    serializer_class = UserAdminSerializer
     pagination_class = TenPerPagePagination
 
 
@@ -36,7 +36,7 @@ class UserBlockUnblockView(generics.UpdateAPIView):
         user.is_active = not serializer.validated_data['block']
         user.save()
 
-        serializer = UserSerializer(user)
+        serializer = UserAdminSerializer(user)
         return Response(serializer.data)
 
 

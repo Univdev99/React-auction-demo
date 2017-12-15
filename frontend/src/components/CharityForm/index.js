@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { compose } from 'redux'
-import { Alert, Button } from 'reactstrap'
+import { Alert, Button, Row, Col } from 'reactstrap'
 import { reduxForm } from 'redux-form/immutable'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
@@ -40,21 +40,49 @@ class CharityForm extends PureComponent {
           {error || `Failed to ${initialValues.get('title') ? 'update the' : 'create a'} charity`}
         </Alert>}
 
-        <FormField
-          name="title"
-          type="text"
-          label="Title:"
-          component={InputField}
-        />
-        <FormField
-          name="description"
-          label="Description:"
-          component={RichEditorField}
-        />
-        <div className="mb-4">
-          {renderMediaDropzone && renderMediaDropzone()}
+        <div className="bordered-box no-bottom-padding">
+          <Row>
+            <Col md={4} xs={12}>
+              <FormField
+                name="title"
+                type="text"
+                label="Charity Name"
+                component={InputField}
+              />
+            </Col>
+            <Col md={4} xs={12}>
+              <FormField
+                name="contact"
+                type="text"
+                label="Contact"
+                component={InputField}
+              />
+            </Col>
+            <Col md={4} xs={12}>
+              <FormField
+                name="phone"
+                type="text"
+                label="Phone #"
+                component={InputField}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={8} xs={12}>
+              <FormField
+                name="address"
+                type="text"
+                label="Address"
+                component={InputField}
+              />
+            </Col>
+            <Col md={4} xs={12}>
+              {renderMediaDropzone && renderMediaDropzone()}
+            </Col>
+          </Row>
         </div>
-        <div className="text-right">
+
+        <div className="mt-4 text-right">
           {onBack && <Button className="mr-3 px-4" onClick={this.handleClickBack}>
             Back
           </Button>}

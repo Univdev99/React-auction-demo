@@ -42,6 +42,13 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.avatar.url if obj.avatar else None
 
 
+class UserAdminSerializer(UserSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = UserSerializer.Meta.fields + ('auctions_total',)
+        read_only_fields = UserSerializer.Meta.read_only_fields + ('auctions_total',)
+
+
 class UserBlockUnblockSerializer(serializers.Serializer):
     block = serializers.BooleanField()
 

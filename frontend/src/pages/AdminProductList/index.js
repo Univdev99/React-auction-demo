@@ -93,7 +93,9 @@ class AdminProductList extends PureComponent {
       <div>
         <div className="mb-3 clearfix">
           <SectionTitle className="pull-left">Products</SectionTitle>
-          <Link className="btn btn-primary pull-right" to="/admin/products/create">Create</Link>
+          <Link className="btn btn-primary pull-left ml-3" to="/admin/products/create">
+            + Add New
+          </Link>
         </div>
 
         {loadingStatus === 1 && <Spinner />}

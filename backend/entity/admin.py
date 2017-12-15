@@ -12,7 +12,9 @@ class CharityAdmin(admin.ModelAdmin):
 
     list_display = (
         'title',
-        'description',
+        'contact',
+        'phone',
+        'address',
         'get_logo_obj',
         'get_logo_url',
     )

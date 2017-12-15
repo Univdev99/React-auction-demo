@@ -45,65 +45,67 @@ class ProductForm extends PureComponent {
           {error || `Failed to ${initialValues.get('title') ? 'update the' : 'create a'} product`}
         </Alert>}
 
-        <Row>
-          <Col md="8" sm="12" className="mb-4">
-            <FormField
-              name="title"
-              type="text"
-              label="Title:"
-              component={InputField}
-            />
-            <FormField
-              name="description"
-              label="Description:"
-              component={RichEditorField}
-            />
-            {renderMediaDropzone && renderMediaDropzone()}
-          </Col>
-          <Col md="4" sm="12" className="mb-4">
-            <FormField
-              name="charge_tax"
-              type="checkbox"
-              label="Charge taxes on this product"
-              component={InputField}
-            />
-            <h6>Shipping</h6>
-            <FormField
-              name="requires_shipping"
-              type="checkbox"
-              label="This product requires shipping"
-              component={InputField}
-            />
-            <InputGroupFormField
-              valueName="weight"
-              choiceName="weight_unit"
-              label="Product weight"
-              choices={PRODUCT_WEIGHT_UNIT_CHOICES}
-            />
-            <FormField
-              name="hs_tariff_code"
-              label="HS tariff code (for international customers):"
-              component={InputField}
-            />
-            <FormField
-              name="donor"
-              label="Donor:"
-              type="select"
-              component={InputField}
-              options={donorList.map(donor => ({
-                key: donor.get('pk'),
-                value: donor.get('title'),
-              }))}
-            />
-            <FormField
-              name="tagnames"
-              label="Tags:"
-              component={TagsInputField}
-            />
-          </Col>
-        </Row>
+        <div className="bordered-box no-bottom-padding">
+          <Row>
+            <Col md="8" sm="12">
+              <FormField
+                name="title"
+                type="text"
+                label="Title:"
+                component={InputField}
+              />
+              <FormField
+                name="description"
+                label="Description:"
+                component={RichEditorField}
+              />
+              {renderMediaDropzone && renderMediaDropzone()}
+            </Col>
+            <Col md="4" sm="12">
+              <FormField
+                name="charge_tax"
+                type="checkbox"
+                label="Charge taxes on this product"
+                component={InputField}
+              />
+              <h6>Shipping</h6>
+              <FormField
+                name="requires_shipping"
+                type="checkbox"
+                label="This product requires shipping"
+                component={InputField}
+              />
+              <InputGroupFormField
+                valueName="weight"
+                choiceName="weight_unit"
+                label="Product weight"
+                choices={PRODUCT_WEIGHT_UNIT_CHOICES}
+              />
+              <FormField
+                name="hs_tariff_code"
+                label="HS tariff code (for international customers):"
+                component={InputField}
+              />
+              <FormField
+                name="donor"
+                label="Donor:"
+                type="select"
+                component={InputField}
+                options={donorList.map(donor => ({
+                  key: donor.get('pk'),
+                  value: donor.get('title'),
+                }))}
+              />
+              <FormField
+                name="tagnames"
+                label="Tags:"
+                component={TagsInputField}
+              />
+            </Col>
+          </Row>
+        </div>
 
-        <div className="text-right">
+        <div className="text-right mt-4">
           {onBack && <Button className="mr-3 px-4" onClick={this.handleClickBack}>
             Back
           </Button>}

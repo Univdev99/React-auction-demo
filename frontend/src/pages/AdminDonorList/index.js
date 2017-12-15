@@ -93,7 +93,9 @@ class AdminDonorList extends PureComponent {
       <div>
         <div className="mb-3 clearfix">
           <SectionTitle className="pull-left">Donors</SectionTitle>
-          <Link className="btn btn-primary pull-right" to="/admin/donors/create">Create</Link>
+          <Link className="btn btn-primary pull-left ml-3" to="/admin/donors/create">
+            + Add New
+          </Link>
         </div>
 
         {loadingStatus === 1 && <Spinner />}
