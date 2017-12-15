@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Alert } from 'reactstrap'
+import { Alert, Button } from 'reactstrap'
 import { compose } from 'redux'
 import { reduxForm } from 'redux-form/immutable'
 import PropTypes from 'prop-types'
@@ -59,44 +59,47 @@ class AuctionForm extends PureComponent {
           {error || 'Failed to create an auction'}
         </Alert>}
 
-        <FormField
-          name="title"
-          type="text"
-          label="Title:"
-          component={InputField}
-        />
-        <FormField
-          name="starting_price"
-          type="number"
-          label="Starting Price:"
-          component={InputField}
-        />
-        <FormField
-          name="product"
-          label="Product:"
-          type="select"
-          component={InputField}
-          options={productList.map(product => ({
-            key: product.get('pk'),
-            value: product.get('title'),
-          }))}
-          onChange={this.handleChangeProduct}
-        />
-        <FormField
-          name="charity"
-          label="Charity (selected from charities of product donor):"
-          type="select"
-          component={InputField}
-          options={charityListOptions}
-        />
-        <center>
-          {onBack && <button className="btn mr-3" onClick={this.handleClickBack}>
+        <div className="bordered-box no-bottom-padding">
+          <FormField
+            name="title"
+            type="text"
+            label="Title:"
+            component={InputField}
+          />
+          <FormField
+            name="starting_price"
+            type="number"
+            label="Starting Price:"
+            component={InputField}
+          />
+          <FormField
+            name="product"
+            label="Product:"
+            type="select"
+            component={InputField}
+            options={productList.map(product => ({
+              key: product.get('pk'),
+              value: product.get('title'),
+            }))}
+            onChange={this.handleChangeProduct}
+          />
+          <FormField
+            name="charity"
+            label="Charity (selected from charities of product donor):"
+            type="select"
+            component={InputField}
+            options={charityListOptions}
+          />
+        </div>
+
+        <div className="mt-4 text-right">
+          {onBack && <Button className="mr-3" onClick={this.handleClickBack}>
             Back
-          </button>}
-          <button type="submit" className="btn btn-primary" disabled={submitting}>
+          </Button>}
+          <Button type="submit" color="primary" disabled={submitting}>
             {initialValues ? 'Update' : 'Create'}
-          </button>
-        </center>
+          </Button>
+        </div>
       </form>
     )
   }

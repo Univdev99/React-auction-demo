@@ -47,57 +47,59 @@ class DonorForm extends PureComponent {
           {error || `Failed to ${initialValues.get('title') ? 'update the' : 'create a'} donor`}
         </Alert>}
 
-        <Row>
-          <Col md="8" sm="12" className="mb-4">
-            <FormField
-              name="title"
-              type="text"
-              label="Title:"
-              component={InputField}
-            />
-            <FormField
-              name="description"
-              label="Description:"
-              component={RichEditorField}
-            />
-            {renderMediaDropzone && renderMediaDropzone()}
-          </Col>
-          <Col md="4" sm="12" className="mb-4">
-            <FormField
-              name="type"
-              label="Type:"
-              type="select"
-              component={InputField}
-              options={DONOR_TYPES}
-            />
-            <FormField
-              name="charity_ids"
-              label="Charities:"
-              component={ListField}
-              options={charityList}
-              getTitle={charity => charity.get('title')}
-            />
-            <FormField
-              name="instagram_handle"
-              label="Instagram:"
-              type="text"
-              component={InputField}
-            />
-            <FormField
-              name="website"
-              label="Website:"
-              type="text"
-              component={TextareaField}
-            />
-            <FormField
-              name="tagnames"
-              label="Tags:"
-              component={TagsInputField}
-            />
-          </Col>
-        </Row>
+        <div className="bordered-box no-bottom-padding">
+          <Row>
+            <Col md="8" sm="12">
+              <FormField
+                name="title"
+                type="text"
+                label="Title:"
+                component={InputField}
+              />
+              <FormField
+                name="description"
+                label="Description:"
+                component={RichEditorField}
+              />
+              {renderMediaDropzone && renderMediaDropzone()}
+            </Col>
+            <Col md="4" sm="12">
+              <FormField
+                name="type"
+                label="Type:"
+                type="select"
+                component={InputField}
+                options={DONOR_TYPES}
+              />
+              <FormField
+                name="charity_ids"
+                label="Charities:"
+                component={ListField}
+                options={charityList}
+                getTitle={charity => charity.get('title')}
+              />
+              <FormField
+                name="instagram_handle"
+                label="Instagram:"
+                type="text"
+                component={InputField}
+              />
+              <FormField
+                name="website"
+                label="Website:"
+                type="text"
+                component={TextareaField}
+              />
+              <FormField
+                name="tagnames"
+                label="Tags:"
+                component={TagsInputField}
+              />
+            </Col>
+          </Row>
+        </div>
 
-        <div className="text-right">
+        <div className="text-right mt-4">
           {onBack && <Button className="mr-3 px-4" onClick={this.handleClickBack}>
             Back
           </Button>}

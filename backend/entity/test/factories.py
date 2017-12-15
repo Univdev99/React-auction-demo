@@ -16,8 +16,12 @@ class CharityFactory(factory.DjangoModelFactory):
     title = factory.Sequence(
         lambda n: 'Charity {}'.format(n)
     )
-    description = factory.Sequence(
-        lambda n: 'Description for charity {}'.format(n)
+    contact = factory.Sequence(
+        lambda n: 'Charity Contact {}'.format(n)
+    )
+    phone = '123-456-7890'
+    address = factory.Sequence(
+        lambda n: 'Address {}'.format(n)
     )
 
     logo = factory.SubFactory(MediumFactory)

@@ -28,3 +28,12 @@ html, body {
 .text-black {
   color: $black;
 }
+
+.bordered-box {
+  border: 3px solid $admin-gray;
+  padding: 25px;
+
+  &.no-bottom-padding {
+    padding-bottom: 0;
+  }
+}

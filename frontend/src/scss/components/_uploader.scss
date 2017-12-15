@@ -9,6 +9,11 @@
     background-size: contain;
     background-position: center;
     cursor: pointer;
+
+    &.bordered {
+      border: 2px dotted #d0dadc;
+      border-radius: 3px;
+    }
   }
 }
 

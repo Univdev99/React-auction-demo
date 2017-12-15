@@ -16,7 +16,9 @@ from storage.models import Medium
 
 class Charity(models.Model):
     title = models.CharField(unique=True, max_length=200)
-    description = models.TextField()
+    contact = models.CharField(max_length=100)
+    phone = models.CharField(max_length=100)
+    address = models.CharField(max_length=300)
 
     logo = models.OneToOneField(Medium, null=True)
 

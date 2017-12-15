@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { compose } from 'redux'
-import { Alert } from 'reactstrap'
+import { Alert, Button, Row, Col } from 'reactstrap'
 import { reduxForm } from 'redux-form/immutable'
 import PropTypes from 'prop-types'
 
@@ -37,37 +37,48 @@ class AuctionStartForm extends PureComponent {
           {error || 'Failed to start the auction'}
         </Alert>}
 
-        <FormField
-          name="open_until"
-          label="Auction Open Until:"
-          component={DateTimeField}
-        />
-        <FormField
-          name="duration_days"
-          type="number"
-          label="Duration (days):"
-          component={InputField}
-        />
-        <FormField
-          name="duration_hours"
-          type="number"
-          label="Duration (hours):"
-          component={InputField}
-        />
-        <FormField
-          name="duration_minutes"
-          type="number"
-          label="Duration (minutes):"
-          component={InputField}
-        />
-        <center>
-          {onBack && <button className="btn mr-3" onClick={this.handleClickBack}>
+        <div className="bordered-box no-bottom-padding">
+          <FormField
+            name="open_until"
+            label="Auction Open Until"
+            component={DateTimeField}
+          />
+          <Row>
+            <Col md={4} xs={12}>
+              <FormField
+                name="duration_days"
+                type="number"
+                label="Duration (days)"
+                component={InputField}
+              />
+            </Col>
+            <Col md={4} xs={12}>
+              <FormField
+                name="duration_hours"
+                type="number"
+                label="Duration (hours)"
+                component={InputField}
+              />
+            </Col>
+            <Col md={4} xs={12}>
+              <FormField
+                name="duration_minutes"
+                type="number"
+                label="Duration (minutes)"
+                component={InputField}
+              />
+            </Col>
+          </Row>
+        </div>
+
+        <div className="mt-4 text-right">
+          {onBack && <Button className="mr-3" onClick={this.handleClickBack}>
             Cancel
-          </button>}
-          <button type="submit" className="btn btn-primary" disabled={submitting}>
+          </Button>}
+          <Button type="submit" color="primary" disabled={submitting}>
             Start Auction
-          </button>
-        </center>
+          </Button>
+        </div>
       </form>
     )
   }

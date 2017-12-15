@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Dropzone from 'react-dropzone'
 import { Progress } from 'reactstrap'
 import FaImage from 'react-icons/lib/fa/image'
+import cx from 'classnames'
 
 class Uploader extends PureComponent {
 
@@ -13,6 +14,7 @@ class Uploader extends PureComponent {
     disabled: PropTypes.bool,
     defaultImageURL: PropTypes.string,
     preview: PropTypes.bool,
+    bordered: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -106,7 +108,7 @@ class Uploader extends PureComponent {
   }
 
   render() {
-    const { disabled, defaultImageURL } = this.props
+    const { disabled, defaultImageURL, bordered } = this.props
     const { uploading, progress, previewImageData } = this.state
 
     const wrapperStyle = {}
@@ -117,7 +119,7 @@ class Uploader extends PureComponent {
     return (
       <div className="uploader">
         <div className="clearfix">
-          <div className="dropzone-wrapper" style={wrapperStyle}>
+          <div className={cx({ 'dropzone-wrapper': true, 'bordered': bordered })} style={wrapperStyle}>
             {!defaultImageURL && <div className="dropzone-icon text-black">
               <span className="dropzone-plus-text">+ </span>
               <FaImage />

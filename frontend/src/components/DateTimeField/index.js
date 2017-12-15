@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
+import { Label } from 'reactstrap'
 import 'react-datepicker/dist/react-datepicker.css'
 import './style.css'
 
@@ -43,7 +44,7 @@ class DateTimeField extends PureComponent {
 
     return (
       <div className="form-group">
-        {label && <label htmlFor={name}>{label}</label>}
+        {label && <Label htmlFor={name}>{label}</Label>}
         <DatePicker
           className="form-control"
           selected={this.getValue()}
