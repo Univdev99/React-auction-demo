@@ -123,7 +123,7 @@ class Home extends PureComponent {
             {postsList.size ? (
               <ListWrapper>
                 {postsList.map(post => (
-                  <PostItem key={post.get('pk')} post={post.toJS()} />
+                  <PostItem key={post.get('pk')} post={post} />
                 ))}
               </ListWrapper>
             ) : (

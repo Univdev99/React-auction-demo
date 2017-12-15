@@ -98,10 +98,15 @@ class PostSerializer(MediumUploadMixin, TagnamesSerializerMixin, serializers.Mod
 
 
 class BlogUserSerializer(serializers.ModelSerializer):
+    avatar = serializers.SerializerMethodField()
+
     class Meta:
         model = get_user_model()
-        fields = ('pk', 'first_name', 'last_name', 'full_name')
-        read_only_fields = ('pk', 'first_name', 'last_name', 'full_name')
+        fields = ('pk', 'first_name', 'last_name', 'full_name', 'avatar')
+        read_only_fields = ('pk', 'first_name', 'last_name', 'full_name', 'avatar')
+
+    def get_avatar(self, obj):
+        return obj.avatar.url if obj.avatar else None
 
 
 class PostDetailSerializer(serializers.ModelSerializer):

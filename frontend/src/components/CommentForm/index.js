@@ -1,13 +1,19 @@
 import React, { PureComponent } from 'react'
+import cx from 'classnames'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import PropTypes from 'prop-types'
-import { Button, Col, Row } from 'reactstrap'
-import { reduxForm } from 'redux-form/immutable'
+import { Button } from 'reactstrap'
+import { Field, reduxForm } from 'redux-form/immutable'
 
-import FormField from 'components/FormField'
+import UserAvatar from 'components/UserAvatar'
 import TextareaField from 'components/TextareaField'
 
-const isRequired = value => (value ? undefined : 'This Field is Required')
+
+const COMPONENT_CLASS = 'comment-item'
+const bem = (suffix) => `${COMPONENT_CLASS}__${suffix}`
+const bemM = (suffix) => `${COMPONENT_CLASS}--${suffix}`
+
+const isRequired = value => (value ? undefined : 'Your comment is required')
 
 class CommentForm extends PureComponent {
   static propTypes = {
@@ -20,23 +26,23 @@ class CommentForm extends PureComponent {
     const { handleSubmit, submitting, user } = this.props
 
     return (
-      <form onSubmit={handleSubmit}>
-        <FormField
-          name="content"
-          placeholder="Comment"
-          type="textarea"
-          validate={[isRequired]}
-          component={TextareaField}
-        />
-        <Row>
-          <Col sm={6}>
-            {user && `Signed in as ${user.get('first_name')} ${user.get('last_name')}`}
-          </Col>
-          <Col sm={6} className="text-right">
-            <Button type="submit" color="primary" disabled={submitting}>Submit</Button>
-          </Col>
-        </Row>
-      </form>
+      <div className={cx(COMPONENT_CLASS, bemM('border'))}>
+        <UserAvatar user={user} type="comment" />
+        <div className={bem('content')}>
+          <form onSubmit={handleSubmit}>
+            <Field
+              name="content"
+              label="Your Comment:"
+              type="textarea"
+              validate={[isRequired]}
+              component={TextareaField}
+            />
+            <div className="text-right">
+              <Button type="submit" color="primary" disabled={submitting}>Submit Comment</Button>
+            </div>
+          </form>
+        </div>
+      </div>
     )
   }
 }

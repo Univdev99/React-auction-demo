@@ -1,0 +1,27 @@
+$user-avatar-radius: 4px;
+$user-avatar-bg-color: #D1D1D1;
+
+$user-avatar-size-comment: 40px;
+$user-avatar-size-comment-md-up: 60px;
+
+$user-avatar-size: 80px;
+
+.user-avatar {
+  border-radius: $user-avatar-radius;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  width: $user-avatar-size;
+  height: $user-avatar-size;
+
+  &--comment {
+    width: $user-avatar-size-comment;
+    height: $user-avatar-size-comment;
+
+    @include media-breakpoint-up('md') {
+      width: $user-avatar-size-comment-md-up;
+      height: $user-avatar-size-comment-md-up;
+    }
+  }
+}

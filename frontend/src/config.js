@@ -13,6 +13,7 @@ export const MEDIUM_PAGE_SIZE = 12
 export const ADMIN_TABLE_PAGE_SIZE = 10
 export const AUCTION_BID_PAGE_SIZE = 10
 export const ACCOUNT_BIDS_PAGE_SIZE = 4
+export const BLOG_POSTS_PAGE_SIZE = 10
 
 /* API content type constants */
 

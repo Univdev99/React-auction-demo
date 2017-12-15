@@ -1,0 +1,20 @@
+$comment-item-spacing: 1.875rem;
+
+.comment-item {
+  display: flex;
+  margin-bottom: $comment-item-spacing;
+
+  &__content {
+    flex: 1 0;
+    margin-left: 15px;
+
+    @include media-breakpoint-up('md') {
+      margin-left: 20px;
+    }
+  }
+
+  &--border {
+    border-top: 2px solid $border-color;
+    padding-top: $comment-item-spacing;
+  }
+}

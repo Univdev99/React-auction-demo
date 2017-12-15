@@ -1,7 +1,14 @@
 import Immutable from 'immutable'
 import { createAction, handleActions } from 'redux-actions'
 
-import { requestSuccess, requestFail } from 'store/api/request'
+import {
+  API_PENDING,
+  API_SUCCESS,
+  API_FAIL,
+  requestPending,
+  requestSuccess,
+  requestFail
+} from 'store/api/request'
 import {
   BLOG_GET_POST_FRONT_LIST,
   BLOG_GET_POST_LIST_PAGE,
@@ -15,13 +22,18 @@ import {
 
 const initialState = Immutable.fromJS({
   postListPage: [],
-  postListPageLoaded: false,
+  postListPageStatus: 'INIT',
   postCount: 0,
   postPageNumber: 1,
+
   postFrontList: [],
-  postFrontListLoaded: false,
+  postFrontListStatus: 'INIT',
+
   postDetail: null,
-  commentList: []
+  postDetailStatus: 'INIT',
+
+  commentList: [],
+  commentListStatus: 'INIT'
 })
 
 /* Action creators */
@@ -38,48 +50,72 @@ export default handleActions({
 
   /* Get post list actions */
 
+  [BLOG_GET_POST_LIST_PAGE]: (state, { payload }) => state.withMutations(map => {
+    payload && payload.params && map.set('postPageNumber', payload.params.page || 1)
+  }),
+
+  [requestPending(BLOG_GET_POST_LIST_PAGE)]: (state, { payload }) => state.withMutations(map => {
+    map.set('postListPageStatus', API_PENDING)
+  }),
+
   [requestSuccess(BLOG_GET_POST_LIST_PAGE)]: (state, { payload }) => state.withMutations(map => {
     map.set('postListPage', Immutable.fromJS(payload.results))
     map.set('postCount', payload.count)
-    map.set('postListPageLoaded', true)
+    map.set('postListPageStatus', API_SUCCESS)
   }),
 
   [requestFail(BLOG_GET_POST_LIST_PAGE)]: (state, { payload }) => state.withMutations(map => {
     map.set('postListPage', Immutable.List())
     map.set('postCount', 0)
-    map.set('postListPageLoaded', false)
+    map.set('postListPageStatus', API_FAIL)
   }),
 
   /* Get post front list actions */
 
+  [requestPending(BLOG_GET_POST_FRONT_LIST)]: (state, { payload }) => state.withMutations(map => {
+    map.set('postFrontListStatus', API_PENDING)
+  }),
+
   [requestSuccess(BLOG_GET_POST_FRONT_LIST)]: (state, { payload }) => state.withMutations(map => {
     map.set('postFrontList', Immutable.fromJS(payload))
-    map.set('postFrontListLoaded', true)
+    map.set('postFrontListStatus', API_SUCCESS)
   }),
 
   [requestFail(BLOG_GET_POST_FRONT_LIST)]: (state, { payload }) => state.withMutations(map => {
     map.set('postFrontList', Immutable.List())
-    map.set('postFrontListLoaded', false)
+    map.set('postFrontListStatus', API_FAIL)
   }),
 
   /* Get post detail actions */
 
+  [requestPending(BLOG_GET_POST_DETAIL)]: (state, { payload }) => state.withMutations(map => {
+    map.set('postDetailStatus', API_PENDING)
+  }),
+
   [requestSuccess(BLOG_GET_POST_DETAIL)]: (state, { payload }) => state.withMutations(map => {
     map.set('postDetail', Immutable.fromJS(payload))
+    map.set('postDetailStatus', API_SUCCESS)
   }),
 
   [requestFail(BLOG_GET_POST_DETAIL)]: (state, { payload }) => state.withMutations(map => {
     map.set('postDetail', null)
+    map.set('postDetailStatus', API_FAIL)
   }),
 
   /* Get post comments actions */
 
+  [requestPending(BLOG_GET_POST_COMMENT_LIST)]: (state, { payload }) => state.withMutations(map => {
+    map.set('commentListStatus', API_PENDING)
+  }),
+
   [requestSuccess(BLOG_GET_POST_COMMENT_LIST)]: (state, { payload }) => state.withMutations(map => {
     map.set('commentList', Immutable.fromJS(payload))
+    map.set('commentListStatus', API_SUCCESS)
   }),
 
   [requestFail(BLOG_GET_POST_COMMENT_LIST)]: (state, { payload }) => state.withMutations(map => {
     map.set('commentList', Immutable.List())
+    map.set('commentListStatus', API_FAIL)
   }),
 
   /* Create post comment action */
