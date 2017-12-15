@@ -7,7 +7,6 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import FormField from 'components/FormField'
 import InputField from 'components/InputField'
-import RichEditorField from 'components/RichEditorField'
 
 
 class CharityForm extends PureComponent {
