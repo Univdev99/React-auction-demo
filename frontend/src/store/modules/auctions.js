@@ -78,7 +78,7 @@ export default handleActions({
     map.set('auctionTrendingListStatus', API_SUCCESS)
   }),
 
-  [requestFail(AUCTION_GET_LIST)]: (state, { payload }) => state.withMutations(map => {
+  [requestFail(AUCTION_GET_TRENDING_LIST)]: (state, { payload }) => state.withMutations(map => {
     map.set('auctionTrendingList', Immutable.List())
     map.set('auctionTrendingListStatus', API_FAIL)
   }),
@@ -94,7 +94,7 @@ export default handleActions({
     map.set('auctionDetailStatus', API_SUCCESS)
   }),
 
-  [requestFail(AUCTION_GET_LIST)]: (state, { payload }) => state.withMutations(map => {
+  [requestFail(AUCTION_GET_DETAIL)]: (state, { payload }) => state.withMutations(map => {
     map.set('auctionDetail', null)
     map.set('auctionDetailStatus', API_FAIL)
   }),

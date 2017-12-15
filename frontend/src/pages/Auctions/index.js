@@ -14,7 +14,8 @@ import ListWrapper from 'components/ListWrapper'
 import MoreButton from 'components/MoreButton'
 import SearchBar from 'components/SearchBar'
 import Section from 'components/Section'
-import { API_PENDING } from 'store/api/request'
+import Spinner from 'components/Spinner'
+import { API_PENDING, API_SUCCESS, API_FAIL } from 'store/api/request'
 import { auctionsSelector } from 'store/selectors'
 import { getAuctionList } from 'store/modules/auctions'
 import { jsonToQueryString, queryStringToJson } from 'utils/pureFunctions'
@@ -88,9 +89,12 @@ class Auctions extends PureComponent {
   render() {
     const { auctions, location } = this.props
     const auctionList = auctions.get('auctionList')
-    const auctionListNextPage = auctions.get('auctionListNextPage')
     const auctionListStatus = auctions.get('auctionListStatus')
-    const isLoadingAuctions = auctionListStatus === API_PENDING
+    const hasItems = !!auctions.get('auctionListCount')
+    const failed = auctionListStatus === API_FAIL
+    const hasMore = !!auctions.get('auctionListNextPage') && !failed
+    const isLoading = auctionListStatus === API_PENDING
+    const noItems = auctionListStatus === API_SUCCESS && !hasItems
     const searchParams = getSearchParams(location.search)
 
     return (
@@ -100,13 +104,14 @@ class Auctions extends PureComponent {
           <SearchBar initialValues={searchParams} onSubmit={this.handleSearch} />
         </Section>
         <Section title="Auctions">
-          {auctionList.size ? (
+          {hasItems && (
             <ListWrapper>
               {auctionList.map(auction => (
                 <AuctionCard key={auction.get('pk')} auction={auction} />
               ))}
             </ListWrapper>
-          ) : (
+          )}
+          {noItems && (
             <EmptyItems
               description={location.search
                 ? "Sorry, No auctions found that matches your search criteria."
@@ -115,10 +120,14 @@ class Auctions extends PureComponent {
               actionText="Get updates on new auctions."
             />
           )}
-          {auctionListNextPage && <MoreButton
+          {isLoading && <Spinner />}
+          {failed &&
+            <EmptyItems description="Failed to fetch auctions." />
+          }
+          {hasMore && <MoreButton
             onClick={this.handleLoadMoreAuctions}
             text="Show More"
-            disabled={isLoadingAuctions}
+            disabled={isLoading}
           />}
         </Section>
       </FrontContainerLayout>
