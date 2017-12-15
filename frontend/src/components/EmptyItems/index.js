@@ -22,7 +22,7 @@ class EmptyItems extends PureComponent {
       <h4>
         {description}
         {' '}
-        <a href="/" onClick={this.handleClick}>{actionText}</a>
+        {actionText && <a href="/" onClick={this.handleClick}>{actionText}</a>}
       </h4>
     )
   }
