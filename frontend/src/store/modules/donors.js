@@ -66,7 +66,7 @@ export default handleActions({
 
   /* Get donor front list actions */
 
-  [requestPending(DONOR_GET_LIST_PAGE)]: (state, { payload }) => state.withMutations(map => {
+  [requestPending(DONOR_GET_FRONT_LIST)]: (state, { payload }) => state.withMutations(map => {
     map.set('donorFrontListStatus', API_PENDING)
   }),
 
