@@ -15,11 +15,11 @@ import ListWrapper from 'components/ListWrapper'
 import PostItem from 'components/PostItem'
 import Section from 'components/Section'
 import SectionTitle from 'components/SectionTitle'
+import SocialShare from 'components/SocialShare'
 import Spinner from 'components/Spinner'
 import { API_PENDING, API_SUCCESS, API_FAIL } from 'store/api/request'
 import { authSelector, blogSelector } from 'store/selectors'
 import { createPostComment, getPostCommentList, getPostDetail } from 'store/modules/blog'
-
 
 class PostDetail extends PureComponent {
 
@@ -75,12 +75,13 @@ class PostDetail extends PureComponent {
     const similarPosts = postDetail.get('similar_posts')
     const post = postDetail.toJS()
     const user = auth.get('currentUser')
-
+    const shareUrl = window.location.href
     return (
       <div className="page-content">
         <Section title={post.title}>
           <p><img src={post.featured_image} alt={post.title} className="w-100"/></p>
           <div className="my-5" dangerouslySetInnerHTML={{ __html: post.content }} />
+          <SocialShare title={post.title} url={shareUrl} />
         </Section>
 
         <Section title={`Comments (${comments ? comments.size : 0})`}>
