@@ -102,7 +102,7 @@ class SaleTable extends PureComponent {
                       <td key={column.get('field')}>{this.cellValue(sale, column.get('field'))}</td>
                     ))}
                     <td style={{ whiteSpace: 'nowrap' }}>
-                      <Button id={`sale${id}`} size="sm" color="link" className="py-0"
+                      <Button id={`sale${id}`} size="sm" color="link" className="py-0 text-black"
                         onClick={this.handleToggleNotePopover.bind(this, sale.get('note'))}
                       >
                         <i className="fa fa-pencil" />
@@ -131,8 +131,8 @@ class SaleTable extends PureComponent {
                         </PopoverBody>
                       </Popover>
                       <UncontrolledDropdown tag="span">
-                        <DropdownToggle size="sm" color="link" className="py-0">
-                          <i className="fa fa-chevron-down" />
+                        <DropdownToggle size="sm" color="link" className="py-0 text-black">
+                          <i className="fa fa-ellipsis-h" />
                         </DropdownToggle>
                         <DropdownMenu right>
                           <DropdownItem

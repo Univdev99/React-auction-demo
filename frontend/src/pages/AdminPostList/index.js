@@ -120,7 +120,9 @@ class AdminPostList extends PureComponent {
       <div>
         <div className="mb-4 clearfix">
           <SectionTitle className="pull-left">Blog Posts</SectionTitle>
-          <Link className="btn btn-primary pull-right" to="/admin/posts/create">Create</Link>
+          <Link className="btn btn-primary pull-left ml-3" to="/admin/posts/create">
+            + Add New
+          </Link>
         </div>
 
         <div>

@@ -8,6 +8,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 
+from auction.models import Bid
 from common.constants import COUNTRY_CHOICES
 from storage.models import Medium
 
@@ -88,6 +89,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def full_name(self):
         return self.get_full_name()
+
+    @property
+    def auctions_total(self):
+        return Bid.objects.filter(user=self).count()
 
     def __str__(self):
         return self.email

@@ -78,8 +78,8 @@ class PostTable extends PureComponent {
                     ))}
                     <td style={{ whiteSpace: 'nowrap' }}>
                       <UncontrolledDropdown tag="span">
-                        <DropdownToggle size="sm" color="link" className="py-0">
-                          <i className="fa fa-chevron-down" />
+                        <DropdownToggle size="sm" color="link" className="py-0 text-black">
+                          <i className="fa fa-ellipsis-h" />
                         </DropdownToggle>
                         <DropdownMenu right>
                           <DropdownItem
