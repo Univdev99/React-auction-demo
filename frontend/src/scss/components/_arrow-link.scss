@@ -4,9 +4,17 @@ $arrow-link-color: #666666;
   text-transform: uppercase;
   color: $arrow-link-color;
 
+  svg {
+    transition: transform .05s ease;
+  }
+
   &:hover, &:focus, &:active {
     color: $primary;
     text-decoration: none;
     outline: none;
+
+    svg {
+      transform: translateX(5px);
+    }
   }
 }
