@@ -106,7 +106,7 @@ class MediaSlider extends PureComponent {
       ]
     }
 
-    return media && (
+    return media && media.size > 0 ? (
       <div className={COMPONENT_CLASS}>
         <ReactSlick ref={slider => this.mainSlider = slider} {...bigSliderSettings}>
           {media.map((medium, index) => (
@@ -124,6 +124,8 @@ class MediaSlider extends PureComponent {
           ))}
         </ReactSlick>}
       </div>
+    ) : (
+      <h4>No media</h4>
     )
   }
 }
