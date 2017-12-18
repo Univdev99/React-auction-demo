@@ -66,6 +66,8 @@ class MediumUploadMixin(MediumCreateMixin, MediumDeleteMixin):
         """
         mimetypes_for_check = {
             'audio/mp3': 'mp3',
+            'image/jpeg': 'jpg',
+            'image/png': 'png',
         }
         if mimetype in mimetypes_for_check:
             return mimetypes_for_check[mimetype]
