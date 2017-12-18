@@ -1,0 +1,82 @@
+$instagram-feeds-item-spacing: 10px;
+$instagram-feeds-item-spacing-lg-up: 5px;
+$instagram-feeds-content-padding: 0 0 70px 0;
+$instagram-feeds-content-padding-lg-up: 20px 17.75% 20px 0;
+$instagram-feeds-link-width: 24.21%;
+
+.instagram-feeds {
+  position: relative;
+
+  &__content {
+    display: flex;
+    flex-wrap: wrap;
+    padding: $instagram-feeds-content-padding;
+    margin: 0 (-$instagram-feeds-item-spacing / 2);
+    @include media-breakpoint-up('lg') {
+      margin: 0;
+      padding: $instagram-feeds-content-padding-lg-up;
+    }
+  }
+
+  &__item {
+    position: relative;
+    padding: $instagram-feeds-item-spacing / 2;
+    width: 50%;
+    @include media-breakpoint-up('lg') {
+      padding: 0 $instagram-feeds-item-spacing-lg-up 0 0;
+      width: 25%
+    }
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__link-wrap {
+    background-color: $primary;
+    position: absolute;
+
+    @include media-breakpoint-down('md') {
+      right: 20px;
+      left: 20px;
+      bottom: 0;
+      padding-top: calc(100% - 40px);
+      height: 0;
+    }
+
+    @include media-breakpoint-up('lg') {
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: $instagram-feeds-link-width;
+    }
+  }
+
+  &__link-bg {
+    width: 100%;
+    transform: translate(-20%, 20%);
+    pointer-events: none;
+  }
+
+  &__link {
+    color: $white;
+    z-index: 1;
+    white-space: no-wrap;
+
+    @include media-breakpoint-down('md') {
+      @include hcenter;
+      bottom: 24px;
+    }
+
+    @include media-breakpoint-up('lg') {
+      @include vcenter;
+      left: 10%;
+    }
+
+    &:hover, &:focus, &:active {
+      color: $white;
+    }
+  }
+}

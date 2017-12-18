@@ -13,6 +13,7 @@ import DonateBar from 'components/DonateBar'
 import DonorCard from 'components/DonorCard'
 import EmptyItems from 'components/EmptyItems'
 import HomeBanner from 'components/HomeBanner'
+import InstagramFeeds from 'components/InstagramFeeds'
 import ListWrapper from 'components/ListWrapper'
 import PostItem from 'components/PostItem'
 import Section from 'components/Section'
@@ -179,6 +180,11 @@ class Home extends PureComponent {
 
         <AppContainerLayout>
           {this.renderDonors()}
+
+          <Section>
+            <InstagramFeeds />
+          </Section>
+
           {this.renderBlog()}
         </AppContainerLayout>
       </AppLayout1>
