@@ -5,7 +5,7 @@
 
   &__image {
     padding-top: 100%;
-    background: center/contain no-repeat;
+    background: center/cover no-repeat;
     @include media-breakpoint-up('md') {
       width: 220px;
       flex-shrink: 0;
