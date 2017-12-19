@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import PropTypes from 'prop-types'
+import PropTypes, { instanceOf } from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { Cookies, withCookies } from 'react-cookie';
 import { createStructuredSelector } from 'reselect'
 import { show } from 'redux-modal'
 
@@ -31,6 +32,7 @@ class Home extends PureComponent {
 
   static propTypes = {
     auctions:  ImmutablePropTypes.map.isRequired,
+    cookies: instanceOf(Cookies).isRequired,
     donors: ImmutablePropTypes.map.isRequired,
     blog: ImmutablePropTypes.map.isRequired,
     getTrendingAuctionList: PropTypes.func.isRequired,
@@ -39,11 +41,14 @@ class Home extends PureComponent {
   }
 
   componentDidMount() {
-    const { show } = this.props
-    this.smTimerId = setTimeout(() => {
-      this.smTimerId = null
-      show('subscribeModal')
-    }, SUBSCRIBE_MODAL_POPUP_DELAY)
+    const { cookies, show } = this.props
+    const hideSubscribeModal = cookies.get('hideSubscribeModal')
+    if (!hideSubscribeModal) {
+      this.smTimerId = setTimeout(() => {
+        this.smTimerId = null
+        show('subscribeModal')
+      }, SUBSCRIBE_MODAL_POPUP_DELAY)
+    }
   }
 
   componentWillMount() {
@@ -206,5 +211,6 @@ const actions = {
 }
 
 export default compose(
+  withCookies,
   connect(selector, actions)
 )(Home)
