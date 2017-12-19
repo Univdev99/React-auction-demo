@@ -24,9 +24,39 @@ class SignIn extends PureComponent {
     signIn: PropTypes.func.isRequired
   }
 
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      signUpStatus: 0,
+    }
+  }
+
   handleSubmit = (data) => {
     const { signIn } = this.props
     return formSubmit(signIn, { data })
+  }
+
+  handleSignUpWithFacebook = (event) => {
+    const { fbReady, signUpWithFacebook } = this.props
+    event.preventDefault()
+
+    if (!fbReady) {
+      return
+    }
+    
+    this.setState({
+      signUpStatus: 1
+    })
+
+    signUpWithFacebook({
+      success: () => this.setState({
+        signUpStatus: 10
+      }),
+      fail: () => this.setState({
+        signUpStatus: -1
+      })
+    })
   }
 
   render() {
