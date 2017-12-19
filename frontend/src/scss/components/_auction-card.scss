@@ -1,19 +1,35 @@
 .auction-card {
+  display: flex;
   &__image {
     padding-top: 100%;
     background: center/cover no-repeat;
   }
 
   &__title {
+    margin-bottom: 1rem;
+
     @include media-breakpoint-up('md') {
       overflow: hidden;
       text-overflow: ellipsis;
-      height: $headings-line-height * $h4-font-size * 2;
     }
   }
 
-  &__text {
-    margin-bottom: 1rem;
+  &__subtitle {
+    margin-bottom: 0.5rem;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__desc {
+    flex: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  &__meta {
+    margin-bottom: 0;
   }
 
   &__price {
@@ -22,4 +38,8 @@
     margin-right: .5rem;
     color: $primary;
   }
+}
+
+.align-self-stretch .auction-card {
+  height: 100%;
 }
