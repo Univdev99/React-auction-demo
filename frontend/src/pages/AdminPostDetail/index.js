@@ -117,7 +117,6 @@ class AdminPostDetail extends PureComponent {
           {loadingStatus === 10 && postDetail &&
             <PostForm
               initialValues={_postDetail}
-              renderMediaDropzone={this.renderMediaDropzone}
               onSubmit={this.handleSubmit}
               onBack={this.handleBack}
               featuredImage={featuredImage}

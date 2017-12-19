@@ -185,7 +185,7 @@ class AdminProductDetail extends PureComponent {
               initialValues={_productDetail}
               donorList={donorList}
               disabled={updatingStatus === 1}
-              renderMediaDropzone={this.renderMediaDropzone}
+              mediaDropzone={this.renderMediaDropzone()}
               onSubmit={this.handleSubmit}
               onBack={this.handleBack}
             />

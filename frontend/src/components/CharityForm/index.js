@@ -16,7 +16,7 @@ class CharityForm extends PureComponent {
     handleSubmit: PropTypes.func.isRequired,
     initialValues: ImmutablePropTypes.map,
     onBack: PropTypes.func,
-    renderMediaDropzone: PropTypes.func,
+    mediaDropzone: PropTypes.any,
     submitFailed: PropTypes.bool,
     submitting: PropTypes.bool,
   }
@@ -31,7 +31,7 @@ class CharityForm extends PureComponent {
   }
 
   render() {
-    const { error, handleSubmit, initialValues, onBack, renderMediaDropzone, submitFailed, submitting } = this.props
+    const { error, handleSubmit, initialValues, onBack, mediaDropzone, submitFailed, submitting } = this.props
 
     return (
       <form onSubmit={handleSubmit}>
@@ -76,7 +76,7 @@ class CharityForm extends PureComponent {
               />
             </Col>
             <Col md={4} xs={12}>
-              {renderMediaDropzone && renderMediaDropzone()}
+              {mediaDropzone}
             </Col>
           </Row>
         </div>
