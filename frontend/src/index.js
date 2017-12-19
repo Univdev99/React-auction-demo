@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { CookiesProvider } from 'react-cookie';
 import { IntlProvider } from 'react-intl'
 import { Provider } from 'react-redux'
 import { StripeProvider } from 'react-stripe-elements'
@@ -31,7 +32,9 @@ ReactDOM.render(
   <Provider store={store}>
     <IntlProvider {...INTL}>
       <StripeProvider apiKey={STRIPE_PUBLIC_KEY}>
-        <Routes history={history} />
+        <CookiesProvider>
+          <Routes history={history} />
+        </CookiesProvider>
       </StripeProvider>
     </IntlProvider>
   </Provider>,

@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react'
-import PropTypes from 'prop-types'
+import PropTypes, { instanceOf } from 'prop-types'
 import { Alert, Modal, ModalHeader, ModalBody } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { connectModal, show as showModal } from 'redux-modal'
+import { Cookies, withCookies } from 'react-cookie';
 import { modalSelector } from 'store/selectors'
 import { reduxForm } from 'redux-form/immutable'
 
@@ -17,15 +18,24 @@ const sanitizeError = (error) =>
 
 class SubscribeModal extends PureComponent {
   static propTypes = {
+    cookies: instanceOf(Cookies).isRequired,
     handleHide: PropTypes.func.isRequired,
     show: PropTypes.bool.isRequired
   }
 
+  handleHide = () => {
+    const { cookies, handleHide } = this.props
+    cookies.set('hideSubscribeModal', 'true', {
+      maxAge: 30 * 24 * 3600
+    })
+    handleHide()
+  }
+
   doSubmit = (data) => {
-    const { handleHide, showModal } = this.props
+    const { showModal } = this.props
     return mailchimpSubscribe(MAILCHIMP_TYPE_NEWSLETTER, data.get('email'))
       .then(() => {
-        handleHide()
+        this.handleHide()
         showModal('messageModal', {
           title: 'Thank you!',
           subtitle: 'Successfully subscribed to our newsletter'
@@ -34,12 +44,12 @@ class SubscribeModal extends PureComponent {
   }
 
   render() {
-    const { handleHide, show, subscribeForm } = this.props
+    const { show, subscribeForm } = this.props
     const { error, handleSubmit } = subscribeForm
 
     return (
-      <Modal isOpen={show} toggle={handleHide} size="sm">
-        <ModalHeader toggle={handleHide}>Welcome!</ModalHeader>
+      <Modal isOpen={show} toggle={this.handleHide} size="sm">
+        <ModalHeader toggle={this.handleHide}>Welcome!</ModalHeader>
         <ModalBody> 
           <h4 className="mb-30">Join our mailing list</h4>
           <p className="mb-30">
@@ -64,6 +74,7 @@ const actions = {
 }
 
 export default compose(
+  withCookies,
   connect(null, actions),
   reduxForm({
     form: 'subscribeModalForm',
