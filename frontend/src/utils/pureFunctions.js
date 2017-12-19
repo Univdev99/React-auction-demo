@@ -31,3 +31,15 @@ export const keyIn = (...keys) => (v, k) =>
   Immutable.Set(keys).has(k)
 
 export const pick = (map, keys) => map.filter(keyIn(...keys))
+
+export const stripTags = (str) => {
+  const div = document.createElement('div')
+  div.innerHTML = str
+  return div.textContent || div.innerText || ''
+}
+
+export const truncateWords = (str, words = 10) => {
+  const splitted = str.split(' ')
+  const trail = splitted.length > words ? ' ...' : ''
+  return splitted.splice(0, words).join(' ') + trail
+}

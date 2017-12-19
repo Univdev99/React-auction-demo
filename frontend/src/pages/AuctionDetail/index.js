@@ -103,6 +103,7 @@ class AuctionDetail extends PureComponent {
               <div className="pl-md-3">
                 <SectionTitle>{auctionDetail.get('title')}</SectionTitle>
                 <div className="pb-3 mt-4">
+                  <h4>By: {donor.get('title')}</h4>
                   <CharitiesBlock charities={donor.get('charities')} />
                   <div className="h4 mb-3">
                     Time Left: <TimeLeft until={auctionDetail.get('open_until')} />
@@ -110,8 +111,8 @@ class AuctionDetail extends PureComponent {
                   <div className="h4 mb-4 pb-2 text-primary">
                     Current Bid: <FormattedNumber format="currency" value={auctionDetail.get('current_price')} />
                   </div>
-                  <Button color="primary" onClick={this.handleBid}>
-                    Place a bid
+                  <Button block size="lg" color="primary" onClick={this.handleBid}>
+                    Bid Now
                   </Button>
                 </div>
               </div>
