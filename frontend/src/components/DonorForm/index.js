@@ -23,7 +23,7 @@ class DonorForm extends PureComponent {
     handleSubmit: PropTypes.func.isRequired,
     initialValues: ImmutablePropTypes.map,
     onBack: PropTypes.func,
-    renderMediaDropzone: PropTypes.func,
+    mediaDropzone: PropTypes.any,
     submitFailed: PropTypes.bool,
     submitting: PropTypes.bool,
   }
@@ -38,7 +38,7 @@ class DonorForm extends PureComponent {
   }
 
   render() {
-    const { error, charityList, handleSubmit, initialValues, onBack, renderMediaDropzone,
+    const { error, charityList, handleSubmit, initialValues, onBack, mediaDropzone,
       submitFailed, submitting } = this.props
 
     return (
@@ -61,7 +61,8 @@ class DonorForm extends PureComponent {
                 label="Description:"
                 component={RichEditorField}
               />
-              {renderMediaDropzone && renderMediaDropzone()}
+
+              {mediaDropzone}
             </Col>
             <Col md="4" sm="12">
               <FormField

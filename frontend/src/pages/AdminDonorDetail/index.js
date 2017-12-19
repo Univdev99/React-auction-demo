@@ -103,6 +103,10 @@ class AdminDonorDetail extends PureComponent {
   renderMediaDropzone = () => {
     const donorMedia = this.getMedia()
 
+    if (!donorMedia) {
+      return Immutable.List()
+    }
+
     return (
       <div className="form-group">
         <h4 className="mb-3">Add images, video or audio:</h4>
@@ -201,7 +205,7 @@ class AdminDonorDetail extends PureComponent {
             <DonorForm
               initialValues={_donorDetail}
               charityList={charityList}
-              renderMediaDropzone={this.renderMediaDropzone}
+              mediaDropzone={this.renderMediaDropzone()}
               onSubmit={this.handleSubmit}
               onBack={this.handleBack}
             />

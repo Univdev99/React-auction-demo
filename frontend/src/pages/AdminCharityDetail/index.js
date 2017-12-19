@@ -61,6 +61,7 @@ class AdminCharityDetail extends PureComponent {
         <label className="form-control-label">Charity Logo</label>
         <Uploader
           bordered
+          preview
           uploadAction={this.props.uploadCharityLogo}
           uploadActionParams={{ id: this.props.match.params.id }}
           defaultImageURL={charityDetail.get('logo')}
@@ -121,7 +122,7 @@ class AdminCharityDetail extends PureComponent {
           {loadingStatus === 10 && charityDetail &&
             <CharityForm
               initialValues={_charityDetail}
-              renderMediaDropzone={this.renderMediaDropzone}
+              mediaDropzone={this.renderMediaDropzone()}
               onSubmit={this.handleSubmit}
               onBack={this.handleBack}
             />

@@ -21,7 +21,7 @@ class ProductForm extends PureComponent {
     handleSubmit: PropTypes.func.isRequired,
     initialValues: ImmutablePropTypes.map,
     onBack: PropTypes.func,
-    renderMediaDropzone: PropTypes.func,
+    mediaDropzone: PropTypes.any,
     submitFailed: PropTypes.bool,
     submitting: PropTypes.bool,
   }
@@ -36,7 +36,7 @@ class ProductForm extends PureComponent {
   }
 
   render() {
-    const { donorList, error, handleSubmit, initialValues, onBack, renderMediaDropzone,
+    const { donorList, error, handleSubmit, initialValues, onBack, mediaDropzone,
       submitFailed, submitting } = this.props
 
     return (
@@ -59,7 +59,8 @@ class ProductForm extends PureComponent {
                 label="Description:"
                 component={RichEditorField}
               />
-              {renderMediaDropzone && renderMediaDropzone()}
+              
+              {mediaDropzone}
             </Col>
             <Col md="4" sm="12">
               <FormField

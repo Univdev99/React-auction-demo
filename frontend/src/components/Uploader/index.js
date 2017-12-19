@@ -81,6 +81,7 @@ class Uploader extends PureComponent {
 
   uploaderStyle = () => {
     const { defaultImageURL } = this.props
+    const { previewImageData } = this.state
     let style = {
       width: '100%',
       height: 80,
@@ -89,13 +90,13 @@ class Uploader extends PureComponent {
       // borderStyle: 'dotted',
       // borderRadius: 3,
     }
-    if (defaultImageURL) {
+    if (defaultImageURL || previewImageData) {
       style = {
         ...style,
         backgroundSize: 'contain',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        backgroundImage: `url(${defaultImageURL})`,
+        backgroundImage: `url(${previewImageData || defaultImageURL})`,
       }
     }
     return style
@@ -109,17 +110,12 @@ class Uploader extends PureComponent {
 
   render() {
     const { disabled, defaultImageURL, bordered } = this.props
-    const { uploading, progress, previewImageData } = this.state
-
-    const wrapperStyle = {}
-    if (previewImageData) {
-      wrapperStyle.backgroundImage = `url(${previewImageData})`
-    }
+    const { uploading, progress } = this.state
 
     return (
       <div className="uploader">
         <div className="clearfix">
-          <div className={cx({ 'dropzone-wrapper': true, 'bordered': bordered })} style={wrapperStyle}>
+          <div className={cx({ 'dropzone-wrapper': true, 'bordered': bordered })} style={{ padding: 10 }}>
             {!defaultImageURL && <div className="dropzone-icon text-black">
               <span className="dropzone-plus-text">+ </span>
               <FaImage />
