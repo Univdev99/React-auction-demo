@@ -1,5 +1,5 @@
 export const WS_BACKEND_URL = process.env.NODE_ENV === 'production' ?
-  `ws://${window.location.host}` : 'ws://localhost:8000'
+  `ws://${window.location.host}/ws` : 'ws://localhost:8000/ws'
 
 export const BASE_API_URL = process.env.NODE_ENV === 'production' ?
   '/api/v1/' : 'http://localhost:8000/api/v1/'

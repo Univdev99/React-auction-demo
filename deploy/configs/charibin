@@ -10,7 +10,7 @@ server {
         root /var/www/charibin-tmp/frontend/build;
     }
 
-    location ~ ^/(api|django-admin|payments)/ {
+    location ~ ^/(api|django-admin|payments|ws)/ {
         include proxy_params;
         proxy_pass http://unix:/var/www/charibin-tmp/charibin.sock;
     }
