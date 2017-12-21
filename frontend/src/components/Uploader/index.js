@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import Dropzone from 'react-dropzone'
-import { Progress } from 'reactstrap'
+import { Progress, Input, Button, Row, Col } from 'reactstrap'
 import FaImage from 'react-icons/lib/fa/image'
 import cx from 'classnames'
+
 
 class Uploader extends PureComponent {
 
@@ -15,6 +16,7 @@ class Uploader extends PureComponent {
     defaultImageURL: PropTypes.string,
     preview: PropTypes.bool,
     bordered: PropTypes.bool,
+    allowEmbed: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -27,6 +29,7 @@ class Uploader extends PureComponent {
     uploading: false,
     progress: 0,
     previewImageData: null,
+    embed: '',
   }
 
   handleDrop = (acceptedFiles) => {
@@ -79,16 +82,44 @@ class Uploader extends PureComponent {
     }
   }
 
+  handleChangeEmbedText = (e) => {
+    this.setState({
+      embed: e.target.value
+    })
+  }
+
+  handleClickAddEmbedMedium = () => {
+    const { embed } = this.state
+
+    if (!embed) {
+      alert('Please input embed code')
+      return
+    }
+
+    const { uploadAction, uploadActionParams } = this.props
+
+    if (uploadAction) {
+      const data = {
+        embed,
+      }
+
+      uploadAction({
+        ...uploadActionParams,
+        data,
+      })
+    }
+  }
+
   uploaderStyle = () => {
     const { defaultImageURL } = this.props
     const { previewImageData } = this.state
     let style = {
       width: '100%',
       height: 80,
-      // borderWidth: 1,
-      // borderColor: '#f9f8fe',
-      // borderStyle: 'dotted',
-      // borderRadius: 3,
+      borderWidth: 1,
+      borderColor: '#cccccd',
+      borderStyle: 'dotted',
+      borderRadius: 3,
     }
     if (defaultImageURL || previewImageData) {
       style = {
@@ -109,13 +140,16 @@ class Uploader extends PureComponent {
   }
 
   render() {
-    const { disabled, defaultImageURL, bordered } = this.props
-    const { uploading, progress } = this.state
+    const { disabled, defaultImageURL, bordered, allowEmbed } = this.props
+    const { uploading, progress, embed } = this.state
 
     return (
       <div className="uploader">
         <div className="clearfix">
-          <div className={cx({ 'dropzone-wrapper': true, 'bordered': bordered })} style={{ padding: 10 }}>
+          {allowEmbed && <label>
+            Click to choose or drag and drop files into here:
+          </label>}
+          <div className={cx({ 'dropzone-wrapper': true, 'bordered': bordered })}>
             {!defaultImageURL && <div className="dropzone-icon text-black">
               <span className="dropzone-plus-text">+ </span>
               <FaImage />
@@ -128,6 +162,18 @@ class Uploader extends PureComponent {
               onDrop={this.handleDrop}
             />
           </div>
+
+          {allowEmbed && <div>
+            <label className="mt-2">Or enter embed code to create embedded medium:</label>
+            <Row className="mb-5">
+              <Col>
+                <Input type="textarea" value={embed} onChange={this.handleChangeEmbedText} />
+              </Col>
+              <Col xs="auto">
+                <Button color="primary" style={{ width: 100 }} onClick={this.handleClickAddEmbedMedium}>Add</Button>
+              </Col>
+            </Row>
+          </div>}
         </div>
 
         {uploading && <div className="mt-3">

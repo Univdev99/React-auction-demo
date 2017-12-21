@@ -36,7 +36,15 @@ class MediaSlider extends PureComponent {
           className="slide-media slide-video" src={medium.get('url')} controls
           style={{ paddingTop: '60%', background: '#000' }} />}
         {medium.get('type') === 'image' && <div
-          className="slide-media slide-image" style={{ backgroundImage: `url(${medium.get('url')})` }} />}
+          className="slide-media slide-image"
+          style={{ backgroundImage: `url(${medium.get('url')})` }}
+        />}
+        {medium.get('type') === 'embed' && <div className="slide-media">
+          <div
+            className="embed-wrapper"
+            dangerouslySetInnerHTML={{ __html: medium.get('embed') }}
+          />
+        </div>}
       </div>
     )
   }
@@ -61,7 +69,15 @@ class MediaSlider extends PureComponent {
           style={{ paddingTop: '60%', background: '#000' }}
         />}
         {medium.get('type') === 'image' && <div
-          className="slide-media slide-image" style={{ backgroundImage: `url(${medium.get('url')})` }} />}
+          className="slide-media slide-image"
+          style={{ backgroundImage: `url(${medium.get('url')})` }}
+        />}
+        {medium.get('type') === 'embed' && <div className="slide-media">
+          <div
+            className="embed-wrapper square"
+            dangerouslySetInnerHTML={{ __html: medium.get('embed') }}
+          />
+        </div>}
       </div>
     )
   }

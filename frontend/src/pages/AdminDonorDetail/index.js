@@ -114,6 +114,7 @@ class AdminDonorDetail extends PureComponent {
           <Uploader
             uploadAction={this.props.uploadDonorMedium}
             uploadActionParams={{ id: this.props.match.params.id }}
+            allowEmbed
           />
 
           <div className="mt-3">

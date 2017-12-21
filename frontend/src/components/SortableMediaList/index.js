@@ -53,6 +53,10 @@ class SortableMediaList extends PureComponent {
                           style={{ paddingTop: '60%', background: '#000' }} />}
                         {medium.get('type') === 'image' && <img
                           className="img-fluid" src={medium.get('url')} alt="Medium" />}
+                        {medium.get('type') === 'embed' && <div
+                          className="embed-wrapper"
+                          dangerouslySetInnerHTML={{ __html: medium.get('embed') }}
+                        />}
                       </div>
                       {provided.placeholder}
                     </div>

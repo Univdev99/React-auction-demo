@@ -54,25 +54,36 @@ class ProductMediumUploadView(MediumUploadMixin, generics.GenericAPIView):
     queryset = Product.objects.all()
     tmp_file_prefix = 'product_media'
 
-    def get_uploaded_file(self):
-        serializer = UploadMediumSerializer(data=self.request.data)
-        serializer.is_valid(raise_exception=True)
-        return serializer.validated_data['file']
+    def get_uploaded_file(self, serializer):
+        if 'file' in serializer.validated_data:
+            return serializer.validated_data['file']
+        else:
+            return None
 
     def post(self, *args, **kwargs):
-        file = self.get_uploaded_file()
+        serializer = UploadMediumSerializer(data=self.request.data)
+        serializer.is_valid(raise_exception=True)
+
+        file = self.get_uploaded_file(serializer)
         product = self.get_object()
 
         max_record = product.media.aggregate(Max('order'))
         order = max_record['order__max'] + 1 if max_record['order__max'] else 1
 
-        medium = self.upload_medium(
-            file,
-            'product',
-            '{}_{}'.format(product.pk, random.randint(10000000, 99999999)),
-            content_object=product,
-            order=order
-        )
+        if file:
+            medium = self.upload_medium(
+                file,
+                'product',
+                '{}_{}'.format(product.pk, random.randint(10000000, 99999999)),
+                content_object=product,
+                order=order
+            )
+        else:
+            medium = self.create_embedded_medium(
+                serializer.validated_data['embed'],
+                content_object=product,
+                order=order
+            )
 
         serializer = MediumSerializer(medium)
         return Response(serializer.data)
