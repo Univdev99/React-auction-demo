@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'tagging',
     'channels',
     'pinax.stripe',
+    'anymail',
     # Project apps
     'account',
     'auction',
@@ -143,7 +144,7 @@ AUTH_USER_MODEL = 'account.User'
 
 # Email
 
-NO_REPLY_EMAIL_ADDRESS = 'no-reply@charibin.com'
+NO_REPLY_EMAIL_ADDRESS = 'no-reply@yuma.com'
 
 
 # Django REST Framework
@@ -185,15 +186,6 @@ CORS_ALLOW_HEADERS = default_headers + (
 FORCE_LOWERCASE_TAGS = True
 
 
-# Local settings
-
-locset = os.path.join(os.path.dirname(__file__), 'local_settings.py')
-if os.path.exists(locset):
-    with open(locset) as f:
-        code = compile(f.read(), "local_settings.py", 'exec')
-        exec (code)
-
-
 # SQL Query Logging
 
 LOG_SQL_QUERY = False
@@ -225,3 +217,18 @@ CHANNEL_LAYERS = {
         "ROUTING": "notification.routing.channel_routing",
     },
 }
+
+
+# Mailgun config
+
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+DEFAULT_FROM_EMAIL = NO_REPLY_EMAIL_ADDRESS
+
+
+# Local settings
+
+locset = os.path.join(os.path.dirname(__file__), 'local_settings.py')
+if os.path.exists(locset):
+    with open(locset) as f:
+        code = compile(f.read(), "local_settings.py", 'exec')
+        exec (code)

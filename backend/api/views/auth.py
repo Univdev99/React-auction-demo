@@ -2,7 +2,6 @@ import random
 
 from django.contrib.auth import get_user_model
 from django.conf import settings
-from django.core import mail
 from django.db import transaction
 from django.utils.crypto import get_random_string
 from facebook import GraphAPI, GraphAPIError
@@ -27,6 +26,7 @@ from history.constants import HISTORY_RECORD_USER_SIGNUP_VERIFY
 from history.constants import HISTORY_RECORD_USER_SIGNUP_FACEBOOK
 from history.constants import HISTORY_RECORD_USER_UPDATE_DETAILS
 from history.models import HistoryRecord
+from notification.email import send_email
 
 from storage.mixins import MediumUploadMixin
 from storage.mixins import MediumDeleteMixin
@@ -48,16 +48,14 @@ class SignUpView(views.APIView):
 
         HistoryRecord.objects.create_history_record(user, None, HISTORY_RECORD_USER_SIGNUP)
 
-        with mail.get_connection() as connection:
-            mail.EmailMessage(
-                'Account Verification',
-                'Please verify your registered account by clicking on this URL: {}'.format(
-                    settings.SITE_URL + '/verify-account/{}'.format(user_verification.token)
-                ),
-                settings.NO_REPLY_EMAIL_ADDRESS,
-                [serializer.validated_data['email']],
-                connection=connection,
-            ).send()
+        send_email(
+            'Account Verification',
+            'Please verify your registered account by clicking on this URL: {}'.format(
+                settings.SITE_URL + '/verify-account/{}'.format(user_verification.token)
+            ),
+            [serializer.validated_data['email']],
+        )
+
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 

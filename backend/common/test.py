@@ -9,25 +9,30 @@ from account.test.factories import AdminFactory
 from account.test.factories import UserFactory
 
 
-class TestCase(test.TestCase):
+@patch('notification.email.send_email')
+class MockEmailBackendMixin(object):
     pass
 
 
-class APITestCase(test.TestCase):
+class TestCase(MockEmailBackendMixin, test.TestCase):
+    pass
+
+
+class APITestCase(MockEmailBackendMixin, test.TestCase):
     def setUp(self):
         self.client = APIClient()
         self.user = UserFactory.create()
         self.client.force_authenticate(user=self.user)
 
 
-class AdminAPITestCase(test.TestCase):
+class AdminAPITestCase(MockEmailBackendMixin, test.TestCase):
     def setUp(self):
         self.client = APIClient()
         self.user = AdminFactory.create()
         self.client.force_authenticate(user=self.user)
 
 
-class SerializerTestCase(test.TestCase):
+class SerializerTestCase(MockEmailBackendMixin, test.TestCase):
     """
     TestCase mixin for writing API serializer tests.
     """
