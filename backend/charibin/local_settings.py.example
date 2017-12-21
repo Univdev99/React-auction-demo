@@ -1,8 +1,20 @@
-DEBUG = True
+# Debug settings. Remove this line for local development
 
-ALLOWED_HOSTS = []
+DEBUG = False
+
+
+# Allowed hosts. Include front end domain here.
+
+ALLOWED_HOSTS = ['']
+
+
+# Site URL
 
 SITE_URL = 'https://www.yuma.org'
+
+
+# Database
+# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASES['default'] = {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -11,16 +23,6 @@ DATABASES['default'] = {
     'PASSWORD': 'password',
     'HOST': '127.0.0.1',
 }
-
-
-# Email backend
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST =
-EMAIL_PORT =
-EMAIL_HOST_USER =
-EMAIL_HOST_PASSWORD =
-EMAIL_USE_SSL = True
 
 
 # Django CORS Headers
@@ -52,3 +54,11 @@ AMAZON_S3_ACCESS_SECRET = 'Awieu7690guVi67HTvi697vUyf+iugIKv787gHkv'
 
 PINAX_STRIPE_PUBLIC_KEY = ''
 PINAX_STRIPE_SECRET_KEY = ''
+
+
+# Mailgun config
+
+ANYMAIL = {
+    "MAILGUN_API_KEY": "<your Mailgun key>",
+    "MAILGUN_SENDER_DOMAIN": 'mg.example.com',
+}

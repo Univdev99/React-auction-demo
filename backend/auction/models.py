@@ -191,6 +191,20 @@ class Auction(models.Model):
                     'winner_user_id': highest_bid.user.pk,
                 }
             )
+
+            bids = auction.bid_set.filter(status=BID_STATUS_ACTIVE).select_related('user')
+
+            send_email(
+                'Auction has ended',
+                'Auction {} has ended. Unfortunately someone else has won the auction. But you can win next time!'.format(auction.title),
+                [bid.user.email for bid in bids if bid.user.pk != highest_bid.user.pk]
+            )
+
+            send_email(
+                'You have won an auction!',
+                'Congratulations! Auction {} has ended, and you\'ve won the auction.'.format(auction.title),
+                [bid.user.email for bid in bids if bid.user.pk != highest_bid.user.pk]
+            )
         except:
             pass
 
@@ -249,6 +263,17 @@ class Auction(models.Model):
             pass
 
         HistoryRecord.objects.create_history_record(self, None, HISTORY_RECORD_AUCTION_CANCEL)
+
+        try:
+            bids = auction.bid_set.filter(status=BID_STATUS_ACTIVE).select_related('user')
+
+            send_email(
+                'Auction has been cancelled',
+                'Auction {} has been cancelled.'.format(auction.title),
+                [bid.user.email for bid in bids]
+            )
+        except:
+            pass
 
 
 class Bid(SoftDeletionModel):

@@ -1,6 +1,6 @@
-DEBUG = False   # Should be False for production server
+# These values are preset for Docker environment
 
-SITE_URL = 'https://www.yuma.org'
+DEBUG = False   # Should be False for production server
 
 DATABASES['default'] = {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -11,6 +11,14 @@ DATABASES['default'] = {
 }
 
 ALLOWED_HOSTS = ['*']    # Allowed Hosts config on Production server
+
+
+## From here you can change values
+
+# Site URL
+
+SITE_URL = 'https://www.yuma.org'
+
 
 # Django CORS Headers
 
@@ -39,5 +47,13 @@ AMAZON_S3_ACCESS_SECRET = 'Awieu7690guVi67HTvi697vUyf+iugIKv787gHkv'
 
 # Stripe credentials
 
-PINAX_STRIPE_PUBLIC_KEY = 'pk_test_2BYzVobTNbIgx8vcLAJcL9uh'
-PINAX_STRIPE_SECRET_KEY = 'sk_test_hnoAYubGb0MykECSsreWefKS'
+PINAX_STRIPE_PUBLIC_KEY = ''
+PINAX_STRIPE_SECRET_KEY = ''
+
+
+# Mailgun config
+
+ANYMAIL = {
+    "MAILGUN_API_KEY": "<your Mailgun key>",
+    "MAILGUN_SENDER_DOMAIN": 'mg.example.com',
+}

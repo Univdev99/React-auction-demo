@@ -18,6 +18,7 @@ from history.constants import HISTORY_RECORD_AUCTION_NEW
 from history.constants import HISTORY_RECORD_USER_BID
 from history.models import HistoryRecord
 from notification.constants import NOTIFICATION_AUCTION_NEW_BID
+from notification.email import send_email
 from notification.models import Notification
 
 
@@ -182,10 +183,22 @@ class BidSerializer(serializers.ModelSerializer):
             'placed_at': placed_at,
         })
 
-        Notification.objects.create_notification(user, auction, NOTIFICATION_AUCTION_NEW_BID, {
-            'price': price,
-            'placed_at': placed_at,
-        })
+        bids = auction.bid_set.filter(status=BID_STATUS_ACTIVE).select_related('user')
+        user_emails = []
+
+        for bid in bids:
+            if bid.user.pk != user.pk:
+                Notification.objects.create_notification(bid.user, auction, NOTIFICATION_AUCTION_NEW_BID, {
+                    'price': price,
+                    'placed_at': placed_at,
+                })
+                user_emails.append(bid.user.email)
+
+        send_email(
+            'New bid has been placed',
+            'A new bid has been placed on auction {}'.format(auction.title),
+            user_emails
+        )
 
         return bid
 
