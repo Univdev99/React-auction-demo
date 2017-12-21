@@ -142,6 +142,10 @@ class AdminMediumList extends PureComponent {
                   {medium.get('type') === 'audio' && <div className="video-wrapper">
                     <audio src={medium.get('url')} controls />
                   </div>}
+                  {medium.get('type') === 'embed' && <div
+                    className="embed-wrapper"
+                    dangerouslySetInnerHTML={{ __html: medium.get('embed') }}
+                  />}
                 </div>
               </Col>
             ))}

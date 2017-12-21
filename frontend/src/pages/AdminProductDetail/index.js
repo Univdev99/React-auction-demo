@@ -108,6 +108,7 @@ class AdminProductDetail extends PureComponent {
           <Uploader
             uploadAction={this.props.uploadProductMedium}
             uploadActionParams={{ id: this.props.match.params.id }}
+            allowEmbed
           />
 
           <div className="mt-3">

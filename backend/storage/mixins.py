@@ -13,6 +13,7 @@ from rest_framework.exceptions import ParseError
 from storage.constants import MEDIUM_TYPE_IMAGE
 from storage.constants import MEDIUM_TYPE_AUDIO
 from storage.constants import MEDIUM_TYPE_VIDEO
+from storage.constants import MEDIUM_TYPE_EMBED
 from storage.constants import VALID_IMAGE_MIMETYPES
 from storage.constants import VALID_AUDIO_MIMETYPES
 from storage.constants import VALID_VIDEO_MIMETYPES
@@ -117,3 +118,11 @@ class MediumUploadMixin(MediumCreateMixin, MediumDeleteMixin):
             s3_file_location
         )
         return file_url, file_obj.content_type
+
+    def create_embedded_medium(self, embedded_code, content_object=None, order=1):
+        return Medium.objects.create(
+            content_object=content_object,
+            embed=embedded_code,
+            type=MEDIUM_TYPE_EMBED,
+            order=order
+        )

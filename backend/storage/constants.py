@@ -1,11 +1,13 @@
 MEDIUM_TYPE_IMAGE = 'image'
 MEDIUM_TYPE_VIDEO = 'video'
 MEDIUM_TYPE_AUDIO = 'audio'
+MEDIUM_TYPE_EMBED = 'embed'
 
 MEDIUM_TYPE_CHOICES = (
     (MEDIUM_TYPE_IMAGE, 'Image'),
     (MEDIUM_TYPE_VIDEO, 'Video'),
     (MEDIUM_TYPE_AUDIO, 'Audio'),
+    (MEDIUM_TYPE_EMBED, 'Embed'),
 )
 
 VALID_IMAGE_MIMETYPES = (

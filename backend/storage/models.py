@@ -6,9 +6,10 @@ from storage.constants import MEDIUM_TYPE_CHOICES
 
 
 class Medium(models.Model):
-    url = models.URLField(max_length=300)
+    url = models.URLField(max_length=300, null=True, blank=True)
     type = models.CharField(choices=MEDIUM_TYPE_CHOICES, max_length=50)
-    mimetype = models.CharField(max_length=30)
+    embed = models.TextField(null=True, blank=True)
+    mimetype = models.CharField(max_length=30, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     deleted_at = models.DateTimeField(null=True, default=None)
 
