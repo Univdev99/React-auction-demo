@@ -41,7 +41,10 @@ class UserManager(BaseUserManager):
                                  **extra_fields)
 
     def create_superuser(self, email, password, **extra_fields):
+        if 'is_active' in extra_fields:
+            extra_fields.pop('is_active')
         return self._create_user(email, password, True, True,
+                                 is_active=True,
                                  **extra_fields)
 
 
