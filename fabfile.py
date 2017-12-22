@@ -1,6 +1,7 @@
 import os
 from contextlib import contextmanager
 from fabric.api import cd, env, prefix, run, sudo, task, hide
+from fabric.context_managers import settings
 
 from fabric_settings import *
 
@@ -35,11 +36,12 @@ def deploy():
     """
     Deploys the latest tag to the production server using docker
     """
-    with hide('output'):
-        with cd(PROJECT_ROOT):
-            run('git pull origin master')
-            run('docker-compose build')
-            run('docker-compose up -d')
+    with cd(PROJECT_ROOT):
+        run('git pull -q origin master')
+
+    with cd(PROJECT_ROOT), hide('output'):
+        sudo('docker-compose build')
+        sudo('docker-compose up -d')
 
 
 @task
@@ -98,21 +100,23 @@ def bootstrap():
         sudo('chmod +x /usr/local/bin/docker-compose')
 
         # Create project root
-        run('mkdir ' + PROJECT_ROOT)
+        with settings(warn_only=True):
+            run('mkdir -p ' + PROJECT_ROOT)
 
         # Prepare mxtracking log file
-        with cd(PROJECT_ROOT):
+        with cd(PROJECT_ROOT), settings(warn_only=True):
             run('mkdir log')
 
         # Create Postgres data folder on host
-        with cd('~'):
-            run('mkdir postgres_data')
+        with cd('~'), settings(warn_only=True):
+                run('mkdir postgres_data')
 
         # Prepare mxtracking log file
-        with cd(PROJECT_ROOT):
+        with cd(PROJECT_ROOT), settings(warn_only=True):
             run('git init')
             run('git remote add origin ' + PROJECT_GIT_REPO)
 
-        # Generate keypair and output
-        run('ssh-keygen')
-        run('cat ~/.ssh/id_rsa')
+    # Generate keypair and output
+    with settings(warn_only=True):
+        run('ssh-keygen -f id_rsa -t rsa -N ""')
+        run('cat ~/.ssh/id_rsa.pub')
