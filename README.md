@@ -2,6 +2,18 @@
 
 ## Deploy using docker
 
+### Initial bootstrapping
+
+- Put SSH key file to `docker/ssh/staging` or `docker/ssh/production`. (Depends on if you want to use this server as staging or production)
+- Copy `fabric_settings.py.example` to `fabric_settings.py`, and fill the necessary variables.
+  These variables should be filled:
+    * []_SERVER
+    * []_SERVER_SSH_KEY_FILE
+    * []_SERVER_SSH_USER
+    * []_SERVER_SSH_PASSWORD
+  ([] can be STAGING or PRODUCTION)
+- In terminal, run `fab staging bootstrap` or `fab production bootstrap` to set up server environment.
+- Connect via SSH to the server.
 - Copy `backend/charibin/docker_settings.py.example` to `backend/charibin/docker_settings.py` and fill necessary variables
   These variables should be filled:
     * CORS_ORIGIN_WHITELIST
@@ -12,23 +24,13 @@
     * PINAX_STRIPE_PUBLIC_KEY
     * PINAX_STRIPE_SECRET_KEY
 - Copy `frontend/.env.example` to `frontend/.env` and fill necessary values.
-  This variable should be filled:
-    * REACT_APP_STRIPE_PUBLIC_KEY
-- At this step, project configuration is done and you can disconnect SSH from the server. Now everything can be from the client.
-- Put SSH key file to `docker/ssh/staging` or `docker/ssh/production`. (Depends on if you want to use this server as staging or production)
-- Copy `fabric_settings.py.example` to `fabric_settings.py`, and fill the necessary variables.
-  These variables should be filled:
-    * []_SERVER
-    * []_SERVER_SSH_KEY_FILE
-    * []_SERVER_SSH_USER
-    * []_SERVER_SSH_PASSWORD
-  ([] can be STAGING or PRODUCTION)
-- In terminal, run `fab staging bootstrap` or `fab production bootstrap` to set up server environment. Needed only for the first deploy.
+- Disconnect from SSH.
 - In terminal, run `fab staging deploy` or `fab production deploy` to build and run containers.
 
-## Update server
+### Updating server
 
-- Run `fab staging deploy` or `fab production deploy` to deploy latest version to the server. Before doing this, all steps in Deploy Using docker should be completed.
+- Push code changes to git.
+- In terminal, run `fab staging deploy` or `fab production deploy` to build and run containers.
 
 ## Some additional operations available
 

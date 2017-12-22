@@ -45,6 +45,18 @@ def deploy():
 
 
 @task
+def rebuild():
+    """
+    Rebuilds back end container
+    """
+    with cd(PROJECT_ROOT), hide('output'):
+        sudo('docker-compose stop backend frontend nginx')
+        sudo('docker-compose rm -f backend frontend nginx')
+        sudo('docker-compose build backend frontend nginx')
+        sudo('docker-compose up -d backend frontend nginx')
+
+
+@task
 def shell():
     """
     Create django admin account
