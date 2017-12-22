@@ -50,7 +50,7 @@ def shell():
     Create django admin account
     """
     with cd(PROJECT_ROOT):
-        run('docker-compose exec backend bash')
+        sudo('docker-compose exec backend bash')
 
 
 @task
@@ -59,7 +59,7 @@ def createsuperuser():
     Create django admin account
     """
     with cd(PROJECT_ROOT):
-        run('docker-compose exec backend python manage.py createsuperuser')
+        sudo('docker-compose exec backend python manage.py createsuperuser')
 
 
 @task
@@ -68,7 +68,7 @@ def migrate():
     Create django admin account
     """
     with cd(PROJECT_ROOT):
-        run('docker-compose exec backend python manage.py migrate')
+        sudo('docker-compose exec backend python manage.py migrate')
 
 
 @task
@@ -77,7 +77,7 @@ def psql():
     Create django admin account
     """
     with cd(PROJECT_ROOT):
-        run('docker-compose exec --user postgres db psql')
+        sudo('docker-compose exec --user postgres db psql')
 
 
 @task
