@@ -34,7 +34,7 @@ FACEBOOK_APP_VERSION = '2.10'
 
 # Temporary file storage path
 
-TMP_DIR_PATH = '/tmp/charibin'
+TMP_DIR_PATH = '/tmp'
 
 
 # Amazon S3 credentials

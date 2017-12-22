@@ -1,4 +1,4 @@
-# Yuma Project
+# Charity Auction Demo
 
 ## Deploy using docker
 
@@ -7,6 +7,7 @@
 - Put SSH key file to `docker/ssh/staging` or `docker/ssh/production`. (Depends on if you want to use this server as staging or production)
 - Copy `fabric_settings.py.example` to `fabric_settings.py`, and fill the necessary variables.
   These variables should be filled:
+    * PROJECT_GIT_REPO
     * []_SERVER
     * []_SERVER_SSH_KEY_FILE
     * []_SERVER_SSH_USER
@@ -14,16 +15,9 @@
   ([] can be STAGING or PRODUCTION)
 - In terminal, run `fab staging bootstrap` or `fab production bootstrap` to set up server environment.
   * Important: this command will output public key of SSH key pair generated on this server. You must add this public key to the git repo account.
-- Connect via SSH to the server.
+- In terminal, run `fab staging git_pull` or `fab production git_pull` to pull code from git into the server.
+- Connect via SSH to the server, and go to PROJECT_ROOT.
 - Copy `backend/charibin/docker_settings.py.example` to `backend/charibin/docker_settings.py` and fill necessary variables
-  These variables should be filled:
-    * CORS_ORIGIN_WHITELIST
-    * AMAZON_S3_REGION
-    * AMAZON_S3_BUCKET
-    * AMAZON_S3_ACCESS_KEY_ID
-    * AMAZON_S3_ACCESS_SECRET
-    * PINAX_STRIPE_PUBLIC_KEY
-    * PINAX_STRIPE_SECRET_KEY
 - Copy `frontend/.env.example` to `frontend/.env` and fill necessary values.
 - Disconnect from SSH.
 - In terminal, run `fab staging deploy` or `fab production deploy` to build and run containers.
@@ -31,7 +25,7 @@
 ### Updating server
 
 - Push code changes to git.
-- In terminal, run `fab staging deploy` or `fab production deploy` to build and run containers.
+- In terminal, run `fab staging deploy` or `fab production deploy` to deploy latest version to the server. Before doing this, all steps in Deploy Using docker should be completed.
 
 ## Some additional operations available
 

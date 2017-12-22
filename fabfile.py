@@ -132,3 +132,12 @@ def bootstrap():
     with settings(warn_only=True):
         run('ssh-keygen -f id_rsa -t rsa -N ""')
         run('cat ~/.ssh/id_rsa.pub')
+
+
+@task
+def git_pull():
+    """
+    Pull latest version from git master branch
+    """
+    with cd(PROJECT_ROOT):
+        run('git pull -q origin master')
