@@ -10,7 +10,7 @@ env.hosts = []
 @task
 def staging():
     env.hosts = ['%s@%s' % (STAGING_SERVER_SSH_USER, STAGING_SERVER)]
-    env.key_filename = 'deploy/ssh/staging/%s' % STAGING_SERVER_SSH_KEY_FILE
+    env.key_filename = 'docker/ssh/staging/%s' % STAGING_SERVER_SSH_KEY_FILE
     try:
         env.password = STAGING_SERVER_SSH_PASSWORD
     except:
@@ -20,7 +20,7 @@ def staging():
 @task
 def production():
     env.hosts = ['%s@%s' % (PRODUCTION_SERVER_SSH_USER, PRODUCTION_SERVER)]
-    env.key_filename = 'deploy/ssh/production/%s' % PRODUCTION_SERVER_SSH_KEY_FILE
+    env.key_filename = 'docker/ssh/production/%s' % PRODUCTION_SERVER_SSH_KEY_FILE
     try:
         env.password = PRODUCTION_SERVER_SSH_PASSWORD
     except:
