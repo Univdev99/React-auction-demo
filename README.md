@@ -13,6 +13,7 @@
     * []_SERVER_SSH_PASSWORD
   ([] can be STAGING or PRODUCTION)
 - In terminal, run `fab staging bootstrap` or `fab production bootstrap` to set up server environment.
+  * Important: this command will output public key of SSH key pair generated on this server. You must add this public key to the git repo account.
 - Connect via SSH to the server.
 - Copy `backend/charibin/docker_settings.py.example` to `backend/charibin/docker_settings.py` and fill necessary variables
   These variables should be filled:
@@ -41,3 +42,6 @@
 
 - Migrate database to the latest
   * Run `fab staging migrate` or `fab production migrate`.
+
+- Update server without new commits on git
+  * In terminal, run `fab staging rebuild` or `fab production rebuild`.
