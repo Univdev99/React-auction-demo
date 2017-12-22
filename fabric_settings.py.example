@@ -1,5 +1,6 @@
 PROJECT_NAME = 'yuma'
 PROJECT_ROOT = '~/%s' % PROJECT_NAME
+PROJECT_GIT_REPO = 'git@bitbucket.org:username/reponame.git'               # Git repo of source code
 STAGING_SERVER = ''                 # IP or domain of staging server
 STAGING_SERVER_SSH_KEY_FILE = ''    # SSH key filename (e.g. id_rsa) to be put in `docker/ssh/staging` for staging server
 STAGING_SERVER_SSH_USER = ''        # SSH username
