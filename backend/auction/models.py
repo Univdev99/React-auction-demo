@@ -174,7 +174,10 @@ class Auction(models.Model):
         if charge.paid:
             self.status = AUCTION_STATUS_WAITING_TO_SHIP
 
-            HistoryRecord.objects.create_history_record(self, None, HISTORY_RECORD_AUCTION_PAYMENT, {'amount': highest_bid.price})
+            try:
+                HistoryRecord.objects.create_history_record(self, None, HISTORY_RECORD_AUCTION_PAYMENT, {'amount': highest_bid.price})
+            except:
+                pass
         else:
             self.status = AUCTION_STATUS_WAITING_FOR_PAYMENT
         self.ended_at = timezone.now()

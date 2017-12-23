@@ -8,6 +8,12 @@ import Immutable from 'immutable'
 
 import FormField from 'components/FormField'
 import InputField from 'components/InputField'
+import {
+  AUCTION_STATUS_WAITING_FOR_PAYMENT,
+  AUCTION_STATUS_WAITING_TO_SHIP,
+  AUCTION_STATUS_SHIPPED,
+  AUCTION_STATUS_FINISHED,
+} from 'config'
 
 
 class AuctionForm extends PureComponent {
@@ -53,6 +59,21 @@ class AuctionForm extends PureComponent {
       })) :
       Immutable.List()
 
+    const auctionUpdatableStatus = Immutable.Map({
+      [AUCTION_STATUS_WAITING_FOR_PAYMENT]: 'Waiting for payment',
+      [AUCTION_STATUS_WAITING_TO_SHIP]: 'Waiting to ship',
+      [AUCTION_STATUS_SHIPPED]: 'Shipped',
+      [AUCTION_STATUS_FINISHED]: 'Finished',
+    })
+
+    const statusUpdatable = (
+      initialValues && (
+        initialValues.get('status') === AUCTION_STATUS_WAITING_FOR_PAYMENT ||
+        initialValues.get('status') === AUCTION_STATUS_WAITING_TO_SHIP ||
+        initialValues.get('status') === AUCTION_STATUS_SHIPPED
+      )
+    )
+
     return (
       <form onSubmit={handleSubmit}>
         {submitFailed && <Alert color="danger">
@@ -83,13 +104,23 @@ class AuctionForm extends PureComponent {
             }))}
             onChange={this.handleChangeProduct}
           />
-          <FormField
+          {!statusUpdatable && <FormField
             name="charity"
             label="Charity (selected from charities of product donor):"
             type="select"
             component={InputField}
             options={charityListOptions}
-          />
+          />}
+          {statusUpdatable && <FormField
+            name="status"
+            label="Status:"
+            type="select"
+            component={InputField}
+            options={auctionUpdatableStatus.map((status, index) => ({
+              key: index,
+              value: status,
+            }))}
+          />}
         </div>
 
         <div className="mt-4 text-right">

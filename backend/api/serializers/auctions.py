@@ -50,8 +50,9 @@ class AuctionAdminSerializer(AuctionSerializer):
         fields = AuctionSerializer.Meta.fields + (
             'charity', 'max_bid', 'min_bid', 'highest_bidder', 'number_of_bids', 'time_remaining'
         )
-        read_only_fields = AuctionSerializer.Meta.read_only_fields + (
-            'max_bid', 'min_bid', 'highest_bidder', 'number_of_bids', 'time_remaining'
+        read_only_fields = (
+            'pk', 'current_price', 'started_at', 'ended_at', 'product_details',
+            'max_bid', 'min_bid', 'highest_bidder', 'number_of_bids', 'time_remaining',
         )
 
     def get_highest_bidder(self, obj):
