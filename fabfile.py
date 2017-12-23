@@ -40,8 +40,10 @@ def deploy():
         run('git pull -q origin master')
 
     with cd(PROJECT_ROOT), hide('output'):
-        sudo('docker-compose build')
-        sudo('docker-compose up -d')
+        sudo('docker-compose stop backend frontend nginx')
+        sudo('docker-compose rm -f backend frontend nginx')
+        sudo('docker-compose build backend frontend nginx')
+        sudo('docker-compose up -d backend frontend nginx')
 
 
 @task
