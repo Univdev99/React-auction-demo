@@ -23,6 +23,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     expose:
       - "8000"
 
@@ -43,5 +45,14 @@ services:
     container_name: db
     volumes:
       - ~/postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: "exit 0"
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    expose:
+      - "6379"
     healthcheck:
       test: "exit 0"

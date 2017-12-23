@@ -12,6 +12,16 @@ DATABASES['default'] = {
 
 ALLOWED_HOSTS = ['*']    # Allowed Hosts config on Production server
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],
+        },
+        "ROUTING": "notification.routing.channel_routing",
+    },
+}
+
 
 ## From here you can change values
 
